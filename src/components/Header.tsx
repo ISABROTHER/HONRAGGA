@@ -1,5 +1,5 @@
 {/* === Scrolling Announcement Bar === */}
-<div className="bg-red-600 h-5 overflow-hidden relative flex items-center">
+<div className="bg-red-600 h-6 overflow-hidden relative flex items-center">
   <div
     className="absolute top-0 h-full flex flex-col justify-center animate-marquee"
     style={{

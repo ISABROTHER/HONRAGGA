@@ -1,4 +1,4 @@
-import { ArrowRight, Users, Heart, TrendingUp, Calendar, BookOpen, Target } from 'lucide-react';
+import { ArrowRight, Users, Heart, TrendingUp, Calendar, BookOpen, Target, DollarSign } from 'lucide-react';
 import { Button } from '../components/Button';
 
 interface HomeProps {
@@ -31,14 +31,13 @@ export function Home({ onNavigate }: HomeProps) {
     }
   ];
 
-  // Helper class for screen height (100vh - header height (5rem/20 units))
+  // Helper class for screen height (100vh - header height (5rem/20 units)).
+  // We explicitly set min-h-screen for large screens where 5rem doesn't matter much.
   const FullScreenClass = "min-h-[calc(100vh-5rem)] flex items-center justify-center";
 
   return (
-    <div className="min-h-screen">
-      {/* --- PHONE VIEW SCREEN 1: THE VISION (Hero) ---
-        The main, bold campaign statement.
-      */}
+    <div className="min-h-screen bg-white">
+      {/* --- PHONE VIEW SCREEN 1: THE VISION (Hero) --- */}
       <section className={`relative bg-gradient-to-br from-blue-950 via-blue-900 to-blue-800 text-white overflow-hidden ${FullScreenClass}`}>
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjA1IiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-30"></div>
 
@@ -85,10 +84,8 @@ export function Home({ onNavigate }: HomeProps) {
         </div>
       </section>
 
-      {/* --- PHONE VIEW SCREEN 2: THE STORY (About Focus) ---
-        High contrast section to drive traffic to the 'About' page.
-      */}
-      <section className={`bg-white text-gray-900 border-b border-gray-200 ${FullScreenClass}`}>
+      {/* --- PHONE VIEW SCREEN 2: THE STORY (About Focus) --- */}
+      <section className={`bg-white text-gray-900 border-b border-gray-200 py-20 lg:py-0 ${FullScreenClass}`}>
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-20">
           <div className="max-w-3xl mx-auto text-center space-y-8">
             <Target className="w-16 h-16 text-blue-900 mx-auto" />
@@ -111,10 +108,8 @@ export function Home({ onNavigate }: HomeProps) {
         </div>
       </section>
 
-      {/* --- PHONE VIEW SCREEN 3: THE ACTION (Volunteer/Donate Focus) ---
-        Urgent section using the Amber accent color.
-      */}
-      <section className={`bg-gradient-to-br from-amber-500 to-amber-600 text-white overflow-hidden ${FullScreenClass}`}>
+      {/* --- PHONE VIEW SCREEN 3: THE ACTION (Volunteer/Donate Focus) --- */}
+      <section className={`bg-gradient-to-br from-amber-500 to-amber-600 text-white overflow-hidden py-20 lg:py-0 ${FullScreenClass}`}>
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-20">
           <div className="max-w-3xl mx-auto text-center space-y-8">
             <Heart className="w-16 h-16 text-white/90 mx-auto drop-shadow-lg" />
@@ -128,7 +123,7 @@ export function Home({ onNavigate }: HomeProps) {
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
               <Button
                 size="lg"
-                variant="primary" // Re-using primary for contrast here
+                variant="primary" 
                 onClick={() => onNavigate('volunteer')}
                 className="group shadow-lg shadow-blue-900/50 hover:shadow-xl"
               >
@@ -148,7 +143,7 @@ export function Home({ onNavigate }: HomeProps) {
         </div>
       </section>
 
-      {/* Stats Section (Original content, kept below the 3 screens) */}
+      {/* Stats Section (Original content, remains below the 3 screens) */}
       <section className="py-16 bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">

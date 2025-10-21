@@ -18,7 +18,7 @@
       <span className="text-white/80 px-2">II</span>
       <span>OBIARA KA HO</span>
       <span className="text-white/80 px-2">II</span>
-    </div>
+    </div> 
 
     <div className="marquee-content flex items-center gap-4" aria-hidden="true">
       <span>OFFICIAL WEBSITE FOR MP FOR CAPE COAST NORTH</span>

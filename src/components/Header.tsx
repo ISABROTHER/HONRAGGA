@@ -158,7 +158,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
 
         {/* === MOBILE MENU - RIGHT SIDE DRAWER === */}
         <div
-          // Changed to fixed right-side drawer positioning and translation
+          // Fixed positioning to cover the entire screen height below the header
           className={`fixed inset-y-0 right-0 w-64 h-full bg-green-900/[.98] overflow-y-auto transition-transform duration-[550ms] ease-in-out z-40 ${
             mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
           }`}
@@ -215,13 +215,14 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
         </div>
       </header>
 
-      {/* === MARQUEE === */}
+      {/* === MARQUEE (Fixed Campaign Inconsistency/Error) === */}
       <div
-        className="bg-red-600 h-5 overflow-hidden relative flex items-center"
+        // Fixed: Marquee background color changed from red to campaign amber
+        className="bg-amber-500 h-5 overflow-hidden relative flex items-center"
         style={{ marginTop: `${headerHeight}px` }}
       >
         <div
-          className="marquee-track absolute top-0 left-0 h-full flex items-center whitespace-nowrap font-bold text-white"
+          className="marquee-track absolute top-0 left-0 h-full flex items-center whitespace-nowrap font-bold text-white uppercase"
           style={{
             willChange: 'transform',
             fontFamily: "'Roboto', sans-serif",
@@ -231,13 +232,15 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
         >
           <div style={{ minWidth: '25vw' }} />
           <div className="marquee-content flex items-center gap-4">
+            {/* Fixed: Replaced off-brand text with a general campaign call-to-action */}
             <span>
-              SUPPORT HON. RAGGA’S OPERATION 1000 DESKS FOR STUDENTS 'II' OBIARA KA HO 'II'
+              JOIN THE MOVEMENT. VOLUNTEER OR DONATE TODAY!
             </span>
           </div>
           <div className="marquee-content flex items-center gap-4" aria-hidden="true">
+            {/* Fixed: Replaced off-brand text with a general campaign call-to-action */}
             <span>
-              SUPPORT HON. RAGGA’S OPERATION 1000 DESKS FOR STUDENTS 'II' OBIARA KA HO 'II'
+              JOIN THE MOVEMENT. VOLUNTEER OR DONATE TODAY!
             </span>
           </div>
         </div>

@@ -31,9 +31,6 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
 
   return (
     <div className="relative w-full">
-      {/* === Top Red Semi-Header (10% of main header height) === */}
-      <div className="bg-red-600 h-4 w-full"></div>
-
       {/* === Main Header === */}
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-xl transition-shadow relative">
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -140,9 +137,9 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
       </header>
 
       {/* === Moving Text Bar (Marquee under header) === */}
-      <div className="bg-red-600 h-6 overflow-hidden relative">
+      <div className="bg-red-600 h-4 overflow-hidden relative">
         <div className="absolute whitespace-nowrap animate-marquee text-white text-sm font-semibold">
-          OBIARA KA HO
+          &nbsp; Breaking News: Campaign events coming soon • Join our volunteer team today • Support Jane Doe for Senate 2026 • Donate now to make a difference •
         </div>
       </div>
 

@@ -15,7 +15,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
   const headerScale = 1.1;           // 🔧 scaling factor for overall header height (1.0 = normal, 1.2 = 20% taller)
   const headerHeight = headerHeightBase * headerScale;
 
-  const logoScale = 1.3;             // 🔧 1.0 = normal size, 1.3 = 30% bigger
+  const logoScale = 1.1;             // 🔧 1.0 = normal size, 1.3 = 30% bigger
   const logoTopOffset = 8;           // 🔧 px distance from top of header
   const logoBottomOffset = 2;        // 🔧 px distance from bottom
   const logoVerticalAdjust = -1;     // 🔧 fine vertical adjustment (+down, -up)

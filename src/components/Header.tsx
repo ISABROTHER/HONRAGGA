@@ -11,11 +11,15 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // === NUMERIC CONTROLS ===
-  const headerHeight = 72;          // 🔧 total header height (px)
-  const logoScale = 1.3;            // 🔧 1.0 = normal size, 1.18 = 20% bigger, etc.
-  const logoTopOffset = 8;          // 🔧 px distance from header top edge
-  const logoBottomOffset = 2;      // 🔧 px distance from header bottom edge
-  const logoVerticalAdjust = -1;     // 🔧 additional fine-tune (positive = move down, negative = move up)
+  const headerHeightBase = 72;       // 🔧 base height of the header (px)
+  const headerScale = 1.1;           // 🔧 scaling factor for overall header height (1.0 = normal, 1.2 = 20% taller)
+  const headerHeight = headerHeightBase * headerScale;
+
+  const logoScale = 1.3;             // 🔧 1.0 = normal size, 1.3 = 30% bigger
+  const logoTopOffset = 8;           // 🔧 px distance from top of header
+  const logoBottomOffset = 2;        // 🔧 px distance from bottom
+  const logoVerticalAdjust = -1;     // 🔧 fine vertical adjustment (+down, -up)
+  const logoLeftAdjust = -4;         // 🔧 horizontal adjustment (+right, -left)
 
   const navItems = [
     { id: 'home', label: 'Home' },
@@ -54,6 +58,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
               style={{
                 position: 'relative',
                 top: `${logoTopOffset + logoVerticalAdjust}px`,
+                left: `${logoLeftAdjust}px`,
                 bottom: `${logoBottomOffset}px`,
               }}
             >

@@ -45,13 +45,13 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
               onClick={() => handleNavClick('home')}
               className="flex items-center space-x-3 group transition-transform hover:scale-[1.01] focus:outline-none"
             >
-              <div className="flex items-center">
+              <div className="flex items-center h-full">
                 <img
-                  src="https://i.imgur.com/hyNrYDZ.png"
+                  src="https://i.imgur.com/1GfnCQc.png"
                   alt="Logo"
                   className="object-contain transition-transform duration-300"
                   style={{
-                    height: '58px', // Fixed height for logo — consistent across all devices
+                    height: '58px',
                     width: 'auto',
                     transform: 'translateY(-2px)',
                   }}
@@ -164,12 +164,18 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
         >
           <div style={{ minWidth: '30vw' }} />
 
-          <div className="marquee-content flex items-center gap-4">
-            <span>SUPPORT HON. RAGGA’S OPERATION 1000 DESKS FOR STUDENTS!</span>
+          <div className="marquee-content flex items-center gap-1">
+            <span>SUPPORT HON. RAGGA’S OPERATION 1000 DESKS FOR STUDENTS</span>
+            <span className="text-white/80">II</span>
+            <span>OBIARA KA HO</span>
+            <span className="text-white/80">II</span>
           </div>
 
-          <div className="marquee-content flex items-center gap-4" aria-hidden="true">
-            <span>SUPPORT HON. RAGGA’S OPERATION 1000 DESKS FOR STUDENTS!</span>
+          <div className="marquee-content flex items-center gap-1" aria-hidden="true">
+            <span>SUPPORT HON. RAGGA’S OPERATION 1000 DESKS FOR STUDENTS</span>
+            <span className="text-white/80">II</span>
+            <span>OBIARA KA HO</span>
+            <span className="text-white/80">II</span>
           </div>
         </div>
 
@@ -179,7 +185,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
             100% { transform: translateX(-50%); }
           }
           .marquee-track {
-            animation: marquee 42s linear infinite;
+            animation: marquee 40s linear infinite;
           }
           .marquee-track:hover {
             animation-play-state: paused;

@@ -157,7 +157,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
           </div>
 
           <div className="marquee-content flex items-center gap-4" aria-hidden="true">
-            <span>OFFICIAL WEBSITE FOR MP FOR CAPE COAST NORTH</span>
+            <span>               OFFICIAL WEBSITE FOR MP FOR CAPE COAST NORTH</span>
             <span className="text-white/80">II</span>
             <span>HON. DR. KWAMENA MINTA NYARKU</span>
             <span className="text-white/80">II</span>

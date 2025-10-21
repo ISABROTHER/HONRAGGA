@@ -32,7 +32,12 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
   return (
     <div className="relative w-full">
       {/* === MAIN HEADER === */}
-      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-xl transition-shadow relative">
+      <header
+        className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-xl transition-shadow relative"
+        style={{
+          '--logo-scale': 1.3, /* Adjust logo scale here (1 = default size, 1.5 = 50% bigger) */
+        } as React.CSSProperties}
+      >
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-5">
             {/* Logo / Branding */}
@@ -40,11 +45,11 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
               onClick={() => handleNavClick('home')}
               className="flex items-center space-x-3 group transition-transform hover:scale-[1.01] focus:outline-none"
             >
-              <div className="h-16 flex items-center">
+              <div className="flex items-center" style={{ height: `calc(3.5rem * var(--logo-scale))` }}>
                 <img
                   src="https://i.imgur.com/hyNrYDZ.png"
                   alt="Logo"
-                  className="h-full object-contain transition-all duration-300 group-hover:brightness-110"
+                  className="h-full object-contain transition-transform duration-300 group-hover:brightness-110 group-hover:scale-[1.02]"
                 />
               </div>
               <div className="hidden sm:block text-left">

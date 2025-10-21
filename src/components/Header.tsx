@@ -31,7 +31,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
 
   return (
     <div className="relative w-full">
-      {/* === MAIN HEADER (unchanged) === */}
+      {/* === MAIN HEADER === */}
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-xl transition-shadow relative">
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-5">
@@ -140,19 +140,19 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
       {/* === SCROLLING ANNOUNCEMENT BAR === */}
       <div className="bg-red-500 h-4 overflow-hidden relative flex items-center">
         <div
-          className="absolute top-0 h-full flex items-center whitespace-nowrap animate-marquee font-serif font-bold text-white text-base tracking-wide"
+          className="absolute top-0 h-full flex items-center whitespace-nowrap animate-marquee font-serif font-bold text-white text-[0.5rem] tracking-wide"
           style={{
             left: '30%',
             animation: 'marqueeScroll 60s linear infinite',
             fontFamily: "Georgia, 'Times New Roman', serif",
           }}
         >
-          <span>OFFICIAL WEBSITE FOR MP FOR CAPE COAST NORTHt</span>
+          <span>OFFICIAL WEBSITE FOR MP FOR CAPE COAST NORTH</span>
           <span className="mx-5">—</span>
           <span>HON- DR. KWAMENA MINTA NYARKU</span>
           <span className="mx-5">—</span>
           <span>Transparency • OBIARA KA HO</span>
-        </div> 
+        </div>
 
         <style>{`
           @keyframes marqueeScroll {

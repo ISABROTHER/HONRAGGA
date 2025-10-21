@@ -196,7 +196,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
             >
               Transparency • OBIARA KA HO
             </span>
-            <span style={{ paddingLeft: '2rem' }} />
+            <span style={{ paddingLeft: '3rem' }} />
           </div>
         </div>
 

@@ -32,11 +32,11 @@ export function Home({ onNavigate }: HomeProps) {
   ];
 
   // NOTE: This URL is non-portable. In a production site, replace this with a hosted image.
-  const CANDIDATE_IMAGE_URL = "https://scontent-arn2-1.xx.fbcdn.net/v/t39.30808-6/515441812_10163003867507920_4808851483961703661_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFkXpxZfRZCiS6tUkMuNIwhz6Ix5oWf9IPPojHmhZ_0g3q-yrs_5MJM8xygdYYX5g4&_nc_ohc=O_SI0alOrEUQ7kNvwFE3BmL&_nc_oc=AdkQ-x4mJmZz5C-Peh1kc9yDFigPG46vldlmExHwi79lZshgP8YqbgstLrh_t_KoN4Y&_nc_zt=23&_nc_ht=scontent-arn2-1.xx&_nc_gid=ZVbXGcOeCipYDkVva7FcmA&oh=00_Afd9WY4XJWo_eBqDQdctSg_i9eSVJ3yuBWa15kvxQYC1Og&oe=68FCCF73";
+  const CANDIDATE_IMAGE_URL = "https://scontent-arn2-1.xx.fbcdn.net/v/t39.30808-6/515441812_10163003867507920_4808851483961703661_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFkXpxZfRZCiS6tUkMuNIwhz6Ix5oWf9IPPojHmhZ_0g3q-yrs_5MJM8xygdYYX5g4&_nc_ohc=O_SI0alOrEUQ7kNvwFE3BmL&_nc_oc=AdkQ-x4mJmZz5C-Peh1kc9yDFigPG46vldlmExHwi79lZshgP8YqbgstLrh_t8KoN4Y&_nc_zt=23&_nc_ht=scontent-arn2-1.xx&_nc_gid=ZVbXGcOeCipYDkVva7FcmA&oh=00_Afd9WY4XJWo_eBqDQdctSg_i9eSVJ3yuBWa15kvxQYC1Og&oe=68FCCF73";
 
   return (
     <div className="min-h-screen">
-      {/* TOP ONE PERCENT HERO SECTION: Proportional Aspect Ratio and Fluid Text */}
+      {/* HERO SECTION with Image, Black Bottom Fade (60% opacity), and Content Layering */}
       <section className="relative w-full aspect-video min-h-[300px] max-h-[900px] flex items-center justify-center text-white overflow-hidden">
         
         {/* 1. Background Image Container - Scales proportionally to the parent aspect ratio */}
@@ -46,11 +46,13 @@ export function Home({ onNavigate }: HomeProps) {
           role="img"
           aria-label="Campaign Hero Image"
         >
-          {/* 2. Cinematic Black Overlay - Bottom-up 60% fade */}
-          <div className="absolute inset-0">
-            {/* 60% opacity at bottom, fading to transparent by the middle of the screen. */}
+          {/* Top of the image remains clear */}
+        </div>
+
+        {/* 2. Cinematic Black Overlay - Bottom-up 60% fade */}
+        <div className="absolute inset-0">
+            {/* from-black/60 for 60% opacity, via-black/30 for smooth fade */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent"></div>
-          </div>
         </div>
 
         {/* 3. Layered Content - Text Centered and Scaling Fluidly */}
@@ -144,6 +146,10 @@ export function Home({ onNavigate }: HomeProps) {
           </div>
         </div>
       </section>
+
+      {/* --- MINI FOOTER SECTION (30% of Header Height) --- */}
+      {/* h-7/h-8 (28px/32px) as proportional fit; red, with no content */}
+      <section className="bg-campaign-red h-7 md:h-8 flex items-center justify-center overflow-hidden"></section>
 
       {/* FOOTER CTA SECTION (Original) */}
       <section className="py-20 bg-gradient-to-br from-blue-900 to-blue-800 text-white">

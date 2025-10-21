@@ -55,7 +55,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                   alt="Logo"
                   className="object-contain transition-transform duration-300"
                   style={{
-                    height: `${58 * logoScale}px`,
+                    height: `${100 * logoScale}px`,
                     width: 'auto', 
                     transform: `translateY(${logoOffset}px) scale(${logoScale})`,
                     transformOrigin: 'center center',

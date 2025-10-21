@@ -41,33 +41,13 @@ export function Footer() {
   return (
     <footer className="bg-gradient-to-br from-gray-900 to-blue-950 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
-          <div>
-            <div className="flex items-center space-x-3 mb-4">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center text-white font-bold text-xl shadow-lg">
-                JD
-              </div>
-              <div>
-                <div className="text-lg font-bold">Jane Doe</div>
-                <div className="text-sm text-gray-400">For Senate 2026</div>
-              </div>
-            </div>
-            <p className="text-gray-400 text-sm leading-relaxed">
-              Fighting for a better tomorrow. Together, we can build a future where everyone has the opportunity to thrive.
-            </p>
-          </div>
+        {/* Adjusted to a two-column layout (lg:grid-cols-2) after removing first two columns */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 mb-8">
+          
+          {/* Removed: Branding Block */}
+          {/* Removed: Quick Links Block */}
 
-          <div>
-            <h3 className="text-lg font-semibold mb-4 text-amber-400">Quick Links</h3>
-            <ul className="space-y-2 text-sm">
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">About</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Policies</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Events</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">News</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Privacy Policy</a></li>
-            </ul>
-          </div>
-
+          {/* Contact Block */}
           <div>
             <h3 className="text-lg font-semibold mb-4 text-amber-400">Contact</h3>
             <ul className="space-y-3 text-sm">
@@ -86,6 +66,7 @@ export function Footer() {
             </ul>
           </div>
 
+          {/* Newsletter Block */}
           <div>
             <h3 className="text-lg font-semibold mb-4 text-amber-400">Newsletter</h3>
             <p className="text-gray-400 text-sm mb-4">

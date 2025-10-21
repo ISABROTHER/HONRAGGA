@@ -56,7 +56,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                   className="object-contain transition-transform duration-300"
                   style={{
                     height: `${58 * logoScale}px`,
-                    width: 'auto',
+                    width: 'auto', 
                     transform: `translateY(${logoOffset}px) scale(${logoScale})`,
                     transformOrigin: 'center center',
                   }}
@@ -64,6 +64,14 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
               </div>
               <div className="hidden sm:block text-left">
                 <div className="text-xl font-extrabold text-gray-900 group-hover:text-blue-700 transition-colors">
+                  Jane Doe
+                </div>
+                <div className="text-xs text-gray-600 uppercase tracking-widest font-medium">
+                  For Senate 2026
+                </div>
+              </div>
+            </button>
+
             {/* === DESKTOP NAVIGATION === */}
             <div className="hidden md:flex items-center space-x-1">
               {navItems.map((item) => (

@@ -30,11 +30,12 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-xl transition-shadow relative">
+    // HEADER BACKGROUND IS NOW DEEP RED
+    <header className="sticky top-0 z-50 bg-red-700 shadow-xl transition-shadow relative border-b border-red-800">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Container with restored 30% increase in height via py-5 */}
+        {/* Container with increased vertical padding (py-5) */}
         <div className="flex justify-between items-center py-5">
-          {/* Logo/Branding Block (Original Jane Doe) */}
+          {/* Logo/Branding Block */}
           <button
             onClick={() => handleNavClick('home')}
             className="flex items-center space-x-3 group transition-transform hover:scale-[1.01] focus:outline-none"
@@ -43,8 +44,9 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
               JD
             </div>
             <div className="hidden sm:block text-left">
-              <div className="text-xl font-extrabold text-gray-900 group-hover:text-blue-700 transition-colors">Jane Doe</div>
-              <div className="text-xs text-gray-600 uppercase tracking-widest font-medium">For Senate 2026</div>
+              {/* Text color adjusted to white/light red for contrast */}
+              <div className="text-xl font-extrabold text-white group-hover:text-red-200 transition-colors">Jane Doe</div>
+              <div className="text-xs text-red-200 uppercase tracking-widest font-medium">For Senate 2026</div>
             </div>
           </button>
 
@@ -56,8 +58,10 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                 onClick={() => handleNavClick(item.id)}
                 className={`px-4 py-2 rounded-full text-base font-semibold transition-all duration-300 ${
                   currentPage === item.id
-                    ? 'bg-blue-900 text-white shadow-lg shadow-blue-500/50' // Pill-shaped active state with strong shadow
-                    : 'text-gray-700 hover:bg-gray-100 hover:text-blue-700'
+                    // Active state uses Blue for high contrast Primary accent
+                    ? 'bg-blue-900 text-white shadow-lg shadow-blue-500/50' 
+                    // Inactive state uses white/light red text and hover background
+                    : 'text-red-100 hover:bg-red-600 hover:text-white'
                 }`}
               >
                 {item.label}
@@ -67,7 +71,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
 
           {/* Right-side CTAs and Toggles */}
           <div className="flex items-center space-x-4">
-            {/* Primary CTA (Donate) - Desktop Only */}
+            {/* Primary CTA (Donate) - Button remains secondary/amber for contrast */}
             <div className="hidden md:block">
                 <Button
                     variant="secondary"
@@ -80,23 +84,23 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                 </Button>
             </div>
 
-            {/* Mobile Menu Toggle */}
+            {/* Mobile Menu Toggle - Icon and border adjusted for contrast */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-3 rounded-full hover:bg-gray-100 transition-colors border border-gray-200"
+              className="md:hidden p-3 rounded-full hover:bg-red-600 transition-colors border border-red-200"
               aria-label="Toggle menu"
             >
               {mobileMenuOpen ? (
-                <X className="w-6 h-6 text-gray-700" />
+                <X className="w-6 h-6 text-white" />
               ) : (
-                <Menu className="w-6 h-6 text-gray-700" />
+                <Menu className="w-6 h-6 text-white" />
               )}
             </button>
           </div>
         </div>
       </nav>
 
-      {/* Mobile Menu Dropdown OVERLAY (Restored to 550ms smooth animation) */}
+      {/* Mobile Menu Dropdown OVERLAY - Stays white inside for readability */}
       <div
         className={`md:hidden absolute inset-x-0 top-full w-full bg-white border-t border-gray-200 shadow-2xl overflow-hidden
           transition-all duration-[550ms] ease-in-out origin-top z-40
@@ -112,7 +116,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                 block w-full text-left px-4 py-3 rounded-xl font-semibold text-lg transition-all duration-200 group
                 ${currentPage === item.id
                   ? 'bg-blue-900 text-white shadow-md'
-                  : 'text-gray-800 hover:bg-blue-50 focus:bg-blue-50 hover:text-blue-900' // High-fidelity tap/focus state
+                  : 'text-gray-800 hover:bg-blue-50 focus:bg-blue-50 hover:text-blue-900' // Inner Mobile Menu items remain gray/blue for contrast against white overlay
                 }
               `}
             >

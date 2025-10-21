@@ -78,32 +78,32 @@ export function Home({ onNavigate }: HomeProps) {
           </div>
         </div>
 
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white dark:from-gray-900 to-transparent"></div>
+        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent"></div>
       </section>
 
-      <section className="py-16 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800">
+      <section className="py-16 bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map(({ icon: Icon, value, label }) => (
               <div key={label} className="text-center group">
-                <div className="inline-flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-900 dark:text-blue-400 group-hover:scale-110 transition-transform">
+                <div className="inline-flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-blue-100 text-blue-900 group-hover:scale-110 transition-transform">
                   <Icon className="w-8 h-8" />
                 </div>
-                <div className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-1">{value}</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">{label}</div>
+                <div className="text-3xl md:text-4xl font-bold text-gray-900 mb-1">{value}</div>
+                <div className="text-sm text-gray-600">{label}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="py-20 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
+      <section className="py-20 bg-gradient-to-b from-white to-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
               Our Core Values
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               A campaign built on principles that matter to real people
             </p>
           </div>
@@ -112,15 +112,15 @@ export function Home({ onNavigate }: HomeProps) {
             {values.map(({ title, description, icon: Icon }) => (
               <div
                 key={title}
-                className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 dark:border-gray-700 group hover:-translate-y-2"
+                className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 group hover:-translate-y-2"
               >
-                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-900 to-blue-700 dark:from-blue-400 dark:to-blue-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                  <Icon className="w-7 h-7 text-white dark:text-gray-900" />
+                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-900 to-blue-700 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                  <Icon className="w-7 h-7 text-white" />
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
+                <h3 className="text-2xl font-bold text-gray-900 mb-3">
                   {title}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                <p className="text-gray-600 leading-relaxed">
                   {description}
                 </p>
               </div>

@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Menu, X, DollarSign } from 'lucide-react';
 import { Button } from './Button';
@@ -149,6 +150,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
           }}
         >
           <div style={{ minWidth: '30vw' }} />
+
           <div className="marquee-content flex items-center gap-4">
             <span>OFFICIAL WEBSITE FOR MP FOR CAPE COAST NORTH</span>
             <span className="text-white/80">II</span>
@@ -157,7 +159,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
           </div>
 
           <div className="marquee-content flex items-center gap-4" aria-hidden="true">
-            <span>               OFFICIAL WEBSITE FOR MP FOR CAPE COAST NORTH</span>
+            <span>OFFICIAL WEBSITE FOR MP FOR CAPE COAST NORTH</span>
             <span className="text-white/80">II</span>
             <span>HON. DR. KWAMENA MINTA NYARKU</span>
             <span className="text-white/80">II</span>
@@ -170,7 +172,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
             100% { transform: translateX(-50%); }
           }
           .marquee-track {
-            animation: marquee 42s linear infinite;
+            animation: marquee 38s linear infinite;
           }
           .marquee-track:hover {
             animation-play-state: paused;

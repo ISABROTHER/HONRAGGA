@@ -37,7 +37,7 @@ export function Home({ onNavigate }: HomeProps) {
 
   return (
     <div className="min-h-screen">
-      {/* HERO SECTION with Image, Black Bottom Fade, and Content Layering */}
+      {/* HERO SECTION with Image, Black Bottom Fade (60% opacity), and Content Layering */}
       <section className="relative h-screen min-h-[700px] max-h-[900px] flex items-center justify-center text-white overflow-hidden">
         
         {/* 1. Background Image Container (Absolute and fills section) */}
@@ -52,7 +52,7 @@ export function Home({ onNavigate }: HomeProps) {
 
         {/* 2. Cinematic Black Overlay - Starts at bottom (60%), fades to middle, leaving top clear. */}
         <div className="absolute inset-0">
-            {/* Updated to from-black/60 for 60% opacity and via-black/30 for smooth fade toward the middle */}
+            {/* from-black/60 for 60% opacity, via-black/30 for smooth fade */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent"></div>
         </div>
 

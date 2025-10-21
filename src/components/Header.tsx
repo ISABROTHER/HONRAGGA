@@ -93,7 +93,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                   }}
                 />
               </div>
-              {/* No name/year as requested in earlier steps */}
+              {/* Removed "Jane Doe" and "For Senate 2026" as requested */}
             </button>
 
             {/* === NAVIGATION & CTA GROUP (PRIMARY FLEX ITEM 2) === */}
@@ -156,12 +156,15 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
           </div>
         </nav>
 
-        {/* === MOBILE MENU - DARKENED GREEN FADE UI (Reverted State) === */}
+        {/* === MOBILE MENU - DARK GREEN 98% OPAQUE UI WITH STRIPES === */}
         <div
-          // Reverted to Top Dropdown, 60% opacity dark green
-          className={`md:hidden absolute inset-x-0 top-full w-full bg-green-900/60 overflow-hidden transition-all duration-[550ms] ease-in-out origin-top z-40 ${
+          // Added subtle stripe design (2px semi-transparent white diagonal lines every 20px)
+          className={`md:hidden absolute inset-x-0 top-full w-full bg-green-900/[.98] overflow-hidden transition-all duration-[550ms] ease-in-out origin-top z-40 ${
             mobileMenuOpen ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0'
           }`}
+          style={{
+            backgroundImage: 'repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.05) 0, rgba(255, 255, 255, 0.05) 2px, transparent 2px, transparent 20px)',
+          }}
         >
           <div
             className="px-4 py-4 flex flex-col"
@@ -175,7 +178,9 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                 onClick={() => handleNavClick(item.id)}
                 className={`block w-full text-left rounded-xl font-semibold transition-all duration-200 group ${
                   currentPage === item.id
+                    // Active link remains prominent
                     ? 'bg-green-500 text-white shadow-md' 
+                    // Non-active links use white text for contrast
                     : 'text-white hover:bg-green-700/80 focus:bg-green-700/80'
                 }`}
                 style={{
@@ -201,13 +206,13 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
         </div>
       </header>
 
-      {/* === MARQUEE (Campaign Fixed) === */}
+      {/* === MARQUEE === */}
       <div
-        className="bg-amber-500 h-5 overflow-hidden relative flex items-center"
+        className="bg-red-600 h-5 overflow-hidden relative flex items-center"
         style={{ marginTop: `${headerHeight}px` }}
       >
         <div
-          className="marquee-track absolute top-0 left-0 h-full flex items-center whitespace-nowrap font-bold text-white uppercase"
+          className="marquee-track absolute top-0 left-0 h-full flex items-center whitespace-nowrap font-bold text-white"
           style={{
             willChange: 'transform',
             fontFamily: "'Roboto', sans-serif",
@@ -218,12 +223,12 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
           <div style={{ minWidth: '25vw' }} />
           <div className="marquee-content flex items-center gap-4">
             <span>
-              JOIN THE MOVEMENT. VOLUNTEER OR DONATE TODAY!
+              SUPPORT HON. RAGGA’S OPERATION 1000 DESKS FOR STUDENTS 'II' OBIARA KA HO 'II'
             </span>
           </div>
           <div className="marquee-content flex items-center gap-4" aria-hidden="true">
             <span>
-              JOIN THE MOVEMENT. VOLUNTEER OR DONATE TODAY!
+              SUPPORT HON. RAGGA’S OPERATION 1000 DESKS FOR STUDENTS 'II' OBIARA KA HO 'II'
             </span>
           </div>
         </div>

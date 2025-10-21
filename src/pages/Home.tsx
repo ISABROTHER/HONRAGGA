@@ -47,13 +47,13 @@ export function Home({ onNavigate }: HomeProps) {
           role="img"
           aria-label="Jane Doe Campaign Hero Image"
         >
-          {/* Removed: Full-screen color overlay to prioritize image brightness at top */}
+          {/* Top of the image remains clear */}
         </div>
 
-        {/* 2. Cinematic Black Overlay - Starts at bottom, fades to middle (perfect for white text at bottom) */}
+        {/* 2. Cinematic Black Overlay - Starts at bottom (60%), fades to middle, leaving top clear. */}
         <div className="absolute inset-0">
-            {/* New: Black fade, strong at bottom (from-black/80), fading to transparent by the middle of the screen */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+            {/* Updated to from-black/60 for 60% opacity and via-black/30 for smooth fade toward the middle */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent"></div>
         </div>
 
         {/* 3. Layered Content (Text and CTAs) - Ensure content z-index is high */}

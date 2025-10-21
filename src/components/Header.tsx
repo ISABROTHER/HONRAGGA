@@ -11,15 +11,19 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // === NUMERIC CONTROLS ===
-  const headerHeightBase = 90;       // 🔧 base height of the header (px)
-  const headerScale = 1.1;           // 🔧 scaling factor for overall header height (1.0 = normal, 1.2 = 20% taller)
+  const headerHeightBase = 90;      // 🔧 base height of header (px)
+  const headerScale = 1.1;          // 🔧 scaling factor for header height
   const headerHeight = headerHeightBase * headerScale;
 
-  const logoScale = 1.2;             // 🔧 1.0 = normal size, 1.3 = 30% bigger
-  const logoTopOffset = 8;           // 🔧 px distance from top of header
-  const logoBottomOffset = 2;        // 🔧 px distance from bottom
-  const logoVerticalAdjust = -1;     // 🔧 fine vertical adjustment (+down, -up)
-  const logoLeftAdjust = 15;         // 🔧 horizontal adjustment (+right, -left)
+  const logoScale = 1.2;            // 🔧 logo scale factor
+  const logoTopOffset = 8;          // 🔧 distance from top (px)
+  const logoBottomOffset = 2;       // 🔧 distance from bottom (px)
+  const logoVerticalAdjust = -1;    // 🔧 fine tune vertical (+down, -up)
+  const logoLeftAdjust = 15;        // 🔧 fine tune horizontal (+right, -left)
+
+  // === NEW NAV CONTROLS ===
+  const navItemSpacing = 0.6;       // 🔧 controls spacing between nav buttons (0.5 = tighter, 1.2 = wider)
+  const navFontScale = 0.95;        // 🔧 controls font size of nav items (1.0 = normal, 0.9 = smaller, 1.1 = larger)
 
   const navItems = [
     { id: 'home', label: 'Home' },
@@ -87,16 +91,24 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
             </button>
 
             {/* === DESKTOP NAVIGATION === */}
-            <div className="hidden md:flex items-center space-x-1">
+            <div
+              className="hidden md:flex items-center"
+              style={{
+                gap: `${navItemSpacing * 1.5}rem`, // spacing control
+              }}
+            >
               {navItems.map((item) => (
                 <button
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}
-                  className={`px-4 py-2 rounded-full text-base font-semibold transition-all duration-300 ${
+                  className={`px-3 py-2 rounded-full font-semibold transition-all duration-300 ${
                     currentPage === item.id
                       ? 'bg-blue-900 text-white shadow-lg shadow-blue-500/50'
                       : 'text-gray-700 hover:bg-gray-100 hover:text-blue-700'
                   }`}
+                  style={{
+                    fontSize: `${1 * navFontScale}rem`, // font scaling
+                  }}
                 >
                   {item.label}
                 </button>
@@ -185,13 +197,11 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
           }}
         >
           <div style={{ minWidth: '25vw' }} />
-
           <div className="marquee-content flex items-center gap-4">
             <span>
               SUPPORT HON. RAGGA’S OPERATION 1000 DESKS FOR STUDENTS 'II' OBIARA KA HO 'II'
             </span>
           </div>
-
           <div className="marquee-content flex items-center gap-4" aria-hidden="true">
             <span>
               SUPPORT HON. RAGGA’S OPERATION 1000 DESKS FOR STUDENTS 'II' OBIARA KA HO 'II'

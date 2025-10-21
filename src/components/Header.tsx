@@ -12,7 +12,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
 
   // === NUMERIC CONTROLS ===
   const headerHeight = 72;          // 🔧 total header height (px)
-  const logoScale = 1.0;            // 🔧 1.0 = normal size, 1.2 = 20% bigger, etc.
+  const logoScale = 1.2;            // 🔧 1.0 = normal size, 1.2 = 20% bigger, etc.
   const logoTopOffset = 8;          // 🔧 px distance from header top edge
   const logoBottomOffset = 10;      // 🔧 px distance from header bottom edge
   const logoVerticalAdjust = 0;     // 🔧 additional fine-tune (positive = move down, negative = move up)

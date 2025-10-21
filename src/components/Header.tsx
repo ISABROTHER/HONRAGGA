@@ -13,11 +13,11 @@
       whiteSpace: 'nowrap',
     }}
   >
-    <div>Official Website for MP for Cape Coast</div>
+    <div>OFFICIAL WEBSITE OF RAGGA</div>
     <div>—</div>
-    <div>Working for the People, Building the Future</div>
+    <div>HON DR. KWAMENA MINTA NYARKU</div>
     <div>—</div>
-    <div>Transparency • Integrity • Progress</div>
+    <div>MP FOR CAPE COAST NORTH</div>
   </div>
 
   <style>{`

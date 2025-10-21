@@ -1,36 +1,12 @@
 import { Facebook, Twitter, Instagram, Mail, Phone, MapPin } from 'lucide-react';
 import { useState } from 'react';
-import { supabase } from '../lib/supabase';
+// Keeping Supabase import in case we reintroduce a form, but removing current usage.
+import { supabase } from '../lib/supabase'; 
 
 export function Footer() {
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
+  // Removed state variables related to newsletter form (email, name, loading, message)
 
-  const handleNewsletterSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setMessage('');
-
-    try {
-      const { error } = await supabase
-        .from('newsletter_signups')
-        .insert([{ email, name }]);
-
-      if (error) throw error;
-
-      setMessage('Thank you for subscribing!');
-      setEmail('');
-      setName('');
-    } catch (error: any) {
-      setMessage(error.message === 'duplicate key value violates unique constraint "newsletter_signups_email_key"'
-        ? 'You are already subscribed!'
-        : 'Something went wrong. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Removed handleNewsletterSubmit function
 
   const socialLinks = [
     { icon: Facebook, href: '#', label: 'Facebook' },
@@ -41,13 +17,11 @@ export function Footer() {
   return (
     <footer className="bg-gradient-to-br from-gray-900 to-blue-950 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Adjusted to a two-column layout (lg:grid-cols-2) after removing first two columns */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 mb-8">
+        
+        {/* Simplified grid layout to a single column for the Contact info, removing Newsletter column */}
+        <div className="grid grid-cols-1 gap-8 mb-8 max-w-lg">
           
-          {/* Removed: Branding Block */}
-          {/* Removed: Quick Links Block */}
-
-          {/* Contact Block */}
+          {/* Contact Block - Centered and now the primary focus */}
           <div>
             <h3 className="text-lg font-semibold mb-4 text-amber-400">Contact</h3>
             <ul className="space-y-3 text-sm">
@@ -66,43 +40,7 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Newsletter Block */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4 text-amber-400">Newsletter</h3>
-            <p className="text-gray-400 text-sm mb-4">
-              Stay updated on campaign news and events.
-            </p>
-            <form onSubmit={handleNewsletterSubmit} className="space-y-2">
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Your name"
-                required
-                className="w-full px-3 py-2 bg-white/10 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-500 text-sm"
-              />
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Your email"
-                required
-                className="w-full px-3 py-2 bg-white/10 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-500 text-sm"
-              />
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 rounded-lg font-semibold transition-all shadow-lg hover:shadow-xl disabled:opacity-50 text-sm"
-              >
-                {loading ? 'Subscribing...' : 'Subscribe'}
-              </button>
-              {message && (
-                <p className={`text-xs ${message.includes('Thank') ? 'text-green-400' : 'text-red-400'}`}>
-                  {message}
-                </p>
-              )}
-            </form>
-          </div>
+          {/* Removed: Newsletter Block */}
         </div>
 
         <div className="border-t border-gray-800 pt-8">

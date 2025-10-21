@@ -35,25 +35,25 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
       <header
         className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-xl transition-shadow relative"
         style={{
-          '--logo-scale': 1.15, // Change this to make the logo slightly bigger or smaller (1.0 = base)
-          height: '4.5rem', // fixed height across all screen sizes
-        } as React.CSSProperties}
+          height: '4.5rem', // consistent header height
+        }}
       >
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
           <div className="flex justify-between items-center h-full">
             {/* Logo / Branding */}
             <button
               onClick={() => handleNavClick('home')}
-              className="flex items-center space-x-3 group transition-transform hover:scale-[1.01] focus:outline-none h-full"
+              className="flex items-center space-x-3 group transition-transform hover:scale-[1.01] focus:outline-none"
             >
-              <div className="flex items-center h-full">
+              <div className="flex items-center">
                 <img
                   src="https://i.imgur.com/hyNrYDZ.png"
                   alt="Logo"
                   className="object-contain transition-transform duration-300"
                   style={{
-                    height: 'calc(100% * var(--logo-scale))',
-                    transform: 'translateY(calc((1 - var(--logo-scale)) * -10%))',
+                    height: '58px', // Fixed height for logo — consistent across all devices
+                    width: 'auto',
+                    transform: 'translateY(-2px)', // fine vertical alignment
                   }}
                 />
               </div>

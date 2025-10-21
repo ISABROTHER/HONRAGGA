@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Menu, X, DollarSign } from 'lucide-react';
+import { Menu, X, DollarSign, Phone, Mail, MapPin, Facebook, Twitter, Instagram } from 'lucide-react';
 import { Button } from './Button';
 
 interface HeaderProps {
@@ -19,19 +19,32 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
     { id: 'volunteer', label: 'Get Involved' },
   ];
 
+  // Quick Contact Info (from Footer)
+  const contactInfo = [
+    { icon: Phone, text: '(555) 123-4567', link: 'tel:+15551234567' },
+    { icon: Mail, text: 'info@janedoe2026.com', link: 'mailto:info@janedoe2026.com' },
+    { icon: MapPin, text: '123 Campaign Trail, Washington, DC', link: '#' },
+  ];
+
+  // Social Links (from Footer)
+  const socialLinks = [
+    { icon: Facebook, href: '#', label: 'Facebook' },
+    { icon: Twitter, href: '#', label: 'Twitter' },
+    { icon: Instagram, href: '#', label: 'Instagram' },
+  ];
+
+
   const handleNavClick = (pageId: string) => {
     onNavigate(pageId);
     setMobileMenuOpen(false);
   };
 
-  // Dedicated handler for the Donate CTA (navigates to 'volunteer' page)
   const handleDonateClick = () => {
     onNavigate('volunteer');
     setMobileMenuOpen(false);
   };
 
   return (
-    // Added 'relative' to anchor the absolute mobile menu
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-xl transition-shadow relative">
       {/* Main Navigation Bar (Visible on all sizes) */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -84,50 +97,110 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
 
             {/* Mobile Menu Toggle */}
             <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              onClick={() => setMobileMenuOpen(true)} // Only opens the menu
               className="md:hidden p-3 rounded-full hover:bg-gray-100 transition-colors border border-gray-200"
-              aria-label="Toggle menu"
+              aria-label="Open menu"
             >
-              {mobileMenuOpen ? (
-                <X className="w-6 h-6 text-gray-700" />
-              ) : (
-                <Menu className="w-6 h-6 text-gray-700" />
-              )}
+              <Menu className="w-6 h-6 text-gray-700" />
             </button>
           </div>
         </div>
       </div>
 
-      {/* Mobile Menu Overlay - Uses absolute positioning (top-full) and scale-y for a smooth overlay effect */}
+      {/* Mobile Menu OFF-CANVAS OVERLAY 
+        - Fixed positioning for true overlay
+        - Full screen height (h-screen)
+        - Slide-in transition (translate-x) for top-tier UX
+      */}
       <div
-          className={`md:hidden absolute inset-x-0 top-full w-full bg-white shadow-2xl transition-all duration-300 ease-in-out origin-top z-40
-            ${mobileMenuOpen ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0 pointer-events-none'}
-          `}
+          className={`fixed inset-0 z-[100] transition-transform duration-500 ease-in-out md:hidden ${
+            mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+          } bg-white`}
+          aria-hidden={!mobileMenuOpen}
+          onClick={() => setMobileMenuOpen(false)} // Close on background click (optional, but good UX)
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 space-y-2 border-t border-gray-200">
-          {navItems.map((item) => (
+        {/* Menu Content Container (Prevents closing when clicking inside menu) */}
+        <div 
+          className="w-full h-full max-w-sm ml-auto bg-white shadow-2xl flex flex-col"
+          onClick={(e) => e.stopPropagation()} 
+        >
+          {/* Header Bar */}
+          <div className="flex justify-between items-center h-20 px-6 border-b border-gray-100 flex-shrink-0">
+            {/* Logo/Branding inside menu */}
+            <div className="flex items-center space-x-2">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-900 to-blue-700 flex items-center justify-center text-white font-bold text-lg">
+                JD
+              </div>
+              <div className="text-lg font-extrabold text-gray-900">Jane Doe</div>
+            </div>
+
+            {/* Close Button */}
             <button
-              key={item.id}
-              onClick={() => handleNavClick(item.id)}
-              className={`block w-full text-left px-4 py-3 rounded-lg font-medium transition-all duration-200 ${
-                currentPage === item.id
-                  ? 'bg-blue-900 text-white'
-                  : 'text-gray-700 hover:bg-gray-100'
-              }`}
+              onClick={() => setMobileMenuOpen(false)}
+              className="p-3 rounded-full hover:bg-gray-100 transition-colors"
+              aria-label="Close menu"
             >
-              {item.label}
+              <X className="w-6 h-6 text-gray-700" />
             </button>
-          ))}
-          <div className="pt-2">
-              <Button
-                  variant="secondary"
-                  size="md"
-                  onClick={handleDonateClick}
-                  className="w-full justify-center shadow-lg shadow-amber-500/50"
+          </div>
+
+          {/* Navigation Links - Scrollable */}
+          <div className="flex-1 overflow-y-auto p-6 space-y-2">
+            {navItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => handleNavClick(item.id)}
+                className={`block w-full text-left px-4 py-3 rounded-xl font-semibold text-lg transition-all duration-200 ${
+                  currentPage === item.id
+                    ? 'bg-blue-900 text-white shadow-md'
+                    : 'text-gray-800 hover:bg-gray-50'
+                }`}
               >
-                  <DollarSign className="w-5 h-5 mr-2" />
-                  Donate Now
-              </Button>
+                {item.label}
+              </button>
+            ))}
+
+            {/* Primary CTA (Donate) */}
+            <div className="pt-6">
+                <Button
+                    variant="secondary"
+                    size="lg"
+                    onClick={handleDonateClick}
+                    className="w-full justify-center shadow-lg shadow-amber-500/50"
+                >
+                    <DollarSign className="w-5 h-5 mr-2" />
+                    Contribute Now
+                </Button>
+            </div>
+          </div>
+
+          {/* Footer/Quick Access - Fixed at bottom */}
+          <div className="p-6 border-t border-gray-100 flex-shrink-0 bg-gray-50">
+            <h3 className="font-bold text-gray-900 mb-4 text-sm uppercase tracking-wider">Quick Contact</h3>
+            <ul className="space-y-3 text-sm mb-6">
+              {contactInfo.map(({ icon: Icon, text, link }) => (
+                <li key={text} className="flex items-center space-x-3">
+                  <Icon className="w-5 h-5 text-blue-800 flex-shrink-0" />
+                  <a href={link} className="text-gray-700 hover:text-blue-900 transition-colors font-medium">
+                    {text}
+                  </a>
+                </li>
+              ))}
+            </ul>
+
+            {/* Social Links */}
+            <div className="flex space-x-4 pt-4 border-t border-gray-200">
+              {socialLinks.map(({ icon: Icon, href, label }) => (
+                <a
+                  key={label}
+                  href={href}
+                  aria-label={label}
+                  className="w-10 h-10 rounded-full bg-blue-900 text-white hover:bg-blue-700 flex items-center justify-center transition-all hover:scale-110 shadow-lg"
+                >
+                  <Icon className="w-5 h-5" />
+                </a>
+              ))}
+            </div>
           </div>
         </div>
       </div>

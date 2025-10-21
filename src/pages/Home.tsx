@@ -33,7 +33,7 @@ export function Home({ onNavigate }: HomeProps) {
 
   // NOTE: A Top One Percent implementation requires a hosted image URL.
   // The provided Facebook URL is used here for demonstration but WILL LIKELY FAIL in production due to CORS/security policies.
-  const CANDIDATE_IMAGE_URL = "https://scontent-arn2-1.xx.fbcdn.net/v/t39.30808-6/515441812_10163003867507920_4808851483961703661_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFkXpxZfRZCiS6tUkMuNIwhz6Ix5oWf9IPPojHmhZ_0g3q-yrs_5MJM8xygdYYX5g4&_nc_ohc=O_SI0alOrEUQ7kNvwFE3BmL&_nc_oc=AdkQ-x4mJmZz5C-Peh1kc9yDFigPG46vldlmExHwi79lZshgP8YqbgstLrh_t8KoN4Y&_nc_zt=23&_nc_ht=scontent-arn2-1.xx&_nc_gid=ZVbXGcOeCipYDkVva7FcmA&oh=00_Afd9WY4XJWo_eBqDQdctSg_i9eSVJ3yuBWa15kvxQYC1Og&oe=68FCCF73";
+  const CANDIDATE_IMAGE_URL = "https://i.imgur.com/5AB8v3f.jpeg";
 
   return (
     <div className="min-h-screen">

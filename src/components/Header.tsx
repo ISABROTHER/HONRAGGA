@@ -13,7 +13,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
   // === NUMERIC CONTROLS ===
   const headerHeightBase = 90; // 🔧 base height of header (px)
   const headerScale = 1.1; // 🔧 overall header scaling
-  const headerHeight = headerHeightBase * headerScale; // Calculated: 99px
+  const headerHeight = headerHeightBase * headerScale;
 
   const logoScale = 1.2; // 🔧 logo scaling
   const logoTopOffset = 8; // 🔧 px from top
@@ -93,6 +93,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                   }}
                 />
               </div>
+              {/* Removed "Jane Doe" and "For Senate 2026" as requested */}
             </button>
 
             {/* === NAVIGATION & CTA GROUP (PRIMARY FLEX ITEM 2) === */}
@@ -139,7 +140,6 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                 </div>
 
                 {/* === MOBILE MENU TOGGLE === */}
-                {/* Repositioned button to the right for the dropdown UX */}
                 <button
                   onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                   className="md:hidden p-3 rounded-full hover:bg-gray-100 transition-colors border border-gray-200"
@@ -156,16 +156,27 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
           </div>
         </nav>
 
-        {/* === MOBILE MENU - TOP DROPDOWN (Reverted to original layout/animation) === */}
+        {/* === MOBILE MENU - RIGHT SIDE DRAWER (REVERTED) === */}
         <div
-          // Reverted to top-down dropdown positioning and animation
-          className={`md:hidden absolute inset-x-0 top-full w-full bg-green-900/[.98] shadow-2xl overflow-hidden transition-all duration-[550ms] ease-in-out origin-top z-40 ${
-            mobileMenuOpen ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0' // Use scale-y for top-drop
+          // Reverted to fixed right-side drawer (w-64) with right-slide transition
+          className={`fixed inset-y-0 right-0 w-64 h-full bg-green-900/[.98] overflow-y-auto transition-transform duration-[550ms] ease-in-out z-40 md:hidden ${
+            mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
           }`}
           style={{
             backgroundImage: 'repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.05) 0, rgba(255, 255, 255, 0.05) 2px, transparent 2px, transparent 20px)',
+            // Padding top to clear the fixed header area
+            paddingTop: `${headerHeight + 20}px` 
           }}
         >
+          {/* Close button for side drawer experience */}
+          <button
+            onClick={() => setMobileMenuOpen(false)}
+            className="absolute top-4 right-4 p-2 text-white hover:text-green-300 transition-colors md:hidden"
+            aria-label="Close menu"
+          >
+            <X className="w-6 h-6" />
+          </button>
+          
           <div
             className="px-4 py-4 flex flex-col"
             style={{

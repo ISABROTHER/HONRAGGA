@@ -1,17 +1,23 @@
-import { Facebook, Twitter, Instagram, Mail, Phone } from 'lucide-react';
+import { Facebook, Twitter, Instagram, Mail, Phone, Rocket, MessageSquare, Video } from 'lucide-react';
 // Keeping Supabase import in case of future form re-introduction
 import { supabase } from '../lib/supabase'; 
 
 export function Footer() {
+  // NOTE: Lucide-react uses specific names. Using the following:
+  // TikTok: Video (Best match for short-form content)
+  // X: Twitter
+  // WhatsApp: MessageSquare (Best match for chat/messaging)
+  
   const socialLinks = [
+    { icon: Video, href: '#', label: 'TikTok' }, // Represents TikTok
     { icon: Facebook, href: '#', label: 'Facebook' },
-    { icon: Twitter, href: '#', label: 'Twitter' },
+    { icon: Twitter, href: '#', label: 'X (Twitter)' },
     { icon: Instagram, href: '#', label: 'Instagram' },
+    { icon: MessageSquare, href: '#', label: 'WhatsApp' }, // Represents WhatsApp
   ];
 
   const legalLinks = [
     { label: 'Privacy Policy', href: '#privacy' }, 
-    // Removed: { label: 'FEC Disclosure', href: '#fec' },
   ];
 
   return (
@@ -22,7 +28,7 @@ export function Footer() {
         {/* TOP ROW: Contact and Social Media - Compressed horizontally */}
         <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 mb-6 border-b border-gray-800 pb-6">
           
-          {/* 1. Primary Contact Links - Clean, concise, and without the logo */}
+          {/* 1. Primary Contact Links - Clean, concise */}
           <div className="flex flex-col sm:flex-row space-y-1 sm:space-y-0 sm:space-x-4 text-sm font-medium">
             <a href="mailto:info@janedoe2026.com" className="text-gray-300 hover:text-white transition-colors flex items-center space-x-1">
               <Mail className="w-4 h-4 text-amber-400 flex-shrink-0 hidden sm:inline" />
@@ -34,7 +40,7 @@ export function Footer() {
             </a>
           </div>
           
-          {/* 2. Social Media Block - Tightly packed */}
+          {/* 2. Social Media Block - Tightly packed, now featuring five platforms */}
           <div className="flex space-x-3 flex-shrink-0">
             {socialLinks.map(({ icon: Icon, href, label }) => (
               <a
@@ -52,7 +58,7 @@ export function Footer() {
         {/* BOTTOM ROW: Legal & Copyright - Tightly packed horizontal row */}
         <div className="flex flex-col sm:flex-row justify-between items-center text-xs text-gray-400 space-y-3 sm:space-y-0">
           
-          {/* Copyright - Removed disclosure text */}
+          {/* Copyright - Single block */}
           <div className="text-center sm:text-left">
             &copy; {new Date().getFullYear()} Jane Doe for Senate. All rights reserved.
           </div>

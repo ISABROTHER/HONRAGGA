@@ -95,10 +95,10 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
         </div>
       </nav>
 
-      {/* Mobile Menu Dropdown OVERLAY - Duration changed to duration-500 for a slower, more elegant drop */}
+      {/* Mobile Menu Dropdown OVERLAY - Duration changed to duration-[550ms] for 10% slower elegance */}
       <div
         className={`md:hidden absolute inset-x-0 top-full w-full bg-white border-t border-gray-200 shadow-2xl overflow-hidden
-          transition-all duration-500 ease-in-out origin-top z-40
+          transition-all duration-[550ms] ease-in-out origin-top z-40
           ${mobileMenuOpen ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0'}
         `}
       >

@@ -43,7 +43,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
               <img
                 src="https://i.imgur.com/hyNrYDZ.png"
                 alt="Logo"
-                className="w-21 h-21 object-contain transition-all duration-300 group-hover:brightness-110 group-hover:scale-200"
+                className="w-20.1 h-21 object-contain transition-all duration-300 group-hover:brightness-110 group-hover:scale-200"
               />
               <div className="hidden sm:block text-left">
                 <div className="text-xl font-extrabold text-gray-900 group-hover:text-blue-700 transition-colors">

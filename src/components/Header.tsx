@@ -31,7 +31,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
 
   return (
     <div className="relative w-full">
-      {/* === MAIN HEADER (unchanged) === */}
+      {/* === MAIN HEADER === */}
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-xl transition-shadow relative">
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-5">
@@ -137,85 +137,48 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
         </div>
       </header>
 
-      {/* === SCROLLING ANNOUNCEMENT BAR (fixed & robust) === */}
-      <div className="bg-red-500 h-4 overflow-hidden relative">
-        {/* marquee-track: duplicated content for smooth continuous scroll.
-            A spacer element ensures the first visible text begins ~30% from left. */}
+      {/* === SCROLLING BANNER === */}
+      <div className="bg-red-600 h-5 overflow-hidden relative flex items-center">
         <div
-          className="marquee-track absolute top-0 left-0 h-full flex items-center"
-          style={{ willChange: 'transform', alignItems: 'center' } as React.CSSProperties}
+          className="marquee-track absolute top-0 left-0 h-full flex items-center whitespace-nowrap font-serif font-bold text-white"
+          style={{
+            willChange: 'transform',
+            fontFamily: 'Georgia, serif',
+            fontSize: '0.6rem',
+            letterSpacing: '0.05em',
+          }}
         >
-          {/* spacer to create starting gap ~30% of viewport width */}
           <div style={{ minWidth: '30vw' }} />
-
-          {/* content block duplicated for smooth loop */}
-          <div className="marquee-content flex items-center whitespace-nowrap">
-            <span
-              className="border-r border-white pr-3 font-serif font-bold text-white"
-              style={{ fontSize: '0.5rem', fontFamily: "Georgia, 'Times New Roman', serif" }}
-            >
-              OFFICIAL WEBSITE FOR MP FOR CAPE COAST NORTH
-            </span>
-            <span className="mx-3" style={{ width: '0.75rem' }}>—</span>
-            <span
-              className="font-serif font-bold text-white"
-              style={{ fontSize: '0.5rem', fontFamily: "Georgia, 'Times New Roman', serif" }}
-            >
-              HON. DR. KWAMENA MINTA NYARKU
-            </span>
-            <span className="mx-3" style={{ width: '0.75rem' }}>—</span>
-            <span
-              className="font-serif font-bold text-white"
-              style={{ fontSize: '0.5rem', fontFamily: "Georgia, 'Times New Roman', serif" }}
-            >
-              Transparency • OBIARA KA HO
-            </span>
-            {/* small gap before duplicated copy */}
+          <div className="marquee-content flex items-center gap-3">
+            <span>OFFICIAL WEBSITE FOR MP FOR CAPE COAST NORTH</span>
+            <span className="text-white opacity-70">◆</span>
+            <span>HON. DR. KWAMENA MINTA NYARKU</span>
+            <span className="text-white opacity-70">◆</span>
+            <span>TRANSPARENCY • OBIARA KA HO</span>
             <span style={{ paddingLeft: '2rem' }} />
           </div>
 
-          {/* duplicate */}
-          <div className="marquee-content flex items-center whitespace-nowrap" aria-hidden="true">
-            <span
-              className="border-r border-white pr-3 font-serif font-bold text-white"
-              style={{ fontSize: '0.5rem', fontFamily: "Georgia, 'Times New Roman', serif" }}
-            >
-              OFFICIAL WEBSITE FOR MP FOR CAPE COAST NORTH
-            </span>
-            <span className="mx-3" style={{ width: '0.75rem' }}>—</span>
-            <span
-              className="font-serif font-bold text-white"
-              style={{ fontSize: '0.5rem', fontFamily: "Georgia, 'Times New Roman', serif" }}
-            >
-              HON. DR. KWAMENA MINTA NYARKU
-            </span>
-            <span className="mx-3" style={{ width: '0.75rem' }}>—</span>
-            <span
-              className="font-serif font-bold text-white"
-              style={{ fontSize: '0.5rem', fontFamily: "Georgia, 'Times New Roman', serif" }}
-            >
-              Transparency • OBIARA KA HO
-            </span>
-            <span style={{ paddingLeft: '3rem' }} />
+          <div className="marquee-content flex items-center gap-3" aria-hidden="true">
+            <span>OFFICIAL WEBSITE FOR MP FOR CAPE COAST NORTH</span>
+            <span className="text-white opacity-70">◆</span>
+            <span>HON. DR. KWAMENA MINTA NYARKU</span>
+            <span className="text-white opacity-70">◆</span>
+            <span>TRANSPARENCY • OBIARA KA HO</span>
+            <span style={{ paddingLeft: '2rem' }} />
           </div>
         </div>
 
-        {/* Styles for marquee */}
         <style>{`
-          /* full loop moves by 50% because content duplicated */
           @keyframes marquee {
             0% { transform: translateX(0%); }
             100% { transform: translateX(-50%); }
           }
           .marquee-track {
-            animation: marquee 60s linear infinite;
+            animation: marquee 40s linear infinite;
           }
-          /* pause on hover for readability */
           .marquee-track:hover {
             animation-play-state: paused;
           }
-          /* ensure the inner content displays inline and doesn't wrap */
-          .marquee-content { display: inline-flex; gap: 0.5rem; padding-right: 1rem; }
         `}</style>
       </div>
     </div>

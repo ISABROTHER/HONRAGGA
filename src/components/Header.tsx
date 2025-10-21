@@ -147,11 +147,11 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
             fontFamily: "Georgia, 'Times New Roman', serif",
           }}
         >
-          <span>OFFICIAL WEBSITE FOR MP FOR CAPE COAST NORTHt</span>
+          <span>OFFICIAL WEBSITE FOR MP FOR CAPE COAST NORTH</span>
           <span className="mx-2">—</span>
           <span>HON- DR. KWAMENA MINTA NYARKU</span>
           <span className="mx-5">—</span>
-          <span>Transparency • OBIARA KA HO</span>
+          <span>OBIARA KA HO</span>
         </div>
 
         <style>{`

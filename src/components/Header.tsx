@@ -13,7 +13,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
   // === NUMERIC CONTROLS ===
   const headerHeightBase = 90; // 🔧 base height of header (px)
   const headerScale = 1.1; // 🔧 overall header scaling
-  const headerHeight = headerHeightBase * headerScale; // Calculated: 99px
+  const headerHeight = headerHeightBase * headerScale;
 
   const logoScale = 1.2; // 🔧 logo scaling
   const logoTopOffset = 8; // 🔧 px from top
@@ -57,165 +57,113 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
     onNavigate('volunteer');
     setMobileMenuOpen(false);
   };
-  
-  // Calculate the combined height of the fixed header (headerHeight) and the marquee (h-5 = 20px)
-  const marqueeHeight = 20; // h-5 in Tailwind is 1.25rem = 20px
-  const totalFixedHeight = headerHeight + marqueeHeight;
 
   return (
     <div className="relative w-full">
-      {/* === FIXED HEADER STRUCTURE (NAVBAR + MARQUEE) === */}
-      <div
-        className="fixed top-0 left-0 right-0 z-50 transition-shadow"
-        style={{ height: `${totalFixedHeight}px` }}
+      {/* === FIXED HEADER === */}
+      <header
+        className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-xl transition-shadow"
+        style={{
+          height: `${headerHeight}px`,
+        }}
       >
-        {/* === NAV BAR (now relative inside the fixed wrapper) === */}
-        <header
-          className="relative w-full bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-xl transition-shadow"
-          style={{ height: `${headerHeight}px` }}
-        >
-          <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
-            <div className="flex justify-between items-center h-full">
-              {/* === LOGO (PRIMARY FLEX ITEM 1) === */}
-              <button
-                onClick={() => handleNavClick('home')}
-                className="flex items-center space-x-3 group transition-transform hover:scale-[1.01] focus:outline-none"
+        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+          <div className="flex justify-between items-center h-full">
+            {/* === LOGO (PRIMARY FLEX ITEM 1) === */}
+            <button
+              onClick={() => handleNavClick('home')}
+              className="flex items-center space-x-3 group transition-transform hover:scale-[1.01] focus:outline-none"
+              style={{
+                position: 'relative',
+                top: `${logoTopOffset + logoVerticalAdjust}px`,
+                left: `${logoLeftAdjust}px`,
+                bottom: `${logoBottomOffset}px`,
+              }}
+            >
+              <div className="flex items-center">
+                <img
+                  src="https://i.imgur.com/1GfnCQc.png"
+                  alt="Logo"
+                  className="object-contain transition-transform duration-300"
+                  style={{
+                    height: `${headerHeight * 0.8 * logoScale}px`,
+                    width: 'auto',
+                    transform: `scale(${logoScale})`,
+                    transformOrigin: 'center center',
+                  }}
+                />
+              </div>
+              {/* Removed "Jane Doe" and "For Senate 2026" as requested */}
+            </button>
+
+            {/* === NAVIGATION & CTA GROUP (PRIMARY FLEX ITEM 2) === */}
+            <div className="flex items-center">
+                
+              {/* === DESKTOP NAVIGATION === */}
+              <div
+                className="hidden md:flex items-center"
                 style={{
-                  position: 'relative',
-                  top: `${logoTopOffset + logoVerticalAdjust}px`,
-                  left: `${logoLeftAdjust}px`,
-                  bottom: `${logoBottomOffset}px`,
+                  gap: `${desktopNavGap}px`, // ✅ horizontal spacing between items
                 }}
               >
-                <div className="flex items-center">
-                  <img
-                    src="https://i.imgur.com/1GfnCQc.png"
-                    alt="Logo"
-                    className="object-contain transition-transform duration-300"
-                    style={{
-                      height: `${headerHeight * 0.8 * logoScale}px`,
-                      width: 'auto',
-                      transform: `scale(${logoScale})`,
-                      transformOrigin: 'center center',
-                    }}
-                  />
-                </div>
-              </button>
-
-              {/* === NAVIGATION & CTA GROUP (PRIMARY FLEX ITEM 2) === */}
-              <div className="flex items-center">
-                  
-                {/* === DESKTOP NAVIGATION === */}
-                <div
-                  className="hidden md:flex items-center"
-                  style={{
-                    gap: `${desktopNavGap}px`, // ✅ horizontal spacing between items
-                  }}
-                >
-                  {navItems.map((item) => (
-                    <button
-                      key={item.id}
-                      onClick={() => handleNavClick(item.id)}
-                      className={`rounded-full font-semibold transition-all duration-300 ${
-                        currentPage === item.id
-                          ? 'bg-blue-900 text-white shadow-lg shadow-blue-500/50'
-                          : 'text-gray-700 hover:bg-gray-100 hover:text-blue-700'
-                      }`}
-                      style={{
-                        padding: `${desktopNavPaddingY}px ${desktopNavPaddingX}px`,
-                        fontSize: `${desktopNavFontSize}px`,
-                      }}
-                    >
-                      {item.label}
-                    </button>
-                  ))}
-                </div>
-
-                {/* === RIGHT SIDE (Donate Button, Mobile Menu Toggle) === */}
-                <div className="flex items-center space-x-4 pl-4 md:pl-8">
-                  <div className="hidden md:block">
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      onClick={handleDonateClick}
-                      className="group shadow-amber-500/50 hover:shadow-amber-500/70"
-                    >
-                      <DollarSign className="w-4 h-4 mr-2" />
-                      Donate
-                    </Button>
-                  </div>
-
-                  {/* === MOBILE MENU TOGGLE === */}
+                {navItems.map((item) => (
                   <button
-                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                    className="md:hidden p-3 rounded-full hover:bg-gray-100 transition-colors border border-gray-200"
-                    aria-label="Toggle menu"
+                    key={item.id}
+                    onClick={() => handleNavClick(item.id)}
+                    className={`rounded-full font-semibold transition-all duration-300 ${
+                      currentPage === item.id
+                        ? 'bg-blue-900 text-white shadow-lg shadow-blue-500/50'
+                        : 'text-gray-700 hover:bg-gray-100 hover:text-blue-700'
+                    }`}
+                    style={{
+                      padding: `${desktopNavPaddingY}px ${desktopNavPaddingX}px`,
+                      fontSize: `${desktopNavFontSize}px`,
+                    }}
                   >
-                    {mobileMenuOpen ? (
-                      <X className="w-6 h-6 text-gray-700" />
-                    ) : (
-                      <Menu className="w-6 h-6 text-gray-700" />
-                    )}
+                    {item.label}
                   </button>
+                ))}
+              </div>
+
+              {/* === RIGHT SIDE (Donate Button, Mobile Menu Toggle) === */}
+              <div className="flex items-center space-x-4 pl-4 md:pl-8">
+                <div className="hidden md:block">
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    onClick={handleDonateClick}
+                    className="group shadow-amber-500/50 hover:shadow-amber-500/70"
+                  >
+                    <DollarSign className="w-4 h-4 mr-2" />
+                    Donate
+                  </Button>
                 </div>
+
+                {/* === MOBILE MENU TOGGLE === */}
+                <button
+                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                  className="md:hidden p-3 rounded-full hover:bg-gray-100 transition-colors border border-gray-200"
+                  aria-label="Toggle menu"
+                >
+                  {mobileMenuOpen ? (
+                    <X className="w-6 h-6 text-gray-700" />
+                  ) : (
+                    <Menu className="w-6 h-6 text-gray-700" />
+                  )}
+                </button>
               </div>
             </div>
-          </nav>
-        </header>
-
-        {/* === MARQUEE (Now part of the fixed container) === */}
-        <div
-          className="bg-amber-500 h-5 overflow-hidden relative flex items-center"
-          // Removed marginTop, now sits directly below the header
-        >
-          <div
-            className="marquee-track absolute top-0 left-0 h-full flex items-center whitespace-nowrap font-bold text-white uppercase"
-            style={{
-              willChange: 'transform',
-              fontFamily: "'Roboto', sans-serif",
-              fontSize: '0.65rem',
-              letterSpacing: '0.05em',
-            }}
-          >
-            <div style={{ minWidth: '25vw' }} />
-            <div className="marquee-content flex items-center gap-4">
-              <span>
-                JOIN THE MOVEMENT. VOLUNTEER OR DONATE TODAY!
-              </span>
-            </div>
-            <div className="marquee-content flex items-center gap-4" aria-hidden="true">
-              <span>
-                JOIN THE MOVEMENT. VOLUNTEER OR DONATE TODAY!
-              </span>
-            </div>
           </div>
+        </nav>
 
-          <style>{` 
-            @keyframes marquee {
-              0% { transform: translateX(0%); }
-              100% { transform: translateX(-50%); }
-            }
-            .marquee-track {
-              animation: marquee 42s linear infinite;
-            }
-            .marquee-track:hover { 
-              animation-play-state: paused;
-            }
-          `}</style>
-        </div>
-
-        {/* === MOBILE MENU - TOP DROPDOWN === */}
-        {/* Placed inside the fixed container, starting from the bottom of the container */}
+        {/* === MOBILE MENU - DARK GREEN 98% OPAQUE UI WITH STRIPES === */}
         <div
-          className={`md:hidden absolute inset-x-0 bottom-0 w-full bg-green-900/[.98] shadow-2xl overflow-hidden transition-all duration-[550ms] ease-in-out origin-top z-40`}
+          // Added subtle stripe design (2px semi-transparent white diagonal lines every 20px)
+          className={`md:hidden absolute inset-x-0 top-full w-full bg-green-900/[.98] overflow-hidden transition-all duration-[550ms] ease-in-out origin-top z-40 ${
+            mobileMenuOpen ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0'
+          }`}
           style={{
-            // Positioned right below the marquee
-            top: `${marqueeHeight}px`,
             backgroundImage: 'repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.05) 0, rgba(255, 255, 255, 0.05) 2px, transparent 2px, transparent 20px)',
-            // Animation logic re-applied
-            transform: mobileMenuOpen ? 'scaleY(1)' : 'scaleY(0)',
-            opacity: mobileMenuOpen ? 1 : 0,
-            transformOrigin: 'top',
           }}
         >
           <div
@@ -230,7 +178,9 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                 onClick={() => handleNavClick(item.id)}
                 className={`block w-full text-left rounded-xl font-semibold transition-all duration-200 group ${
                   currentPage === item.id
+                    // Active link remains prominent
                     ? 'bg-green-500 text-white shadow-md' 
+                    // Non-active links use white text for contrast
                     : 'text-white hover:bg-green-700/80 focus:bg-green-700/80'
                 }`}
                 style={{
@@ -254,11 +204,50 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
             </div>
           </div>
         </div>
-      </div>
-      
-      {/* === SPACER DIV (Now only responsible for pushing the content below the fixed total height) === */}
-      <div style={{ paddingTop: `${totalFixedHeight}px` }} />
+      </header>
 
+      {/* === MARQUEE === */}
+      <div
+        className="bg-red-600 h-5 overflow-hidden relative flex items-center"
+        style={{ marginTop: `${headerHeight}px` }}
+      >
+        <div
+          className="marquee-track absolute top-0 left-0 h-full flex items-center whitespace-nowrap font-bold text-white"
+          style={{
+            willChange: 'transform',
+            fontFamily: "'Roboto', sans-serif",
+            fontSize: '0.65rem',
+            letterSpacing: '0.05em',
+          }}
+        >
+          <div style={{ minWidth: '25vw' }} />
+          <div className="marquee-content flex items-center gap-4">
+            <span>
+              SUPPORT HON. RAGGA’S OPERATION 1000 DESKS FOR STUDENTS 'II' OBIARA KA HO 'II'
+            </span>
+          </div>
+          <div className="marquee-content flex items-center gap-4" aria-hidden="true">
+            <span>
+              SUPPORT HON. RAGGA’S OPERATION 1000 DESKS FOR STUDENTS 'II' OBIARA KA HO 'II' 
+            </span>
+          </div>
+        </div>
+
+        <style>{` 
+          @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+          }
+          .marquee-track {
+            animation: marquee 42s linear infinite;
+          }
+          .marquee-track:hover { 
+            animation-play-state: paused;
+          }
+        `}</style>
+      </div>
+
+      <div style={{ paddingTop: `${headerHeight + 20}px` }} />
     </div>
   );
 }

@@ -156,10 +156,10 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
           </div>
         </nav>
 
-        {/* === MOBILE MENU - GREEN 20% FADE UI === */}
+        {/* === MOBILE MENU - DARKENED GREEN FADE UI === */}
         <div
-          // Implemented "transparent has green 20 percent fade only"
-          className={`md:hidden absolute inset-x-0 top-full w-full bg-green-500/20 overflow-hidden transition-all duration-[550ms] ease-in-out origin-top z-40 ${
+          // Updated to bg-green-900/60 for a darker, less see-through appearance.
+          className={`md:hidden absolute inset-x-0 top-full w-full bg-green-900/60 overflow-hidden transition-all duration-[550ms] ease-in-out origin-top z-40 ${
             mobileMenuOpen ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0'
           }`}
         >
@@ -175,9 +175,10 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                 onClick={() => handleNavClick(item.id)}
                 className={`block w-full text-left rounded-xl font-semibold transition-all duration-200 group ${
                   currentPage === item.id
-                    // Adjusted active link to dark green for visibility on light, transparent background
-                    ? 'bg-green-700 text-white shadow-md' 
-                    : 'text-gray-800 hover:bg-green-100 focus:bg-green-100 hover:text-green-900'
+                    // Active link remains prominent
+                    ? 'bg-green-500 text-white shadow-md' 
+                    // Changed non-active links to white text for contrast on the dark background
+                    : 'text-white hover:bg-green-700/80 focus:bg-green-700/80'
                 }`}
                 style={{
                   padding: `${mobileNavPaddingY}px ${mobileNavPaddingX}px`,

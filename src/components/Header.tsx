@@ -30,7 +30,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-xl transition-shadow">
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-xl transition-shadow relative">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo/Branding Block */}
@@ -93,29 +93,31 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
             </button>
           </div>
         </div>
+      </nav>
 
-        {/* Mobile Menu Dropdown - Uses max-h for clean vertical transition and is contained within the header */}
-        <div
-          className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out bg-white ${
-            mobileMenuOpen ? 'max-h-96 opacity-100 py-4 border-t border-gray-200' : 'max-h-0 opacity-0'
-          }`}
-        >
-          <div className="space-y-2">
-            {navItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => handleNavClick(item.id)}
-                className={`block w-full text-left px-4 py-3 rounded-lg font-medium transition-all duration-200 ${
-                  currentPage === item.id
-                    ? 'bg-blue-900 text-white'
-                    : 'text-gray-700 hover:bg-gray-100'
-                }`}
-              >
-                {item.label}
-              </button>
-            ))}
-            <div className="pt-2">
-                 <Button
+      {/* Mobile Menu Dropdown OVERLAY - Absolute position prevents pushing content. Scale-y provides smooth animation. */}
+      <div
+        className={`md:hidden absolute inset-x-0 top-full w-full bg-white border-t border-gray-200 shadow-2xl overflow-hidden
+          transition-all duration-300 ease-in-out origin-top z-40
+          ${mobileMenuOpen ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0'}
+        `}
+      >
+        <div className="px-4 py-4 space-y-2">
+          {navItems.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => handleNavClick(item.id)}
+              className={`block w-full text-left px-4 py-3 rounded-lg font-medium transition-all duration-200 ${
+                currentPage === item.id
+                  ? 'bg-blue-900 text-white'
+                  : 'text-gray-700 hover:bg-gray-100'
+              }`}
+            >
+              {item.label}
+            </button>
+          ))}
+          <div className="pt-2">
+                <Button
                     variant="secondary"
                     size="md"
                     onClick={handleDonateClick}
@@ -125,9 +127,8 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                     Donate Now
                 </Button>
             </div>
-          </div>
         </div>
-      </nav>
+      </div>
     </header>
   );
 }

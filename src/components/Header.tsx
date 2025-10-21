@@ -138,7 +138,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
 
       {/* === Moving Text Bar (Official Website Notice) === */}
       <div className="bg-red-600 h-4 overflow-hidden relative">
-        <div className="absolute left-[30%] whitespace-nowrap animate-marquee text-white text-sm font-semibold">
+        <div className="absolute left-[30%] whitespace-nowrap animate-marquee text-white text-sm font-serif tracking-wide">
           Official Website for MP for Cape Coast
         </div>
       </div>
@@ -147,12 +147,4 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
       <style>{`
         @keyframes marquee {
           0% { transform: translateX(100%); }
-          100% { transform: translateX(-100%); }
-        }
-        .animate-marquee {
-          animation: marquee 40s linear infinite; /* Slower by 50% */
-        }
-      `}</style>
-    </div>
-  );
-}
+          100%

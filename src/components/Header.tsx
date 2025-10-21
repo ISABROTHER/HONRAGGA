@@ -64,7 +64,6 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
               </div>
               <div className="hidden sm:block text-left">
                 <div className="text-xl font-extrabold text-gray-900 group-hover:text-blue-700 transition-colors">
-
             {/* === DESKTOP NAVIGATION === */}
             <div className="hidden md:flex items-center space-x-1">
               {navItems.map((item) => (

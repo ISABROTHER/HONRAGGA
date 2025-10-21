@@ -148,7 +148,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
           }}
         >
           <span>OFFICIAL WEBSITE FOR MP FOR CAPE COAST NORTHt</span>
-          <span className="mx-5">—</span>
+          <span className="mx-2">—</span>
           <span>HON- DR. KWAMENA MINTA NYARKU</span>
           <span className="mx-5">—</span>
           <span>Transparency • OBIARA KA HO</span>

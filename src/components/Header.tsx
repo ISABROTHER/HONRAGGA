@@ -137,8 +137,8 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
         </div>
       </header>
 
-      {/* === GREEN SCROLLING MINI HEADER === */}
-      <div className="bg-green-600 h-5 overflow-hidden relative flex items-center">
+      {/* === DARK GREEN SCROLLING MINI HEADER (NDC style) === */}
+      <div className="bg-green-800 h-5 overflow-hidden relative flex items-center">
         <div
           className="marquee-track absolute top-0 left-0 h-full flex items-center whitespace-nowrap font-bold text-white"
           style={{

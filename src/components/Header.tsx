@@ -70,13 +70,33 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
           <div className="flex justify-between items-center h-full">
             {/* === LOGO (PRIMARY FLEX ITEM 1) === */}
+            {/* Reversing the order of logo and menu toggle to put the menu button on the left for the Left Drawer UX */}
+            
+            {/* === MOBILE MENU TOGGLE (LEFT SIDE ON MOBILE) === */}
+            <div className="flex items-center">
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                // Show Menu/Close button on mobile/tablet, hidden on desktop
+                className="md:hidden p-3 rounded-full hover:bg-gray-100 transition-colors border border-gray-200"
+                aria-label="Toggle menu"
+              >
+                {mobileMenuOpen ? (
+                  <X className="w-6 h-6 text-gray-700" />
+                ) : (
+                  <Menu className="w-6 h-6 text-gray-700" />
+                )}
+              </button>
+            </div>
+
+            {/* === LOGO (CENTERED/ADJUSTED) === */}
             <button
               onClick={() => handleNavClick('home')}
               className="flex items-center space-x-3 group transition-transform hover:scale-[1.01] focus:outline-none"
               style={{
                 position: 'relative',
                 top: `${logoTopOffset + logoVerticalAdjust}px`,
-                left: `${logoLeftAdjust}px`,
+                // Adjusted horizontal position to account for the menu button on the left
+                left: `0`, 
                 bottom: `${logoBottomOffset}px`,
               }}
             >
@@ -93,7 +113,6 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                   }}
                 />
               </div>
-              {/* Removed "Jane Doe" and "For Senate 2026" as requested */}
             </button>
 
             {/* === NAVIGATION & CTA GROUP (PRIMARY FLEX ITEM 2) === */}
@@ -126,6 +145,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
               </div>
 
               {/* === RIGHT SIDE (Donate Button, Mobile Menu Toggle) === */}
+              {/* Removed the mobile toggle from here, kept only desktop donate button */}
               <div className="flex items-center space-x-4 pl-4 md:pl-8">
                 <div className="hidden md:block">
                   <Button
@@ -138,29 +158,16 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                     Donate
                   </Button>
                 </div>
-
-                {/* === MOBILE MENU TOGGLE === */}
-                <button
-                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                  className="md:hidden p-3 rounded-full hover:bg-gray-100 transition-colors border border-gray-200"
-                  aria-label="Toggle menu"
-                >
-                  {mobileMenuOpen ? (
-                    <X className="w-6 h-6 text-gray-700" />
-                  ) : (
-                    <Menu className="w-6 h-6 text-gray-700" />
-                  )}
-                </button>
               </div>
             </div>
           </div>
         </nav>
 
-        {/* === MOBILE MENU - RIGHT SIDE DRAWER === */}
+        {/* === MOBILE MENU - LEFT SIDE DRAWER === */}
         <div
-          // Fixed positioning to cover the entire screen height below the header
-          className={`fixed inset-y-0 right-0 w-64 h-full bg-green-900/[.98] overflow-y-auto transition-transform duration-[550ms] ease-in-out z-40 ${
-            mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+          // Changed to fixed left-side positioning, 50% width, and left-slide transition
+          className={`fixed inset-y-0 left-0 w-1/2 max-w-sm h-full bg-green-900/[.98] overflow-y-auto transition-transform duration-[550ms] ease-in-out z-40 md:hidden ${
+            mobileMenuOpen ? 'translate-x-0' : '-translate-x-full' // Slide in from left
           }`}
           style={{
             backgroundImage: 'repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.05) 0, rgba(255, 255, 255, 0.05) 2px, transparent 2px, transparent 20px)',
@@ -168,10 +175,11 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
             paddingTop: `${headerHeight + 20}px` 
           }}
         >
-          {/* Close button for side drawer experience (optional, but good practice) */}
+          {/* Close button for side drawer experience (positioned inside drawer) */}
           <button
             onClick={() => setMobileMenuOpen(false)}
-            className="absolute top-4 right-4 p-2 text-white hover:text-green-300 transition-colors md:hidden"
+            // Positioned inside the drawer on the far right
+            className="absolute top-4 right-4 p-2 text-white hover:text-green-300 transition-colors"
             aria-label="Close menu"
           >
             <X className="w-6 h-6" />
@@ -215,9 +223,8 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
         </div>
       </header>
 
-      {/* === MARQUEE (Fixed Campaign Inconsistency/Error) === */}
+      {/* === MARQUEE (Campaign Fixed) === */}
       <div
-        // Fixed: Marquee background color changed from red to campaign amber
         className="bg-amber-500 h-5 overflow-hidden relative flex items-center"
         style={{ marginTop: `${headerHeight}px` }}
       >
@@ -232,13 +239,11 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
         >
           <div style={{ minWidth: '25vw' }} />
           <div className="marquee-content flex items-center gap-4">
-            {/* Fixed: Replaced off-brand text with a general campaign call-to-action */}
             <span>
               JOIN THE MOVEMENT. VOLUNTEER OR DONATE TODAY!
             </span>
           </div>
           <div className="marquee-content flex items-center gap-4" aria-hidden="true">
-            {/* Fixed: Replaced off-brand text with a general campaign call-to-action */}
             <span>
               JOIN THE MOVEMENT. VOLUNTEER OR DONATE TODAY!
             </span>

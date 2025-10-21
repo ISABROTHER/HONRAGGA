@@ -140,7 +140,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
 
       {/* Scrolling Mini Header */}
       <div className="bg-red-700 h-6 overflow-hidden relative">
-        <div className="absolute left-[30%] whitespace-nowrap animate-marquee text-white font-serif font-bold text-[0.5rem] tracking-wider flex items-center space-x-4">
+        <div className="absolute left-[30%] whitespace-nowrap animate-marquee text-white font-serif font-bold text-[0.7rem] tracking-wider flex items-center space-x-4">
           <span className="border-r border-white pr-4">
             OFFICIAL WEBSITE FOR MP FOR CAPE COAST
           </span>

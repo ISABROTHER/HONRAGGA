@@ -62,22 +62,22 @@ export function About() {
             </p>
           </div>
         </div>
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white dark:from-gray-900 to-transparent"></div>
+        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent"></div>
       </section>
 
-      <section className="py-20 bg-white dark:bg-gray-900">
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
-              <div className="inline-block px-4 py-2 bg-blue-100 dark:bg-blue-900/30 rounded-full">
-                <span className="text-blue-900 dark:text-blue-400 font-semibold text-sm">My Story</span>
+              <div className="inline-block px-4 py-2 bg-blue-100 rounded-full">
+                <span className="text-blue-900 font-semibold text-sm">My Story</span>
               </div>
 
-              <h2 className="text-4xl font-bold text-gray-900 dark:text-white">
+              <h2 className="text-4xl font-bold text-gray-900">
                 Fighting for Families, Building Our Future
               </h2>
 
-              <div className="space-y-4 text-gray-700 dark:text-gray-300 leading-relaxed">
+              <div className="space-y-4 text-gray-700 leading-relaxed">
                 <p>
                   I grew up in a working-class family where making ends meet was a constant challenge.
                   My parents worked multiple jobs to provide opportunities for me and my siblings.
@@ -105,8 +105,8 @@ export function About() {
             </div>
 
             <div className="relative">
-              <div className="aspect-[3/4] bg-gradient-to-br from-blue-200 to-blue-300 dark:from-blue-900 dark:to-blue-800 rounded-2xl shadow-2xl overflow-hidden">
-                <div className="w-full h-full flex items-center justify-center text-blue-900 dark:text-blue-400">
+              <div className="aspect-[3/4] bg-gradient-to-br from-blue-200 to-blue-300 rounded-2xl shadow-2xl overflow-hidden">
+                <div className="w-full h-full flex items-center justify-center text-blue-900">
                   <div className="text-center">
                     <Users className="w-32 h-32 mx-auto mb-4 opacity-50" />
                     <p className="text-lg font-medium opacity-75">Candidate Photo</p>
@@ -119,13 +119,13 @@ export function About() {
         </div>
       </section>
 
-      <section className="py-20 bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900">
+      <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
               Track Record of Results
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               Proven leadership delivering real change for our community
             </p>
           </div>
@@ -134,24 +134,24 @@ export function About() {
             {achievements.map(({ icon: Icon, title, period, description }) => (
               <div
                 key={title}
-                className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 dark:border-gray-700 group"
+                className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 group"
               >
                 <div className="flex items-start space-x-4">
                   <div className="flex-shrink-0">
-                    <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-900 to-blue-700 dark:from-blue-400 dark:to-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform">
-                      <Icon className="w-7 h-7 text-white dark:text-gray-900" />
+                    <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-900 to-blue-700 flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <Icon className="w-7 h-7 text-white" />
                     </div>
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center justify-between mb-2">
-                      <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                      <h3 className="text-xl font-bold text-gray-900">
                         {title}
                       </h3>
-                      <span className="text-sm text-gray-500 dark:text-gray-400 font-medium">
+                      <span className="text-sm text-gray-500 font-medium">
                         {period}
                       </span>
                     </div>
-                    <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                    <p className="text-gray-600 leading-relaxed">
                       {description}
                     </p>
                   </div>
@@ -162,13 +162,13 @@ export function About() {
         </div>
       </section>
 
-      <section className="py-20 bg-white dark:bg-gray-900">
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
               Leadership Principles
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               The values that guide every decision
             </p>
           </div>
@@ -177,15 +177,15 @@ export function About() {
             {values.map(({ icon: Icon, title, description }) => (
               <div
                 key={title}
-                className="text-center p-6 rounded-xl bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-400 transition-all group"
+                className="text-center p-6 rounded-xl bg-gradient-to-b from-gray-50 to-white border border-gray-200 hover:border-blue-500 transition-all group"
               >
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-900 dark:text-blue-400 mb-4 group-hover:scale-110 transition-transform">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-100 text-blue-900 mb-4 group-hover:scale-110 transition-transform">
                   <Icon className="w-8 h-8" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                <h3 className="text-xl font-bold text-gray-900 mb-2">
                   {title}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                <p className="text-gray-600 text-sm leading-relaxed">
                   {description}
                 </p>
               </div>

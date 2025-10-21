@@ -31,14 +31,14 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
 
   return (
     <div className="relative w-full">
-      {/* === Softer Red Semi-Header (70% of header height, 50% opacity) === */}
-      <div className="bg-red-600/50 h-[70%] w-full"></div>
+      {/* === Red Semi-Header (about 10% of main header height) === */}
+      <div className="bg-red-600 h-4 w-full"></div>
 
       {/* === Main Header === */}
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-xl transition-shadow relative">
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-5">
-            {/* Logo/Branding Block */}
+            {/* Logo/Branding */}
             <button
               onClick={() => handleNavClick('home')}
               className="flex items-center space-x-3 group transition-transform hover:scale-[1.01] focus:outline-none"

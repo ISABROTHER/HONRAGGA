@@ -48,7 +48,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
             >
               <div className="flex items-center h-full">
                 <img
-                  src="https://i.imgur.com/hyNrYDZ.png"
+                  src="https://i.imgur.com/1GfnCQc.png"
                   alt="Logo"
                   className="object-contain transition-transform duration-300"
                   style={{

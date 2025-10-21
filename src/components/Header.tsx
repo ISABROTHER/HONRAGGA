@@ -19,7 +19,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
   const logoTopOffset = 8;           // 🔧 px distance from top of header
   const logoBottomOffset = 2;        // 🔧 px distance from bottom
   const logoVerticalAdjust = -1;     // 🔧 fine vertical adjustment (+down, -up)
-  const logoLeftAdjust = -10;         // 🔧 horizontal adjustment (+right, -left)
+  const logoLeftAdjust = 5;         // 🔧 horizontal adjustment (+right, -left)
 
   const navItems = [
     { id: 'home', label: 'Home' },

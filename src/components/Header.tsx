@@ -69,29 +69,14 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
       >
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
           <div className="flex justify-between items-center h-full">
-            {/* === MOBILE MENU TOGGLE (LEFT SIDE ON MOBILE) === */}
-            <div className="flex items-center">
-              <button
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="md:hidden p-3 rounded-full hover:bg-gray-100 transition-colors border border-gray-200"
-                aria-label="Toggle menu"
-              >
-                {mobileMenuOpen ? (
-                  <X className="w-6 h-6 text-gray-700" />
-                ) : (
-                  <Menu className="w-6 h-6 text-gray-700" />
-                )}
-              </button>
-            </div>
-
-            {/* === LOGO (CENTERED/ADJUSTED) === */}
+            {/* === LOGO (PRIMARY FLEX ITEM 1) === */}
             <button
               onClick={() => handleNavClick('home')}
               className="flex items-center space-x-3 group transition-transform hover:scale-[1.01] focus:outline-none"
               style={{
                 position: 'relative',
                 top: `${logoTopOffset + logoVerticalAdjust}px`,
-                left: `0`, 
+                left: `${logoLeftAdjust}px`,
                 bottom: `${logoBottomOffset}px`,
               }}
             >
@@ -139,7 +124,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                 ))}
               </div>
 
-              {/* === RIGHT SIDE (Donate Button) === */}
+              {/* === RIGHT SIDE (Donate Button, Mobile Menu Toggle) === */}
               <div className="flex items-center space-x-4 pl-4 md:pl-8">
                 <div className="hidden md:block">
                   <Button
@@ -152,25 +137,35 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                     Donate
                   </Button>
                 </div>
+
+                {/* === MOBILE MENU TOGGLE === */}
+                {/* Repositioned button to the right for the dropdown UX */}
+                <button
+                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                  className="md:hidden p-3 rounded-full hover:bg-gray-100 transition-colors border border-gray-200"
+                  aria-label="Toggle menu"
+                >
+                  {mobileMenuOpen ? (
+                    <X className="w-6 h-6 text-gray-700" />
+                  ) : (
+                    <Menu className="w-6 h-6 text-gray-700" />
+                  )}
+                </button>
               </div>
             </div>
           </div>
         </nav>
 
-        {/* === MOBILE MENU - LEFT SIDE DRAWER === */}
+        {/* === MOBILE MENU - TOP DROPDOWN (Reverted to original layout/animation) === */}
         <div
-          // FIXED: Set 'top' to start below the header+marquee, and 'bottom-0' for full remaining height.
-          className={`fixed left-0 bottom-0 w-1/2 max-w-sm bg-green-900/[.98] overflow-y-auto transition-transform duration-[550ms] ease-in-out z-40 md:hidden ${
-            mobileMenuOpen ? 'translate-x-0' : '-translate-x-full' // Slide in from left
+          // Reverted to top-down dropdown positioning and animation
+          className={`md:hidden absolute inset-x-0 top-full w-full bg-green-900/[.98] shadow-2xl overflow-hidden transition-all duration-[550ms] ease-in-out origin-top z-40 ${
+            mobileMenuOpen ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0' // Use scale-y for top-drop
           }`}
           style={{
-            // Calculate height of fixed header (headerHeight) + marquee (20px, from h-5)
-            top: `${headerHeight + 20}px`, 
             backgroundImage: 'repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.05) 0, rgba(255, 255, 255, 0.05) 2px, transparent 2px, transparent 20px)',
           }}
         >
-          {/* NOTE: Close button removed from here, as the main header's menu button now acts as the close control. */}
-          
           <div
             className="px-4 py-4 flex flex-col"
             style={{

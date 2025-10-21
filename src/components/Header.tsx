@@ -35,16 +35,18 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-xl transition-shadow relative">
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-5">
-            {/* === Logo / Branding === */}
+            {/* Logo / Branding */}
             <button
               onClick={() => handleNavClick('home')}
-              className="flex items-center space-x-3 group transition-transform hover:scale-[1.02] focus:outline-none"
+              className="flex items-center space-x-3 group transition-transform hover:scale-[1.01] focus:outline-none"
             >
-              <img
-                src="https://i.imgur.com/hyNrYDZ.png"
-                alt="Logo"
-                className="w-20 h-20 object-contain transition-all duration-300 group-hover:brightness-110 group-hover:scale-200"
-              />
+              <div className="h-16 flex items-center">
+                <img
+                  src="https://i.imgur.com/hyNrYDZ.png"
+                  alt="Logo"
+                  className="h-full object-contain transition-all duration-300 group-hover:brightness-110"
+                />
+              </div>
               <div className="hidden sm:block text-left">
                 <div className="text-xl font-extrabold text-gray-900 group-hover:text-blue-700 transition-colors">
                   Jane Doe
@@ -55,7 +57,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
               </div>
             </button>
 
-            {/* === Desktop Navigation === */}
+            {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-1">
               {navItems.map((item) => (
                 <button
@@ -72,7 +74,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
               ))}
             </div>
 
-            {/* === Right-side CTAs === */}
+            {/* Right-side CTAs */}
             <div className="flex items-center space-x-4">
               <div className="hidden md:block">
                 <Button
@@ -86,7 +88,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                 </Button>
               </div>
 
-              {/* === Mobile Menu Toggle === */}
+              {/* Mobile Menu Toggle */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className="md:hidden p-3 rounded-full hover:bg-gray-100 transition-colors border border-gray-200"
@@ -102,7 +104,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
           </div>
         </nav>
 
-        {/* === Mobile Menu === */}
+        {/* Mobile Menu */}
         <div
           className={`md:hidden absolute inset-x-0 top-full w-full bg-white border-t border-gray-200 shadow-2xl overflow-hidden transition-all duration-[550ms] ease-in-out origin-top z-40 ${
             mobileMenuOpen ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0'
@@ -153,7 +155,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
           <div style={{ minWidth: '30vw' }} />
 
           <div className="marquee-content flex items-center gap-4">
-            <span>OFFICIAL WEBSITE OF THE MP FOR CAPE COAST NORTH</span>
+            <span>OFFICIAL WEBSITE OF MP FOR CAPE COAST NORTH</span>
             <span className="text-white/80">II</span>
             <span>HON. DR. KWAMENA MINTA NYARKU</span>
             <span className="text-white/80">II</span>
@@ -162,7 +164,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
           </div>
 
           <div className="marquee-content flex items-center gap-4" aria-hidden="true">
-            <span>OFFICIAL WEBSITE OF THE MP FOR CAPE COAST NORTH</span>
+            <span>OFFICIAL WEBSITE OF MP FOR CAPE COAST NORTH</span>
             <span className="text-white/80">II</span>
             <span>HON. DR. KWAMENA MINTA NYARKU</span>
             <span className="text-white/80">II</span>

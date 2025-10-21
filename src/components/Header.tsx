@@ -33,8 +33,11 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
     <div className="relative w-full">
       {/* === MAIN HEADER === */}
       <header
-        className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-xl transition-shadow relative h-20 min-h-20"
-        style={{ '--logo-scale': 1.15 } as React.CSSProperties} // adjust 1.0–1.5 to make logo bigger or smaller
+        className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-xl transition-shadow relative"
+        style={{
+          '--logo-scale': 1.15, // Change this to make the logo slightly bigger or smaller (1.0 = base)
+          height: '4.5rem', // fixed height across all screen sizes
+        } as React.CSSProperties}
       >
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
           <div className="flex justify-between items-center h-full">
@@ -47,10 +50,10 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                 <img
                   src="https://i.imgur.com/hyNrYDZ.png"
                   alt="Logo"
-                  className="object-contain transition-all duration-300"
+                  className="object-contain transition-transform duration-300"
                   style={{
                     height: 'calc(100% * var(--logo-scale))',
-                    transform: 'translateY(calc((1 - var(--logo-scale)) * -20%))',
+                    transform: 'translateY(calc((1 - var(--logo-scale)) * -10%))',
                   }}
                 />
               </div>

@@ -45,7 +45,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
               onClick={() => handleNavClick('home')}
               className="flex items-center space-x-3 group transition-transform hover:scale-[1.01] focus:outline-none"
             >
-              <div className="flex items-center" style={{ height: `calc(4.5rem * var(--logo-scale))` }}>
+              <div className="flex items-center" style={{ height: `calc(5.5rem * var(--logo-scale))` }}>
                 <img
                   src="https://i.imgur.com/hyNrYDZ.png"
                   alt="Logo"

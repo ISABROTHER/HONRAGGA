@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Menu, X, DollarSign } from 'lucide-react';
 import { Button } from './Button';
@@ -41,9 +40,11 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
               onClick={() => handleNavClick('home')}
               className="flex items-center space-x-3 group transition-transform hover:scale-[1.01] focus:outline-none"
             >
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-900 to-blue-700 flex items-center justify-center text-white font-bold text-xl shadow-blue-500/50 group-hover:shadow-lg transition-shadow">
-                JD
-              </div>
+              <img
+                src="https://i.imgur.com/hyNrYDZ.png"
+                alt="Logo"
+                className="w-12 h-12 rounded-full object-contain shadow-blue-500/50 group-hover:shadow-lg transition-shadow"
+              />
               <div className="hidden sm:block text-left">
                 <div className="text-xl font-extrabold text-gray-900 group-hover:text-blue-700 transition-colors">
                   Jane Doe
@@ -152,16 +153,20 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
           <div style={{ minWidth: '30vw' }} />
 
           <div className="marquee-content flex items-center gap-4">
-            <span>OFFICIAL WEBSITE FOR MP FOR CAPE COAST NORTH</span>
+            <span>OFFICIAL WEBSITE OF MP FOR CAPE COAST NORTH</span>
             <span className="text-white/80">II</span>
             <span>HON. DR. KWAMENA MINTA NYARKU</span>
+            <span className="text-white/80">II</span>
+            <span>OBIARA KA HO</span>
             <span className="text-white/80">II</span>
           </div>
 
           <div className="marquee-content flex items-center gap-4" aria-hidden="true">
-            <span>OFFICIAL WEBSITE FOR MP FOR CAPE COAST NORTH</span>
+            <span>OFFICIAL WEBSITE OF MP FOR CAPE COAST NORTH</span>
             <span className="text-white/80">II</span>
             <span>HON. DR. KWAMENA MINTA NYARKU</span>
+            <span className="text-white/80">II</span>
+            <span>OBIARA KA HO</span>
             <span className="text-white/80">II</span>
           </div>
         </div>

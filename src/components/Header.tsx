@@ -1,4 +1,4 @@
- import { useState } from 'react';
+import { useState } from 'react';
 import { Menu, X, DollarSign } from 'lucide-react';
 import { Button } from './Button';
 
@@ -9,6 +9,9 @@ interface HeaderProps {
 
 export function Header({ currentPage, onNavigate }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // 🔧 Adjustable logo scaling factor (change this number)
+  const logoScale = 1.0; // e.g. 1.2 = 20% larger, 0.85 = smaller
 
   const navItems = [
     { id: 'home', label: 'Home' },
@@ -31,11 +34,11 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
 
   return (
     <div className="relative w-full">
-      {/* === MAIN HEADER === */}
+      {/* === FIXED HEADER === */}
       <header
-        className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-xl transition-shadow relative"
+        className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-xl transition-shadow"
         style={{
-          height: '6.5rem', // consistent header height
+          height: '4.5rem', // consistent height
         }}
       >
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
@@ -51,9 +54,10 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                   alt="Logo"
                   className="object-contain transition-transform duration-300"
                   style={{
-                    height: '110px', // fixed logo height
+                    height: `${58 * logoScale}px`,
                     width: 'auto',
-                    transform: 'translateY(-2px)',
+                    transform: `translateY(-2px) scale(${logoScale})`,
+                    transformOrigin: 'center center',
                   }}
                 />
               </div>
@@ -84,7 +88,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
               ))}
             </div>
 
-            {/* Right-side CTAs */}
+            {/* Right-side Buttons */}
             <div className="flex items-center space-x-4">
               <div className="hidden md:block">
                 <Button
@@ -151,8 +155,11 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
         </div>
       </header>
 
-      {/* === SCROLLING MINI HEADER === */}
-      <div className="bg-red-600 h-5 overflow-hidden relative flex items-center" style={{ top: '-1%' }}>
+      {/* === MINI SCROLLING HEADER === */}
+      <div
+        className="bg-red-600 h-5 overflow-hidden relative flex items-center"
+        style={{ marginTop: '4.5rem' }} // 👈 prevents overlap
+      >
         <div
           className="marquee-track absolute top-0 left-0 h-full flex items-center whitespace-nowrap font-bold text-white"
           style={{
@@ -162,7 +169,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
             letterSpacing: '0.05em',
           }}
         >
-          <div style={{ minWidth: '30vw' }} />
+          <div style={{ minWidth: '25vw' }} />
 
           <div className="marquee-content flex items-center gap-4">
             <span>SUPPORT HON. RAGGA’S OPERATION 1000 DESKS FOR STUDENTS 'II' OBIARA KA HO 'II'</span>
@@ -186,6 +193,9 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
           }
         `}</style>
       </div>
+
+      {/* Add top padding so page content doesn’t hide behind header */}
+      <div style={{ paddingTop: '5rem' }} />
     </div>
   );
 }

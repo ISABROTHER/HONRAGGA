@@ -54,19 +54,19 @@ export function Policies() {
             </p>
           </div>
         </div>
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white dark:from-gray-900 to-transparent"></div>
+        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent"></div>
       </section>
 
-      <section className="py-20 bg-white dark:bg-gray-900">
+      <section className="py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           {loading ? (
             <div className="text-center py-12">
               <div className="inline-block w-16 h-16 border-4 border-blue-900 border-t-transparent rounded-full animate-spin"></div>
-              <p className="mt-4 text-gray-600 dark:text-gray-400">Loading policies...</p>
+              <p className="mt-4 text-gray-600">Loading policies...</p>
             </div>
           ) : policies.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-gray-600 dark:text-gray-400">No policies available yet.</p>
+              <p className="text-gray-600">No policies available yet.</p>
             </div>
           ) : (
             <div className="space-y-4">
@@ -77,30 +77,30 @@ export function Policies() {
                 return (
                   <div
                     key={policy.id}
-                    className="bg-white dark:bg-gray-800 rounded-2xl border-2 border-gray-200 dark:border-gray-700 overflow-hidden transition-all duration-300 hover:border-blue-500 dark:hover:border-blue-400 hover:shadow-lg"
+                    className="bg-white rounded-2xl border-2 border-gray-200 overflow-hidden transition-all duration-300 hover:border-blue-500 hover:shadow-lg"
                   >
                     <button
                       onClick={() => togglePolicy(policy.id)}
-                      className="w-full px-6 py-6 flex items-center justify-between text-left transition-colors hover:bg-gray-50 dark:hover:bg-gray-750"
+                      className="w-full px-6 py-6 flex items-center justify-between text-left transition-colors hover:bg-gray-50"
                     >
                       <div className="flex items-center space-x-4 flex-1">
-                        <div className="flex-shrink-0 w-14 h-14 rounded-xl bg-gradient-to-br from-blue-900 to-blue-700 dark:from-blue-400 dark:to-blue-600 flex items-center justify-center">
-                          <Icon className="w-7 h-7 text-white dark:text-gray-900" />
+                        <div className="flex-shrink-0 w-14 h-14 rounded-xl bg-gradient-to-br from-blue-900 to-blue-700 flex items-center justify-center">
+                          <Icon className="w-7 h-7 text-white" />
                         </div>
                         <div className="flex-1">
-                          <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1">
+                          <h3 className="text-xl font-bold text-gray-900 mb-1">
                             {policy.title}
                           </h3>
-                          <span className="inline-block px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-900 dark:text-blue-400 text-xs font-semibold rounded-full">
+                          <span className="inline-block px-3 py-1 bg-blue-100 text-blue-900 text-xs font-semibold rounded-full">
                             {policy.category}
                           </span>
                         </div>
                       </div>
                       <div className="flex-shrink-0 ml-4">
                         {isExpanded ? (
-                          <ChevronUp className="w-6 h-6 text-gray-500 dark:text-gray-400" />
+                          <ChevronUp className="w-6 h-6 text-gray-500" />
                         ) : (
-                          <ChevronDown className="w-6 h-6 text-gray-500 dark:text-gray-400" />
+                          <ChevronDown className="w-6 h-6 text-gray-500" />
                         )}
                       </div>
                     </button>
@@ -110,8 +110,8 @@ export function Policies() {
                         isExpanded ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
                       } overflow-hidden`}
                     >
-                      <div className="px-6 pb-6 pt-2 border-t border-gray-200 dark:border-gray-700">
-                        <p className="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-line">
+                      <div className="px-6 pb-6 pt-2 border-t border-gray-200">
+                        <p className="text-gray-700 leading-relaxed whitespace-pre-line">
                           {policy.description}
                         </p>
                       </div>
@@ -124,12 +124,12 @@ export function Policies() {
         </div>
       </section>
 
-      <section className="py-20 bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900">
+      <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
             Have Questions About Our Policies?
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">
+          <p className="text-xl text-gray-600 mb-8 leading-relaxed">
             We believe in transparent, accessible policy discussions. Reach out to learn more about
             how these plans will impact your community.
           </p>
@@ -142,7 +142,7 @@ export function Policies() {
             </a>
             <a
               href="#"
-              className="inline-block px-8 py-4 border-2 border-blue-900 dark:border-blue-400 text-blue-900 dark:text-blue-400 font-semibold rounded-lg hover:bg-blue-900 hover:text-white dark:hover:bg-blue-400 dark:hover:text-blue-900 transition-all"
+              className="inline-block px-8 py-4 border-2 border-blue-900 text-blue-900 font-semibold rounded-lg hover:bg-blue-900 hover:text-white transition-all"
             >
               Download Full Platform
             </a>

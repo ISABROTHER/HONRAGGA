@@ -69,7 +69,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
       >
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
           <div className="flex justify-between items-center h-full">
-            {/* === LOGO === */}
+            {/* === LOGO (PRIMARY FLEX ITEM 1) === */}
             <button
               onClick={() => handleNavClick('home')}
               className="flex items-center space-x-3 group transition-transform hover:scale-[1.01] focus:outline-none"
@@ -96,58 +96,64 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
               {/* Removed "Jane Doe" and "For Senate 2026" as requested */}
             </button>
 
-            {/* === DESKTOP NAVIGATION === */}
-            <div
-              className="hidden md:flex items-center"
-              style={{
-                gap: `${desktopNavGap}px`, // ✅ horizontal spacing between items
-              }}
-            >
-              {navItems.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => handleNavClick(item.id)}
-                  className={`rounded-full font-semibold transition-all duration-300 ${
-                    currentPage === item.id
-                      ? 'bg-blue-900 text-white shadow-lg shadow-blue-500/50'
-                      : 'text-gray-700 hover:bg-gray-100 hover:text-blue-700'
-                  }`}
-                  style={{
-                    padding: `${desktopNavPaddingY}px ${desktopNavPaddingX}px`,
-                    fontSize: `${desktopNavFontSize}px`,
-                  }}
-                >
-                  {item.label}
-                </button>
-              ))}
-            </div>
-
-            {/* === RIGHT SIDE === */}
-            <div className="flex items-center space-x-4">
-              <div className="hidden md:block">
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={handleDonateClick}
-                  className="group shadow-amber-500/50 hover:shadow-amber-500/70"
-                >
-                  <DollarSign className="w-4 h-4 mr-2" />
-                  Donate
-                </Button>
+            {/* === NAVIGATION & CTA GROUP (PRIMARY FLEX ITEM 2) === */}
+            {/* This group contains all right-side elements, maximizing the space with the Logo */}
+            <div className="flex items-center">
+                
+              {/* === DESKTOP NAVIGATION === */}
+              <div
+                className="hidden md:flex items-center"
+                style={{
+                  gap: `${desktopNavGap}px`, // ✅ horizontal spacing between items
+                }}
+              >
+                {navItems.map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => handleNavClick(item.id)}
+                    className={`rounded-full font-semibold transition-all duration-300 ${
+                      currentPage === item.id
+                        ? 'bg-blue-900 text-white shadow-lg shadow-blue-500/50'
+                        : 'text-gray-700 hover:bg-gray-100 hover:text-blue-700'
+                    }`}
+                    style={{
+                      padding: `${desktopNavPaddingY}px ${desktopNavPaddingX}px`,
+                      fontSize: `${desktopNavFontSize}px`,
+                    }}
+                  >
+                    {item.label}
+                  </button>
+                ))}
               </div>
 
-              {/* === MOBILE MENU TOGGLE === */}
-              <button
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="md:hidden p-3 rounded-full hover:bg-gray-100 transition-colors border border-gray-200"
-                aria-label="Toggle menu"
-              >
-                {mobileMenuOpen ? (
-                  <X className="w-6 h-6 text-gray-700" />
-                ) : (
-                  <Menu className="w-6 h-6 text-gray-700" />
-                )}
-              </button>
+              {/* === RIGHT SIDE (Donate Button, Mobile Menu Toggle) === */}
+              {/* Added horizontal margin/padding to separate the nav links from the donate button on desktop */}
+              <div className="flex items-center space-x-4 pl-4 md:pl-8">
+                <div className="hidden md:block">
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    onClick={handleDonateClick}
+                    className="group shadow-amber-500/50 hover:shadow-amber-500/70"
+                  >
+                    <DollarSign className="w-4 h-4 mr-2" />
+                    Donate
+                  </Button>
+                </div>
+
+                {/* === MOBILE MENU TOGGLE === */}
+                <button
+                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                  className="md:hidden p-3 rounded-full hover:bg-gray-100 transition-colors border border-gray-200"
+                  aria-label="Toggle menu"
+                >
+                  {mobileMenuOpen ? (
+                    <X className="w-6 h-6 text-gray-700" />
+                  ) : (
+                    <Menu className="w-6 h-6 text-gray-700" />
+                  )}
+                </button>
+              </div>
             </div>
           </div>
         </nav>

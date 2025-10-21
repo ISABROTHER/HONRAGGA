@@ -140,9 +140,9 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
       </header>
 
       {/* === Moving Text Bar (Marquee under header) === */}
-      <div className="bg-red-600 h-4 overflow-hidden relative">
+      <div className="bg-red-600 h-6 overflow-hidden relative">
         <div className="absolute whitespace-nowrap animate-marquee text-white text-sm font-semibold">
-          &nbsp; Breaking News: Campaign events coming soon • Join our volunteer team today • Support Jane Doe for Senate 2026 • Donate now to make a difference •
+          OBIARA KA HO
         </div>
       </div>
 

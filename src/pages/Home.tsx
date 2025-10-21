@@ -31,54 +31,69 @@ export function Home({ onNavigate }: HomeProps) {
     }
   ];
 
-  // Helper class for screen height (100vh - header height (5rem/20 units)).
-  // We explicitly set min-h-screen for large screens where 5rem doesn't matter much.
+  // Helper class for screen height (100vh - header height (5rem/20 units))
   const FullScreenClass = "min-h-[calc(100vh-5rem)] flex items-center justify-center";
 
   return (
     <div className="min-h-screen bg-white">
-      {/* --- PHONE VIEW SCREEN 1: THE VISION (Hero) --- */}
+      {/* --- PHONE VIEW SCREEN 1: THE VISION (Top-Tier Split Hero) --- */}
       <section className={`relative bg-gradient-to-br from-blue-950 via-blue-900 to-blue-800 text-white overflow-hidden ${FullScreenClass}`}>
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjA1IiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-30"></div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-          <div className="text-center space-y-8 animate-fade-in">
-            <div className="inline-block">
-              <span className="px-4 py-2 bg-amber-500/20 border border-amber-500/30 rounded-full text-amber-300 text-sm font-semibold backdrop-blur-sm">
-                Senate Campaign 2026
-              </span>
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            {/* 1. Campaign Message & CTAs (Left/Top on Mobile) */}
+            <div className="order-2 md:order-1 space-y-6 lg:py-16 text-center md:text-left animate-fade-in">
+              <div className="inline-block md:block">
+                <span className="px-4 py-2 bg-amber-500/20 border border-amber-500/30 rounded-full text-amber-300 text-sm font-semibold backdrop-blur-sm">
+                  Senate Campaign 2026
+                </span>
+              </div>
+
+              <h1 className="text-5xl md:text-6xl font-bold leading-tight">
+                A New Voice for
+                <span className="block mt-2 bg-gradient-to-r from-amber-400 to-amber-600 bg-clip-text text-transparent">
+                  Our Future
+                </span>
+              </h1>
+
+              <p className="text-xl text-blue-100 leading-relaxed max-w-lg md:max-w-none mx-auto md:mx-0">
+                Together, we can build a future where economic opportunity, quality healthcare,
+                and excellent education are rights, not privileges.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start items-center pt-4">
+                <Button
+                  size="lg"
+                  variant="secondary"
+                  onClick={() => onNavigate('volunteer')}
+                  className="group"
+                >
+                  Join the Movement
+                  <ArrowRight className="inline-block ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  onClick={() => onNavigate('policies')}
+                  className="border-white text-white hover:bg-white hover:text-blue-900"
+                >
+                  View Our Platform
+                </Button>
+              </div>
             </div>
 
-            <h1 className="text-5xl md:text-7xl font-bold leading-tight">
-              A New Voice for
-              <span className="block mt-2 bg-gradient-to-r from-amber-400 to-amber-600 bg-clip-text text-transparent">
-                Our Future
-              </span>
-            </h1>
-
-            <p className="text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto leading-relaxed">
-              Together, we can build a future where economic opportunity, quality healthcare,
-              and excellent education are rights, not privileges.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
-              <Button
-                size="lg"
-                variant="secondary"
-                onClick={() => onNavigate('volunteer')}
-                className="group"
-              >
-                Join the Movement
-                <ArrowRight className="inline-block ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                onClick={() => onNavigate('policies')}
-                className="border-white text-white hover:bg-white hover:text-blue-900"
-              >
-                View Our Platform
-              </Button>
+            {/* 2. Politician Picture Placeholder (Right/Bottom on Mobile) */}
+            <div className="order-1 md:order-2 relative group md:h-full md:flex md:items-center">
+              <div className="aspect-[3/4] md:aspect-[3/4] w-full max-w-sm mx-auto md:max-w-full bg-gradient-to-br from-blue-700 to-blue-900 rounded-2xl shadow-2xl overflow-hidden transform transition-transform duration-500 group-hover:scale-[1.01] border-4 border-amber-500/50">
+                <div className="w-full h-full flex flex-col items-center justify-center text-white p-8">
+                  <Users className="w-24 h-24 text-amber-400 mb-4 opacity-70" />
+                  <p className="text-xl font-bold">TOP-TIER CANDIDATE PHOTO</p>
+                  <p className="text-sm text-blue-200 mt-1">Image Placeholder for Jane Doe</p>
+                </div>
+              </div>
+              {/* Decorative element for premium touch */}
+              <div className="absolute top-0 left-0 w-full h-full bg-black/5 mix-blend-overlay pointer-events-none"></div>
             </div>
           </div>
         </div>

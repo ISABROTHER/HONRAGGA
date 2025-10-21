@@ -22,7 +22,7 @@
     <div className="marquee-content flex items-center gap-3" aria-hidden="true">
       <span>OFFICIAL WEBSITE FOR MP FOR CAPE COAST NORTH</span>
       <span className="text-white opacity-70">◆</span>
-      <span>HON. DR. KWAMENA MINTA NYARKU</span>
+      <span>HON. DR. KWAMENA MINTA  NYARKU</span>
       <span className="text-white opacity-70">◆</span>
       <span>TRANSPARENCY • OBIARA KA HO</span>
       <span style={{ paddingLeft: '2rem' }} />

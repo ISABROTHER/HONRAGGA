@@ -156,10 +156,10 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
           </div>
         </nav>
 
-        {/* === MOBILE MENU - BLURRED GLASS GREEN/BLUE UI === */}
+        {/* === MOBILE MENU - GREEN 20% FADE UI === */}
         <div
-          // New classes for Blurred Glass Green/Blue effect
-          className={`md:hidden absolute inset-x-0 top-full w-full bg-blue-900/10 backdrop-blur-md ring-2 ring-blue-900/30 rounded-b-xl shadow-2xl shadow-blue-500/20 overflow-hidden transition-all duration-[550ms] ease-in-out origin-top z-40 ${
+          // Implemented "transparent has green 20 percent fade only"
+          className={`md:hidden absolute inset-x-0 top-full w-full bg-green-500/20 overflow-hidden transition-all duration-[550ms] ease-in-out origin-top z-40 ${
             mobileMenuOpen ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0'
           }`}
         >
@@ -175,9 +175,9 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                 onClick={() => handleNavClick(item.id)}
                 className={`block w-full text-left rounded-xl font-semibold transition-all duration-200 group ${
                   currentPage === item.id
-                    // Adjusted active link for better contrast on a blurred background
-                    ? 'bg-blue-900 text-white shadow-lg'
-                    : 'text-gray-800 hover:bg-blue-50 focus:bg-blue-50 hover:text-blue-900'
+                    // Adjusted active link to dark green for visibility on light, transparent background
+                    ? 'bg-green-700 text-white shadow-md' 
+                    : 'text-gray-800 hover:bg-green-100 focus:bg-green-100 hover:text-green-900'
                 }`}
                 style={{
                   padding: `${mobileNavPaddingY}px ${mobileNavPaddingX}px`,

@@ -11,7 +11,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // === NUMERIC CONTROLS ===
-  const headerHeightBase = 72;       // 🔧 base height of the header (px)
+  const headerHeightBase = 85;       // 🔧 base height of the header (px)
   const headerScale = 1.1;           // 🔧 scaling factor for overall header height (1.0 = normal, 1.2 = 20% taller)
   const headerHeight = headerHeightBase * headerScale;
 

@@ -57,7 +57,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                   style={{
                     height: `${100 * logoScale}px`,
                     width: 'auto', 
-                    transform: `translateY(${logoOffset = 10}px) scale(${logoScale})`,
+                    transform: `translateY(${logoOffset}px) scale(${logoScale})`,
                     transformOrigin: 'center center',
                   }}
                 />

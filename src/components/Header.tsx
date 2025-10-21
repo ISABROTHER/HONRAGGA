@@ -22,7 +22,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
   const logoLeftAdjust = 15;       // 🔧 fine-tune horizontal (+right, -left)
 
   // === SINGLE NAV SCALING CONTROL ===
-  const navScale = 0.95;           // 🔧 affects spacing, padding & font size for both desktop and mobile
+  const navScale = 0.80;           // 🔧 affects spacing, padding & font size for both desktop and mobile
 
   const navItems = [
     { id: 'home', label: 'Home' },

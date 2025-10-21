@@ -138,7 +138,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
       </header>
 
       {/* === SCROLLING ANNOUNCEMENT BAR === */}
-      <div className="bg-red-600 h-6 overflow-hidden relative flex items-center">
+      <div className="bg-red-600 h-4 overflow-hidden relative flex items-center">
         <div
           className="absolute top-0 h-full flex items-center whitespace-nowrap animate-marquee font-serif font-bold text-white text-base tracking-wide"
           style={{
@@ -147,11 +147,11 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
             fontFamily: "Georgia, 'Times New Roman', serif",
           }}
         >
-          <span>Official Website for MP for Cape Coast</span>
+          <span>OFFICIAL WEBSITE FOR MP FOR CAPE COAST NORTHt</span>
           <span className="mx-5">—</span>
-          <span>Working for the People, Building the Future</span>
+          <span>HON- DR. KWAMENA MINTA NYARKU</span>
           <span className="mx-5">—</span>
-          <span>Transparency • Integrity • Progress</span>
+          <span>Transparency • OBIARA KA HO</span>
         </div>
 
         <style>{`

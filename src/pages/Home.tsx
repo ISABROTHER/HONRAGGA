@@ -37,27 +37,26 @@ export function Home({ onNavigate }: HomeProps) {
 
   return (
     <div className="min-h-screen">
-      {/* HERO SECTION with Image, Hue Overlay (updated for cinematic effect), and Content Layering */}
+      {/* HERO SECTION with Image, Black Bottom Fade, and Content Layering */}
       <section className="relative h-screen min-h-[700px] max-h-[900px] flex items-center justify-center text-white overflow-hidden">
         
-        {/* 1. Background Image Container */}
+        {/* 1. Background Image Container (Absolute and fills section) */}
         <div 
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: `url(${CANDIDATE_IMAGE_URL})` }}
           role="img"
           aria-label="Jane Doe Campaign Hero Image"
         >
-          {/* 2. Primary Blue Gradient Overlay (Essential for white text readability) */}
-          <div className="absolute inset-0 bg-blue-950/70"></div> 
+          {/* Removed: Full-screen color overlay to prioritize image brightness at top */}
         </div>
 
-        {/* 3. Hue Overlay (Cinematic Amber Fade) - Covers top 50% for text contrast and cinematic hue */}
+        {/* 2. Cinematic Black Overlay - Starts at bottom, fades to middle (perfect for white text at bottom) */}
         <div className="absolute inset-0">
-            {/* H-1/2 ensures the gradient stops at the middle of the screen */}
-            <div className="absolute inset-0 bg-gradient-to-b from-amber-500/70 via-amber-500/30 to-transparent h-1/2"></div>
+            {/* New: Black fade, strong at bottom (from-black/80), fading to transparent by the middle of the screen */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
         </div>
 
-        {/* 4. Layered Content (Text and CTAs) - Ensure content z-index is high */}
+        {/* 3. Layered Content (Text and CTAs) - Ensure content z-index is high */}
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-32">
           <div className="text-center space-y-8 animate-fade-in">
             {/* Empty space for where the large slogan was */}

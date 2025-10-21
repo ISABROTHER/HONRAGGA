@@ -10,9 +10,12 @@ interface HeaderProps {
 export function Header({ currentPage, onNavigate }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // === CONTROL SETTINGS ===
-  const logoScale = 1.0; // 🔧 change to enlarge/shrink logo (1.2 = 20% bigger)
-  const logoOffset = -3; // 🔧 move logo up/down (negative = up, positive = down, in pixels)
+  // === NUMERIC CONTROLS ===
+  const headerHeight = 72;          // 🔧 total header height (px)
+  const logoScale = 1.0;            // 🔧 1.0 = normal size, 1.2 = 20% bigger, etc.
+  const logoTopOffset = 8;          // 🔧 px distance from header top edge
+  const logoBottomOffset = 10;      // 🔧 px distance from header bottom edge
+  const logoVerticalAdjust = 0;     // 🔧 additional fine-tune (positive = move down, negative = move up)
 
   const navItems = [
     { id: 'home', label: 'Home' },
@@ -39,15 +42,20 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
       <header
         className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-xl transition-shadow"
         style={{
-          height: '4.5rem',
+          height: `${headerHeight}px`,
         }}
       >
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
           <div className="flex justify-between items-center h-full">
-            {/* === LOGO & NAME === */}
+            {/* === LOGO + NAME === */}
             <button
               onClick={() => handleNavClick('home')}
               className="flex items-center space-x-3 group transition-transform hover:scale-[1.01] focus:outline-none"
+              style={{
+                position: 'relative',
+                top: `${logoTopOffset + logoVerticalAdjust}px`,
+                bottom: `${logoBottomOffset}px`,
+              }}
             >
               <div className="flex items-center">
                 <img
@@ -55,13 +63,14 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                   alt="Logo"
                   className="object-contain transition-transform duration-300"
                   style={{
-                    height: `${100 * logoScale}px`,
-                    width: 'auto', 
-                    transform: `translateY(${logoOffset}px) scale(${logoScale})`,
+                    height: `${headerHeight * 0.8 * logoScale}px`,
+                    width: 'auto',
+                    transform: `scale(${logoScale})`,
                     transformOrigin: 'center center',
                   }}
                 />
               </div>
+
               <div className="hidden sm:block text-left">
                 <div className="text-xl font-extrabold text-gray-900 group-hover:text-blue-700 transition-colors">
                   Jane Doe
@@ -156,10 +165,10 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
         </div>
       </header>
 
-      {/* === MINI SCROLLING HEADER === */}
+      {/* === MARQUEE === */}
       <div
         className="bg-red-600 h-5 overflow-hidden relative flex items-center"
-        style={{ marginTop: '4.5rem' }}
+        style={{ marginTop: `${headerHeight}px` }}
       >
         <div
           className="marquee-track absolute top-0 left-0 h-full flex items-center whitespace-nowrap font-bold text-white"
@@ -199,8 +208,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
         `}</style>
       </div>
 
-      {/* === TOP SPACER === */}
-      <div style={{ paddingTop: '5rem' }} />
+      <div style={{ paddingTop: `${headerHeight + 20}px` }} />
     </div>
   );
 }

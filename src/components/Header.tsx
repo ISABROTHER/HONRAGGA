@@ -11,19 +11,18 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // === NUMERIC CONTROLS ===
-  const headerHeightBase = 90;      // 🔧 base height of header (px)
-  const headerScale = 1.1;          // 🔧 scaling factor for header height
+  const headerHeightBase = 90;     // 🔧 base height of header (px)
+  const headerScale = 1.1;         // 🔧 scale for header height
   const headerHeight = headerHeightBase * headerScale;
 
-  const logoScale = 1.2;            // 🔧 logo scale factor
-  const logoTopOffset = 8;          // 🔧 distance from top (px)
-  const logoBottomOffset = 2;       // 🔧 distance from bottom (px)
-  const logoVerticalAdjust = -1;    // 🔧 fine tune vertical (+down, -up)
-  const logoLeftAdjust = 15;        // 🔧 fine tune horizontal (+right, -left)
+  const logoScale = 1.2;           // 🔧 logo scaling
+  const logoTopOffset = 8;         // 🔧 distance from top (px)
+  const logoBottomOffset = 2;      // 🔧 distance from bottom (px)
+  const logoVerticalAdjust = -1;   // 🔧 fine-tune vertical (+down, -up)
+  const logoLeftAdjust = 15;       // 🔧 fine-tune horizontal (+right, -left)
 
-  // === NEW NAV CONTROLS ===
-  const navItemSpacing = 0.1;       // 🔧 controls spacing between nav buttons (0.5 = tighter, 1.2 = wider)
-  const navFontScale = 0.70;        // 🔧 controls font size of nav items (1.0 = normal, 0.9 = smaller, 1.1 = larger)
+  // === SINGLE NAV SCALING CONTROL ===
+  const navScale = 0.95;           // 🔧 affects spacing, padding & font size for both desktop and mobile
 
   const navItems = [
     { id: 'home', label: 'Home' },
@@ -94,20 +93,21 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
             <div
               className="hidden md:flex items-center"
               style={{
-                gap: `${navItemSpacing * 1.5}rem`, // spacing control
+                gap: `${1.5 * navScale}rem`,
               }}
             >
               {navItems.map((item) => (
                 <button
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}
-                  className={`px-3 py-2 rounded-full font-semibold transition-all duration-300 ${
+                  className={`rounded-full font-semibold transition-all duration-300 ${
                     currentPage === item.id
                       ? 'bg-blue-900 text-white shadow-lg shadow-blue-500/50'
                       : 'text-gray-700 hover:bg-gray-100 hover:text-blue-700'
                   }`}
                   style={{
-                    fontSize: `${1 * navFontScale}rem`, // font scaling
+                    padding: `${0.4 * navScale}rem ${1.2 * navScale}rem`,
+                    fontSize: `${1 * navScale}rem`,
                   }}
                 >
                   {item.label}
@@ -151,28 +151,39 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
             mobileMenuOpen ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0'
           }`}
         >
-          <div className="px-4 py-4 space-y-2">
+          <div
+            className="px-4 py-4 space-y-2"
+            style={{
+              gap: `${0.3 * navScale}rem`,
+            }}
+          >
             {navItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => handleNavClick(item.id)}
-                className={`block w-full text-left px-4 py-3 rounded-xl font-semibold text-lg transition-all duration-200 group ${
+                className={`block w-full text-left rounded-xl font-semibold transition-all duration-200 group ${
                   currentPage === item.id
                     ? 'bg-blue-900 text-white shadow-md'
                     : 'text-gray-800 hover:bg-blue-50 focus:bg-blue-50 hover:text-blue-900'
                 }`}
+                style={{
+                  padding: `${0.75 * navScale}rem ${1.5 * navScale}rem`,
+                  fontSize: `${1 * navScale}rem`,
+                }}
               >
-                <span className="inline-flex items-center space-x-3 transform transition-transform duration-150 group-hover:translate-x-1 group-focus:translate-x-1">
+                <span className="inline-flex items-center transform transition-transform duration-150 group-hover:translate-x-1 group-focus:translate-x-1">
                   {item.label}
                 </span>
               </button>
             ))}
+
             <div className="pt-2">
               <Button
                 variant="secondary"
                 size="md"
                 onClick={handleDonateClick}
                 className="w-full justify-center shadow-lg shadow-amber-500/50"
+                style={{ fontSize: `${1 * navScale}rem` }}
               >
                 <DollarSign className="w-5 h-5 mr-2" />
                 Donate Now

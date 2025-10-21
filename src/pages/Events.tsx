@@ -100,31 +100,31 @@ export function Events() {
             </p>
           </div>
         </div>
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white dark:from-gray-900 to-transparent"></div>
+        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent"></div>
       </section>
 
-      <section className="py-20 bg-white dark:bg-gray-900">
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {loading ? (
             <div className="text-center py-12">
               <div className="inline-block w-16 h-16 border-4 border-blue-900 border-t-transparent rounded-full animate-spin"></div>
-              <p className="mt-4 text-gray-600 dark:text-gray-400">Loading events...</p>
+              <p className="mt-4 text-gray-600">Loading events...</p>
             </div>
           ) : events.length === 0 ? (
             <div className="text-center py-12">
               <Calendar className="w-16 h-16 mx-auto text-gray-400 mb-4" />
-              <p className="text-xl text-gray-600 dark:text-gray-400">No upcoming events at this time.</p>
-              <p className="text-gray-500 dark:text-gray-500 mt-2">Check back soon for new events!</p>
+              <p className="text-xl text-gray-600">No upcoming events at this time.</p>
+              <p className="text-gray-500 mt-2">Check back soon for new events!</p>
             </div>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {events.map((event) => (
                 <div
                   key={event.id}
-                  className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 dark:border-gray-700 overflow-hidden group"
+                  className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 overflow-hidden group"
                 >
                   {event.image_url && (
-                    <div className="h-48 bg-gradient-to-br from-blue-200 to-blue-300 dark:from-blue-900 dark:to-blue-800">
+                    <div className="h-48 bg-gradient-to-br from-blue-200 to-blue-300">
                       <img
                         src={event.image_url}
                         alt={event.title}
@@ -135,30 +135,30 @@ export function Events() {
 
                   <div className="p-6 space-y-4">
                     <div>
-                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-blue-900 dark:group-hover:text-blue-400 transition-colors">
+                      <h3 className="text-2xl font-bold text-gray-900 mb-2 group-hover:text-blue-900 transition-colors">
                         {event.title}
                       </h3>
-                      <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                      <p className="text-gray-600 leading-relaxed">
                         {event.description}
                       </p>
                     </div>
 
                     <div className="space-y-2 text-sm">
-                      <div className="flex items-start space-x-2 text-gray-700 dark:text-gray-300">
-                        <Calendar className="w-5 h-5 text-blue-900 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+                      <div className="flex items-start space-x-2 text-gray-700">
+                        <Calendar className="w-5 h-5 text-blue-900 flex-shrink-0 mt-0.5" />
                         <span>{formatDate(event.event_date)}</span>
                       </div>
-                      <div className="flex items-start space-x-2 text-gray-700 dark:text-gray-300">
-                        <Clock className="w-5 h-5 text-blue-900 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+                      <div className="flex items-start space-x-2 text-gray-700">
+                        <Clock className="w-5 h-5 text-blue-900 flex-shrink-0 mt-0.5" />
                         <span>{formatTime(event.event_date)}</span>
                       </div>
-                      <div className="flex items-start space-x-2 text-gray-700 dark:text-gray-300">
-                        <MapPin className="w-5 h-5 text-blue-900 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+                      <div className="flex items-start space-x-2 text-gray-700">
+                        <MapPin className="w-5 h-5 text-blue-900 flex-shrink-0 mt-0.5" />
                         <span>{event.location}</span>
                       </div>
                       {event.max_attendees && (
-                        <div className="flex items-center space-x-2 text-gray-700 dark:text-gray-300">
-                          <Users className="w-5 h-5 text-blue-900 dark:text-blue-400 flex-shrink-0" />
+                        <div className="flex items-center space-x-2 text-gray-700">
+                          <Users className="w-5 h-5 text-blue-900 flex-shrink-0" />
                           <span>Limited to {event.max_attendees} attendees</span>
                         </div>
                       )}
@@ -183,16 +183,16 @@ export function Events() {
 
       {selectedEvent && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl max-w-md w-full shadow-2xl">
-            <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+          <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl">
+            <div className="p-6 border-b border-gray-200">
+              <h2 className="text-2xl font-bold text-gray-900">
                 RSVP for {selectedEvent.title}
               </h2>
             </div>
 
             <form onSubmit={handleRSVP} className="p-6 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
                   Full Name *
                 </label>
                 <input
@@ -200,12 +200,12 @@ export function Events() {
                   value={rsvpForm.name}
                   onChange={(e) => setRsvpForm({ ...rsvpForm, name: e.target.value })}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
                   Email *
                 </label>
                 <input
@@ -213,24 +213,24 @@ export function Events() {
                   value={rsvpForm.email}
                   onChange={(e) => setRsvpForm({ ...rsvpForm, email: e.target.value })}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
                   Phone
                 </label>
                 <input
                   type="tel"
                   value={rsvpForm.phone}
                   onChange={(e) => setRsvpForm({ ...rsvpForm, phone: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
                   Number of Guests
                 </label>
                 <input
@@ -239,12 +239,12 @@ export function Events() {
                   max="10"
                   value={rsvpForm.guests}
                   onChange={(e) => setRsvpForm({ ...rsvpForm, guests: parseInt(e.target.value) || 0 })}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
                 />
               </div>
 
               {message && (
-                <div className={`p-3 rounded-lg ${message.includes('successful') ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400' : 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-400'}`}>
+                <div className={`p-3 rounded-lg ${message.includes('successful') ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
                   {message}
                 </div>
               )}

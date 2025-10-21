@@ -22,7 +22,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
   const logoLeftAdjust = 15;        // 🔧 fine tune horizontal (+right, -left)
 
   // === NEW NAV CONTROLS ===
-  const navItemSpacing = 0.2;       // 🔧 controls spacing between nav buttons (0.5 = tighter, 1.2 = wider)
+  const navItemSpacing = 0.1;       // 🔧 controls spacing between nav buttons (0.5 = tighter, 1.2 = wider)
   const navFontScale = 0.95;        // 🔧 controls font size of nav items (1.0 = normal, 0.9 = smaller, 1.1 = larger)
 
   const navItems = [

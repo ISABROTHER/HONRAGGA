@@ -1,19 +1,19 @@
-import { Facebook, Twitter, Instagram, Mail, Phone, Rocket, MessageSquare, Video } from 'lucide-react';
+import { Facebook, Instagram, Mail, Phone, MessageSquare, Video, X } from 'lucide-react';
 // Keeping Supabase import in case of future form re-introduction
 import { supabase } from '../lib/supabase'; 
 
 export function Footer() {
-  // NOTE: Lucide-react uses specific names. Using the following:
-  // TikTok: Video (Best match for short-form content)
-  // X: Twitter
-  // WhatsApp: MessageSquare (Best match for chat/messaging)
+  // NOTE on Lucide Icons:
+  // Video is used for TikTok (best semantic match for short-form video)
+  // X is used for X (Twitter)
+  // MessageSquare is used for WhatsApp (best semantic match for chat/messaging)
   
   const socialLinks = [
-    { icon: Video, href: '#', label: 'TikTok' }, // Represents TikTok
+    { icon: Video, href: '#', label: 'TikTok' }, 
     { icon: Facebook, href: '#', label: 'Facebook' },
-    { icon: Twitter, href: '#', label: 'X (Twitter)' },
+    { icon: X, href: '#', label: 'X (Twitter)' }, 
     { icon: Instagram, href: '#', label: 'Instagram' },
-    { icon: MessageSquare, href: '#', label: 'WhatsApp' }, // Represents WhatsApp
+    { icon: MessageSquare, href: '#', label: 'WhatsApp' }, 
   ];
 
   const legalLinks = [
@@ -47,6 +47,7 @@ export function Footer() {
                 key={label}
                 href={href}
                 aria-label={label}
+                title={label} /* Added: Title attribute displays the name on hover/tap */
                 className="w-8 h-8 rounded-full bg-white/10 hover:bg-amber-500/80 flex items-center justify-center transition-all duration-300 hover:scale-110"
               >
                 <Icon className="w-4 h-4" />

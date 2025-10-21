@@ -30,8 +30,8 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
   };
 
   return (
-    // HEADER BACKGROUND IS NOW #E50914
-    <header className="sticky top-0 z-50 bg-campaign-red shadow-xl transition-shadow relative border-b border-campaign-red-dark">
+    // HEADER BACKGROUND IS NOW DEEP RED
+    <header className="sticky top-0 z-50 bg-red-700 shadow-xl transition-shadow relative border-b border-red-800">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Container with increased vertical padding (py-5) */}
         <div className="flex justify-between items-center py-5">
@@ -44,9 +44,9 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
               JD
             </div>
             <div className="hidden sm:block text-left">
-              {/* Text color uses white/light red for contrast against deep red */}
-              <div className="text-xl font-extrabold text-white group-hover:text-campaign-red-light transition-colors">Jane Doe</div>
-              <div className="text-xs text-campaign-red-light uppercase tracking-widest font-medium">For Senate 2026</div>
+              {/* Text color adjusted to white/light red for contrast */}
+              <div className="text-xl font-extrabold text-white group-hover:text-red-200 transition-colors">Jane Doe</div>
+              <div className="text-xs text-red-200 uppercase tracking-widest font-medium">For Senate 2026</div>
             </div>
           </button>
 
@@ -60,8 +60,8 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                   currentPage === item.id
                     // Active state uses Blue for high contrast Primary accent
                     ? 'bg-blue-900 text-white shadow-lg shadow-blue-500/50' 
-                    // Inactive state uses white/darker red for hover contrast
-                    : 'text-white hover:bg-campaign-red-dark hover:text-white'
+                    // Inactive state uses white/light red text and hover background
+                    : 'text-red-100 hover:bg-red-600 hover:text-white'
                 }`}
               >
                 {item.label}
@@ -87,7 +87,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
             {/* Mobile Menu Toggle - Icon and border adjusted for contrast */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-3 rounded-full hover:bg-campaign-red-dark transition-colors border border-white/50"
+              className="md:hidden p-3 rounded-full hover:bg-red-600 transition-colors border border-red-200"
               aria-label="Toggle menu"
             >
               {mobileMenuOpen ? (
@@ -139,6 +139,6 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
             </div>
         </div>
       </div>
-    </header>
+    </header> 
   );
 }

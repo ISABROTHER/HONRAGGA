@@ -160,10 +160,10 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
 
           <div className="marquee-content flex items-center gap-4" aria-hidden="true">
             <span>OFFICIAL WEBSITE FOR MP FOR CAPE COAST NORTH</span>
-            <span className="text-white/80">— ✦ —</span>
+            <span className="text-white/80">II</span>
             <span>HON. DR. KWAMENA MINTA NYARKU</span>
-            <span className="text-white/80">— ✦ —</span>
-            <span>TRANSPARENCY • OBIARA KA HO</span>
+            <span className="text-white/80">II</span>
+            <span>II                OBIARA KA HO</span>
             <span style={{ paddingLeft: '2rem' }} />
           </div>
         </div>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+ import { useState } from 'react';
 import { Menu, X, DollarSign } from 'lucide-react';
 import { Button } from './Button';
 
@@ -45,13 +45,13 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
               onClick={() => handleNavClick('home')}
               className="flex items-center space-x-3 group transition-transform hover:scale-[1.01] focus:outline-none"
             >
-              <div className="flex items-center h-full">
+              <div className="flex items-center">
                 <img
                   src="https://i.imgur.com/1GfnCQc.png"
                   alt="Logo"
                   className="object-contain transition-transform duration-300"
                   style={{
-                    height: '58px',
+                    height: '58px', // fixed logo height
                     width: 'auto',
                     transform: 'translateY(-2px)',
                   }}
@@ -164,18 +164,12 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
         >
           <div style={{ minWidth: '30vw' }} />
 
-          <div className="marquee-content flex items-center gap-1">
-            <span>SUPPORT HON. RAGGA’S OPERATION 1000 DESKS FOR STUDENTS</span>
-            <span className="text-white/80">II</span>
-            <span>OBIARA KA HO</span>
-            <span className="text-white/80">II</span>
+          <div className="marquee-content flex items-center gap-4">
+            <span>SUPPORT HON. RAGGA’S OPERATION 1000 DESKS FOR STUDENTS 'II' OBIARA KA HO 'II'</span>
           </div>
 
-          <div className="marquee-content flex items-center gap-1" aria-hidden="true">
-            <span>SUPPORT HON. RAGGA’S OPERATION 1000 DESKS FOR STUDENTS</span>
-            <span className="text-white/80">II</span>
-            <span>OBIARA KA HO</span>
-            <span className="text-white/80">II</span>
+          <div className="marquee-content flex items-center gap-4" aria-hidden="true">
+            <span>SUPPORT HON. RAGGA’S OPERATION 1000 DESKS FOR STUDENTS 'II' OBIARA KA HO 'II'</span>
           </div>
         </div>
 
@@ -185,7 +179,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
             100% { transform: translateX(-50%); }
           }
           .marquee-track {
-            animation: marquee 40s linear infinite;
+            animation: marquee 42s linear infinite;
           }
           .marquee-track:hover {
             animation-play-state: paused;

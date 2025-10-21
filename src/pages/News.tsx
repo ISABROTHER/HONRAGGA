@@ -69,10 +69,10 @@ export function News() {
             </p>
           </div>
         </div>
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white dark:from-gray-900 to-transparent"></div>
+        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent"></div>
       </section>
 
-      <section className="py-8 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 sticky top-20 z-40">
+      <section className="py-8 bg-white border-b border-gray-200 sticky top-20 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap gap-3 justify-center">
             {['all', 'article', 'press-release', 'video'].map((category) => (
@@ -82,7 +82,7 @@ export function News() {
                 className={`px-6 py-2 rounded-full font-medium transition-all ${
                   filter === category
                     ? 'bg-blue-900 text-white shadow-lg'
-                    : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
                 {category.charAt(0).toUpperCase() + category.slice(1).replace('-', ' ')}
@@ -92,17 +92,17 @@ export function News() {
         </div>
       </section>
 
-      <section className="py-20 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
+      <section className="py-20 bg-gradient-to-b from-white to-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {loading ? (
             <div className="text-center py-12">
               <div className="inline-block w-16 h-16 border-4 border-blue-900 border-t-transparent rounded-full animate-spin"></div>
-              <p className="mt-4 text-gray-600 dark:text-gray-400">Loading news...</p>
+              <p className="mt-4 text-gray-600">Loading news...</p>
             </div>
           ) : filteredPosts.length === 0 ? (
             <div className="text-center py-12">
               <FileText className="w-16 h-16 mx-auto text-gray-400 mb-4" />
-              <p className="text-xl text-gray-600 dark:text-gray-400">No posts available yet.</p>
+              <p className="text-xl text-gray-600">No posts available yet.</p>
             </div>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -112,7 +112,7 @@ export function News() {
                 return (
                   <article
                     key={post.id}
-                    className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 dark:border-gray-700 overflow-hidden group cursor-pointer"
+                    className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 overflow-hidden group cursor-pointer"
                     onClick={() => setSelectedPost(post)}
                   >
                     {post.image_url ? (
@@ -124,32 +124,32 @@ export function News() {
                         />
                       </div>
                     ) : (
-                      <div className="h-48 bg-gradient-to-br from-blue-200 to-blue-300 dark:from-blue-900 dark:to-blue-800 flex items-center justify-center">
-                        <CategoryIcon className="w-16 h-16 text-blue-900 dark:text-blue-400 opacity-50" />
+                      <div className="h-48 bg-gradient-to-br from-blue-200 to-blue-300 flex items-center justify-center">
+                        <CategoryIcon className="w-16 h-16 text-blue-900 opacity-50" />
                       </div>
                     )}
 
                     <div className="p-6">
                       <div className="flex items-center space-x-3 mb-3">
-                        <span className="inline-flex items-center space-x-1 px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-900 dark:text-blue-400 text-xs font-semibold rounded-full">
+                        <span className="inline-flex items-center space-x-1 px-3 py-1 bg-blue-100 text-blue-900 text-xs font-semibold rounded-full">
                           <CategoryIcon className="w-3 h-3" />
                           <span>{post.category.replace('-', ' ')}</span>
                         </span>
-                        <span className="flex items-center text-xs text-gray-500 dark:text-gray-400">
+                        <span className="flex items-center text-xs text-gray-500">
                           <Calendar className="w-3 h-3 mr-1" />
                           {formatDate(post.published_at)}
                         </span>
                       </div>
 
-                      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-blue-900 dark:group-hover:text-blue-400 transition-colors line-clamp-2">
+                      <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-900 transition-colors line-clamp-2">
                         {post.title}
                       </h3>
 
-                      <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3 leading-relaxed">
+                      <p className="text-gray-600 mb-4 line-clamp-3 leading-relaxed">
                         {post.excerpt}
                       </p>
 
-                      <button className="inline-flex items-center text-blue-900 dark:text-blue-400 font-semibold group-hover:underline">
+                      <button className="inline-flex items-center text-blue-900 font-semibold group-hover:underline">
                         Read More
                         <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                       </button>
@@ -164,7 +164,7 @@ export function News() {
 
       {selectedPost && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl max-w-4xl w-full shadow-2xl my-8">
+          <div className="bg-white rounded-2xl max-w-4xl w-full shadow-2xl my-8">
             {selectedPost.image_url && (
               <div className="h-64 md:h-96 overflow-hidden rounded-t-2xl">
                 <img
@@ -177,32 +177,32 @@ export function News() {
 
             <div className="p-8">
               <div className="flex items-center space-x-3 mb-4">
-                <span className="inline-flex items-center space-x-1 px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-900 dark:text-blue-400 text-sm font-semibold rounded-full">
+                <span className="inline-flex items-center space-x-1 px-3 py-1 bg-blue-100 text-blue-900 text-sm font-semibold rounded-full">
                   {selectedPost.category.replace('-', ' ')}
                 </span>
-                <span className="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                <span className="flex items-center text-sm text-gray-500">
                   <Calendar className="w-4 h-4 mr-1" />
                   {formatDate(selectedPost.published_at)}
                 </span>
               </div>
 
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
                 {selectedPost.title}
               </h2>
 
-              <div className="prose dark:prose-invert max-w-none">
-                <p className="text-xl text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
+              <div className="prose max-w-none">
+                <p className="text-xl text-gray-600 mb-6 leading-relaxed">
                   {selectedPost.excerpt}
                 </p>
-                <div className="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-line">
+                <div className="text-gray-700 leading-relaxed whitespace-pre-line">
                   {selectedPost.content}
                 </div>
               </div>
 
-              <div className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700">
+              <div className="mt-8 pt-8 border-t border-gray-200">
                 <button
                   onClick={() => setSelectedPost(null)}
-                  className="px-6 py-3 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-900 dark:text-white font-semibold rounded-lg transition-colors"
+                  className="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-900 font-semibold rounded-lg transition-colors"
                 >
                   Close
                 </button>

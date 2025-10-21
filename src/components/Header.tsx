@@ -36,7 +36,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
   // Vertical & horizontal spacing between stacked items scale with navScale
   const mobileNavGap = 1 * navScale; // 🔧 vertical spacing between stacked items
   const mobileNavPaddingY = 10 * navScale; // 🔧 top/bottom padding
-  const mobileNavPaddingX = 36 * navScale; // 🔧 left/right padding
+  const mobileNavPaddingX = 12 * navScale; // 🔧 left/right padding
   const mobileNavFontSize = 11 * navScale; // 🔧 text size
 
   const navItems = [

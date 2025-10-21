@@ -15,7 +15,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
   const logoScale = 1.3;            // 🔧 1.0 = normal size, 1.18 = 20% bigger, etc.
   const logoTopOffset = 8;          // 🔧 px distance from header top edge
   const logoBottomOffset = 2;      // 🔧 px distance from header bottom edge
-  const logoVerticalAdjust = 0;     // 🔧 additional fine-tune (positive = move down, negative = move up)
+  const logoVerticalAdjust = 6;     // 🔧 additional fine-tune (positive = move down, negative = move up)
 
   const navItems = [
     { id: 'home', label: 'Home' },

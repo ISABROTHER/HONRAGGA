@@ -95,7 +95,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
         </div>
       </nav>
 
-      {/* Mobile Menu Dropdown OVERLAY - Duration changed to duration-[550ms] for 10% slower elegance */}
+      {/* Mobile Menu Dropdown OVERLAY */}
       <div
         className={`md:hidden absolute inset-x-0 top-full w-full bg-white border-t border-gray-200 shadow-2xl overflow-hidden
           transition-all duration-[550ms] ease-in-out origin-top z-40
@@ -107,13 +107,18 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
             <button
               key={item.id}
               onClick={() => handleNavClick(item.id)}
-              className={`block w-full text-left px-4 py-3 rounded-lg font-medium transition-all duration-200 ${
-                currentPage === item.id
-                  ? 'bg-blue-900 text-white'
-                  : 'text-gray-700 hover:bg-gray-100'
-              }`}
+              className={`
+                block w-full text-left px-4 py-3 rounded-xl font-semibold text-lg transition-all duration-200 group
+                ${currentPage === item.id
+                  ? 'bg-blue-900 text-white shadow-md'
+                  : 'text-gray-800 hover:bg-blue-50 focus:bg-blue-50 hover:text-blue-900' // High-fidelity tap/focus state
+                }
+              `}
             >
-              {item.label}
+              {/* Animated effect on text for mobile tap/hover */}
+              <span className="inline-flex items-center space-x-3 transform transition-transform duration-150 group-hover:translate-x-1 group-focus:translate-x-1">
+                {item.label}
+              </span>
             </button>
           ))}
           <div className="pt-2">

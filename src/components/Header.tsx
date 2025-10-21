@@ -2,18 +2,28 @@ import { Menu, X, Moon, Sun } from 'lucide-react';
 import { useState } from 'react';
 import { useTheme } from '../contexts/ThemeContext';
 
-export function Header() {
+interface HeaderProps {
+  currentPage: string;
+  onNavigate: (page: string) => void;
+}
+
+export function Header({ currentPage, onNavigate }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
 
   const navLinks = [
-    { name: 'Home', href: '#home' },
-    { name: 'About', href: '#about' },
-    { name: 'Policies', href: '#policies' },
-    { name: 'Events', href: '#events' },
-    { name: 'News', href: '#news' },
-    { name: 'Get Involved', href: '#volunteer' },
+    { name: 'Home', page: 'home' },
+    { name: 'About', page: 'about' },
+    { name: 'Policies', page: 'policies' },
+    { name: 'Events', page: 'events' },
+    { name: 'News', page: 'news' },
+    { name: 'Get Involved', page: 'volunteer' },
   ];
+
+  const handleNavClick = (page: string) => {
+    onNavigate(page);
+    setIsMenuOpen(false);
+  };
 
   return (
     <>
@@ -53,13 +63,17 @@ export function Header() {
 
             <nav className="hidden md:flex items-center space-x-8">
               {navLinks.map((link) => (
-                <a
+                <button
                   key={link.name}
-                  href={link.href}
-                  className="text-gray-700 dark:text-gray-300 hover:text-amber-600 dark:hover:text-amber-400 font-medium transition-colors"
+                  onClick={() => handleNavClick(link.page)}
+                  className={`font-medium transition-colors ${
+                    currentPage === link.page
+                      ? 'text-amber-600 dark:text-amber-400'
+                      : 'text-gray-700 dark:text-gray-300 hover:text-amber-600 dark:hover:text-amber-400'
+                  }`}
                 >
                   {link.name}
-                </a>
+                </button>
               ))}
               <button
                 onClick={toggleTheme}
@@ -103,14 +117,17 @@ export function Header() {
           {isMenuOpen && (
             <nav className="md:hidden pb-4 space-y-2">
               {navLinks.map((link) => (
-                <a
+                <button
                   key={link.name}
-                  href={link.href}
-                  className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
-                  onClick={() => setIsMenuOpen(false)}
+                  onClick={() => handleNavClick(link.page)}
+                  className={`block w-full text-left px-4 py-2 rounded-lg transition-colors ${
+                    currentPage === link.page
+                      ? 'bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400'
+                      : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                  }`}
                 >
                   {link.name}
-                </a>
+                </button>
               ))}
             </nav>
           )}

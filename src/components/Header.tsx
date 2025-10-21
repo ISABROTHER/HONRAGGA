@@ -238,7 +238,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
           .marquee-track {
             animation: marquee 42s linear infinite;
           }
-          .marquee-track:hover {
+          .marquee-track:hover { 
             animation-play-state: paused;
           }
         `}</style>

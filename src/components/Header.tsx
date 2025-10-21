@@ -13,7 +13,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
   // === NUMERIC CONTROLS ===
   const headerHeightBase = 90; // 🔧 base height of header (px)
   const headerScale = 1.1; // 🔧 overall header scaling
-  const headerHeight = headerHeightBase * headerScale;
+  const headerHeight = headerHeightBase * headerScale; // Calculated: 99px
 
   const logoScale = 1.2; // 🔧 logo scaling
   const logoTopOffset = 8; // 🔧 px from top
@@ -69,14 +69,10 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
       >
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
           <div className="flex justify-between items-center h-full">
-            {/* === LOGO (PRIMARY FLEX ITEM 1) === */}
-            {/* Reversing the order of logo and menu toggle to put the menu button on the left for the Left Drawer UX */}
-            
             {/* === MOBILE MENU TOGGLE (LEFT SIDE ON MOBILE) === */}
             <div className="flex items-center">
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                // Show Menu/Close button on mobile/tablet, hidden on desktop
                 className="md:hidden p-3 rounded-full hover:bg-gray-100 transition-colors border border-gray-200"
                 aria-label="Toggle menu"
               >
@@ -95,7 +91,6 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
               style={{
                 position: 'relative',
                 top: `${logoTopOffset + logoVerticalAdjust}px`,
-                // Adjusted horizontal position to account for the menu button on the left
                 left: `0`, 
                 bottom: `${logoBottomOffset}px`,
               }}
@@ -144,8 +139,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                 ))}
               </div>
 
-              {/* === RIGHT SIDE (Donate Button, Mobile Menu Toggle) === */}
-              {/* Removed the mobile toggle from here, kept only desktop donate button */}
+              {/* === RIGHT SIDE (Donate Button) === */}
               <div className="flex items-center space-x-4 pl-4 md:pl-8">
                 <div className="hidden md:block">
                   <Button
@@ -165,25 +159,17 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
 
         {/* === MOBILE MENU - LEFT SIDE DRAWER === */}
         <div
-          // Changed to fixed left-side positioning, 50% width, and left-slide transition
-          className={`fixed inset-y-0 left-0 w-1/2 max-w-sm h-full bg-green-900/[.98] overflow-y-auto transition-transform duration-[550ms] ease-in-out z-40 md:hidden ${
+          // FIXED: Set 'top' to start below the header+marquee, and 'bottom-0' for full remaining height.
+          className={`fixed left-0 bottom-0 w-1/2 max-w-sm bg-green-900/[.98] overflow-y-auto transition-transform duration-[550ms] ease-in-out z-40 md:hidden ${
             mobileMenuOpen ? 'translate-x-0' : '-translate-x-full' // Slide in from left
           }`}
           style={{
+            // Calculate height of fixed header (headerHeight) + marquee (20px, from h-5)
+            top: `${headerHeight + 20}px`, 
             backgroundImage: 'repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.05) 0, rgba(255, 255, 255, 0.05) 2px, transparent 2px, transparent 20px)',
-            // Added padding top to clear the fixed header area
-            paddingTop: `${headerHeight + 20}px` 
           }}
         >
-          {/* Close button for side drawer experience (positioned inside drawer) */}
-          <button
-            onClick={() => setMobileMenuOpen(false)}
-            // Positioned inside the drawer on the far right
-            className="absolute top-4 right-4 p-2 text-white hover:text-green-300 transition-colors"
-            aria-label="Close menu"
-          >
-            <X className="w-6 h-6" />
-          </button>
+          {/* NOTE: Close button removed from here, as the main header's menu button now acts as the close control. */}
           
           <div
             className="px-4 py-4 flex flex-col"

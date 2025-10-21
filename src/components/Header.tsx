@@ -158,7 +158,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
 
         {/* === MOBILE MENU - DARKENED GREEN FADE UI === */}
         <div
-          // Updated to bg-green-900/90 for a darker, less see-through appearance.
+          // Updated to bg-green-900/the 300 for a darker, less see-through appearance.
           className={`md:hidden absolute inset-x-0 top-full w-full bg-green-900/60 overflow-hidden transition-all duration-[550ms] ease-in-out origin-top z-40 ${
             mobileMenuOpen ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0'
           }`}

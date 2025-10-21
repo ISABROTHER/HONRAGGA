@@ -4,12 +4,10 @@
 
 @layer base {
   :root {
-    color-scheme: light;
+    /* Removed: color-scheme: light; */
   }
 
-  .dark {
-    color-scheme: dark;
-  }
+  /* Removed: .dark { color-scheme: dark; } */
 
   html {
     scroll-behavior: smooth;

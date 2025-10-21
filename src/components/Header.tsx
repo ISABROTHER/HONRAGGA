@@ -138,7 +138,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
       </header>
 
       {/* === SCROLLING ANNOUNCEMENT BAR === */}
-      <div className="bg-red-600 h-4 overflow-hidden relative flex items-center">
+      <div className="bg-red-500 h-4 overflow-hidden relative flex items-center">
         <div
           className="absolute top-0 h-full flex items-center whitespace-nowrap animate-marquee font-serif font-bold text-white text-base tracking-wide"
           style={{

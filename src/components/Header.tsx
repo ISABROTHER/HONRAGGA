@@ -32,12 +32,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
   return (
     <div className="relative w-full">
       {/* === MAIN HEADER === */}
-      <header
-        className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-xl transition-shadow relative"
-        style={{
-          '--logo-scale': 1.3, /* Adjust logo scale here (1 = default size, 1.5 = 50% bigger) */
-        } as React.CSSProperties}
-      >
+      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-xl transition-shadow relative">
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-5">
             {/* Logo / Branding */}
@@ -45,13 +40,11 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
               onClick={() => handleNavClick('home')}
               className="flex items-center space-x-3 group transition-transform hover:scale-[1.01] focus:outline-none"
             >
-              <div className="flex items-center" style={{ height: `calc(5.5rem * var(--logo-scale))` }}>
-                <img
-                  src="https://i.imgur.com/hyNrYDZ.png"
-                  alt="Logo"
-                  className="h-full object-contain transition-transform duration-300 group-hover:brightness-110 group-hover:scale-[1.02]"
-                />
-              </div>
+              <img
+                src="https://i.imgur.com/hyNrYDZ.png"
+                alt="Logo"
+                className="w-12 h-12 rounded-full object-contain shadow-blue-500/50 group-hover:shadow-lg transition-shadow"
+              />
               <div className="hidden sm:block text-left">
                 <div className="text-xl font-extrabold text-gray-900 group-hover:text-blue-700 transition-colors">
                   Jane Doe
@@ -172,7 +165,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
             <span>OFFICIAL WEBSITE OF MP FOR CAPE COAST NORTH</span>
             <span className="text-white/80">II</span>
             <span>HON. DR. KWAMENA MINTA NYARKU</span>
-            <span className="text-white/80">II</span>
+            <span className="text-white/80">II</span> 
             <span>OBIARA KA HO</span>
             <span className="text-white/80">II</span>
           </div>

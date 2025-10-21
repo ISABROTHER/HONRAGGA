@@ -182,7 +182,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                 variant="secondary"
                 size="md"
                 onClick={handleDonateClick}
-                className="w-full justify-center shadow-lg shadow-amber-500/50"
+                className="w-full justify-center shadow-lg shadow-amber-500/50" 
                 style={{ fontSize: `${1 * navScale}rem` }}
               >
                 <DollarSign className="w-5 h-5 mr-2" />

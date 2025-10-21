@@ -1,4 +1,4 @@
-import { useState } from 'react';
+¨import { useState } from 'react';
 import { Menu, X, DollarSign } from 'lucide-react';
 import { Button } from './Button';
 
@@ -142,14 +142,14 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
         <div
           className="absolute top-0 h-full flex items-center whitespace-nowrap animate-marquee font-serif font-bold text-white text-[0.5rem] tracking-wide"
           style={{
-            left: '50%',
+            left: '30%',
             animation: 'marqueeScroll 60s linear infinite',
             fontFamily: "Georgia, 'Times New Roman', serif",
           }}
         >
           <span>OFFICIAL WEBSITE FOR MP FOR CAPE COAST NORTH</span>
           <span className="mx-5">—</span>
-          <span>HON- DR. KWAMENA MINTA NYARKU</span>
+          <span>HON. DR. KWAMENA MINTA NYARKU</span>
           <span className="mx-5">—</span>
           <span>Transparency • OBIARA KA HO</span>
         </div>

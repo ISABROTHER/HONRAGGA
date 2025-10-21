@@ -1,4 +1,4 @@
-¨import { useState } from 'react';
+import { useState } from 'react';
 import { Menu, X, DollarSign } from 'lucide-react';
 import { Button } from './Button';
 
@@ -31,7 +31,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
 
   return (
     <div className="relative w-full">
-      {/* === MAIN HEADER === */}
+      {/* === MAIN HEADER (unchanged) === */}
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-xl transition-shadow relative">
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-5">
@@ -137,31 +137,85 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
         </div>
       </header>
 
-      {/* === SCROLLING ANNOUNCEMENT BAR === */}
-      <div className="bg-red-500 h-4 overflow-hidden relative flex items-center">
+      {/* === SCROLLING ANNOUNCEMENT BAR (fixed & robust) === */}
+      <div className="bg-red-500 h-4 overflow-hidden relative">
+        {/* marquee-track: duplicated content for smooth continuous scroll.
+            A spacer element ensures the first visible text begins ~30% from left. */}
         <div
-          className="absolute top-0 h-full flex items-center whitespace-nowrap animate-marquee font-serif font-bold text-white text-[0.5rem] tracking-wide"
-          style={{
-            left: '30%',
-            animation: 'marqueeScroll 60s linear infinite',
-            fontFamily: "Georgia, 'Times New Roman', serif",
-          }}
+          className="marquee-track absolute top-0 left-0 h-full flex items-center"
+          style={{ willChange: 'transform', alignItems: 'center' } as React.CSSProperties}
         >
-          <span>OFFICIAL WEBSITE FOR MP FOR CAPE COAST NORTH</span>
-          <span className="mx-5">—</span>
-          <span>HON. DR. KWAMENA MINTA NYARKU</span>
-          <span className="mx-5">—</span>
-          <span>Transparency • OBIARA KA HO</span>
+          {/* spacer to create starting gap ~30% of viewport width */}
+          <div style={{ minWidth: '30vw' }} />
+
+          {/* content block duplicated for smooth loop */}
+          <div className="marquee-content flex items-center whitespace-nowrap">
+            <span
+              className="border-r border-white pr-3 font-serif font-bold text-white"
+              style={{ fontSize: '0.5rem', fontFamily: "Georgia, 'Times New Roman', serif" }}
+            >
+              OFFICIAL WEBSITE FOR MP FOR CAPE COAST NORTH
+            </span>
+            <span className="mx-3" style={{ width: '0.75rem' }}>—</span>
+            <span
+              className="font-serif font-bold text-white"
+              style={{ fontSize: '0.5rem', fontFamily: "Georgia, 'Times New Roman', serif" }}
+            >
+              HON. DR. KWAMENA MINTA NYARKU
+            </span>
+            <span className="mx-3" style={{ width: '0.75rem' }}>—</span>
+            <span
+              className="font-serif font-bold text-white"
+              style={{ fontSize: '0.5rem', fontFamily: "Georgia, 'Times New Roman', serif" }}
+            >
+              Transparency • OBIARA KA HO
+            </span>
+            {/* small gap before duplicated copy */}
+            <span style={{ paddingLeft: '2rem' }} />
+          </div>
+
+          {/* duplicate */}
+          <div className="marquee-content flex items-center whitespace-nowrap" aria-hidden="true">
+            <span
+              className="border-r border-white pr-3 font-serif font-bold text-white"
+              style={{ fontSize: '0.5rem', fontFamily: "Georgia, 'Times New Roman', serif" }}
+            >
+              OFFICIAL WEBSITE FOR MP FOR CAPE COAST NORTH
+            </span>
+            <span className="mx-3" style={{ width: '0.75rem' }}>—</span>
+            <span
+              className="font-serif font-bold text-white"
+              style={{ fontSize: '0.5rem', fontFamily: "Georgia, 'Times New Roman', serif" }}
+            >
+              HON. DR. KWAMENA MINTA NYARKU
+            </span>
+            <span className="mx-3" style={{ width: '0.75rem' }}>—</span>
+            <span
+              className="font-serif font-bold text-white"
+              style={{ fontSize: '0.5rem', fontFamily: "Georgia, 'Times New Roman', serif" }}
+            >
+              Transparency • OBIARA KA HO
+            </span>
+            <span style={{ paddingLeft: '2rem' }} />
+          </div>
         </div>
 
+        {/* Styles for marquee */}
         <style>{`
-          @keyframes marqueeScroll {
+          /* full loop moves by 50% because content duplicated */
+          @keyframes marquee {
             0% { transform: translateX(0%); }
-            100% { transform: translateX(-100%); }
+            100% { transform: translateX(-50%); }
           }
-          .animate-marquee {
-            will-change: transform;
+          .marquee-track {
+            animation: marquee 60s linear infinite;
           }
+          /* pause on hover for readability */
+          .marquee-track:hover {
+            animation-play-state: paused;
+          }
+          /* ensure the inner content displays inline and doesn't wrap */
+          .marquee-content { display: inline-flex; gap: 0.5rem; padding-right: 1rem; }
         `}</style>
       </div>
     </div>

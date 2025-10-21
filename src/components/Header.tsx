@@ -156,16 +156,27 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
           </div>
         </nav>
 
-        {/* === MOBILE MENU - DARK GREEN 98% OPAQUE UI WITH STRIPES === */}
+        {/* === MOBILE MENU - RIGHT SIDE DRAWER === */}
         <div
-          // Added subtle stripe design (2px semi-transparent white diagonal lines every 20px)
-          className={`md:hidden absolute inset-x-0 top-full w-full bg-green-900/[.98] overflow-hidden transition-all duration-[550ms] ease-in-out origin-top z-40 ${
-            mobileMenuOpen ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0'
+          // Changed to fixed right-side drawer positioning and translation
+          className={`fixed inset-y-0 right-0 w-64 h-full bg-green-900/[.98] overflow-y-auto transition-transform duration-[550ms] ease-in-out z-40 ${
+            mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
           }`}
           style={{
             backgroundImage: 'repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.05) 0, rgba(255, 255, 255, 0.05) 2px, transparent 2px, transparent 20px)',
+            // Added padding top to clear the fixed header area
+            paddingTop: `${headerHeight + 20}px` 
           }}
         >
+          {/* Close button for side drawer experience (optional, but good practice) */}
+          <button
+            onClick={() => setMobileMenuOpen(false)}
+            className="absolute top-4 right-4 p-2 text-white hover:text-green-300 transition-colors md:hidden"
+            aria-label="Close menu"
+          >
+            <X className="w-6 h-6" />
+          </button>
+          
           <div
             className="px-4 py-4 flex flex-col"
             style={{
@@ -178,9 +189,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                 onClick={() => handleNavClick(item.id)}
                 className={`block w-full text-left rounded-xl font-semibold transition-all duration-200 group ${
                   currentPage === item.id
-                    // Active link remains prominent
                     ? 'bg-green-500 text-white shadow-md' 
-                    // Non-active links use white text for contrast
                     : 'text-white hover:bg-green-700/80 focus:bg-green-700/80'
                 }`}
                 style={{

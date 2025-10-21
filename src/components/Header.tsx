@@ -27,7 +27,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
 
   // --- Desktop ---
   // Horizontal & vertical spacing between nav items are proportional to navScale
-  const desktopNavGap = 6 * navScale; // 🔧 horizontal gap between buttons
+  const desktopNavGap = 16 * navScale; // 🔧 horizontal gap between buttons
   const desktopNavPaddingY = 8 * navScale; // 🔧 top/bottom padding inside each button
   const desktopNavPaddingX = 16 * navScale; // 🔧 left/right padding
   const desktopNavFontSize = 16 * navScale; // 🔧 text size
@@ -97,7 +97,6 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
             </button>
 
             {/* === NAVIGATION & CTA GROUP (PRIMARY FLEX ITEM 2) === */}
-            {/* This group contains all right-side elements, maximizing the space with the Logo */}
             <div className="flex items-center">
                 
               {/* === DESKTOP NAVIGATION === */}
@@ -127,7 +126,6 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
               </div>
 
               {/* === RIGHT SIDE (Donate Button, Mobile Menu Toggle) === */}
-              {/* Added horizontal margin/padding to separate the nav links from the donate button on desktop */}
               <div className="flex items-center space-x-4 pl-4 md:pl-8">
                 <div className="hidden md:block">
                   <Button
@@ -158,9 +156,10 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
           </div>
         </nav>
 
-        {/* === MOBILE MENU === */}
+        {/* === MOBILE MENU - BLURRED GLASS GREEN/BLUE UI === */}
         <div
-          className={`md:hidden absolute inset-x-0 top-full w-full bg-white border-t border-gray-200 shadow-2xl overflow-hidden transition-all duration-[550ms] ease-in-out origin-top z-40 ${
+          // New classes for Blurred Glass Green/Blue effect
+          className={`md:hidden absolute inset-x-0 top-full w-full bg-blue-900/10 backdrop-blur-md ring-2 ring-blue-900/30 rounded-b-xl shadow-2xl shadow-blue-500/20 overflow-hidden transition-all duration-[550ms] ease-in-out origin-top z-40 ${
             mobileMenuOpen ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0'
           }`}
         >
@@ -176,7 +175,8 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                 onClick={() => handleNavClick(item.id)}
                 className={`block w-full text-left rounded-xl font-semibold transition-all duration-200 group ${
                   currentPage === item.id
-                    ? 'bg-blue-900 text-white shadow-md'
+                    // Adjusted active link for better contrast on a blurred background
+                    ? 'bg-blue-900 text-white shadow-lg'
                     : 'text-gray-800 hover:bg-blue-50 focus:bg-blue-50 hover:text-blue-900'
                 }`}
                 style={{

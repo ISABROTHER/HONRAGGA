@@ -32,41 +32,27 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-xl transition-shadow relative">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* INCREASED VERTICAL PADDING to achieve ~30% greater height */}
+        {/* Container with increased vertical padding (py-5) for height */}
         <div className="flex justify-between items-center py-5">
-          {/* Logo/Branding Block */}
+
+          {/* New Left-side Branding Block (Replicating Example Image Text Style) - Desktop/Mobile */}
           <button
             onClick={() => handleNavClick('home')}
-            className="flex items-center space-x-3 group transition-transform hover:scale-[1.01] focus:outline-none"
+            className="flex flex-col items-start space-y-0.5 group transition-transform hover:scale-[1.01] focus:outline-none"
           >
-            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-900 to-blue-700 flex items-center justify-center text-white font-bold text-xl shadow-blue-500/50 group-hover:shadow-lg transition-shadow">
-              JD
+            {/* Top Line: Candidate Name (Bigger, Bold, Amber Accent) */}
+            <div className="text-2xl font-extrabold text-amber-600 tracking-tight leading-none transition-colors">
+              HON. DR. KWAMENA MINTA NYARKU
             </div>
-            <div className="hidden sm:block text-left">
-              <div className="text-xl font-extrabold text-gray-900 group-hover:text-blue-700 transition-colors">Jane Doe</div>
-              <div className="text-xs text-gray-600 uppercase tracking-widest font-medium">For Senate 2026</div>
+            {/* Bottom Line: Constituency/Title (Smaller, Blue Accent) */}
+            <div className="text-sm font-semibold text-blue-900 uppercase tracking-wider leading-none">
+              CAPE COAST NORTH MP
             </div>
           </button>
-
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-1">
-            {navItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => handleNavClick(item.id)}
-                className={`px-4 py-2 rounded-full text-base font-semibold transition-all duration-300 ${
-                  currentPage === item.id
-                    ? 'bg-blue-900 text-white shadow-lg shadow-blue-500/50' // Pill-shaped active state with strong shadow
-                    : 'text-gray-700 hover:bg-gray-100 hover:text-blue-700'
-                }`}
-              >
-                {item.label}
-              </button>
-            ))}
-          </div>
-
-          {/* Right-side CTAs and Toggles */}
+          
+          {/* Right-side CTAs and Toggles - Re-using the desktop Donate Button for structure */}
           <div className="flex items-center space-x-4">
+            
             {/* Primary CTA (Donate) - Desktop Only */}
             <div className="hidden md:block">
                 <Button
@@ -80,23 +66,38 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                 </Button>
             </div>
 
-            {/* Mobile Menu Toggle */}
+            {/* Mobile Menu Toggle (Replicating the Menu Icon/Text Style) */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-3 rounded-full hover:bg-gray-100 transition-colors border border-gray-200"
+              // Removed padding/border/hover effects for a cleaner, high-contrast mobile look (like the example)
+              className="md:hidden flex flex-col items-center justify-center space-y-1 transition-colors"
               aria-label="Toggle menu"
             >
-              {mobileMenuOpen ? (
-                <X className="w-6 h-6 text-gray-700" />
-              ) : (
-                <Menu className="w-6 h-6 text-gray-700" />
-              )}
+              <div className="w-8 h-6 flex flex-col justify-between">
+                {/* Replicating the three-bar menu icon using div lines */}
+                <span className="block w-full h-1 bg-amber-600 rounded-full transition-all duration-300 transform" />
+                <span className="block w-full h-1 bg-amber-600 rounded-full transition-all duration-300 transform" />
+                <span className="block w-full h-1 bg-amber-600 rounded-full transition-all duration-300 transform" />
+              </div>
+              {/* Menu Label in Blue Accent Color */}
+              <span className="text-sm font-semibold text-blue-900 pt-1">
+                {mobileMenuOpen ? 'CLOSE' : 'MENU'}
+              </span>
+            </button>
+
+            {/* Hidden Mobile Menu Close Button for Desktop */}
+            <button
+              onClick={() => setMobileMenuOpen(false)}
+              className={`hidden ${mobileMenuOpen ? 'md:flex' : ''} p-3 rounded-full hover:bg-gray-100 transition-colors border border-gray-200`}
+              aria-label="Close menu"
+            >
+              <X className="w-6 h-6 text-gray-700" />
             </button>
           </div>
         </div>
       </nav>
 
-      {/* Mobile Menu Dropdown OVERLAY (Positioning remains top-full) */}
+      {/* Mobile Menu Dropdown OVERLAY */}
       <div
         className={`md:hidden absolute inset-x-0 top-full w-full bg-white border-t border-gray-200 shadow-2xl overflow-hidden
           transition-all duration-[550ms] ease-in-out origin-top z-40

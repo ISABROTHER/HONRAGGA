@@ -38,17 +38,21 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
           {/* DYNAMIC BRANDING BLOCK */}
           <button
             onClick={() => handleNavClick('home')}
-            className="group transition-transform hover:scale-[1.01] focus:outline-none"
+            // Mobile: Constrains the button width to 60% of the header's available space
+            className="group transition-transform hover:scale-[1.01] focus:outline-none w-3/5 md:w-auto" 
           >
             {/* MOBILE BRANDING (Default/Below md) - New High-Contrast Style
               - Hidden on medium screens and up (md:hidden)
+              - items-start ensures left alignment
             */}
-            <div className="flex flex-col items-start space-y-0.5 md:hidden">
-              <div className="text-2xl font-extrabold text-amber-600 tracking-tight leading-none transition-colors">
-                HON. DR. KWAMENA MINTA NYARKU
-              </div>
+            <div className="flex flex-col items-start space-y-0.5 md:hidden w-full">
+              {/* Top Line: Title (Smaller, Blue) - First Element */}
               <div className="text-sm font-semibold text-blue-900 uppercase tracking-wider leading-none">
                 CAPE COAST NORTH MP
+              </div>
+              {/* Bottom Line: Candidate Name (Bigger, Amber) - Second Element */}
+              <div className="text-xl font-extrabold text-amber-600 tracking-tight leading-none transition-colors break-words">
+                HON. DR. KWAMENA MINTA NYARKU
               </div>
             </div>
 
@@ -101,7 +105,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
             {/* Mobile Menu Toggle (Only visible on mobile) */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden flex flex-col items-center justify-center space-y-1 transition-colors"
+              className="md:hidden flex flex-col items-center justify-center space-y-1 transition-colors flex-shrink-0"
               aria-label="Toggle menu"
             >
               <div className="w-8 h-6 flex flex-col justify-between">

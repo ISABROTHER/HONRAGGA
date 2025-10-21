@@ -138,13 +138,42 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
 
       {/* === Moving Text Bar (Official Website Notice) === */}
       <div className="bg-red-600 h-4 overflow-hidden relative">
-        <div className="absolute left-[30%] whitespace-nowrap animate-marquee text-white text-sm font-serif tracking-wide">
-          Official Website for MP for Cape Coast
+        {/* marquee-track holds the animated content; we set left offset inline for reliability */}
+        <div
+          className="marquee-track absolute top-0 h-full flex items-center"
+          style={{ left: '30%' }}
+          aria-hidden="false"
+        >
+          {/* duplicate text for seamless loop */}
+          <div className="marquee-inner whitespace-nowrap text-white text-sm font-serif tracking-wide px-4">
+            Official Website for MP for Cape Coast&nbsp;&nbsp;&nbsp;
+          </div>
+          <div className="marquee-inner whitespace-nowrap text-white text-sm font-serif tracking-wide px-4">
+            Official Website for MP for Cape Coast&nbsp;&nbsp;&nbsp;
+          </div>
         </div>
       </div>
 
-      {/* === Custom Marquee Animation (Slower, offset start) === */}
+      {/* === Marquee CSS === */}
       <style>{`
         @keyframes marquee {
-          0% { transform: translateX(100%); }
-          100%
+          0% { transform: translateX(0%); }
+          100% { transform: translateX(-50%); } /* translate by half because we duplicated content */
+        }
+        .marquee-track {
+          animation: marquee 40s linear infinite; /* slower by ~50% */
+          will-change: transform;
+        }
+        /* ensure the inner blocks are inline and seamless */
+        .marquee-inner {
+          display: inline-block;
+          font-family: Georgia, 'Times New Roman', serif;
+        }
+        /* pause on hover (nice UX) */
+        .marquee-track:hover {
+          animation-play-state: paused;
+        }
+      `}</style>
+    </div>
+  );
+}

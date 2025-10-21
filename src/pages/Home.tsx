@@ -59,18 +59,22 @@ export function Home({ onNavigate }: HomeProps) {
         {/* 4. Layered Content (Text and CTAs) - Ensure content z-index is high */}
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-32">
           <div className="text-center space-y-8 animate-fade-in">
-            <div className="inline-block">
+            {/* Removed: Campaign Tagline */}
+            {/* <div className="inline-block">
               <span className="px-4 py-2 bg-amber-500/20 border border-amber-500/30 rounded-full text-amber-300 text-sm font-semibold backdrop-blur-sm">
                 Senate Campaign 2026
               </span>
-            </div>
+            </div> */}
 
-            <h1 className="text-5xl md:text-7xl font-bold leading-tight drop-shadow-lg">
+            {/* Removed: Main Slogan */}
+            {/* <h1 className="text-5xl md:text-7xl font-bold leading-tight drop-shadow-lg">
               A New Voice for
               <span className="block mt-2 bg-gradient-to-r from-amber-400 to-amber-600 bg-clip-text text-transparent">
                 Our Future
               </span>
-            </h1>
+            </h1> */}
+            <h1 className="text-5xl md:text-7xl font-bold leading-tight drop-shadow-lg invisible">.</h1>
+
 
             <p className="text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto leading-relaxed drop-shadow-md">
               Together, we can build a future where economic opportunity, quality healthcare,
@@ -142,7 +146,7 @@ export function Home({ onNavigate }: HomeProps) {
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-3">
                   {title}
-                </h3>
+                </h3 >
                 <p className="text-gray-600 leading-relaxed">
                   {description}
                 </p>

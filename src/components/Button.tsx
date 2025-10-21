@@ -18,8 +18,8 @@ export function Button({
   const variants = {
     primary: 'bg-gradient-to-r from-blue-900 to-blue-700 text-white hover:from-blue-800 hover:to-blue-600 focus:ring-blue-500 shadow-lg hover:shadow-xl',
     secondary: 'bg-gradient-to-r from-amber-500 to-amber-600 text-white hover:from-amber-600 hover:to-amber-700 focus:ring-amber-500 shadow-lg hover:shadow-xl',
-    outline: 'border-2 border-blue-900 dark:border-blue-400 text-blue-900 dark:text-blue-400 hover:bg-blue-900 hover:text-white dark:hover:bg-blue-400 dark:hover:text-blue-900 focus:ring-blue-500',
-    ghost: 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:ring-gray-500'
+    outline: 'border-2 border-blue-900 text-blue-900 hover:bg-blue-900 hover:text-white focus:ring-blue-500',
+    ghost: 'text-gray-700 hover:bg-gray-100 focus:ring-gray-500'
   };
 
   const sizes = {

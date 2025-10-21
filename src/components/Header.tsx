@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Menu, X, Moon, Sun, DollarSign } from 'lucide-react';
-import { useTheme } from '../contexts/ThemeContext';
+import { Menu, X, DollarSign } from 'lucide-react';
+// Removed: import { useTheme } from '../contexts/ThemeContext';
 import { Button } from './Button';
 
 interface HeaderProps {
@@ -10,7 +10,7 @@ interface HeaderProps {
 
 export function Header({ currentPage, onNavigate }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { theme, toggleTheme } = useTheme();
+  // Removed: const { theme, toggleTheme } = useTheme();
 
   const navItems = [
     { id: 'home', label: 'Home' },
@@ -33,7 +33,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 shadow-xl transition-shadow">
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-xl transition-shadow">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo/Branding Block - Made more prominent */}
@@ -45,8 +45,8 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
               JD
             </div>
             <div className="hidden sm:block text-left">
-              <div className="text-xl font-extrabold text-gray-900 dark:text-white group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors">Jane Doe</div>
-              <div className="text-xs text-gray-600 dark:text-gray-400 uppercase tracking-widest font-medium">For Senate 2026</div>
+              <div className="text-xl font-extrabold text-gray-900 group-hover:text-blue-700 transition-colors">Jane Doe</div>
+              <div className="text-xs text-gray-600 uppercase tracking-widest font-medium">For Senate 2026</div>
             </div>
           </button>
 
@@ -59,7 +59,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                 className={`px-4 py-2 rounded-full text-base font-semibold transition-all duration-300 ${
                   currentPage === item.id
                     ? 'bg-blue-900 text-white shadow-lg shadow-blue-500/50' // Pill-shaped active state with strong shadow
-                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-blue-700 dark:hover:text-blue-400'
+                    : 'text-gray-700 hover:bg-gray-100 hover:text-blue-700'
                 }`}
               >
                 {item.label}
@@ -82,29 +82,18 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                 </Button>
             </div>
 
-            {/* Theme Toggle */}
-            <button
-              onClick={toggleTheme}
-              className="p-3 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors border border-transparent hover:border-gray-200 dark:hover:border-gray-700"
-              aria-label="Toggle theme"
-            >
-              {theme === 'light' ? (
-                <Moon className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-              ) : (
-                <Sun className="w-5 h-5 text-amber-400 dark:text-amber-300" />
-              )}
-            </button>
+            {/* Removed: Theme Toggle */}
 
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-3 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors border border-gray-200 dark:border-gray-700"
+              className="md:hidden p-3 rounded-full hover:bg-gray-100 transition-colors border border-gray-200"
               aria-label="Toggle menu"
             >
               {mobileMenuOpen ? (
-                <X className="w-6 h-6 text-gray-700 dark:text-gray-300" />
+                <X className="w-6 h-6 text-gray-700" />
               ) : (
-                <Menu className="w-6 h-6 text-gray-700 dark:text-gray-300" />
+                <Menu className="w-6 h-6 text-gray-700" />
               )}
             </button>
           </div>
@@ -114,7 +103,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
         <div
           className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
             mobileMenuOpen ? 'max-h-96 opacity-100 py-4' : 'max-h-0 opacity-0'
-          } border-t border-gray-200 dark:border-gray-800`}
+          } border-t border-gray-200`}
         >
           <div className="space-y-2">
             {navItems.map((item) => (
@@ -124,7 +113,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                 className={`block w-full text-left px-4 py-3 rounded-lg font-medium transition-all duration-200 ${
                   currentPage === item.id
                     ? 'bg-blue-900 text-white'
-                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                    : 'text-gray-700 hover:bg-gray-100'
                 }`}
               >
                 {item.label}

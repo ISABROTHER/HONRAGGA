@@ -38,13 +38,15 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
             {/* Logo / Branding */}
             <button
               onClick={() => handleNavClick('home')}
-              className="flex items-center space-x-3 group transition-transform hover:scale-[1.01] focus:outline-none"
+              className="flex items-center space-x-3 group transition-transform hover:scale-[1.02] focus:outline-none"
             >
-              <img
-                src="https://i.imgur.com/hyNrYDZ.png"
-                alt="Logo"
-                className="w-12 h-12 rounded-full object-contain shadow-blue-500/50 group-hover:shadow-lg transition-shadow"
-              />
+              <div className="relative">
+                <img
+                  src="https://i.imgur.com/hyNrYDZ.png"
+                  alt="Logo"
+                  className="w-16 h-16 rounded-full object-contain shadow-[0_0_15px_rgba(37,99,235,0.4)] group-hover:shadow-[0_0_25px_rgba(37,99,235,0.6)] transition-all duration-300 border-2 border-white"
+                />
+              </div>
               <div className="hidden sm:block text-left">
                 <div className="text-xl font-extrabold text-gray-900 group-hover:text-blue-700 transition-colors">
                   Jane Doe
@@ -151,20 +153,14 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
           }}
         >
           <div style={{ minWidth: '30vw' }} />
-
           <div className="marquee-content flex items-center gap-4">
-            <span>OFFICIAL WEBSITE OF MP FOR CAPE COAST NORTH</span>
-            <span className="text-white/80">II</span>
-            <span>HON. DR. KWAMENA MINTA NYARKU</span>
+            <span>OFFICIAL WEBSITE OF HON. DR. KWAMENA MINTA NYARKU</span>
             <span className="text-white/80">II</span>
             <span>OBIARA KA HO</span>
             <span className="text-white/80">II</span>
           </div>
-
           <div className="marquee-content flex items-center gap-4" aria-hidden="true">
-            <span>OFFICIAL WEBSITE OF MP FOR CAPE COAST NORTH</span>
-            <span className="text-white/80">II</span>
-            <span>HON. DR. KWAMENA MINTA NYARKU</span>
+            <span>OFFICIAL WEBSITE OF HON. DR. KWAMENA MINTA NYARKU</span>
             <span className="text-white/80">II</span>
             <span>OBIARA KA HO</span>
             <span className="text-white/80">II</span>

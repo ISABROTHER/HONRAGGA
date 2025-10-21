@@ -93,7 +93,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                   }}
                 />
               </div>
-              {/* Removed "Jane Doe" and "For Senate 2026" as requested */}
+              {/* No name/year as requested in earlier steps */}
             </button>
 
             {/* === NAVIGATION & CTA GROUP (PRIMARY FLEX ITEM 2) === */}
@@ -156,27 +156,13 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
           </div>
         </nav>
 
-        {/* === MOBILE MENU - RIGHT SIDE DRAWER (REVERTED) === */}
+        {/* === MOBILE MENU - DARKENED GREEN FADE UI (5 hours ago state) === */}
         <div
-          // Reverted to fixed right-side drawer (w-64) with right-slide transition
-          className={`fixed inset-y-0 right-0 w-64 h-full bg-green-900/[.98] overflow-y-auto transition-transform duration-[550ms] ease-in-out z-40 md:hidden ${
-            mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+          // Reverted to Top Dropdown, 60% opacity dark green
+          className={`md:hidden absolute inset-x-0 top-full w-full bg-green-900/60 overflow-hidden transition-all duration-[550ms] ease-in-out origin-top z-40 ${
+            mobileMenuOpen ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0'
           }`}
-          style={{
-            backgroundImage: 'repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.05) 0, rgba(255, 255, 255, 0.05) 2px, transparent 2px, transparent 20px)',
-            // Padding top to clear the fixed header area
-            paddingTop: `${headerHeight + 20}px` 
-          }}
         >
-          {/* Close button for side drawer experience */}
-          <button
-            onClick={() => setMobileMenuOpen(false)}
-            className="absolute top-4 right-4 p-2 text-white hover:text-green-300 transition-colors md:hidden"
-            aria-label="Close menu"
-          >
-            <X className="w-6 h-6" />
-          </button>
-          
           <div
             className="px-4 py-4 flex flex-col"
             style={{
@@ -215,7 +201,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
         </div>
       </header>
 
-      {/* === MARQUEE (Campaign Fixed) === */}
+      {/* === MARQUEE (Safety/Consistency Fixed) === */}
       <div
         className="bg-amber-500 h-5 overflow-hidden relative flex items-center"
         style={{ marginTop: `${headerHeight}px` }}

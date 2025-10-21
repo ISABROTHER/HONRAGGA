@@ -35,25 +35,25 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
       <header
         className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-xl transition-shadow relative"
         style={{
-          height: '4.5rem', // consistent header height
-        }}
+          '--logo-scale': 1.15, // Change this to make the logo slightly bigger or smaller (1.0 = base)
+          height: '4.5rem', // fixed height across all screen sizes
+        } as React.CSSProperties}
       >
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
           <div className="flex justify-between items-center h-full">
             {/* Logo / Branding */}
             <button
               onClick={() => handleNavClick('home')}
-              className="flex items-center space-x-3 group transition-transform hover:scale-[1.01] focus:outline-none"
+              className="flex items-center space-x-3 group transition-transform hover:scale-[1.01] focus:outline-none h-full"
             >
-              <div className="flex items-center">
+              <div className="flex items-center h-full">
                 <img
                   src="https://i.imgur.com/hyNrYDZ.png"
                   alt="Logo"
                   className="object-contain transition-transform duration-300"
                   style={{
-                    height: '58px', // Fixed height for logo — consistent across all devices
-                    width: 'auto',
-                    transform: 'translateY(-2px)', // fine vertical alignment
+                    height: 'calc(100% * var(--logo-scale))',
+                    transform: 'translateY(calc((1 - var(--logo-scale)) * -10%))',
                   }}
                 />
               </div>
@@ -177,7 +177,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
             <span>OFFICIAL WEBSITE OF THE MP FOR CAPE COAST NORTH</span>
             <span className="text-white/80">II</span>
             <span>HON. DR. KWAMENA MINTA NYARKU</span>
-            <span className="text-white/80">II</span>
+            <span BclassName="text-white/80">II</span>
             <span>OBIARA KA HO</span>
             <span className="text-white/80">II</span>
           </div>

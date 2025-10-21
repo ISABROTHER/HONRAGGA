@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Menu, X, DollarSign } from 'lucide-react';
-// Removed: import { useTheme } from '../contexts/ThemeContext';
 import { Button } from './Button';
 
 interface HeaderProps {
@@ -10,7 +9,6 @@ interface HeaderProps {
 
 export function Header({ currentPage, onNavigate }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  // Removed: const { theme, toggleTheme } = useTheme();
 
   const navItems = [
     { id: 'home', label: 'Home' },
@@ -33,10 +31,12 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-xl transition-shadow">
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    // Added 'relative' to anchor the absolute mobile menu
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-xl transition-shadow relative">
+      {/* Main Navigation Bar (Visible on all sizes) */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
-          {/* Logo/Branding Block - Made more prominent */}
+          {/* Logo/Branding Block */}
           <button
             onClick={() => handleNavClick('home')}
             className="flex items-center space-x-3 group transition-transform hover:scale-[1.01] focus:outline-none"
@@ -82,8 +82,6 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                 </Button>
             </div>
 
-            {/* Removed: Theme Toggle */}
-
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -98,41 +96,41 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
             </button>
           </div>
         </div>
+      </div>
 
-        {/* Mobile Menu with Smooth Transition */}
-        <div
-          className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
-            mobileMenuOpen ? 'max-h-96 opacity-100 py-4' : 'max-h-0 opacity-0'
-          } border-t border-gray-200`}
-        >
-          <div className="space-y-2">
-            {navItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => handleNavClick(item.id)}
-                className={`block w-full text-left px-4 py-3 rounded-lg font-medium transition-all duration-200 ${
-                  currentPage === item.id
-                    ? 'bg-blue-900 text-white'
-                    : 'text-gray-700 hover:bg-gray-100'
-                }`}
+      {/* Mobile Menu Overlay - Uses absolute positioning (top-full) and scale-y for a smooth overlay effect */}
+      <div
+          className={`md:hidden absolute inset-x-0 top-full w-full bg-white shadow-2xl transition-all duration-300 ease-in-out origin-top z-40
+            ${mobileMenuOpen ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0 pointer-events-none'}
+          `}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 space-y-2 border-t border-gray-200">
+          {navItems.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => handleNavClick(item.id)}
+              className={`block w-full text-left px-4 py-3 rounded-lg font-medium transition-all duration-200 ${
+                currentPage === item.id
+                  ? 'bg-blue-900 text-white'
+                  : 'text-gray-700 hover:bg-gray-100'
+              }`}
+            >
+              {item.label}
+            </button>
+          ))}
+          <div className="pt-2">
+              <Button
+                  variant="secondary"
+                  size="md"
+                  onClick={handleDonateClick}
+                  className="w-full justify-center shadow-lg shadow-amber-500/50"
               >
-                {item.label}
-              </button>
-            ))}
-            <div className="pt-2">
-                 <Button
-                    variant="secondary"
-                    size="md"
-                    onClick={handleDonateClick}
-                    className="w-full justify-center shadow-lg shadow-amber-500/50"
-                >
-                    <DollarSign className="w-5 h-5 mr-2" />
-                    Donate Now
-                </Button>
-            </div>
+                  <DollarSign className="w-5 h-5 mr-2" />
+                  Donate Now
+              </Button>
           </div>
         </div>
-      </nav>
+      </div>
     </header>
   );
 }

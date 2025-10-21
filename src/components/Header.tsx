@@ -140,10 +140,10 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
       {/* === SCROLLING BANNER === */}
       <div className="bg-red-600 h-5 overflow-hidden relative flex items-center">
         <div
-          className="marquee-track absolute top-0 left-0 h-full flex items-center whitespace-nowrap font-serif font-bold text-white"
+          className="marquee-track absolute top-0 left-0 h-full flex items-center whitespace-nowrap font-bold text-white"
           style={{
             willChange: 'transform',
-            fontFamily: 'Georgia, serif',
+            fontFamily: "'Roboto', sans-serif",
             fontSize: '0.6rem',
             letterSpacing: '0.05em',
           }}

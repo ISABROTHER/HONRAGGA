@@ -27,7 +27,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
 
   // --- Desktop ---
   // Horizontal & vertical spacing between nav items are proportional to navScale
-  const desktopNavGap = 16 * navScale; // 🔧 horizontal gap between buttons
+  const desktopNavGap = 10 * navScale; // 🔧 horizontal gap between buttons
   const desktopNavPaddingY = 8 * navScale; // 🔧 top/bottom padding inside each button
   const desktopNavPaddingX = 16 * navScale; // 🔧 left/right padding
   const desktopNavFontSize = 16 * navScale; // 🔧 text size

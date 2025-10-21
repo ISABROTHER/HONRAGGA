@@ -37,7 +37,7 @@ export function Home({ onNavigate }: HomeProps) {
 
   return (
     <div className="min-h-screen">
-      {/* HERO SECTION with Image, Hue Overlay (updated to 50%), and Content Layering */}
+      {/* HERO SECTION with Image, Hue Overlay (updated for cinematic effect), and Content Layering */}
       <section className="relative h-screen min-h-[700px] max-h-[900px] flex items-center justify-center text-white overflow-hidden">
         
         {/* 1. Background Image Container */}
@@ -47,13 +47,14 @@ export function Home({ onNavigate }: HomeProps) {
           role="img"
           aria-label="Jane Doe Campaign Hero Image"
         >
-          {/* 2. Primary Blue Gradient Overlay (Kept subtle for branding) */}
+          {/* 2. Primary Blue Gradient Overlay (Essential for white text readability) */}
           <div className="absolute inset-0 bg-blue-950/70"></div> 
         </div>
 
-        {/* 3. Hue Overlay (Amber Gradient) - NOW COVERS TOP 50% */}
+        {/* 3. Hue Overlay (Cinematic Amber Fade) - Covers top 50% for text contrast and cinematic hue */}
         <div className="absolute inset-0">
-            <div className="absolute inset-0 bg-gradient-to-b from-amber-500/40 via-amber-500/10 to-transparent h-[50%]"></div>
+            {/* H-1/2 ensures the gradient stops at the middle of the screen */}
+            <div className="absolute inset-0 bg-gradient-to-b from-amber-500/70 via-amber-500/30 to-transparent h-1/2"></div>
         </div>
 
         {/* 4. Layered Content (Text and CTAs) - Ensure content z-index is high */}
@@ -62,7 +63,7 @@ export function Home({ onNavigate }: HomeProps) {
             {/* Empty space for where the large slogan was */}
             <h1 className="text-5xl md:text-7xl font-bold leading-tight drop-shadow-lg invisible">.</h1>
 
-            <p className="text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto leading-relaxed drop-shadow-md">
+            <p className="text-xl md:text-2xl text-white max-w-3xl mx-auto leading-relaxed drop-shadow-lg">
               Together, we can build a future where economic opportunity, quality healthcare,
               and excellent education are rights, not privileges.
             </p>

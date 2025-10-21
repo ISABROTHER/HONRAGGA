@@ -3,7 +3,7 @@
   <div
     className="absolute top-0 h-full flex flex-col justify-center animate-marquee"
     style={{
-      left: '30%',
+      left: '30%', 
       animation: 'marqueeScroll 40s linear infinite',
       fontFamily: "Georgia, 'Times New Roman', serif",
       fontWeight: 700, // bold

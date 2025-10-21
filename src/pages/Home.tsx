@@ -1,4 +1,4 @@
-import { ArrowRight, Users, Heart, TrendingUp, Calendar } from 'lucide-react';
+import { ArrowRight, Users, Heart, TrendingUp, Calendar, DollarSign } from 'lucide-react';
 import { Button } from '../components/Button';
 
 interface HomeProps {
@@ -31,13 +31,33 @@ export function Home({ onNavigate }: HomeProps) {
     }
   ];
 
+  // NOTE: A Top One Percent implementation requires a hosted image URL.
+  // The provided Facebook URL is used here for demonstration but WILL LIKELY FAIL in production due to CORS/security policies.
+  const CANDIDATE_IMAGE_URL = "https://scontent-arn2-1.xx.fbcdn.net/v/t39.30808-6/515441812_10163003867507920_4808851483961703661_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFkXpxZfRZCiS6tUkMuNIwhz6Ix5oWf9IPPojHmhZ_0g3q-yrs_5MJM8xygdYYX5g4&_nc_ohc=O_SI0alOrEUQ7kNvwFE3BmL&_nc_oc=AdkQ-x4mJmZz5C-Peh1kc9yDFigPG46vldlmExHwi79lZshgP8YqbgstLrh_t8KoN4Y&_nc_zt=23&_nc_ht=scontent-arn2-1.xx&_nc_gid=ZVbXGcOeCipYDkVva7FcmA&oh=00_Afd9WY4XJWo_eBqDQdctSg_i9eSVJ3yuBWa15kvxQYC1Og&oe=68FCCF73";
+
   return (
     <div className="min-h-screen">
-      {/* ORIGINAL HERO SECTION (RESTORED) */}
-      <section className="relative bg-gradient-to-br from-blue-950 via-blue-900 to-blue-800 text-white overflow-hidden">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjA1IiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-30"></div>
+      {/* RESTORED ORIGINAL HERO SECTION with Image, Hue Overlay, and Content Layering */}
+      <section className="relative h-screen min-h-[700px] max-h-[900px] flex items-center justify-center text-white overflow-hidden">
+        
+        {/* 1. Background Image Container */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: `url(${CANDIDATE_IMAGE_URL})` }}
+          role="img"
+          aria-label="Jane Doe Campaign Hero Image"
+        >
+          {/* 2. Primary Blue Gradient Overlay (Kept subtle for branding) */}
+          <div className="absolute inset-0 bg-blue-950/70"></div> 
+        </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-32">
+        {/* 3. Hue Overlay (Amber Gradient) - Covers top 40% for text contrast */}
+        <div className="absolute inset-0">
+            <div className="absolute inset-0 bg-gradient-to-b from-amber-500/40 via-amber-500/10 to-transparent h-[40%]"></div>
+        </div>
+
+        {/* 4. Layered Content (Text and CTAs) - Ensure content z-index is high */}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-32">
           <div className="text-center space-y-8 animate-fade-in">
             <div className="inline-block">
               <span className="px-4 py-2 bg-amber-500/20 border border-amber-500/30 rounded-full text-amber-300 text-sm font-semibold backdrop-blur-sm">
@@ -45,14 +65,14 @@ export function Home({ onNavigate }: HomeProps) {
               </span>
             </div>
 
-            <h1 className="text-5xl md:text-7xl font-bold leading-tight">
+            <h1 className="text-5xl md:text-7xl font-bold leading-tight drop-shadow-lg">
               A New Voice for
               <span className="block mt-2 bg-gradient-to-r from-amber-400 to-amber-600 bg-clip-text text-transparent">
                 Our Future
               </span>
             </h1>
 
-            <p className="text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto leading-relaxed drop-shadow-md">
               Together, we can build a future where economic opportunity, quality healthcare,
               and excellent education are rights, not privileges.
             </p>
@@ -62,7 +82,7 @@ export function Home({ onNavigate }: HomeProps) {
                 size="lg"
                 variant="secondary"
                 onClick={() => onNavigate('volunteer')}
-                className="group"
+                className="group shadow-lg shadow-amber-500/50"
               >
                 Join the Movement
                 <ArrowRight className="inline-block ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -79,7 +99,7 @@ export function Home({ onNavigate }: HomeProps) {
           </div>
         </div>
 
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent"></div>
+        {/* Removed: original subtle bottom gradient as it may conflict with the image */}
       </section>
 
       {/* STATS SECTION (Original) */}
@@ -132,7 +152,7 @@ export function Home({ onNavigate }: HomeProps) {
         </div>
       </section>
 
-      {/* FOOTER CTA SECTION (Original, RESTORED) */}
+      {/* FOOTER CTA SECTION (Original) */}
       <section className="py-20 bg-gradient-to-br from-blue-900 to-blue-800 text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">

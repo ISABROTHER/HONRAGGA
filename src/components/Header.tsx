@@ -10,8 +10,9 @@ interface HeaderProps {
 export function Header({ currentPage, onNavigate }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // 🔧 Adjustable logo scaling factor (change this number)
-  const logoScale = 1.0; // e.g. 1.2 = 20% larger, 0.85 = smaller
+  // === CONTROL SETTINGS ===
+  const logoScale = 1.0; // 🔧 change to enlarge/shrink logo (1.2 = 20% bigger)
+  const logoOffset = -3; // 🔧 move logo up/down (negative = up, positive = down, in pixels)
 
   const navItems = [
     { id: 'home', label: 'Home' },
@@ -38,12 +39,12 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
       <header
         className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-xl transition-shadow"
         style={{
-          height: '5.5rem', // consistent height
+          height: '4.5rem',
         }}
       >
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
           <div className="flex justify-between items-center h-full">
-            {/* Logo / Branding */}
+            {/* === LOGO & NAME === */}
             <button
               onClick={() => handleNavClick('home')}
               className="flex items-center space-x-3 group transition-transform hover:scale-[1.01] focus:outline-none"
@@ -54,9 +55,9 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                   alt="Logo"
                   className="object-contain transition-transform duration-300"
                   style={{
-                    height: `${100 * logoScale}px`,
+                    height: `${58 * logoScale}px`,
                     width: 'auto',
-                    transform: `translateY(-2px) scale(${logoScale})`,
+                    transform: `translateY(${logoOffset}px) scale(${logoScale})`,
                     transformOrigin: 'center center',
                   }}
                 />
@@ -71,7 +72,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
               </div>
             </button>
 
-            {/* Desktop Navigation */}
+            {/* === DESKTOP NAVIGATION === */}
             <div className="hidden md:flex items-center space-x-1">
               {navItems.map((item) => (
                 <button
@@ -88,7 +89,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
               ))}
             </div>
 
-            {/* Right-side Buttons */}
+            {/* === RIGHT SIDE === */}
             <div className="flex items-center space-x-4">
               <div className="hidden md:block">
                 <Button
@@ -102,7 +103,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                 </Button>
               </div>
 
-              {/* Mobile Menu Toggle */}
+              {/* === MOBILE MENU TOGGLE === */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className="md:hidden p-3 rounded-full hover:bg-gray-100 transition-colors border border-gray-200"
@@ -118,7 +119,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
           </div>
         </nav>
 
-        {/* Mobile Menu */}
+        {/* === MOBILE MENU === */}
         <div
           className={`md:hidden absolute inset-x-0 top-full w-full bg-white border-t border-gray-200 shadow-2xl overflow-hidden transition-all duration-[550ms] ease-in-out origin-top z-40 ${
             mobileMenuOpen ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0'
@@ -158,7 +159,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
       {/* === MINI SCROLLING HEADER === */}
       <div
         className="bg-red-600 h-5 overflow-hidden relative flex items-center"
-        style={{ marginTop: '4.5rem' }} // 👈 prevents overlap
+        style={{ marginTop: '4.5rem' }}
       >
         <div
           className="marquee-track absolute top-0 left-0 h-full flex items-center whitespace-nowrap font-bold text-white"
@@ -172,11 +173,15 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
           <div style={{ minWidth: '25vw' }} />
 
           <div className="marquee-content flex items-center gap-4">
-            <span>SUPPORT HON. RAGGA’S OPERATION 1000 DESKS FOR STUDENTS 'II' OBIARA KA HO 'II'</span>
+            <span>
+              SUPPORT HON. RAGGA’S OPERATION 1000 DESKS FOR STUDENTS 'II' OBIARA KA HO 'II'
+            </span>
           </div>
 
           <div className="marquee-content flex items-center gap-4" aria-hidden="true">
-            <span>SUPPORT HON. RAGGA’S OPERATION 1000 DESKS FOR STUDENTS 'II' OBIARA KA HO 'II'</span>
+            <span>
+              SUPPORT HON. RAGGA’S OPERATION 1000 DESKS FOR STUDENTS 'II' OBIARA KA HO 'II'
+            </span>
           </div>
         </div>
 
@@ -194,7 +199,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
         `}</style>
       </div>
 
-      {/* Add top padding so page content doesn’t hide behind header */}
+      {/* === TOP SPACER === */}
       <div style={{ paddingTop: '5rem' }} />
     </div>
   );

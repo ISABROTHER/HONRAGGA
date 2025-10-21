@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { ThemeProvider } from './contexts/ThemeContext';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { Home } from './pages/Home';
@@ -35,13 +34,12 @@ function App() {
   };
 
   return (
-    <ThemeProvider>
-      <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors">
-        <Header currentPage={currentPage} onNavigate={setCurrentPage} />
-        <main>{renderPage()}</main>
-        <Footer />
-      </div>
-    </ThemeProvider>
+    // Removed ThemeProvider and locked background to white
+    <div className="min-h-screen bg-white transition-colors">
+      <Header currentPage={currentPage} onNavigate={setCurrentPage} />
+      <main>{renderPage()}</main>
+      <Footer />
+    </div>
   );
 }
 

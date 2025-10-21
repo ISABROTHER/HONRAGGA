@@ -31,8 +31,8 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
 
   return (
     <div className="relative w-full">
-      {/* === Red Semi-Header (30% of header height) === */}
-      <div className="bg-red-600 h-12 w-full"></div>
+      {/* === Softer Red Semi-Header (70% of header height, 50% opacity) === */}
+      <div className="bg-red-600/50 h-[70%] w-full"></div>
 
       {/* === Main Header === */}
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-xl transition-shadow relative">

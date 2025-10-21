@@ -32,7 +32,8 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-xl transition-shadow relative">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
+        {/* INCREASED VERTICAL PADDING to achieve ~30% greater height */}
+        <div className="flex justify-between items-center py-5">
           {/* Logo/Branding Block */}
           <button
             onClick={() => handleNavClick('home')}
@@ -95,7 +96,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
         </div>
       </nav>
 
-      {/* Mobile Menu Dropdown OVERLAY */}
+      {/* Mobile Menu Dropdown OVERLAY (Positioning remains top-full) */}
       <div
         className={`md:hidden absolute inset-x-0 top-full w-full bg-white border-t border-gray-200 shadow-2xl overflow-hidden
           transition-all duration-[550ms] ease-in-out origin-top z-40
@@ -118,7 +119,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
               {/* Animated effect on text for mobile tap/hover */}
               <span className="inline-flex items-center space-x-3 transform transition-transform duration-150 group-hover:translate-x-1 group-focus:translate-x-1">
                 {item.label}
-              </span>
+              </span >
             </button>
           ))}
           <div className="pt-2">

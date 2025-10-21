@@ -32,19 +32,28 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
   return (
     <div className="relative w-full">
       {/* === MAIN HEADER === */}
-      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-xl transition-shadow relative">
-        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-5">
+      <header
+        className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-xl transition-shadow relative h-20 min-h-20"
+        style={{ '--logo-scale': 1.15 } as React.CSSProperties} // adjust 1.0–1.5 to make logo bigger or smaller
+      >
+        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+          <div className="flex justify-between items-center h-full">
             {/* Logo / Branding */}
             <button
               onClick={() => handleNavClick('home')}
-              className="flex items-center space-x-3 group transition-transform hover:scale-[1.01] focus:outline-none"
+              className="flex items-center space-x-3 group transition-transform hover:scale-[1.01] focus:outline-none h-full"
             >
-              <img
-                src="https://i.imgur.com/hyNrYDZ.png"
-                alt="Logo"
-                className="w-12 h-12 rounded-full object-contain shadow-blue-500/50 group-hover:shadow-lg transition-shadow"
-              />
+              <div className="flex items-center h-full">
+                <img
+                  src="https://i.imgur.com/hyNrYDZ.png"
+                  alt="Logo"
+                  className="object-contain transition-all duration-300"
+                  style={{
+                    height: 'calc(100% * var(--logo-scale))',
+                    transform: 'translateY(calc((1 - var(--logo-scale)) * -20%))',
+                  }}
+                />
+              </div>
               <div className="hidden sm:block text-left">
                 <div className="text-xl font-extrabold text-gray-900 group-hover:text-blue-700 transition-colors">
                   Jane Doe
@@ -153,7 +162,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
           <div style={{ minWidth: '30vw' }} />
 
           <div className="marquee-content flex items-center gap-4">
-            <span>OFFICIAL WEBSITE OF MP FOR CAPE COAST NORTH</span>
+            <span>OFFICIAL WEBSITE OF THE MP FOR CAPE COAST NORTH</span>
             <span className="text-white/80">II</span>
             <span>HON. DR. KWAMENA MINTA NYARKU</span>
             <span className="text-white/80">II</span>
@@ -162,10 +171,10 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
           </div>
 
           <div className="marquee-content flex items-center gap-4" aria-hidden="true">
-            <span>OFFICIAL WEBSITE OF MP FOR CAPE COAST NORTH</span>
+            <span>OFFICIAL WEBSITE OF THE MP FOR CAPE COAST NORTH</span>
             <span className="text-white/80">II</span>
             <span>HON. DR. KWAMENA MINTA NYARKU</span>
-            <span className="text-white/80">II</span> 
+            <span className="text-white/80">II</span>
             <span>OBIARA KA HO</span>
             <span className="text-white/80">II</span>
           </div>

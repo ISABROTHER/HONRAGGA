@@ -31,42 +31,47 @@ export function Home({ onNavigate }: HomeProps) {
     }
   ];
 
-  // NOTE: A Top One Percent implementation requires a hosted image URL.
-  // The provided Facebook URL is used here for demonstration but WILL LIKELY FAIL in production due to CORS/security policies.
-  const CANDIDATE_IMAGE_URL = "https://i.imgur.com/5AB8v3f.jpeg";
+  // NOTE: This URL is non-portable. In a production site, replace this with a hosted image.
+  const CANDIDATE_IMAGE_URL = "https://scontent-arn2-1.xx.fbcdn.net/v/t39.30808-6/515441812_10163003867507920_4808851483961703661_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFkXpxZfRZCiS6tUkMuNIwhz6Ix5oWf9IPPojHmhZ_0g3q-yrs_5MJM8xygdYYX5g4&_nc_ohc=O_SI0alOrEUQ7kNvwFE3BmL&_nc_oc=AdkQ-x4mJmZz5C-Peh1kc9yDFigPG46vldlmExHwi79lZshgP8YqbgstLrh_t_KoN4Y&_nc_zt=23&_nc_ht=scontent-arn2-1.xx&_nc_gid=ZVbXGcOeCipYDkVva7FcmA&oh=00_Afd9WY4XJWo_eBqDQdctSg_i9eSVJ3yuBWa15kvxQYC1Og&oe=68FCCF73";
 
   return (
     <div className="min-h-screen">
-      {/* HERO SECTION with Image, Black Bottom Fade (60% opacity), and Content Layering */}
-      <section className="relative h-screen min-h-[700px] max-h-[900px] flex items-center justify-center text-white overflow-hidden">
+      {/* TOP ONE PERCENT HERO SECTION: Proportional Aspect Ratio and Fluid Text */}
+      <section className="relative w-full aspect-video min-h-[300px] max-h-[900px] flex items-center justify-center text-white overflow-hidden">
         
-        {/* 1. Background Image Container (Absolute and fills section) */}
+        {/* 1. Background Image Container - Scales proportionally to the parent aspect ratio */}
         <div 
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: `url(${CANDIDATE_IMAGE_URL})` }}
           role="img"
-          aria-label="Jane Doe Campaign Hero Image"
+          aria-label="Campaign Hero Image"
         >
-          {/* Top of the image remains clear */}
-        </div>
-
-        {/* 2. Cinematic Black Overlay - Starts at bottom (60%), fades to middle, leaving top clear. */}
-        <div className="absolute inset-0">
-            {/* from-black/60 for 60% opacity, via-black/30 for smooth fade */}
+          {/* 2. Cinematic Black Overlay - Bottom-up 60% fade */}
+          <div className="absolute inset-0">
+            {/* 60% opacity at bottom, fading to transparent by the middle of the screen. */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent"></div>
+          </div>
         </div>
 
-        {/* 3. Layered Content (Text and CTAs) - Ensure content z-index is high */}
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-32">
-          <div className="text-center space-y-8 animate-fade-in">
-            {/* Empty space for where the large slogan was */}
-            <h1 className="text-5xl md:text-7xl font-bold leading-tight drop-shadow-lg invisible">.</h1>
+        {/* 3. Layered Content - Text Centered and Scaling Fluidly */}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-16">
+          <div className="text-center space-y-4 md:space-y-6 animate-fade-in flex flex-col items-center justify-center">
 
-            <p className="text-xl md:text-2xl text-white max-w-3xl mx-auto leading-relaxed drop-shadow-lg">
+            {/* Main Title - Proportional Scaling & No Wrap */}
+            <h1 className="text-4xl sm:text-6xl lg:text-8xl font-extrabold leading-none drop-shadow-lg [text-shadow:_0_4px_4px_rgb(0_0_0_/_60%)]">
+              {/* Added whitespace-nowrap to prevent line wrapping as requested */}
+              <span className="bg-gradient-to-r from-amber-400 to-amber-600 bg-clip-text text-transparent whitespace-nowrap">
+                A NEW VOICE FOR OUR FUTURE
+              </span>
+            </h1>
+
+            {/* Sub-text - Proportional Scaling */}
+            <p className="text-lg sm:text-xl md:text-2xl text-white max-w-4xl mx-auto leading-tight drop-shadow-lg [text-shadow:_0_2px_2px_rgb(0_0_0_/_50%)]">
               Together, we can build a future where economic opportunity, quality healthcare,
               and excellent education are rights, not privileges.
             </p>
 
+            {/* CTAs */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
               <Button
                 size="lg"

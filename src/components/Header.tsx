@@ -136,21 +136,21 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
         </div>
       </header>
 
-      {/* === Moving Text Bar (Marquee under header) === */}
-      <div className="bg-red-600 h-6 overflow-hidden relative">
-        <div className="absolute whitespace-nowrap animate-marquee text-white text-sm font-semibold">
-          &nbsp; Breaking News: Campaign events coming soon • Join our volunteer team today • Support Jane Doe for Senate 2026 • Donate now to make a difference •
+      {/* === Moving Text Bar (Official Website Notice) === */}
+      <div className="bg-red-600 h-4 overflow-hidden relative">
+        <div className="absolute left-[30%] whitespace-nowrap animate-marquee text-white text-sm font-semibold">
+          Official Website for MP for Cape Coast
         </div>
       </div>
 
-      {/* === Tailwind Marquee Animation === */}
+      {/* === Custom Marquee Animation (Slower, offset start) === */}
       <style>{`
         @keyframes marquee {
           0% { transform: translateX(100%); }
           100% { transform: translateX(-100%); }
         }
         .animate-marquee {
-          animation: marquee 20s linear infinite;
+          animation: marquee 40s linear infinite; /* Slower by 50% */
         }
       `}</style>
     </div>

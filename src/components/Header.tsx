@@ -156,12 +156,15 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
           </div>
         </nav>
 
-        {/* === MOBILE MENU - DARK GREEN 98% OPAQUE UI === */}
+        {/* === MOBILE MENU - DARK GREEN 98% OPAQUE UI WITH STRIPES === */}
         <div
-          // Implemented "must not transparent only 2 percent transparent" -> 98% opacity
+          // Added subtle stripe design (2px semi-transparent white diagonal lines every 20px)
           className={`md:hidden absolute inset-x-0 top-full w-full bg-green-900/[.98] overflow-hidden transition-all duration-[550ms] ease-in-out origin-top z-40 ${
             mobileMenuOpen ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0'
           }`}
+          style={{
+            backgroundImage: 'repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.05) 0, rgba(255, 255, 255, 0.05) 2px, transparent 2px, transparent 20px)',
+          }}
         >
           <div
             className="px-4 py-4 flex flex-col"
@@ -177,7 +180,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                   currentPage === item.id
                     // Active link remains prominent
                     ? 'bg-green-500 text-white shadow-md' 
-                    // Changed non-active links to white text for contrast on the dark green background
+                    // Non-active links use white text for contrast
                     : 'text-white hover:bg-green-700/80 focus:bg-green-700/80'
                 }`}
                 style={{

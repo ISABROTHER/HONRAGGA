@@ -34,7 +34,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
 
   // --- Mobile ---
   // Vertical & horizontal spacing between stacked items scale with navScale
-  const mobileNavGap = 4 * navScale; // 🔧 vertical spacing between stacked items (WAS 0)
+  const mobileNavGap = 0 * navScale; // 🔧 vertical spacing between stacked items
   const mobileNavPaddingY = 7 * navScale; // 🔧 top/bottom padding
   const mobileNavPaddingX = 10 * navScale; // 🔧 left/right padding
   const mobileNavFontSize = 14 * navScale; // 🔧 text size
@@ -127,7 +127,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
 
               {/* === RIGHT SIDE (Donate Button, Mobile Menu Toggle) === */}
               <div className="flex items-center space-x-4 pl-4 md:pl-8">
-                {/* --- DONATE BUTTON REMOVED --- */}
+                {/* --- DESKTOP DONATE BUTTON REMOVED --- */}
 
                 {/* === MOBILE MENU TOGGLE === */}
                 <button
@@ -146,13 +146,15 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
           </div>
         </nav>
 
-        {/* === MOBILE MENU - UPDATED STYLES === */}
+        {/* === MOBILE MENU - DARK GREEN 98% OPAQUE UI WITH STRIPES === */}
         <div
-          // UPDATED: Removed green background and stripes, added white blur style
-          className={`md:hidden absolute inset-x-0 top-full w-full bg-white/95 backdrop-blur-md shadow-lg border-x border-b border-gray-200 overflow-hidden transition-all duration-300 ease-in-out origin-top z-40 ${
+          // Added subtle stripe design (2px semi-transparent white diagonal lines every 20px)
+          className={`md:hidden absolute inset-x-0 top-full w-full bg-green-900/[.98] overflow-hidden transition-all duration-[550ms] ease-in-out origin-top z-40 ${
             mobileMenuOpen ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0'
           }`}
-          // REMOVED: style attribute with backgroundImage
+          style={{
+            backgroundImage: 'repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.05) 0, rgba(255, 255, 255, 0.05) 2px, transparent 2px, transparent 20px)',
+          }}
         >
           <div
             className="px-4 py-4 flex flex-col"
@@ -164,13 +166,12 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
               <button
                 key={item.id}
                 onClick={() => handleNavClick(item.id)}
-                // UPDATED: Changed button styles to match desktop (blue/gray)
                 className={`block w-full text-left rounded-xl font-semibold transition-all duration-200 group ${
                   currentPage === item.id
-                    // Active link
-                    ? 'bg-blue-900 text-white shadow-lg shadow-blue-500/50'
-                    // Non-active links
-                    : 'text-gray-700 hover:bg-gray-100 hover:text-blue-700'
+                    // Active link remains prominent
+                    ? 'bg-green-500 text-white shadow-md' 
+                    // Non-active links use white text for contrast
+                    : 'text-white hover:bg-green-700/80 focus:bg-green-700/80'
                 }`}
                 style={{
                   padding: `${mobileNavPaddingY}px ${mobileNavPaddingX}px`,
@@ -180,7 +181,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                 {item.label}
               </button>
             ))}
-            {/* --- DONATE BUTTON REMOVED --- */}
+            {/* --- MOBILE DONATE BUTTON REMOVED --- */}
           </div>
         </div>
       </header>
@@ -226,7 +227,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
         `}</style>
       </div>
 
-      <div style={{ paddingTop: `${headerHeight + 20}px` }} />
+      {/* --- SPACER DIV REMOVED --- */}
     </div>
   );
 }

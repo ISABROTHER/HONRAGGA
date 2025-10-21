@@ -31,14 +31,14 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
 
   return (
     <div className="relative w-full">
-      {/* === Red Semi-Header (about 10% of main header height) === */}
-      <div className="bg-red-600 h-2 w-full"></div>
+      {/* === Top Red Semi-Header (10% of main header height) === */}
+      <div className="bg-red-600 h-4 w-full"></div>
 
       {/* === Main Header === */}
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-xl transition-shadow relative">
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-5">
-            {/* Logo/Branding */}
+            {/* Logo */}
             <button
               onClick={() => handleNavClick('home')}
               className="flex items-center space-x-3 group transition-transform hover:scale-[1.01] focus:outline-none"
@@ -56,7 +56,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
               </div>
             </button>
 
-            {/* Desktop Navigation */}
+            {/* Desktop Nav */}
             <div className="hidden md:flex items-center space-x-1">
               {navItems.map((item) => (
                 <button
@@ -73,7 +73,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
               ))}
             </div>
 
-            {/* Right-side CTAs and Toggles */}
+            {/* Right Side */}
             <div className="flex items-center space-x-4">
               <div className="hidden md:block">
                 <Button
@@ -86,8 +86,6 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                   Donate
                 </Button>
               </div>
-
-              {/* Mobile Menu Toggle */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className="md:hidden p-3 rounded-full hover:bg-gray-100 transition-colors border border-gray-200"
@@ -103,7 +101,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
           </div>
         </nav>
 
-        {/* Mobile Menu Dropdown */}
+        {/* Mobile Dropdown */}
         <div
           className={`md:hidden absolute inset-x-0 top-full w-full bg-white border-t border-gray-200 shadow-2xl overflow-hidden transition-all duration-[550ms] ease-in-out origin-top z-40 ${
             mobileMenuOpen ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0'
@@ -140,6 +138,24 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
           </div>
         </div>
       </header>
+
+      {/* === Moving Text Bar (Marquee under header) === */}
+      <div className="bg-red-600 h-4 overflow-hidden relative">
+        <div className="absolute whitespace-nowrap animate-marquee text-white text-sm font-semibold">
+          &nbsp; Breaking News: Campaign events coming soon • Join our volunteer team today • Support Jane Doe for Senate 2026 • Donate now to make a difference •
+        </div>
+      </div>
+
+      {/* === Tailwind Marquee Animation === */}
+      <style>{`
+        @keyframes marquee {
+          0% { transform: translateX(100%); }
+          100% { transform: translateX(-100%); }
+        }
+        .animate-marquee {
+          animation: marquee 20s linear infinite;
+        }
+      `}</style>
     </div>
   );
 }

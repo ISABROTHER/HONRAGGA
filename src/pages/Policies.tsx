@@ -1,16 +1,14 @@
 import { useEffect, useRef } from 'react'; // Import hooks for animation
-// Removed specific icon imports as they are no longer used next to titles
-import { ChevronRight, CheckCircle } from 'lucide-react';
+import { BookOpen, Heart, Users, Building, Wheat, Handshake, Leaf, Landmark, ChevronRight } from 'lucide-react'; // Removed CheckCircle import
 
 // Define the structure for each *main* policy theme
 interface PolicyTheme {
   id: string; // Unique identifier (used for navigation)
-  // Removed icon property as it's no longer used next to the title
   title: string;
   shortDescription: string;
   imageComponent: React.ReactNode; // Holds either a div with color or an img tag
   initiativeCount: number; // Based on detailed text sections
-  keyInitiatives: string[]; // List of initiatives
+  // Removed keyInitiatives array
 }
 
 // Props interface including the navigation function from App.tsx
@@ -57,7 +55,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
   }, []);
 
 
-  // Array containing the main policy themes (icon property removed)
+  // Array containing the main policy themes (keyInitiatives array removed)
   const themes: PolicyTheme[] = [
     {
       id: 'education',
@@ -69,10 +67,6 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
         </div>
       ),
       initiativeCount: 3,
-      keyInitiatives: [
-          "Donated 500 LED bulbs to Adisadel College",
-          "Provided 100 dual desks to 10 schools",
-      ]
     },
     {
       id: 'health',
@@ -80,14 +74,10 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       shortDescription: 'Expanding access to healthcare and clean water for all.',
       imageComponent: (
         <div className="w-full h-48 sm:h-64 bg-blue-100 flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
-          <img src="https://via.placeholder.com/820x360/EBF8FF/3182CE?text=Health+%26+Sanitation" alt="Health & Sanitation Placeholder" className="w-full h-full object-cover opacity-70"/> {/* Using placeholder image */}
+           <img src="https://via.placeholder.com/820x360/EBF8FF/3182CE?text=Health+%26+Sanitation" alt="Health & Sanitation Placeholder" className="w-full h-full object-cover opacity-70"/>
         </div>
       ),
       initiativeCount: 2,
-      keyInitiatives: [
-          "Supported Kwaprow & Dankwakrom health centers",
-          "Constructed public toilets & sanitation manholes",
-      ]
     },
     {
       id: 'entrepreneurship',
@@ -95,14 +85,10 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       shortDescription: 'Creating jobs and empowering local businesses.',
       imageComponent: (
         <div className="w-full h-48 sm:h-64 bg-blue-100 flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
-           <img src="https://via.placeholder.com/820x360/EBF8FF/3182CE?text=Employment+%26+Entrepreneurship" alt="Employment Placeholder" className="w-full h-full object-cover opacity-70"/> {/* Using placeholder image */}
+           <img src="https://via.placeholder.com/820x360/EBF8FF/3182CE?text=Employment+%26+Entrepreneurship" alt="Employment Placeholder" className="w-full h-full object-cover opacity-70"/>
         </div>
       ),
       initiativeCount: 2,
-       keyInitiatives: [
-          "Advocating factory revival for job creation",
-          "Recognized for entrepreneurship focus",
-      ]
     },
     {
       id: 'infrastructure',
@@ -114,10 +100,6 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
         </div>
       ),
       initiativeCount: 3,
-       keyInitiatives: [
-          "Installed over 2,500 streetlights ('Operation Light Up')",
-          "Secured 10km of asphalted roads allocation",
-      ]
     },
     {
       id: 'agriculture',
@@ -129,10 +111,6 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
         </div>
       ),
        initiativeCount: 1,
-       keyInitiatives: [
-           "Provided essential tools & training",
-           "Improved market access strategies",
-       ]
     },
      {
       id: 'community',
@@ -140,14 +118,10 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       shortDescription: 'Empowering women, youth, and vulnerable groups.',
       imageComponent: (
         <div className="w-full h-48 sm:h-64 bg-blue-100 flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
-           <img src="https://via.placeholder.com/820x360/EBF8FF/3182CE?text=Social+Welfare" alt="Social Welfare Placeholder" className="w-full h-full object-cover opacity-70"/> {/* Using placeholder image */}
+            <img src="https://via.placeholder.com/820x360/EBF8FF/3182CE?text=Social+Welfare" alt="Social Welfare Placeholder" className="w-full h-full object-cover opacity-70"/>
         </div>
       ),
       initiativeCount: 3,
-       keyInitiatives: [
-          "Donated 3 months' salary to support constituents",
-          "Organized leadership summits & mentorship",
-       ]
     },
     {
       id: 'environment',
@@ -155,14 +129,10 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       shortDescription: 'Protecting our land, water, and natural heritage.',
       imageComponent: (
         <div className="w-full h-48 sm:h-64 bg-blue-100 flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
-           <img src="https://via.placeholder.com/820x360/EBF8FF/3182CE?text=Environment" alt="Environment Placeholder" className="w-full h-full object-cover opacity-70"/> {/* Using placeholder image */}
+            <img src="https://via.placeholder.com/820x360/EBF8FF/3182CE?text=Environment" alt="Environment Placeholder" className="w-full h-full object-cover opacity-70"/>
         </div>
       ),
        initiativeCount: 1,
-       keyInitiatives: [
-           "Championed protection of land & water resources",
-           "Advocated for environmental sustainability",
-       ]
     },
      {
       id: 'planning', // Corresponds to Governance
@@ -174,10 +144,6 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
          </div>
       ),
       initiativeCount: 1,
-       keyInitiatives: [
-          "Launched Cape Coast 8-Year Development Plan",
-          "Promoted intentional planning & heritage revival",
-      ]
     },
   ];
 
@@ -215,7 +181,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
                   <div className="p-6 flex flex-col">
                     {/* Top section: Title and Description */}
                     <div className="mb-4">
-                        {/* Heading: Icon removed */}
+                        {/* Heading: Icon removed, Dark Green text */}
                         <h2 className="text-xl sm:text-2xl font-bold text-green-800 whitespace-nowrap overflow-hidden text-ellipsis mb-2">
                           {theme.title}
                         </h2>
@@ -224,24 +190,14 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
                         </p>
                     </div>
 
-                    {/* Middle section: Initiatives List */}
-                    <div className="pt-1 mb-4">
-                      <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Key Initiatives Listed</h3>
-                      <ul className="space-y-1.5">
-                          {theme.keyInitiatives.slice(0, 2).map((initiative, i) => (
-                              <li key={i} className="flex items-start text-sm text-gray-700">
-                                  <CheckCircle className="w-4 h-4 mr-2 mt-0.5 text-amber-600 flex-shrink-0" />
-                                  <span>{initiative}</span>
-                              </li>
-                          ))}
-                      </ul>
-                    </div>
+                    {/* Middle section: Initiatives List REMOVED */}
 
                     {/* Bottom section: Count and View Details */}
-                    <div className="mt-auto flex justify-between items-center pt-2">
-                        {/* Initiative Count */}
-                        <p className="text-xs text-gray-500 font-medium">
-                           <span className="font-bold">{theme.initiativeCount}</span> {theme.initiativeCount === 1 ? 'Initiative Area Listed' : 'Initiative Areas Listed'}
+                    <div className="mt-auto flex justify-between items-center pt-4"> {/* Added more top padding */}
+                        {/* Initiative Count - Updated Styling */}
+                        <p className="text-sm text-gray-700 font-medium"> {/* Larger text, slightly darker color */}
+                           <span className="font-extrabold text-lg text-amber-600 mr-1">{theme.initiativeCount}</span> {/* Catchy number */}
+                            {theme.initiativeCount === 1 ? 'Initiative Area Listed' : 'Initiative Areas Listed'}
                         </p>
 
                         {/* Call to Action: Right Aligned */}

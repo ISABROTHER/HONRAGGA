@@ -257,7 +257,7 @@ export function About() {
             </blockquote>
         </AnimatedSection>
 
-      </div>
+      </div> 
        {/* CSS for animations */}
       <style>{`
         .animate-section-enter {

@@ -144,7 +144,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
     <div className="min-h-screen bg-gray-100">
 
       {/* Section Header - Base Image, Gradient, Overlay Background & Text */}
-      <section className="relative w-full overflow-hidden min-h-[250px] sm:min-h-[350px] flex items-end"> {/* Adjusted min height */}
+      <section className="relative w-full overflow-hidden min-h-[250px] sm:min-h-[350px] flex items-end">
         {/* Base Image */}
         <img
           src={headerImageUrl}
@@ -152,11 +152,12 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
           className="absolute inset-0 w-full h-full object-cover object-center"
         />
         {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-70"></div> {/* Adjusted gradient and opacity */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-70"></div>
 
         {/* Content Overlay Div with Background */}
         <div
-            className="relative z-10 w-full bg-cover bg-center py-10 sm:py-16 text-white text-center" // Applied as background
+            // Added translate-y-[30%] to shift the overlay down
+            className="relative z-10 w-full bg-cover bg-center py-10 sm:py-16 text-white text-center transform translate-y-[30%]"
             style={{ backgroundImage: `url(${overlayImageUrl})` }}
         >
             {/* Text remains centered on top of the background */}

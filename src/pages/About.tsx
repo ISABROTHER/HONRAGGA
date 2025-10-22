@@ -30,11 +30,34 @@ const AnimatedSection = ({ children, delay = 0 }: { children: React.ReactNode, d
     return <div ref={ref} className="transition-all duration-700 ease-out" style={{ transitionDelay: `${delay}ms` }}>{children}</div>;
 }
 
+// Helper component for Profile items
+const ProfileItem = ({ icon: Icon, label, value }: { icon: React.ElementType, label: string, value: string }) => (
+    <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm flex items-start space-x-3">
+        <Icon className="w-5 h-5 text-blue-700 mt-1 flex-shrink-0"/>
+        <div>
+            <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">{label}</h4>
+            <p className="text-sm font-medium text-gray-800">{value}</p>
+        </div>
+    </div>
+);
+
+// Helper component for Education items
+const EducationItem = ({ institution, qualification, year }: { institution: string, qualification: string, year: string }) => (
+    <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+        <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Institution</h4>
+        <p className="text-sm font-medium text-gray-800 mb-2">{institution}</p>
+        <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Qualification</h4>
+        <p className="text-sm font-medium text-gray-800 mb-2">{qualification}</p>
+        <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Year Completed</h4>
+        <p className="text-sm font-medium text-gray-800">{year}</p>
+    </div>
+);
+
 
 export function About() {
   const heroImageUrl = "https://i.imgur.com/5H0XBuV.jpeg"; // New hero image
 
-  // Election Results Data
+  // Election Results Data (still needed for the Elected MP block)
   const electionResults = [
     {
         year: 2020,
@@ -77,17 +100,6 @@ export function About() {
       return parts.length > 1 ? parts[1] : dateStr; // Assumes YYYY or MM-YYYY
   }
 
-  // Helper component for Profile items
-  const ProfileItem = ({ icon: Icon, label, value }: { icon: React.ElementType, label: string, value: string }) => (
-    <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm flex items-start space-x-3">
-        <Icon className="w-5 h-5 text-blue-700 mt-1 flex-shrink-0"/>
-        <div>
-            <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">{label}</h4>
-            <p className="text-sm font-medium text-gray-800">{value}</p>
-        </div>
-    </div>
-  );
-
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -107,7 +119,6 @@ export function About() {
         {/* Section 1: Profile Grid */}
         <AnimatedSection>
           <h2 className="text-3xl font-bold text-green-800 mb-6 border-b-2 border-amber-500 pb-2 inline-block">Profile</h2>
-          {/* Replaced table with a responsive grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                 <ProfileItem icon={User} label="Full Name" value="Hon. Dr. Kwamena Minta Nyarku, PhD" />
                 <ProfileItem icon={Smile} label="Nickname" value="Ragga" />
@@ -120,28 +131,18 @@ export function About() {
           </p>
         </AnimatedSection>
 
-        {/* Section 2: Educational Qualifications Table */}
+        {/* Section 2: Educational Qualifications Grid */}
         <AnimatedSection delay={100}>
             <h3 className="text-2xl font-semibold text-blue-900 mb-4">Educational Qualifications</h3>
-             <div className="overflow-x-auto bg-white rounded-lg shadow-md border border-gray-200">
-                <table className="w-full text-sm text-left text-gray-700">
-                    <thead className="text-xs text-gray-500 uppercase bg-blue-50">
-                        <tr>
-                            <th scope="col" className="px-6 py-3">Institution</th>
-                            <th scope="col" className="px-6 py-3">Qualification</th>
-                            <th scope="col" className="px-6 py-3 text-right">Year Completed</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {educationData.map((edu) => (
-                            <tr key={edu.institution} className="bg-white border-b border-gray-100 last:border-b-0 hover:bg-gray-50">
-                                <td className="px-6 py-3 font-medium text-gray-900">{edu.institution}</td>
-                                <td className="px-6 py-3">{edu.qualification}</td>
-                                <td className="px-6 py-3 text-right">{getYear(edu.completed)}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                 {educationData.map((edu) => (
+                    <EducationItem
+                        key={edu.institution}
+                        institution={edu.institution}
+                        qualification={edu.qualification}
+                        year={getYear(edu.completed)}
+                    />
+                 ))}
              </div>
         </AnimatedSection>
 
@@ -168,54 +169,34 @@ export function About() {
              </div>
         </AnimatedSection>
 
-        {/* Section 4: Parliamentary Role & Election Results */}
+        {/* Section 4: Parliamentary Role */}
         <AnimatedSection delay={300}>
             <h2 className="text-3xl font-bold text-green-800 mb-6 border-b-2 border-amber-500 pb-2 inline-block">Service in Parliament</h2>
             <div className="space-y-6">
-                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                 {/* Reverted grid cols to 1 for better flow */}
+                 <div className="grid grid-cols-1 gap-6">
 
-                    {/* Elected MP - Updated with Bullets */}
+                    {/* Elected MP - Updated with Election Results */}
                     <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-start shadow-sm">
                         <CheckSquare className="w-6 h-6 text-blue-700 mr-3 mt-1 flex-shrink-0"/>
                         <div>
                             <h4 className="font-semibold text-blue-900 mb-1">Elected MP (Cape Coast North)</h4>
-                            <ul className="list-disc list-inside space-y-1">
-                                <li className="text-sm text-gray-600">2020</li>
-                                <li className="text-sm text-gray-600">Re-elected 2024</li>
+                            <ul className="list-none space-y-1 mb-3"> {/* Use list-none for custom bullet feel */}
+                                {electionResults.map(result => (
+                                    <li key={result.year} className="text-sm text-gray-600 flex items-center">
+                                         <span className="font-semibold text-gray-800 mr-2">{result.year}:</span>
+                                         <span className="text-green-700 font-medium">{result.nyarkuVotes} votes ({result.nyarkuPercent})</span>
+                                         <span className="text-blue-800 ml-2">(Margin: {result.margin})</span>
+                                    </li>
+                                ))}
                             </ul>
                         </div>
                     </div>
 
-                    {/* Election Results Table */}
-                     <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm row-start-2 md:row-start-auto md:col-start-2">
-                         <div className="flex items-center mb-3">
-                            <BarChart3 className="w-6 h-6 text-blue-700 mr-3 flex-shrink-0"/>
-                            <h4 className="font-semibold text-blue-900">Election Results</h4>
-                         </div>
-                        <div className="overflow-x-auto">
-                            <table className="w-full text-sm text-left text-gray-700">
-                                <thead className="text-xs text-gray-500 uppercase border-b border-gray-200">
-                                    <tr>
-                                        <th scope="col" className="px-3 py-2">Year</th>
-                                        <th scope="col" className="px-3 py-2">Votes (NDC %)</th>
-                                        <th scope="col" className="px-3 py-2">Margin</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {electionResults.map((result) => (
-                                        <tr key={result.year} className="border-b border-gray-100 last:border-b-0 hover:bg-gray-50">
-                                            <th scope="row" className="px-3 py-3 font-medium text-gray-900">{result.year}</th>
-                                            <td className="px-3 py-3 font-semibold text-green-700">{result.nyarkuVotes} ({result.nyarkuPercent})</td>
-                                            <td className="px-3 py-3 font-medium text-blue-800">{result.margin}</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                     </div>
+                    {/* Election Results Table REMOVED */}
 
                     {/* Party Affiliation */}
-                     <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-start shadow-sm row-start-3 md:row-start-auto md:col-start-1">
+                     <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-start shadow-sm">
                         <Users className="w-6 h-6 text-blue-700 mr-3 mt-1 flex-shrink-0"/>
                         <div>
                             <h4 className="font-semibold text-blue-900">Party Affiliation</h4>
@@ -224,7 +205,7 @@ export function About() {
                     </div>
 
                     {/* Parliamentary Committees */}
-                    <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-start shadow-sm md:col-span-2 row-start-4 md:row-start-auto">
+                    <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-start shadow-sm">
                         <Landmark className="w-6 h-6 text-blue-700 mr-3 mt-1 flex-shrink-0"/>
                          <div>
                             <h4 className="font-semibold text-blue-900 mb-1">Parliamentary Committees</h4>
@@ -257,7 +238,7 @@ export function About() {
             </blockquote>
         </AnimatedSection>
 
-      </div> 
+      </div>
        {/* CSS for animations */}
       <style>{`
         .animate-section-enter {

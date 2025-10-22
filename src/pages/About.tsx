@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { School, Briefcase, Award, Landmark, CheckSquare, Users, Star, Eye, BarChart3, GraduationCap, MapPin, User, Smile } from 'lucide-react'; // Added User, Smile
+import { School, Briefcase, Award, Landmark, CheckSquare, Users, Star, Eye, BarChart3, GraduationCap, MapPin, User, Smile, Briefcase as DesignationIcon, Megaphone } from 'lucide-react';
 
 // Helper component for animated sections
 const AnimatedSection = ({ children, delay = 0 }: { children: React.ReactNode, delay?: number }) => {
@@ -77,6 +77,18 @@ export function About() {
       return parts.length > 1 ? parts[1] : dateStr; // Assumes YYYY or MM-YYYY
   }
 
+  // Helper component for Profile items
+  const ProfileItem = ({ icon: Icon, label, value }: { icon: React.ElementType, label: string, value: string }) => (
+    <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm flex items-start space-x-3">
+        <Icon className="w-5 h-5 text-blue-700 mt-1 flex-shrink-0"/>
+        <div>
+            <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">{label}</h4>
+            <p className="text-sm font-medium text-gray-800">{value}</p>
+        </div>
+    </div>
+  );
+
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section - Just an image */}
@@ -92,30 +104,18 @@ export function About() {
       {/* Main Content Sections */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20 space-y-16">
 
-        {/* Section 1: Roots Table */}
+        {/* Section 1: Profile Grid */}
         <AnimatedSection>
-          <h2 className="text-3xl font-bold text-green-800 mb-6 border-b-2 border-amber-500 pb-2 inline-block">Roots</h2>
-          {/* Updated table for Name, Nickname, Place of Birth */}
-          <div className="overflow-x-auto bg-white rounded-lg shadow-md border border-gray-200 mb-6"> {/* Added margin-bottom */}
-             <table className="w-full text-sm text-left text-gray-700">
-                 <tbody>
-                      <tr className="bg-white border-b border-gray-100 hover:bg-gray-50">
-                         <th scope="row" className="px-6 py-3 font-semibold text-blue-900 w-1/3"><User className="inline w-4 h-4 mr-2 text-blue-700"/>Full Name</th>
-                         <td className="px-6 py-3">Hon. Dr. Kwamena Minta Nyarku</td>
-                     </tr>
-                      <tr className="bg-white border-b border-gray-100 hover:bg-gray-50">
-                         <th scope="row" className="px-6 py-3 font-semibold text-blue-900 w-1/3"><Smile className="inline w-4 h-4 mr-2 text-blue-700"/>Nickname</th>
-                         <td className="px-6 py-3">Ragga</td>
-                     </tr>
-                     <tr className="bg-white hover:bg-gray-50">
-                         <th scope="row" className="px-6 py-3 font-semibold text-blue-900 w-1/3"><MapPin className="inline w-4 h-4 mr-2 text-blue-700"/>Place of Birth</th>
-                         <td className="px-6 py-3">Apewosika, Cape Coast</td>
-                     </tr>
-                      {/* Year of Birth row REMOVED */}
-                 </tbody>
-             </table>
+          <h2 className="text-3xl font-bold text-green-800 mb-6 border-b-2 border-amber-500 pb-2 inline-block">Profile</h2>
+          {/* Replaced table with a responsive grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                <ProfileItem icon={User} label="Full Name" value="Hon. Dr. Kwamena Minta Nyarku, PhD" />
+                <ProfileItem icon={Smile} label="Nickname" value="Ragga" />
+                <ProfileItem icon={DesignationIcon} label="Designation" value="MP for Cape Coast North" />
+                <ProfileItem icon={Megaphone} label="Slogan" value="Obiara Ka Ho (Everyone is involved)" />
+                <ProfileItem icon={MapPin} label="Place of Birth" value="Apewosika, Cape Coast" />
           </div>
-          <p className="text-gray-700 leading-relaxed"> {/* Kept this introductory sentence */}
+          <p className="text-gray-700 leading-relaxed">
             My story begins in Apewosika, where family, faith and community taught me humility, perseverance and purpose. From a young age, I came to see education not only as a way to grow personally but as a means to lift others and build stronger communities. That belief has guided my journey.
           </p>
         </AnimatedSection>
@@ -166,27 +166,27 @@ export function About() {
                     </tbody>
                 </table>
              </div>
-             {/* Paragraph REMOVED */}
         </AnimatedSection>
 
         {/* Section 4: Parliamentary Role & Election Results */}
         <AnimatedSection delay={300}>
             <h2 className="text-3xl font-bold text-green-800 mb-6 border-b-2 border-amber-500 pb-2 inline-block">Service in Parliament</h2>
-             {/* Paragraph REMOVED */}
-            {/* Combined Info Blocks and Table */}
             <div className="space-y-6">
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                    {/* Elected MP */}
+                    {/* Elected MP - Updated with Bullets */}
                     <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-start shadow-sm">
                         <CheckSquare className="w-6 h-6 text-blue-700 mr-3 mt-1 flex-shrink-0"/>
                         <div>
-                            <h4 className="font-semibold text-blue-900">Elected MP</h4>
-                            <p className="text-sm text-gray-600">Cape Coast North (2020, Re-elected 2024)</p>
+                            <h4 className="font-semibold text-blue-900 mb-1">Elected MP (Cape Coast North)</h4>
+                            <ul className="list-disc list-inside space-y-1">
+                                <li className="text-sm text-gray-600">2020</li>
+                                <li className="text-sm text-gray-600">Re-elected 2024</li>
+                            </ul>
                         </div>
                     </div>
 
-                    {/* Election Results Table - Positioned after Elected MP */}
+                    {/* Election Results Table */}
                      <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm row-start-2 md:row-start-auto md:col-start-2">
                          <div className="flex items-center mb-3">
                             <BarChart3 className="w-6 h-6 text-blue-700 mr-3 flex-shrink-0"/>
@@ -223,7 +223,7 @@ export function About() {
                         </div>
                     </div>
 
-                    {/* Parliamentary Committees - Now with Bullets */}
+                    {/* Parliamentary Committees */}
                     <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-start shadow-sm md:col-span-2 row-start-4 md:row-start-auto">
                         <Landmark className="w-6 h-6 text-blue-700 mr-3 mt-1 flex-shrink-0"/>
                          <div>

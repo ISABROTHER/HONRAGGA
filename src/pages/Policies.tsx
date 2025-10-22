@@ -55,9 +55,9 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
   }, []);
 
 
-  // Array containing the main policy themes (keyInitiatives array removed)
+  // Array containing the main policy themes
   const themes: PolicyTheme[] = [
-     {
+    {
       id: 'education',
       title: 'Education & Youth Empowerment',
       shortDescription: 'Supporting quality education, digital literacy, and youth skills training.',
@@ -181,12 +181,11 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
                   <div className="p-6 flex flex-col">
                     {/* Top section: Title and Description */}
                     <div className="mb-4">
-                        {/* Heading: Added underline effect classes */}
-                        <h2 className="relative inline-block text-xl sm:text-2xl font-bold text-green-800 whitespace-nowrap overflow-hidden text-ellipsis mb-2 pb-1 /* Added padding-bottom for space */
-                                       after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-amber-600 after:w-0 group-hover:after:w-full after:transition-all after:duration-300 after:ease-out">
+                        {/* Heading: Underline effect REMOVED */}
+                        <h2 className="text-xl sm:text-2xl font-bold text-green-800 whitespace-nowrap overflow-hidden text-ellipsis mb-2">
                           {theme.title}
                         </h2>
-                        <p className="text-gray-600 text-sm sm:text-base leading-relaxed mt-1"> {/* Added margin-top */}
+                        <p className="text-gray-600 text-sm sm:text-base leading-relaxed mt-1">
                           {theme.shortDescription}
                         </p>
                     </div>
@@ -201,8 +200,9 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
                             {theme.initiativeCount === 1 ? 'Initiative Area Listed' : 'Initiative Areas Listed'}
                         </p>
 
-                        {/* Call to Action: Right Aligned */}
-                        <span className="inline-flex items-center text-sm font-semibold text-amber-700 group-hover:underline">
+                        {/* Call to Action: Right Aligned with underline effect */}
+                        <span className="relative inline-flex items-center text-sm font-semibold text-amber-700 pb-0.5 /* Added padding for underline space */
+                                       after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-amber-600 after:w-0 group-hover:after:w-full after:transition-all after:duration-300 after:ease-out">
                           View Details
                           <ChevronRight className="ml-1 w-4 h-4 transition-transform group-hover:translate-x-1" />
                         </span>

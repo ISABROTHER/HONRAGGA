@@ -119,7 +119,7 @@ export function About() {
           </p>
         </AnimatedSection>
 
-        {/* Section 2: Educational Qualifications Table */}
+        {/* Section 2: Educational Qualifications Table - Updated Layout */}
         <AnimatedSection delay={100}>
             <h3 className="text-2xl font-semibold text-blue-900 mb-4">Educational Qualifications</h3>
              <div className="overflow-x-auto bg-white rounded-lg shadow-md border border-gray-200">
@@ -132,10 +132,15 @@ export function About() {
                     <tbody>
                         {educationData.map((edu, index) => (
                             <tr key={edu.institution} className={`${index % 2 === 0 ? 'bg-white' : 'bg-blue-50'} border-b border-gray-100 last:border-b-0 hover:bg-gray-50`}>
-                                <td className="px-6 py-3 whitespace-nowrap">
-                                    <span className="font-medium text-gray-900 mr-4">{edu.institution}</span>
-                                    <span className="text-gray-600 mr-4">Qualification: <span className="font-medium">{edu.qualification}</span></span>
-                                    <span className="text-gray-600">Year: <span className="font-medium">{getYear(edu.completed)}</span></span>
+                                {/* Updated TD structure */}
+                                <td className="px-6 py-3">
+                                    {/* Institution on its own line */}
+                                    <span className="font-medium text-gray-900 block">{edu.institution}</span>
+                                    {/* Qualification and Year on the next line */}
+                                    <div className="mt-1"> {/* Add small margin-top */}
+                                        <span className="text-gray-600 mr-4">Qualification: <span className="font-medium">{edu.qualification}</span></span>
+                                        <span className="text-gray-600">Year: <span className="font-medium">{getYear(edu.completed)}</span></span>
+                                    </div>
                                 </td>
                             </tr>
                         ))}
@@ -173,7 +178,7 @@ export function About() {
             <div className="space-y-6">
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                    {/* Elected MP */}
+                    {/* Elected MP - Updated with Election Results inline */}
                     <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-start shadow-sm">
                         <CheckSquare className="w-6 h-6 text-blue-700 mr-3 mt-1 flex-shrink-0"/>
                         <div>
@@ -199,18 +204,16 @@ export function About() {
                         </div>
                     </div>
 
-                    {/* Parliamentary Committees - Updated List */}
+                    {/* Parliamentary Committees */}
                     <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-start shadow-sm md:col-span-2">
                         <Landmark className="w-6 h-6 text-blue-700 mr-3 mt-1 flex-shrink-0"/>
                          <div>
-                            <h4 className="font-semibold text-blue-900 mb-2">Parliamentary Committees</h4>
-                             {/* Replaced bullet list with styled div */}
-                             <div className="space-y-1.5">
-                                 <p className="text-sm text-gray-700"><span className="font-medium text-gray-900">Defence & Interior</span> - Member</p>
-                                 <p className="text-sm text-gray-700"><span className="font-medium text-gray-900">Environment, Science & Technology</span> - Member</p>
-                                 <p className="text-sm text-gray-700"><span className="font-medium text-gray-900">Ways & Means</span> - Member</p>
-                                 {/* Removed Committee of Petitions */}
-                             </div>
+                            <h4 className="font-semibold text-blue-900 mb-1">Parliamentary Committees</h4>
+                            <ul className="list-disc list-inside space-y-1">
+                                <li className="text-sm text-gray-600">Defence & Interior - Member</li>
+                                <li className="text-sm text-gray-600">Environment, Science & Technology - Member</li>
+                                <li className="text-sm text-gray-600">Ways & Means - Member</li>
+                            </ul>
                         </div>
                     </div>
 

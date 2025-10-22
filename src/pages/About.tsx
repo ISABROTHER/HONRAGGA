@@ -91,15 +91,15 @@ export function About() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Hero Section - Image with Dark Green Gradient */}
+      {/* Hero Section - Image with Updated Gradient */}
       <section className="relative w-full h-auto min-h-[250px] md:min-h-[400px] lg:min-h-[500px] overflow-hidden">
         <img
           src={heroImageUrl}
           alt="Hon. Dr. Kwamena Minta Nyarku - About Me Banner"
           className="absolute inset-0 w-full h-full object-cover object-center"
         />
-        {/* Dark Green Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-green-900 via-green-700/70 to-transparent opacity-60"></div>
+        {/* Updated Dark Green Gradient Overlay: Fades to transparent by the middle */}
+        <div className="absolute inset-0 bg-gradient-to-t from-green-900 via-transparent to-transparent"></div>
       </section>
 
 

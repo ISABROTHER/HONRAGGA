@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { School, Briefcase, Award, Landmark, CheckSquare, Users, Star, Eye, BarChart3, GraduationCap, MapPin, User, Smile, Briefcase as DesignationIcon, Megaphone, Flag } from 'lucide-react'; // Flag icon might be unused now
+import { School, Briefcase, Award, Landmark, CheckSquare, Users, Star, Eye, BarChart3, GraduationCap, MapPin, User, Smile, Briefcase as DesignationIcon, Megaphone, Flag } from 'lucide-react';
 
 // Helper component for animated sections
 const AnimatedSection = ({ children, delay = 0 }: { children: React.ReactNode, delay?: number }) => {
@@ -107,19 +107,17 @@ export function About() {
         {/* Section 1: Profile Grid */}
         <AnimatedSection>
           <h2 className="text-3xl font-bold text-green-800 mb-6 border-b-2 border-amber-500 pb-2 inline-block">Profile</h2>
-          {/* Reordered items, removed Nickname and Nationality */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                 <ProfileItem icon={User} label="Full Name" value="Hon. Dr. Kwamena Minta Nyarku, PhD" />
-                {/* Nickname Removed */}
+                <ProfileItem icon={Smile} label="Nickname" value="Ragga" />
                 <ProfileItem icon={DesignationIcon} label="Designation" value="MP for Cape Coast North" />
                 <ProfileItem icon={Megaphone} label="Slogan" value="Obiara Ka Ho (Everyone is involved)" />
                 <ProfileItem icon={MapPin} label="Place of Birth" value="Apewosika, Cape Coast" />
-                {/* Nationality Removed */}
+                <ProfileItem icon={Flag} label="Nationality" value="Ghanaian" />
           </div>
-          {/* Paragraph Removed */}
         </AnimatedSection>
 
-        {/* Section 2: Educational Qualifications Table - Updated Layout */}
+        {/* Section 2: Educational Qualifications Table */}
         <AnimatedSection delay={100}>
             <h3 className="text-2xl font-semibold text-blue-900 mb-4">Educational Qualifications</h3>
              <div className="overflow-x-auto bg-white rounded-lg shadow-md border border-gray-200">
@@ -132,10 +130,9 @@ export function About() {
                     <tbody>
                         {educationData.map((edu, index) => (
                             <tr key={edu.institution} className={`${index % 2 === 0 ? 'bg-white' : 'bg-blue-50'} border-b border-gray-100 last:border-b-0 hover:bg-gray-50`}>
-                                {/* Updated TD structure for line break */}
                                 <td className="px-6 py-3">
                                     <span className="font-medium text-gray-900 block">{edu.institution}</span>
-                                    <div className="mt-1 text-gray-600"> {/* Div ensures Qualification and Year are grouped */}
+                                    <div className="mt-1 text-gray-600">
                                         <span className="mr-4">Qualification: <span className="font-medium">{edu.qualification}</span></span>
                                         <span>Year: <span className="font-medium">{getYear(edu.completed)}</span></span>
                                     </div>
@@ -202,16 +199,18 @@ export function About() {
                         </div>
                     </div>
 
-                    {/* Parliamentary Committees */}
+                    {/* Parliamentary Committees - Updated List */}
                     <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-start shadow-sm md:col-span-2">
                         <Landmark className="w-6 h-6 text-blue-700 mr-3 mt-1 flex-shrink-0"/>
                          <div>
-                            <h4 className="font-semibold text-blue-900 mb-1">Parliamentary Committees</h4>
-                            <ul className="list-disc list-inside space-y-1">
-                                <li className="text-sm text-gray-600">Defence & Interior - Member</li>
-                                <li className="text-sm text-gray-600">Environment, Science & Technology - Member</li>
-                                <li className="text-sm text-gray-600">Ways & Means - Member</li>
-                            </ul>
+                            <h4 className="font-semibold text-blue-900 mb-2">Parliamentary Committees</h4>
+                             {/* Replaced bullet list with styled paragraphs */}
+                             <div className="space-y-1.5">
+                                 <p className="text-sm text-gray-700">Member, Committee on Defence & Interior.</p>
+                                 <p className="text-sm text-gray-700">Member, Committee on Environment, Science & Technology.</p>
+                                 <p className="text-sm text-gray-700">Member, Committee on Ways & Means.</p>
+                                 <p className="text-sm text-gray-700">Vice-Chairman, Committee of Petitions.</p>
+                             </div>
                         </div>
                     </div>
 

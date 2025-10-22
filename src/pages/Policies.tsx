@@ -137,14 +137,14 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
 
   // Original header image
   const headerImageUrl = "https://i.imgur.com/2BmP7xu.jpeg";
-  // New overlay image for text and visual element
+  // Overlay image containing text elements
   const overlayImageUrl = "https://i.imgur.com/4s5NO8D.png";
 
   return (
     <div className="min-h-screen bg-gray-100">
 
-      {/* Section Header - Base Image, Gradient, Overlay Image & Text */}
-      <section className="relative w-full overflow-hidden min-h-[200px] sm:min-h-[300px] flex items-end justify-center"> {/* Added flex and items-end for positioning */}
+      {/* Section Header - Base Image, Gradient, Overlay Background & Text */}
+      <section className="relative w-full overflow-hidden min-h-[250px] sm:min-h-[350px] flex items-end"> {/* Adjusted min height */}
         {/* Base Image */}
         <img
           src={headerImageUrl}
@@ -152,20 +152,18 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
           className="absolute inset-0 w-full h-full object-cover object-center"
         />
         {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div> {/* Adjusted opacity and via-transparent removed for simpler bottom-heavy gradient */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-70"></div> {/* Adjusted gradient and opacity */}
 
-        {/* Content Overlay (New Image and Text) */}
-        <div className="relative z-10 w-full py-8 text-white text-center">
-            {/* Overlay Image (e.g., a logo or icon related to initiatives) */}
-            <img
-                src={overlayImageUrl}
-                alt="Initiatives Icon"
-                className="mx-auto h-24 sm:h-32 object-contain mb-4" // Adjust height and margin as needed
-            />
-            <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight mb-2">
+        {/* Content Overlay Div with Background */}
+        <div
+            className="relative z-10 w-full bg-cover bg-center py-10 sm:py-16 text-white text-center" // Applied as background
+            style={{ backgroundImage: `url(${overlayImageUrl})` }}
+        >
+            {/* Text remains centered on top of the background */}
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight mb-2 drop-shadow-md">
                 INITIATIVES
             </h1>
-            <p className="text-lg sm:text-xl font-medium text-amber-300">
+            <p className="text-lg sm:text-xl md:text-2xl font-semibold text-amber-300 drop-shadow-sm">
                 BY RAGGA
             </p>
         </div>

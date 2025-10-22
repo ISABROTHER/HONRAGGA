@@ -191,7 +191,7 @@ export function About() {
                     </div>
 
                     {/* Party Affiliation */}
-                     <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-start shadow-sm"> {/* Adjusted grid positioning */}
+                     <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-start shadow-sm">
                         <Users className="w-6 h-6 text-blue-700 mr-3 mt-1 flex-shrink-0"/>
                         <div>
                             <h4 className="font-semibold text-blue-900">Party Affiliation</h4>
@@ -200,16 +200,17 @@ export function About() {
                     </div>
 
                     {/* Parliamentary Committees - Updated List */}
-                    <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-start shadow-sm md:col-span-2"> {/* Span across columns */}
+                    <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-start shadow-sm md:col-span-2">
                         <Landmark className="w-6 h-6 text-blue-700 mr-3 mt-1 flex-shrink-0"/>
                          <div>
-                            <h4 className="font-semibold text-blue-900 mb-1">Parliamentary Committees</h4>
-                            <ul className="list-disc list-inside space-y-1">
-                                <li className="text-sm text-gray-600">Member, Committee on Defence & Interior</li>
-                                <li className="text-sm text-gray-600">Member, Committee on Environment, Science & Technology</li>
-                                <li className="text-sm text-gray-600">Member, Committee on Ways & Means</li>
-                                <li className="text-sm text-gray-600">Vice-Chairman, Committee of Petitions</li> {/* Added new item */}
-                            </ul>
+                            <h4 className="font-semibold text-blue-900 mb-2">Parliamentary Committees</h4>
+                             {/* Replaced bullet list with styled div */}
+                             <div className="space-y-1.5">
+                                 <p className="text-sm text-gray-700"><span className="font-medium text-gray-900">Defence & Interior</span> - Member</p>
+                                 <p className="text-sm text-gray-700"><span className="font-medium text-gray-900">Environment, Science & Technology</span> - Member</p>
+                                 <p className="text-sm text-gray-700"><span className="font-medium text-gray-900">Ways & Means</span> - Member</p>
+                                 {/* Removed Committee of Petitions */}
+                             </div>
                         </div>
                     </div>
 

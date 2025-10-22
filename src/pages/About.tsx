@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { School, Briefcase, Award, Landmark, CheckSquare, Users, Star, Eye, BarChart3, GraduationCap } from 'lucide-react'; // Added Briefcase
+import { School, Briefcase, Award, Landmark, CheckSquare, Users, Star, Eye, BarChart3, GraduationCap, MapPin, Calendar } from 'lucide-react'; // Added MapPin, Calendar
 
 // Helper component for animated sections
 const AnimatedSection = ({ children, delay = 0 }: { children: React.ReactNode, delay?: number }) => {
@@ -92,18 +92,32 @@ export function About() {
       {/* Main Content Sections */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20 space-y-16">
 
-        {/* Section 1: Roots */}
+        {/* Section 1: Roots Table */}
         <AnimatedSection>
-          <h2 className="text-3xl font-bold text-green-800 mb-6 border-b-2 border-amber-500 pb-2 inline-block">Roots & Journey</h2>
-          <p className="text-gray-700 mb-8 leading-relaxed">
-            My story begins in Apewosika, a quiet community in Cape Coast, where family, faith and community taught me humility, perseverance and purpose. From a young age, I came to see education not only as a way to grow personally but as a means to lift others and build stronger communities. That belief has guided my journey.
+          <h2 className="text-3xl font-bold text-green-800 mb-6 border-b-2 border-amber-500 pb-2 inline-block">Roots</h2>
+          {/* Replaced paragraph with a simple table */}
+          <div className="overflow-x-auto bg-white rounded-lg shadow-md border border-gray-200">
+             <table className="w-full text-sm text-left text-gray-700">
+                 <tbody>
+                     <tr className="bg-white border-b border-gray-100 hover:bg-gray-50">
+                         <th scope="row" className="px-6 py-3 font-semibold text-blue-900 w-1/3"><MapPin className="inline w-4 h-4 mr-2 text-blue-700"/>Place of Birth</th>
+                         <td className="px-6 py-3">Apewosika, Cape Coast</td>
+                     </tr>
+                      <tr className="bg-white hover:bg-gray-50">
+                         <th scope="row" className="px-6 py-3 font-semibold text-blue-900 w-1/3"><Calendar className="inline w-4 h-4 mr-2 text-blue-700"/>Year of Birth</th>
+                         <td className="px-6 py-3">XXXX {/* Placeholder - Update with correct year */}</td>
+                     </tr>
+                 </tbody>
+             </table>
+          </div>
+          <p className="text-gray-700 mt-6 leading-relaxed"> {/* Kept this introductory sentence */}
+            My story begins in Apewosika, where family, faith and community taught me humility, perseverance and purpose. From a young age, I came to see education not only as a way to grow personally but as a means to lift others and build stronger communities. That belief has guided my journey.
           </p>
         </AnimatedSection>
 
         {/* Section 2: Educational Qualifications Table */}
         <AnimatedSection delay={100}>
             <h3 className="text-2xl font-semibold text-blue-900 mb-4">Educational Qualifications</h3>
-             {/* Added overflow-x-auto for mobile responsiveness */}
              <div className="overflow-x-auto bg-white rounded-lg shadow-md border border-gray-200">
                 <table className="w-full text-sm text-left text-gray-700">
                     <thead className="text-xs text-gray-500 uppercase bg-blue-50">
@@ -121,7 +135,6 @@ export function About() {
                                 <td className="px-6 py-3 text-right">{getYear(edu.completed)}</td>
                             </tr>
                         ))}
-                         {/* JCRC President row REMOVED */}
                     </tbody>
                 </table>
              </div>
@@ -130,7 +143,6 @@ export function About() {
         {/* Section 3: Employment History Table */}
          <AnimatedSection delay={200}>
             <h3 className="text-2xl font-semibold text-blue-900 mb-4">Employment History</h3>
-             {/* Added overflow-x-auto for mobile responsiveness */}
              <div className="overflow-x-auto bg-white rounded-lg shadow-md border border-gray-200">
                 <table className="w-full text-sm text-left text-gray-700">
                     <thead className="text-xs text-gray-500 uppercase bg-blue-50">
@@ -149,9 +161,7 @@ export function About() {
                     </tbody>
                 </table>
              </div>
-             <p className="text-gray-700 mt-6 leading-relaxed">
-                 Before entering politics, my role as a Senior Lecturer allowed me to mentor students and see how ideas connect with the realities of Ghana’s markets, classrooms and communities. I saw the effort of traders, farmers and young people trying to make things work. That connection made me step out and serve in a bigger way.
-             </p>
+             {/* Paragraph REMOVED */}
         </AnimatedSection>
 
         {/* Section 4: Parliamentary Role & Election Results */}
@@ -179,12 +189,10 @@ export function About() {
                             <BarChart3 className="w-6 h-6 text-blue-700 mr-3 flex-shrink-0"/>
                             <h4 className="font-semibold text-blue-900">Election Results</h4>
                          </div>
-                         {/* Added overflow-x-auto for mobile responsiveness */}
                         <div className="overflow-x-auto">
                             <table className="w-full text-sm text-left text-gray-700">
                                 <thead className="text-xs text-gray-500 uppercase border-b border-gray-200">
                                     <tr>
-                                        {/* Reduced padding, simplified header */}
                                         <th scope="col" className="px-3 py-2">Year</th>
                                         <th scope="col" className="px-3 py-2">Votes (NDC %)</th>
                                         <th scope="col" className="px-3 py-2">Margin</th>
@@ -193,7 +201,6 @@ export function About() {
                                 <tbody>
                                     {electionResults.map((result) => (
                                         <tr key={result.year} className="border-b border-gray-100 last:border-b-0 hover:bg-gray-50">
-                                            {/* Reduced padding */}
                                             <th scope="row" className="px-3 py-3 font-medium text-gray-900">{result.year}</th>
                                             <td className="px-3 py-3 font-semibold text-green-700">{result.nyarkuVotes} ({result.nyarkuPercent})</td>
                                             <td className="px-3 py-3 font-medium text-blue-800">{result.margin}</td>

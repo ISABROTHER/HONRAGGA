@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { School, Briefcase, Award, Landmark, CheckSquare, Users, Star, Eye } from 'lucide-react'; // Added relevant icons
+import { School, Briefcase, Award, Landmark, CheckSquare, Users, Star, Eye, BarChart3 } from 'lucide-react'; // Added BarChart3 for table icon
 
 // Helper component for timeline items
 const TimelineItem = ({ icon: Icon, title, institution, description }: { icon: React.ElementType, title: string, institution?: string, description: string }) => (
@@ -111,60 +111,69 @@ export function About() {
             <p className="text-gray-700 mb-8 leading-relaxed">
                 In 2020, the people of Cape Coast North elected me as their Member of Parliament on the ticket of the National Democratic Congress (NDC), and in 2024 they renewed that trust. In Parliament, I serve on the Defence and Interior, Environment, Science and Technology, and Ways and Means Committees. My focus has always been on what changes lives most: quality education, good roads, reliable healthcare, clean surroundings and opportunities for the youth.
             </p>
-            {/* MP Info Blocks */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-12"> {/* Re-added mb-12 for spacing before table */}
-                <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-center shadow-sm">
-                    <CheckSquare className="w-6 h-6 text-blue-700 mr-3 flex-shrink-0"/>
-                    <div>
-                        <h4 className="font-semibold text-blue-900">Elected MP</h4>
-                        <p className="text-sm text-gray-600">Cape Coast North (2020, Re-elected 2024)</p>
+            {/* Combined Info Blocks and Table */}
+            <div className="space-y-6"> {/* Use space-y for consistent spacing */}
+                {/* MP Info Blocks */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-center shadow-sm">
+                        <CheckSquare className="w-6 h-6 text-blue-700 mr-3 flex-shrink-0"/>
+                        <div>
+                            <h4 className="font-semibold text-blue-900">Elected MP</h4>
+                            <p className="text-sm text-gray-600">Cape Coast North (2020, Re-elected 2024)</p>
+                        </div>
+                    </div>
+                     <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-center shadow-sm">
+                        <Users className="w-6 h-6 text-blue-700 mr-3 flex-shrink-0"/>
+                        <div>
+                            <h4 className="font-semibold text-blue-900">Party Affiliation</h4>
+                            <p className="text-sm text-gray-600">National Democratic Congress (NDC)</p>
+                        </div>
+                    </div>
+                    <div className="bg-white p-4 rounded-lg border border-gray-200 sm:col-span-2 flex items-center shadow-sm">
+                        <Landmark className="w-6 h-6 text-blue-700 mr-3 flex-shrink-0"/>
+                         <div>
+                            <h4 className="font-semibold text-blue-900">Parliamentary Committees</h4>
+                            <p className="text-sm text-gray-600">Defence & Interior; Environment, Science & Technology; Ways & Means</p>
+                        </div>
                     </div>
                 </div>
-                 <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-center shadow-sm">
-                    <Users className="w-6 h-6 text-blue-700 mr-3 flex-shrink-0"/>
-                    <div>
-                        <h4 className="font-semibold text-blue-900">Party Affiliation</h4>
-                        <p className="text-sm text-gray-600">National Democratic Congress (NDC)</p>
-                    </div>
-                </div>
-                <div className="bg-white p-4 rounded-lg border border-gray-200 sm:col-span-2 flex items-center shadow-sm">
-                    <Landmark className="w-6 h-6 text-blue-700 mr-3 flex-shrink-0"/>
-                     <div>
-                        <h4 className="font-semibold text-blue-900">Parliamentary Committees</h4>
-                        <p className="text-sm text-gray-600">Defence & Interior; Environment, Science & Technology; Ways & Means</p>
-                    </div>
-                </div>
-            </div>
 
-            {/* Election Results Table - MOVED HERE */}
-            <h3 className="text-2xl font-semibold text-blue-900 mb-4 mt-12">Election Results (Cape Coast North)</h3> {/* Added mt-12 for spacing */}
-            <div className="overflow-x-auto bg-white rounded-lg shadow-md border border-gray-200">
-                <table className="w-full text-sm text-left text-gray-700">
-                    <thead className="text-xs text-gray-700 uppercase bg-blue-50">
-                        <tr>
-                            <th scope="col" className="px-6 py-3">Year</th>
-                            <th scope="col" className="px-6 py-3">Dr. Nyarku (NDC) Votes</th>
-                            <th scope="col" className="px-6 py-3">NDC %</th>
-                            <th scope="col" className="px-6 py-3">Opponent (NPP) Votes</th>
-                            <th scope="col" className="px-6 py-3">NPP %</th>
-                            <th scope="col" className="px-6 py-3">Margin</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {electionResults.map((result) => (
-                            <tr key={result.year} className="bg-white border-b hover:bg-gray-50">
-                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{result.year}</th>
-                                <td className="px-6 py-4 font-semibold text-green-700">{result.nyarkuVotes}</td>
-                                <td className="px-6 py-4 font-semibold text-green-700">{result.nyarkuPercent}</td>
-                                <td className="px-6 py-4">{result.opponentVotes}</td>
-                                <td className="px-6 py-4">{result.opponentPercent}</td>
-                                <td className="px-6 py-4 font-medium text-blue-800">{result.margin}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-
+                 {/* Election Results Table - Styled as a card */}
+                 <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+                     <div className="flex items-center mb-3"> {/* Title section */}
+                        <BarChart3 className="w-6 h-6 text-blue-700 mr-3 flex-shrink-0"/>
+                        <h4 className="font-semibold text-blue-900">Election Results (Cape Coast North)</h4>
+                     </div>
+                    <div className="overflow-x-auto">
+                        <table className="w-full text-sm text-left text-gray-700">
+                            {/* Adjusted thead styling */}
+                            <thead className="text-xs text-gray-500 uppercase border-b border-gray-200">
+                                <tr>
+                                    <th scope="col" className="px-4 py-2">Year</th>
+                                    <th scope="col" className="px-4 py-2">Dr. Nyarku (NDC) Votes</th>
+                                    <th scope="col" className="px-4 py-2">NDC %</th>
+                                    <th scope="col" className="px-4 py-2">Opponent (NPP) Votes</th>
+                                    <th scope="col" className="px-4 py-2">NPP %</th>
+                                    <th scope="col" className="px-4 py-2">Margin</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {electionResults.map((result) => (
+                                    // Adjusted tbody styling
+                                    <tr key={result.year} className="border-b border-gray-100 last:border-b-0 hover:bg-gray-50">
+                                        <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap">{result.year}</th>
+                                        <td className="px-4 py-3 font-semibold text-green-700">{result.nyarkuVotes}</td>
+                                        <td className="px-4 py-3 font-semibold text-green-700">{result.nyarkuPercent}</td>
+                                        <td className="px-4 py-3">{result.opponentVotes}</td>
+                                        <td className="px-4 py-3">{result.opponentPercent}</td>
+                                        <td className="px-4 py-3 font-medium text-blue-800">{result.margin}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                 </div>
+             </div>
         </AnimatedSection>
 
         {/* Section 4: Vision */}
@@ -185,7 +194,7 @@ export function About() {
         </AnimatedSection>
 
       </div>
-       {/* CSS for animations (can be moved to index.css) */}
+       {/* CSS for animations */}
       <style>{`
         .animate-section-enter {
           opacity: 1;

@@ -1,204 +1,253 @@
-import { useEffect, useRef } from 'react'; // Import hooks for animation
-import { BookOpen, Heart, Users, Building, Wheat, Handshake, Leaf /* Removed Leaf */, Landmark, ChevronRight } from 'lucide-react';
+import { useEffect, useRef } from 'react';
+import { School, Briefcase, Award, Landmark, CheckSquare, Users, Star, Eye, BarChart3, GraduationCap, MapPin, User, Smile, Briefcase as DesignationIcon, Megaphone, Flag } from 'lucide-react'; // Added Flag
 
-// Define the structure for each *main* policy theme
-interface PolicyTheme {
-  id: string; // Unique identifier (used for navigation)
-  title: string;
-  shortDescription: string;
-  imageComponent: React.ReactNode; // Holds either a div with color or an img tag
-  initiativeCount: number; // Based on detailed text sections
+// Helper component for animated sections
+const AnimatedSection = ({ children, delay = 0 }: { children: React.ReactNode, delay?: number }) => {
+    const ref = useRef<HTMLDivElement>(null);
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-section-enter');
+                    entry.target.classList.remove('opacity-0', 'translate-y-5');
+                    observer.unobserve(entry.target); // Animate only once
+                }
+            },
+            { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+        );
+        const currentRef = ref.current;
+        if (currentRef) {
+            currentRef.classList.add('opacity-0', 'translate-y-5');
+            observer.observe(currentRef);
+        }
+        return () => {
+            if (currentRef) {
+                observer.unobserve(currentRef);
+            }
+        };
+    }, []);
+
+    return <div ref={ref} className="transition-all duration-700 ease-out" style={{ transitionDelay: `${delay}ms` }}>{children}</div>;
 }
 
-// Props interface including the navigation function from App.tsx
-interface PoliciesProps {
-  onSelectTheme: (themeId: string) => void;
-}
+// Helper component for Profile items
+const ProfileItem = ({ icon: Icon, label, value }: { icon: React.ElementType, label: string, value: string }) => (
+    <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm flex items-start space-x-3">
+        <Icon className="w-5 h-5 text-blue-700 mt-1 flex-shrink-0"/>
+        <div>
+            <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">{label}</h4>
+            <p className="text-sm font-medium text-gray-800">{value}</p>
+        </div>
+    </div>
+);
 
-export function Policies({ onSelectTheme }: PoliciesProps) {
-  // Ref for the grid container to observe its children
-  const gridRef = useRef<HTMLDivElement>(null);
 
-  // Effect for scroll animation (zoom-in effect)
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('animate-card-enter-zoom');
-            entry.target.classList.remove('opacity-0', 'scale-95');
-          }
-        });
-      },
-      {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-      }
-    );
+export function About() {
+  const heroImageUrl = "https://i.imgur.com/5H0XBuV.jpeg"; // New hero image
 
-    const gridElement = gridRef.current;
-    if (gridElement) {
-      Array.from(gridElement.children).forEach((card) => {
-        observer.observe(card);
-        card.classList.add('opacity-0', 'scale-95');
-      });
+  // Election Results Data
+  const electionResults = [
+    {
+        year: 2020,
+        nyarkuVotes: "22,972",
+        nyarkuPercent: "51.48%",
+        opponentVotes: "21,643",
+        opponentPercent: "48.51%",
+        margin: "1,329"
+    },
+    {
+        year: 2024,
+        nyarkuVotes: "23,521",
+        nyarkuPercent: "57.6%",
+        opponentVotes: "17,045",
+        opponentPercent: "41.7%",
+        margin: "6,476"
     }
-
-    return () => {
-      if (gridElement) {
-        Array.from(gridElement.children).forEach((card) => {
-          observer.unobserve(card);
-        });
-      }
-    };
-  }, []);
-
-
-  // Array containing the main policy themes
-  const themes: PolicyTheme[] = [
-    {
-      id: 'education',
-      title: 'Educational Support',
-      shortDescription: 'Supporting quality education, digital literacy, and youth skills training.',
-      imageComponent: (
-        <div className="w-full relative overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
-          <img src="https://i.imgur.com/Ozjnrli.jpeg" alt="Educational Support" className="absolute inset-0 w-full h-full object-cover"/>
-        </div>
-      ),
-      initiativeCount: 3,
-    },
-    {
-      id: 'health',
-      title: 'Health & Sanitation',
-      shortDescription: 'Expanding access to healthcare and clean water for all.',
-      imageComponent: (
-        <div className="w-full relative overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
-           <img src="https://i.imgur.com/XmWnKbH.jpeg" alt="Health & Sanitation" className="absolute inset-0 w-full h-full object-cover object-[center_35%]"/>
-        </div>
-      ),
-      initiativeCount: 2,
-    },
-    {
-      id: 'entrepreneurship',
-      title: 'Employment & Entrepreneurship',
-      shortDescription: 'Creating jobs and empowering local businesses.',
-      imageComponent: (
-        <div className="w-full relative overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
-           <img src="https://i.imgur.com/saQoFLV.png" alt="Employment & Entrepreneurship" className="absolute inset-0 w-full h-full object-cover"/>
-        </div>
-      ),
-      initiativeCount: 2,
-    },
-    {
-      id: 'infrastructure',
-      title: 'Infrastructure Development',
-      shortDescription: 'Improving roads, electrification, and connectivity.',
-      imageComponent: (
-        <div className="w-full relative overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
-          <img src="https://i.imgur.com/AZqDymE.jpeg" alt="Infrastructure Development" className="absolute inset-0 w-full h-full object-cover"/>
-        </div>
-      ),
-      initiativeCount: 3,
-    },
-    {
-      id: 'agriculture',
-      title: 'Agricultural Support',
-      shortDescription: 'Supporting farmers with tools, training, and market access.',
-      imageComponent: (
-         <div className="w-full relative overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
-          <img src="https://i.imgur.com/TZ4jIJA.jpeg" alt="Agricultural Support" className="absolute inset-0 w-full h-full object-cover"/>
-        </div>
-      ),
-       initiativeCount: 1,
-    },
-     {
-      id: 'community',
-      title: 'Social Welfare',
-      shortDescription: 'Empowering women, youth, and vulnerable groups.',
-      imageComponent: (
-        <div className="w-full relative overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
-            <img src="https://i.imgur.com/1M0b8mq.jpeg" alt="Social Welfare" className="absolute inset-0 w-full h-full object-cover object-top"/>
-        </div>
-      ),
-      initiativeCount: 3,
-    },
-     {
-      id: 'planning', // Corresponds to Governance
-      title: 'Civic Engagement',
-      shortDescription: 'Promoting transparency, accountability, and participation.',
-      imageComponent: (
-         <div className="w-full relative overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
-           <img src="https://i.imgur.com/NSWtjdU.jpeg" alt="Civic Engagement" className="absolute inset-0 w-full h-full object-cover"/>
-         </div>
-      ),
-      initiativeCount: 1,
-    },
   ];
 
-  const headerImageUrl = "https://i.imgur.com/2BmP7xu.jpeg"; // Image URL
+  // Educational Qualifications Data
+  const educationData = [
+      { institution: "University of Ghana Business School", qualification: "PhD", completed: "07-2019" },
+      { institution: "University of Leicester, UK", qualification: "MBA", completed: "09-2003" },
+      { institution: "University of Cape Coast", qualification: "Bachelor of Education", completed: "06-2000" },
+      { institution: "Worker College", qualification: "A Level", completed: "09-1996" },
+      { institution: "Komenda Training College", qualification: "Teacher Certificate A", completed: "06-1995" },
+      { institution: "Adisadel College", qualification: "GCE O Level", completed: "09-1992" },
+  ];
+
+   // Employment Data
+   const employmentData = [
+       { institution: "University of Cape Coast", position: "Senior Lecturer" }
+   ];
+
+
+  // Helper to format date string (MM-YYYY or YYYY) -> Year
+  const getYear = (dateStr: string) => {
+      if (!dateStr) return 'N/A';
+      const parts = dateStr.split('-');
+      return parts.length > 1 ? parts[1] : dateStr; // Assumes YYYY or MM-YYYY
+  }
+
 
   return (
-    <div className="min-h-screen bg-gray-100">
-
-      {/* Section Header - Image with Gradient */}
-      <section className="relative w-full overflow-hidden">
+    <div className="min-h-screen bg-gray-50">
+      {/* Hero Section - Just an image */}
+      <section className="relative w-full h-auto min-h-[250px] md:min-h-[400px] lg:min-h-[500px] overflow-hidden">
         <img
-          src={headerImageUrl}
-          alt="Our Key Development Priorities Banner"
-          className="w-full h-auto object-cover object-center"
+          src={heroImageUrl}
+          alt="Hon. Dr. Kwamena Minta Nyarku - About Me Banner"
+          className="absolute inset-0 w-full h-full object-cover object-center"
         />
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-40"></div> {/* Adjust opacity as needed */}
       </section>
 
-      {/* Priorities Grid Section */}
-      <section className="py-16 sm:py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-           <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 md:gap-10">
-            {themes.map((theme, index) => {
-              return (
-                <button
-                  key={theme.id}
-                  onClick={() => onSelectTheme(theme.id)}
-                  className={`group bg-white rounded-xl shadow-md overflow-hidden border border-gray-200 hover:shadow-2xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 transition-all duration-500 ease-out text-left transform hover:border-blue-300`}
-                  style={{ transitionDelay: `${index * 100}ms` }}
-                >
-                  <div className="overflow-hidden">
-                    {theme.imageComponent}
-                  </div>
-                  <div className="p-6 flex flex-col">
-                    <div className="mb-4">
-                        <h2 className="relative inline-block text-xl sm:text-2xl font-bold text-green-800 whitespace-nowrap overflow-hidden text-ellipsis mb-2 pb-1
-                                       after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-amber-600 after:w-0 group-hover:after:w-full after:transition-all after:duration-300 after:ease-out">
-                          {theme.title}
-                        </h2>
-                        <p className="text-gray-600 text-sm sm:text-base leading-relaxed mt-1">
-                          {theme.shortDescription}
-                        </p>
-                    </div>
-                    <div className="mt-auto flex justify-between items-center pt-4">
-                        <p className="text-sm text-gray-700 font-medium">
-                           <span className="font-extrabold text-lg text-amber-600 mr-1">{theme.initiativeCount}</span>
-                            {theme.initiativeCount === 1 ? 'Initiative Listed' : 'Initiatives Listed'}
-                        </p>
-                        <span className="inline-flex items-center text-sm font-semibold text-amber-700 group-hover:underline">
-                          View Details
-                          <ChevronRight className="ml-1 w-4 h-4 transition-transform group-hover:translate-x-1" />
-                        </span>
-                    </div>
-                  </div>
-                </button>
-              );
-            })}
+
+      {/* Main Content Sections */}
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20 space-y-16">
+
+        {/* Section 1: Profile Grid - Reordered, Nationality added, Intro Para removed */}
+        <AnimatedSection>
+          <h2 className="text-3xl font-bold text-green-800 mb-6 border-b-2 border-amber-500 pb-2 inline-block">Profile</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                <ProfileItem icon={User} label="Full Name" value="Hon. Dr. Kwamena Minta Nyarku, PhD" />
+                <ProfileItem icon={DesignationIcon} label="Designation" value="MP for Cape Coast North" />
+                <ProfileItem icon={Megaphone} label="Slogan" value="Obiara Ka Ho (Everyone is involved)" />
+                <ProfileItem icon={MapPin} label="Place of Birth" value="Apewosika, Cape Coast" />
+                <ProfileItem icon={Flag} label="Nationality" value="Ghanaian" /> {/* Added Nationality */}
+                {/* Nickname Removed */}
           </div>
-        </div>
-      </section>
+           {/* Paragraph REMOVED */}
+        </AnimatedSection>
 
-      {/* CSS for the zoom animation */}
+        {/* Section 2: Educational Qualifications Table - Updated Layout */}
+        <AnimatedSection delay={100}>
+            <h3 className="text-2xl font-semibold text-blue-900 mb-4">Educational Qualifications</h3>
+             <div className="overflow-x-auto bg-white rounded-lg shadow-md border border-gray-200">
+                <table className="w-full text-sm text-left text-gray-700">
+                    <thead className="text-xs text-gray-500 uppercase bg-blue-100">
+                        <tr>
+                            <th scope="col" className="px-6 py-3">Institution & Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {educationData.map((edu, index) => (
+                            <tr key={edu.institution} className={`${index % 2 === 0 ? 'bg-white' : 'bg-blue-50'} border-b border-gray-100 last:border-b-0 hover:bg-gray-50`}>
+                                {/* Updated TD structure for line break */}
+                                <td className="px-6 py-3">
+                                    <span className="font-medium text-gray-900 block">{edu.institution}</span>
+                                    <div className="mt-1 text-gray-600"> {/* Div ensures Qualification and Year are grouped */}
+                                        <span className="mr-4">Qualification: <span className="font-medium">{edu.qualification}</span></span>
+                                        <span>Year: <span className="font-medium">{getYear(edu.completed)}</span></span>
+                                    </div>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+             </div>
+        </AnimatedSection>
+
+        {/* Section 3: Employment History Table */}
+         <AnimatedSection delay={200}>
+            <h3 className="text-2xl font-semibold text-blue-900 mb-4">Employment History</h3>
+             <div className="overflow-x-auto bg-white rounded-lg shadow-md border border-gray-200">
+                <table className="w-full text-sm text-left text-gray-700">
+                    <thead className="text-xs text-gray-500 uppercase bg-blue-100">
+                        <tr>
+                            <th scope="col" className="px-6 py-3">Institution</th>
+                            <th scope="col" className="px-6 py-3">Position</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {employmentData.map((job, index) => (
+                            <tr key={job.institution} className={`${index % 2 === 0 ? 'bg-white' : 'bg-blue-50'} border-b border-gray-100 last:border-b-0 hover:bg-gray-50`}>
+                                <td className="px-6 py-3 font-medium text-gray-900">{job.institution}</td>
+                                <td className="px-6 py-3">{job.position}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+             </div>
+        </AnimatedSection>
+
+        {/* Section 4: Parliamentary Role & Election Results */}
+        <AnimatedSection delay={300}>
+            <h2 className="text-3xl font-bold text-green-800 mb-6 border-b-2 border-amber-500 pb-2 inline-block">Service in Parliament</h2>
+            <div className="space-y-6">
+                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                    {/* Elected MP */}
+                    <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-start shadow-sm">
+                        <CheckSquare className="w-6 h-6 text-blue-700 mr-3 mt-1 flex-shrink-0"/>
+                        <div>
+                            <h4 className="font-semibold text-blue-900 mb-1">Elected MP (Cape Coast North)</h4>
+                            <ul className="list-none space-y-1 mb-3">
+                                {electionResults.map(result => (
+                                    <li key={result.year} className="text-sm text-gray-600 flex items-center flex-wrap">
+                                         <span className="font-semibold text-gray-800 mr-2">{result.year}:</span>
+                                         <span className="text-green-700 font-medium mr-2">{result.nyarkuVotes} votes ({result.nyarkuPercent})</span>
+                                         <span className="text-blue-800">(Margin: {result.margin})</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+
+                    {/* Party Affiliation */}
+                     <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-start shadow-sm">
+                        <Users className="w-6 h-6 text-blue-700 mr-3 mt-1 flex-shrink-0"/>
+                        <div>
+                            <h4 className="font-semibold text-blue-900">Party Affiliation</h4>
+                            <p className="text-sm text-gray-600">National Democratic Congress (NDC)</p>
+                        </div>
+                    </div>
+
+                    {/* Parliamentary Committees */}
+                    <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-start shadow-sm md:col-span-2">
+                        <Landmark className="w-6 h-6 text-blue-700 mr-3 mt-1 flex-shrink-0"/>
+                         <div>
+                            <h4 className="font-semibold text-blue-900 mb-1">Parliamentary Committees</h4>
+                            <ul className="list-disc list-inside space-y-1">
+                                <li className="text-sm text-gray-600">Defence & Interior - Member</li>
+                                <li className="text-sm text-gray-600">Environment, Science & Technology - Member</li>
+                                <li className="text-sm text-gray-600">Ways & Means - Member</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                 </div>
+             </div>
+        </AnimatedSection>
+
+        {/* Section 5: Vision */}
+        <AnimatedSection delay={400}> {/* Adjusted delay */}
+            <h2 className="text-3xl font-bold text-green-800 mb-6 border-b-2 border-amber-500 pb-2 inline-block">My Vision</h2>
+            <blockquote className="relative p-6 bg-gradient-to-r from-blue-50 to-white border-l-4 border-amber-500 italic rounded-r-lg shadow-sm">
+                <Eye className="absolute top-4 right-4 w-8 h-8 text-amber-300 opacity-50" />
+                <p className="text-lg text-gray-700 leading-relaxed mb-4">
+                    "For me, leadership is not about titles or recognition. It is about what endures after one’s service, the systems, opportunities and hope that remain."
+                </p>
+                <p className="text-lg text-gray-700 leading-relaxed">
+                    "My vision is to help build a Cape Coast North where fairness, opportunity and respect are shared by all, where everyone feels they belong and every young person knows their dream matters."
+                </p>
+                 <footer className="mt-4 text-md font-semibold text-blue-800">
+                    — Hon. Dr. Kwamena Minta Nyarku (Ragga)
+                </footer>
+            </blockquote>
+        </AnimatedSection>
+
+      </div>
+       {/* CSS for animations */}
       <style>{`
-        .animate-card-enter-zoom {
+        .animate-section-enter {
           opacity: 1;
-          transform: scale(1);
+          transform: translateY(0);
+        }
+        .animate-fade-in {
+            animation: fadeIn 1s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
       `}</style>
     </div>

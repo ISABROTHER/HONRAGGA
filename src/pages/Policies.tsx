@@ -1,4 +1,4 @@
-import { BookOpen, Heart, Users, Building, Wheat, Handshake, Leaf, Landmark } from 'lucide-react';
+import { BookOpen, Heart, Users, Building, Wheat, Handshake, Leaf, Landmark, ChevronRight } from 'lucide-react';
 
 // Define the structure for each *main* policy theme
 interface PolicyTheme {
@@ -23,6 +23,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       icon: BookOpen,
       title: 'Education & Youth Empowerment',
       shortDescription: 'Supporting quality education, digital literacy, and youth skills training.',
+      // Image for Education
       imageComponent: (
         <div className="w-full relative overflow-hidden" style={{ aspectRatio: '820 / 360' }}>
           <img src="https://i.imgur.com/Ozjnrli.jpeg" alt="Education & Youth Empowerment" className="absolute inset-0 w-full h-full object-cover"/>
@@ -34,6 +35,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       icon: Heart,
       title: 'Health & Sanitation',
       shortDescription: 'Expanding access to healthcare and clean water for all.',
+      // Placeholder for Health
       imageComponent: (
         <div className="w-full h-48 sm:h-64 bg-yellow-200 flex items-center justify-center" style={{ aspectRatio: '820 / 360' }}>
           <Heart className="w-16 h-16 text-gray-400 opacity-50" />
@@ -45,6 +47,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       icon: Users,
       title: 'Employment & Entrepreneurship',
       shortDescription: 'Creating jobs and empowering local businesses.',
+      // Placeholder for Entrepreneurship
       imageComponent: (
         <div className="w-full h-48 sm:h-64 bg-green-200 flex items-center justify-center" style={{ aspectRatio: '820 / 360' }}>
           <Users className="w-16 h-16 text-gray-400 opacity-50" />
@@ -56,6 +59,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       icon: Building,
       title: 'Infrastructure Development',
       shortDescription: 'Improving roads, electrification, and connectivity.',
+      // Image for Infrastructure
       imageComponent: (
         <div className="w-full relative overflow-hidden" style={{ aspectRatio: '820 / 360' }}>
           <img src="https://i.imgur.com/AZqDymE.jpeg" alt="Infrastructure Development" className="absolute inset-0 w-full h-full object-cover"/>
@@ -67,6 +71,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       icon: Wheat,
       title: 'Agriculture & Rural Growth',
       shortDescription: 'Supporting farmers with tools, training, and market access.',
+      // Image for Agriculture
       imageComponent: (
          <div className="w-full relative overflow-hidden" style={{ aspectRatio: '820 / 360' }}>
           <img src="https://i.imgur.com/TZ4jIJA.jpeg" alt="Agriculture & Rural Growth" className="absolute inset-0 w-full h-full object-cover"/>
@@ -78,6 +83,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       icon: Handshake,
       title: 'Social Welfare & Gender Equity', // Title from previous version
       shortDescription: 'Empowering women, youth, and vulnerable groups.', // Description from previous version
+       // Placeholder for Community/Social Welfare
       imageComponent: (
         <div className="w-full h-48 sm:h-64 bg-green-200 flex items-center justify-center" style={{ aspectRatio: '820 / 360' }}>
            <Handshake className="w-16 h-16 text-gray-400 opacity-50" />
@@ -89,6 +95,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       icon: Leaf,
       title: 'Environment & Climate Action',
       shortDescription: 'Protecting our land, water, and natural heritage.',
+      // Placeholder for Environment
       imageComponent: (
         <div className="w-full h-48 sm:h-64 bg-red-200 flex items-center justify-center" style={{ aspectRatio: '820 / 360' }}>
           <Leaf className="w-16 h-16 text-gray-400 opacity-50" />
@@ -96,10 +103,11 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       ),
     },
      {
-      id: 'planning', // Added ID (matching App.tsx)
+      id: 'planning', // Added ID (matching App.tsx) - Corresponds to Governance
       icon: Landmark,
       title: 'Good Governance & Civic Engagement', // Title from previous version
       shortDescription: 'Promoting transparency, accountability, and participation.', // Description from previous version
+      // Image for Governance
       imageComponent: (
          <div className="w-full relative overflow-hidden" style={{ aspectRatio: '820 / 360' }}>
            <img src="https://i.imgur.com/NSWtjdU.jpeg" alt="Good Governance & Civic Engagement" className="absolute inset-0 w-full h-full object-cover"/>

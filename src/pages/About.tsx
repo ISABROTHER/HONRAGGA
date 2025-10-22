@@ -106,58 +106,39 @@ export function About() {
       {/* Main Content Sections */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20 space-y-16">
 
-        {/* Section 1: Profile Table */}
+        {/* Section 1: Profile Grid */}
         <AnimatedSection>
           <h2 className="text-3xl font-bold text-green-800 mb-6 border-b-2 border-amber-500 pb-2 inline-block">Profile</h2>
-          {/* Using Table layout for Profile */}
-          <div className="overflow-x-auto bg-white rounded-lg shadow-md border border-gray-200 mb-6">
-             <table className="w-full text-sm text-left text-gray-700">
-                 <tbody>
-                      <tr className="bg-white border-b border-gray-100 hover:bg-gray-50">
-                         <th scope="row" className="px-6 py-3 font-semibold text-blue-900 w-1/3"><User className="inline w-4 h-4 mr-2 text-blue-700"/>Full Name</th>
-                         <td className="px-6 py-3">Hon. Dr. Kwamena Minta Nyarku, PhD</td>
-                     </tr>
-                      <tr className="bg-white border-b border-gray-100 hover:bg-gray-50">
-                         <th scope="row" className="px-6 py-3 font-semibold text-blue-900 w-1/3"><Smile className="inline w-4 h-4 mr-2 text-blue-700"/>Nickname</th>
-                         <td className="px-6 py-3">Ragga</td>
-                     </tr>
-                      <tr className="bg-white border-b border-gray-100 hover:bg-gray-50">
-                         <th scope="row" className="px-6 py-3 font-semibold text-blue-900 w-1/3"><DesignationIcon className="inline w-4 h-4 mr-2 text-blue-700"/>Designation</th>
-                         <td className="px-6 py-3">MP for Cape Coast North</td>
-                     </tr>
-                     <tr className="bg-white border-b border-gray-100 hover:bg-gray-50">
-                         <th scope="row" className="px-6 py-3 font-semibold text-blue-900 w-1/3"><Megaphone className="inline w-4 h-4 mr-2 text-blue-700"/>Slogan</th>
-                         <td className="px-6 py-3 italic">Obiara Ka Ho (Everyone is involved)</td>
-                     </tr>
-                     <tr className="bg-white hover:bg-gray-50">
-                         <th scope="row" className="px-6 py-3 font-semibold text-blue-900 w-1/3"><MapPin className="inline w-4 h-4 mr-2 text-blue-700"/>Place of Birth</th>
-                         <td className="px-6 py-3">Apewosika, Cape Coast</td>
-                     </tr>
-                 </tbody>
-             </table>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                <ProfileItem icon={User} label="Full Name" value="Hon. Dr. Kwamena Minta Nyarku, PhD" />
+                <ProfileItem icon={Smile} label="Nickname" value="Ragga" />
+                <ProfileItem icon={DesignationIcon} label="Designation" value="MP for Cape Coast North" />
+                <ProfileItem icon={Megaphone} label="Slogan" value="Obiara Ka Ho (Everyone is involved)" />
+                <ProfileItem icon={MapPin} label="Place of Birth" value="Apewosika, Cape Coast" />
           </div>
           <p className="text-gray-700 leading-relaxed">
             My story begins in Apewosika, where family, faith and community taught me humility, perseverance and purpose. From a young age, I came to see education not only as a way to grow personally but as a means to lift others and build stronger communities. That belief has guided my journey.
           </p>
         </AnimatedSection>
 
-        {/* Section 2: Educational Qualifications Table - Reverted to Table with Inline Labels */}
+        {/* Section 2: Educational Qualifications Table - Added Alternating Row Colors */}
         <AnimatedSection delay={100}>
             <h3 className="text-2xl font-semibold text-blue-900 mb-4">Educational Qualifications</h3>
              <div className="overflow-x-auto bg-white rounded-lg shadow-md border border-gray-200">
                 <table className="w-full text-sm text-left text-gray-700">
-                    <thead className="text-xs text-gray-500 uppercase bg-blue-100">
+                    <thead className="text-xs text-gray-500 uppercase bg-blue-100"> {/* Slightly darker header */}
                         <tr>
-                            <th scope="col" className="px-6 py-3">Institution & Details</th>
+                            <th scope="col" className="px-6 py-3">Institution & Qualification</th>
                         </tr>
                     </thead>
                     <tbody>
                         {educationData.map((edu, index) => (
+                            // Added alternating background colors using index % 2
                             <tr key={edu.institution} className={`${index % 2 === 0 ? 'bg-white' : 'bg-blue-50'} border-b border-gray-100 last:border-b-0 hover:bg-gray-50`}>
-                                <td className="px-6 py-3 whitespace-nowrap">
-                                    <span className="font-medium text-gray-900 mr-4">{edu.institution}</span>
-                                    <span className="text-gray-600 mr-4">Qualification: <span className="font-medium">{edu.qualification}</span></span>
-                                    <span className="text-gray-600">Year: <span className="font-medium">{getYear(edu.completed)}</span></span>
+                                <td className="px-6 py-3">
+                                    <span className="font-medium text-gray-900 block sm:inline">{edu.institution}</span>
+                                    <span className="block sm:inline sm:ml-4 text-gray-600">Qualification: <span className="font-medium">{edu.qualification}</span></span>
+                                    <span className="block sm:inline sm:ml-4 text-gray-600">Year: <span className="font-medium">{getYear(edu.completed)}</span></span>
                                 </td>
                             </tr>
                         ))}
@@ -171,14 +152,14 @@ export function About() {
             <h3 className="text-2xl font-semibold text-blue-900 mb-4">Employment History</h3>
              <div className="overflow-x-auto bg-white rounded-lg shadow-md border border-gray-200">
                 <table className="w-full text-sm text-left text-gray-700">
-                    <thead className="text-xs text-gray-500 uppercase bg-blue-100">
+                    <thead className="text-xs text-gray-500 uppercase bg-blue-100"> {/* Matched header color */}
                         <tr>
                             <th scope="col" className="px-6 py-3">Institution</th>
                             <th scope="col" className="px-6 py-3">Position</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {employmentData.map((job, index) => (
+                        {employmentData.map((job, index) => ( // Added index for alternating colors
                             <tr key={job.institution} className={`${index % 2 === 0 ? 'bg-white' : 'bg-blue-50'} border-b border-gray-100 last:border-b-0 hover:bg-gray-50`}>
                                 <td className="px-6 py-3 font-medium text-gray-900">{job.institution}</td>
                                 <td className="px-6 py-3">{job.position}</td>
@@ -195,27 +176,48 @@ export function About() {
             <div className="space-y-6">
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                    {/* Elected MP - Updated with Election Results inline */}
+                    {/* Elected MP - Updated with Bullets */}
                     <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-start shadow-sm">
                         <CheckSquare className="w-6 h-6 text-blue-700 mr-3 mt-1 flex-shrink-0"/>
                         <div>
                             <h4 className="font-semibold text-blue-900 mb-1">Elected MP (Cape Coast North)</h4>
-                            <ul className="list-none space-y-1 mb-3">
-                                {electionResults.map(result => (
-                                    <li key={result.year} className="text-sm text-gray-600 flex items-center flex-wrap"> {/* Added flex-wrap */}
-                                         <span className="font-semibold text-gray-800 mr-2">{result.year}:</span>
-                                         <span className="text-green-700 font-medium mr-2">{result.nyarkuVotes} votes ({result.nyarkuPercent})</span> {/* Added margin */}
-                                         <span className="text-blue-800">(Margin: {result.margin})</span>
-                                    </li>
-                                ))}
+                            <ul className="list-disc list-inside space-y-1">
+                                <li className="text-sm text-gray-600">2020</li>
+                                <li className="text-sm text-gray-600">Re-elected 2024</li>
                             </ul>
                         </div>
                     </div>
 
-                    {/* Election Results Table REMOVED */}
+                    {/* Election Results Table */}
+                     <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm row-start-2 md:row-start-auto md:col-start-2">
+                         <div className="flex items-center mb-3">
+                            <BarChart3 className="w-6 h-6 text-blue-700 mr-3 flex-shrink-0"/>
+                            <h4 className="font-semibold text-blue-900">Election Results</h4>
+                         </div>
+                        <div className="overflow-x-auto">
+                            <table className="w-full text-sm text-left text-gray-700">
+                                <thead className="text-xs text-gray-500 uppercase border-b border-gray-200">
+                                    <tr>
+                                        <th scope="col" className="px-3 py-2">Year</th>
+                                        <th scope="col" className="px-3 py-2">Votes (NDC %)</th>
+                                        <th scope="col" className="px-3 py-2">Margin</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {electionResults.map((result, index) => ( // Added index for alternating colors
+                                        <tr key={result.year} className={`${index % 2 === 0 ? 'bg-white' : 'bg-blue-50/50'} border-b border-gray-100 last:border-b-0 hover:bg-gray-50`}>
+                                            <th scope="row" className="px-3 py-3 font-medium text-gray-900">{result.year}</th>
+                                            <td className="px-3 py-3 font-semibold text-green-700">{result.nyarkuVotes} ({result.nyarkuPercent})</td>
+                                            <td className="px-3 py-3 font-medium text-blue-800">{result.margin}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                     </div>
 
                     {/* Party Affiliation */}
-                     <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-start shadow-sm"> {/* Removed row/col positioning */}
+                     <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-start shadow-sm row-start-3 md:row-start-auto md:col-start-1">
                         <Users className="w-6 h-6 text-blue-700 mr-3 mt-1 flex-shrink-0"/>
                         <div>
                             <h4 className="font-semibold text-blue-900">Party Affiliation</h4>
@@ -224,7 +226,7 @@ export function About() {
                     </div>
 
                     {/* Parliamentary Committees */}
-                    <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-start shadow-sm md:col-span-2"> {/* Removed row/col positioning */}
+                    <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-start shadow-sm md:col-span-2 row-start-4 md:row-start-auto">
                         <Landmark className="w-6 h-6 text-blue-700 mr-3 mt-1 flex-shrink-0"/>
                          <div>
                             <h4 className="font-semibold text-blue-900 mb-1">Parliamentary Committees</h4>

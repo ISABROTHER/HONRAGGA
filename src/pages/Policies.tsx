@@ -1,64 +1,63 @@
 import { BookOpen, Heart, Users, Building, Wheat, Handshake, Leaf, Landmark } from 'lucide-react';
 
-// Define the structure for each priority area, now using imageUrl
+// Define the structure for each priority area
 interface PriorityArea {
   icon: React.ElementType;
   title: string;
   description: string;
-  imageUrl: string; // Changed from imagePlaceholderColor
+  imagePlaceholderColor: string; // Tailwind color class for placeholder
 }
 
 export function Policies() {
-  // Array containing the eight focus areas with placeholder image URLs
-  // !!! IMPORTANT: Replace these placeholder URLs with your actual image URLs !!!
+  // Array containing the eight focus areas
   const priorities: PriorityArea[] = [
     {
       icon: BookOpen,
       title: 'Education & Youth Empowerment',
       description: 'Supporting quality education, digital literacy, and youth skills training.',
-      imageUrl: 'https://via.placeholder.com/820x360/fecaca/991b1b?text=Education+Image', // Replace URL
+      imagePlaceholderColor: 'bg-red-200', // Light red accent
     },
     {
       icon: Heart,
       title: 'Health & Sanitation',
       description: 'Expanding access to healthcare and clean water for all.',
-      imageUrl: 'https://via.placeholder.com/820x360/fef08a/b45309?text=Health+Image', // Replace URL
+      imagePlaceholderColor: 'bg-yellow-200', // Light yellow accent
     },
     {
       icon: Users,
       title: 'Employment & Entrepreneurship',
       description: 'Creating jobs and empowering local businesses.',
-      imageUrl: 'https://via.placeholder.com/820x360/bbf7d0/15803d?text=Employment+Image', // Replace URL
+      imagePlaceholderColor: 'bg-green-200', // Light green accent
     },
     {
       icon: Building,
       title: 'Infrastructure Development',
       description: 'Improving roads, electrification, and connectivity.',
-      imageUrl: 'https://via.placeholder.com/820x360/fecaca/991b1b?text=Infrastructure+Image', // Replace URL
+      imagePlaceholderColor: 'bg-red-200',
     },
     {
       icon: Wheat,
       title: 'Agriculture & Rural Growth',
       description: 'Supporting farmers with tools, training, and market access.',
-      imageUrl: 'https://via.placeholder.com/820x360/fef08a/b45309?text=Agriculture+Image', // Replace URL
+      imagePlaceholderColor: 'bg-yellow-200',
     },
     {
       icon: Handshake,
       title: 'Social Welfare & Gender Equity',
       description: 'Empowering women, youth, and vulnerable groups.',
-      imageUrl: 'https://via.placeholder.com/820x360/bbf7d0/15803d?text=Social+Welfare+Image', // Replace URL
+      imagePlaceholderColor: 'bg-green-200',
     },
     {
       icon: Leaf,
       title: 'Environment & Climate Action',
       description: 'Protecting our land, water, and natural heritage.',
-      imageUrl: 'https://via.placeholder.com/820x360/fecaca/991b1b?text=Environment+Image', // Replace URL
+      imagePlaceholderColor: 'bg-red-200',
     },
     {
       icon: Landmark,
       title: 'Good Governance & Civic Engagement',
       description: 'Promoting transparency, accountability, and participation.',
-      imageUrl: 'https://via.placeholder.com/820x360/fef08a/b45309?text=Governance+Image', // Replace URL
+      imagePlaceholderColor: 'bg-yellow-200',
     },
   ];
 
@@ -85,19 +84,15 @@ export function Policies() {
                   key={index}
                   className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200 hover:shadow-xl transition-shadow duration-300"
                 >
-                  {/* Image Element */}
+                  {/* Image Placeholder */}
                   <div
-                    className="w-full relative overflow-hidden"
-                    style={{ aspectRatio: '820 / 360' }} // Maintain aspect ratio
+                    className={`w-full h-48 sm:h-64 ${priority.imagePlaceholderColor} flex items-center justify-center`}
+                    // Style mimics aspect ratio close to 820x360
+                    style={{ aspectRatio: '820 / 360' }}
                   >
-                    <img
-                      src={priority.imageUrl} // Use the imageUrl from the priority object
-                      alt={priority.title} // Add descriptive alt text
-                      className="absolute inset-0 w-full h-full object-cover" // Ensure image covers the area
-                      // Add loading state and error handling if desired
-                      // loading="lazy"
-                      // onError={(e) => (e.currentTarget.src = 'fallback-image-url.jpg')}
-                    />
+                    <Icon className="w-16 h-16 text-gray-400 opacity-50" />
+                    {/* Placeholder text, consider removing in final version */}
+                    {/* <span className="text-gray-500 mt-2">Image (820x360)</span> */}
                   </div>
 
                   {/* Content Area */}
@@ -117,7 +112,7 @@ export function Policies() {
         </div>
       </section>
 
-      {/* Optional Call to Action Section */}
+      {/* Optional Call to Action Section */} 
       <section className="py-16 bg-white border-t border-gray-200">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl md:text-3xl font-semibold text-gray-800 mb-4">

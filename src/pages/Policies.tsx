@@ -26,13 +26,13 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add('animate-card-enter');
-            entry.target.classList.remove('opacity-0', 'translate-y-4'); // Ensure initial state is removed
+            entry.target.classList.add('animate-card-enter-zoom'); // Use new animation class
+            entry.target.classList.remove('opacity-0', 'scale-95'); // Ensure initial state is removed
           }
           // Optional: Remove class if you want animation to repeat when scrolling back up
           // else {
-          //   entry.target.classList.remove('animate-card-enter');
-          //   entry.target.classList.add('opacity-0', 'translate-y-4');
+          //   entry.target.classList.remove('animate-card-enter-zoom');
+          //   entry.target.classList.add('opacity-0', 'scale-95');
           // }
         });
       },
@@ -47,8 +47,8 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       // Observe each card (button) within the grid
       Array.from(gridElement.children).forEach((card) => {
         observer.observe(card);
-        // Add initial animation state classes
-        card.classList.add('opacity-0', 'translate-y-4');
+        // Add initial animation state classes for zoom-in effect
+        card.classList.add('opacity-0', 'scale-95');
       });
     }
 
@@ -63,7 +63,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
   }, []); // Empty dependency array ensures this runs only once on mount
 
 
-  // Array containing the main policy themes with their image components and initiative counts
+  // Array containing the main policy themes (same as previous version)
   const themes: PolicyTheme[] = [
     {
       id: 'education',
@@ -75,7 +75,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
           <img src="https://i.imgur.com/Ozjnrli.jpeg" alt="Education & Youth Empowerment" className="absolute inset-0 w-full h-full object-cover"/>
         </div>
       ),
-      initiativeCount: 3, // Basic/SHS, Tertiary, General
+      initiativeCount: 3,
     },
     {
       id: 'health',
@@ -87,7 +87,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
           <Heart className="w-16 h-16 text-gray-400 opacity-50" />
         </div>
       ),
-      initiativeCount: 2, // Health Facility Support, Sanitation Projects
+      initiativeCount: 2,
     },
     {
       id: 'entrepreneurship',
@@ -99,7 +99,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
           <Users className="w-16 h-16 text-gray-400 opacity-50" />
         </div>
       ),
-      initiativeCount: 2, // Factory Revival, Award Recognition
+      initiativeCount: 2,
     },
     {
       id: 'infrastructure',
@@ -111,7 +111,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
           <img src="https://i.imgur.com/AZqDymE.jpeg" alt="Infrastructure Development" className="absolute inset-0 w-full h-full object-cover"/>
         </div>
       ),
-      initiativeCount: 2, // Roads/Lighting, Community Buildings
+      initiativeCount: 2,
     },
     {
       id: 'agriculture',
@@ -123,7 +123,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
           <img src="https://i.imgur.com/TZ4jIJA.jpeg" alt="Agriculture & Rural Growth" className="absolute inset-0 w-full h-full object-cover"/>
         </div>
       ),
-       initiativeCount: 1, // General support (no sub-points in provided text)
+       initiativeCount: 1,
     },
      {
       id: 'community',
@@ -135,7 +135,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
            <Handshake className="w-16 h-16 text-gray-400 opacity-50" />
         </div>
       ),
-      initiativeCount: 3, // Salary Donation, Leadership/Mentorship, Youth Sports
+      initiativeCount: 3,
     },
     {
       id: 'environment',
@@ -147,7 +147,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
           <Leaf className="w-16 h-16 text-gray-400 opacity-50" />
         </div>
       ),
-       initiativeCount: 1, // General protection (no sub-points)
+       initiativeCount: 1,
     },
      {
       id: 'planning', // Corresponds to Governance
@@ -159,7 +159,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
            <img src="https://i.imgur.com/NSWtjdU.jpeg" alt="Good Governance & Civic Engagement" className="absolute inset-0 w-full h-full object-cover"/>
          </div>
       ),
-      initiativeCount: 1, // Cape Coast 8-Year Plan
+      initiativeCount: 1,
     },
   ];
 
@@ -186,8 +186,8 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
                 <button
                   key={theme.id}
                   onClick={() => onSelectTheme(theme.id)}
-                  // Added transition classes for animation
-                  className="group bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-500 ease-out text-left"
+                  // Updated transition classes for zoom animation
+                  className="group bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-500 ease-out text-left transform" // Added transform class
                   // Added delay based on index for staggered effect
                   style={{ transitionDelay: `${index * 100}ms` }}
                 >
@@ -200,14 +200,12 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
                       <Icon className="w-5 h-5 mr-2 text-green-700 flex-shrink-0" />
                       {theme.title}
                     </h2>
-                    <p className="text-gray-600 text-sm sm:text-base leading-relaxed mb-3"> {/* Added margin-bottom */}
+                    <p className="text-gray-600 text-sm sm:text-base leading-relaxed mb-3">
                       {theme.shortDescription}
                     </p>
-                    {/* Added Initiative Count */}
                     <p className="text-xs text-gray-500 font-medium mb-3">
                        {theme.initiativeCount} {theme.initiativeCount === 1 ? 'Key Initiative Area' : 'Key Initiative Areas'} Detailed
                     </p>
-                    {/* Learn More indicator */}
                     <span className="inline-flex items-center text-sm font-medium text-green-700 group-hover:underline">
                       Learn More
                       <ChevronRight className="ml-1 w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -238,11 +236,12 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
         </div>
       </section>
 
-      {/* CSS for the animation (could also go in index.css) */}
+      {/* CSS for the NEW zoom animation */}
       <style>{`
-        .animate-card-enter {
+        /* Removed the old animate-card-enter class */
+        .animate-card-enter-zoom {
           opacity: 1;
-          transform: translateY(0);
+          transform: scale(1); /* Change from translateY(0) to scale(1) */
         }
       `}</style>
     </div>

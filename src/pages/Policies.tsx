@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { School, Briefcase, Award, Landmark, CheckSquare, Users, Star, Eye, BarChart3, GraduationCap, MapPin, User, Smile, Briefcase as DesignationIcon, Megaphone, Flag } from 'lucide-react'; // Added Flag
+import { School, Briefcase, Award, Landmark, CheckSquare, Users, Star, Eye, BarChart3, GraduationCap, MapPin, User, Smile, Briefcase as DesignationIcon, Megaphone } from 'lucide-react';
 
 // Helper component for animated sections
 const AnimatedSection = ({ children, delay = 0 }: { children: React.ReactNode, delay?: number }) => {
@@ -104,7 +104,7 @@ export function About() {
       {/* Main Content Sections */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20 space-y-16">
 
-        {/* Section 1: Profile Grid - Reordered, Nationality added, Intro Para removed */}
+        {/* Section 1: Profile Grid - Reordered, Nickname/Nationality removed */}
         <AnimatedSection>
           <h2 className="text-3xl font-bold text-green-800 mb-6 border-b-2 border-amber-500 pb-2 inline-block">Profile</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
@@ -112,10 +112,10 @@ export function About() {
                 <ProfileItem icon={DesignationIcon} label="Designation" value="MP for Cape Coast North" />
                 <ProfileItem icon={Megaphone} label="Slogan" value="Obiara Ka Ho (Everyone is involved)" />
                 <ProfileItem icon={MapPin} label="Place of Birth" value="Apewosika, Cape Coast" />
-                <ProfileItem icon={Flag} label="Nationality" value="Ghanaian" /> {/* Added Nationality */}
                 {/* Nickname Removed */}
+                {/* Nationality Removed */}
           </div>
-           {/* Paragraph REMOVED */}
+          {/* Paragraph Removed */}
         </AnimatedSection>
 
         {/* Section 2: Educational Qualifications Table - Updated Layout */}

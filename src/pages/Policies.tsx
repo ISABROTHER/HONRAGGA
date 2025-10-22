@@ -8,9 +8,8 @@ interface PolicyTheme {
   title: string;
   shortDescription: string;
   imageComponent: React.ReactNode; // Holds either a div with color or an img tag
-  initiativeCount: number; // Number of key initiatives mentioned in detail text
-  keyInitiatives: string[]; // Array of 2-3 key initiative strings for preview
-  // Removed colorTheme as we'll use consistent primary/secondary colors
+  initiativeCount: number; // Based on detailed text sections
+  keyInitiatives: string[]; // **NEW**: More descriptive list of initiatives/achievements
 }
 
 // Props interface including the navigation function from App.tsx
@@ -57,7 +56,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
   }, []);
 
 
-  // Array containing the main policy themes with key initiatives
+  // Array containing the main policy themes with initiative/achievement examples
   const themes: PolicyTheme[] = [
     {
       id: 'education',
@@ -69,11 +68,11 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
           <img src="https://i.imgur.com/Ozjnrli.jpeg" alt="Education & Youth Empowerment" className="absolute inset-0 w-full h-full object-cover"/>
         </div>
       ),
-      initiativeCount: 3,
-      keyInitiatives: [
-          "High School Support Program (LED Bulbs, Desks)",
-          "School Renovations & Resources",
-          "Tertiary Institution Support (UCC, CCTU, OLA)"
+      initiativeCount: 3, // Basic/SHS, Tertiary, General
+      keyInitiatives: [ // More descriptive examples
+          "Donated 500 LED bulbs to Adisadel College",
+          "Provided 100 dual desks to 10 schools",
+          // "Supported UCC, CCTU, and OLA Training College" // Keeping it to 2 for space
       ]
     },
     {
@@ -86,16 +85,15 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
           <Heart className="w-16 h-16 text-blue-300 opacity-70" />
         </div>
       ),
-      initiativeCount: 2,
+      initiativeCount: 2, // Health Facility Support, Sanitation Projects
       keyInitiatives: [
-          "Support for Kwaprow & Dankwakrom Health Centers",
-          "Construction of Public Toilets",
-          "Installation of Sanitation Manholes"
+          "Supported Kwaprow and Dankwakrom health centers",
+          "Constructed public toilets & sanitation manholes",
       ]
     },
     {
       id: 'entrepreneurship',
-      icon: Users, // Using Users icon as placeholder
+      icon: Users, // Placeholder Icon
       title: 'Employment & Entrepreneurship',
       shortDescription: 'Creating jobs and empowering local businesses.',
       imageComponent: (
@@ -103,11 +101,10 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
           <Users className="w-16 h-16 text-blue-300 opacity-70" />
         </div>
       ),
-      initiativeCount: 2,
+      initiativeCount: 2, // Factory Revival, Award Recognition
        keyInitiatives: [
-          "Vision for Factory Revival & Establishment",
-          "Job Creation Initiatives",
-          "Award Recognition for Entrepreneurship Focus"
+          "Advocating factory revival for job creation",
+          "Recognized for entrepreneurship focus",
       ]
     },
     {
@@ -122,9 +119,9 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       ),
       initiativeCount: 3, // Roads, Lighting, Buildings
        keyInitiatives: [
-          "Operation Light Up Cape Coast North (>2500 Lights)",
-          "Major Road Grading & Asphalt Allocation (10km)",
-          "Ankaful Community Centre Construction"
+          "Installed over 2,500 streetlights ('Operation Light Up')",
+          "Secured 10km of asphalted roads allocation",
+          // "Constructed Ankaful Community Centre"
       ]
     },
     {
@@ -137,11 +134,10 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
           <img src="https://i.imgur.com/TZ4jIJA.jpeg" alt="Agriculture & Rural Growth" className="absolute inset-0 w-full h-full object-cover"/>
         </div>
       ),
-       initiativeCount: 1, // Count based on provided detail text structure
-       keyInitiatives: [
-           "Providing Tools & Training Resources",
-           "Enhancing Market Access for Farmers",
-           "Boosting Rural Economic Opportunities"
+       initiativeCount: 1,
+       keyInitiatives: [ // Made these more action-oriented
+           "Provided essential tools & training",
+           "Improved market access strategies",
        ]
     },
      {
@@ -154,11 +150,11 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
            <Handshake className="w-16 h-16 text-blue-300 opacity-70" />
         </div>
       ),
-      initiativeCount: 3,
+      initiativeCount: 3, // Salary Donation, Leadership/Mentorship, Youth Sports
        keyInitiatives: [
-          "Donation of Salary for Community Development",
-          "Leadership Summits & Mentorship Programs",
-          "Funding for Youth Sports Development"
+          "Donated 3 months' salary to support constituents",
+          "Organized leadership summits & mentorship",
+          // "Funded youth sports development programs"
        ]
     },
     {
@@ -171,11 +167,10 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
           <Leaf className="w-16 h-16 text-blue-300 opacity-70" />
         </div>
       ),
-       initiativeCount: 1, // Count based on provided detail text structure
-       keyInitiatives: [
-           "Protecting Land and Water Resources",
-           "Preserving Natural Heritage Sites",
-           "Promoting Environmental Sustainability"
+       initiativeCount: 1,
+       keyInitiatives: [ // Made these more action-oriented
+           "Championed protection of land & water resources",
+           "Advocated for environmental sustainability",
        ]
     },
      {
@@ -190,20 +185,19 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       ),
       initiativeCount: 1, // Based on detail text structure (8-Year Plan)
        keyInitiatives: [
-          "Launch of Cape Coast 8-Year Development Plan",
-          "Advocacy for Intentional Urban Planning",
-          "Revival of Neglected Heritage Sites"
+          "Launched Cape Coast 8-Year Development Plan",
+          "Promoted intentional planning & heritage revival",
       ]
     },
   ];
 
   return (
     <div className="min-h-screen bg-gray-100"> {/* Light gray background */}
-      {/* Section Header - Using Primary Site Colors */}
-      <section className="bg-gradient-to-r from-blue-900 via-blue-800 to-blue-700 text-white py-16">
+      {/* Section Header - **NEW: Dark Green Gradient** */}
+      <section className="bg-gradient-to-r from-green-800 via-green-700 to-green-600 text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Our Key Development Priorities</h1>
-          <p className="text-lg md:text-xl text-blue-100 max-w-3xl mx-auto">
+          <p className="text-lg md:text-xl text-green-100 max-w-3xl mx-auto"> {/* Lighter text on dark green */}
              Click on a priority area to explore our initiatives and achievements in detail.
           </p>
         </div>
@@ -212,14 +206,14 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       {/* Priorities Grid Section */}
       <section className="py-16 sm:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-           <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 md:gap-10"> {/* Slightly increased gap */}
+           <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 md:gap-10">
             {themes.map((theme, index) => {
               const Icon = theme.icon;
               return (
                 <button
                   key={theme.id}
                   onClick={() => onSelectTheme(theme.id)}
-                  // Refined hover/focus states, primary colors
+                  // Refined hover/focus states using primary/secondary colors
                   className={`group bg-white rounded-xl shadow-md overflow-hidden border border-gray-200 hover:shadow-2xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 transition-all duration-500 ease-out text-left transform hover:border-blue-300`}
                   style={{ transitionDelay: `${index * 100}ms` }}
                 >
@@ -229,7 +223,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
                   </div>
 
                   {/* Content Area */}
-                  <div className="p-6 space-y-3"> {/* Added space-y for better vertical spacing */}
+                  <div className="p-6 space-y-4"> {/* Increased default spacing */}
                     {/* Heading: Bold, Primary Color Icon */}
                     <h2 className="text-xl sm:text-2xl font-bold text-blue-900 flex items-center whitespace-nowrap overflow-hidden text-ellipsis">
                       <Icon className="w-6 h-6 mr-3 text-blue-700 flex-shrink-0" />
@@ -239,23 +233,26 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
                       {theme.shortDescription}
                     </p>
 
-                    {/* Key Initiatives List */}
-                    <ul className="space-y-1.5 pt-1">
-                        {theme.keyInitiatives.slice(0, 3).map((initiative, i) => ( // Show max 3
-                            <li key={i} className="flex items-start text-xs text-gray-700">
-                                <CheckCircle className="w-3.5 h-3.5 mr-2 mt-0.5 text-amber-600 flex-shrink-0" />
-                                <span>{initiative}</span>
-                            </li>
-                        ))}
-                    </ul>
+                    {/* Key Initiatives List - NEW */}
+                    <div className="pt-1">
+                      <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Key Initiatives & Achievements</h3>
+                      <ul className="space-y-1.5">
+                          {theme.keyInitiatives.slice(0, 2).map((initiative, i) => ( // Show max 2
+                              <li key={i} className="flex items-start text-sm text-gray-700"> {/* Slightly larger text */}
+                                  <CheckCircle className="w-4 h-4 mr-2 mt-0.5 text-amber-600 flex-shrink-0" />
+                                  <span>{initiative}</span>
+                              </li>
+                          ))}
+                      </ul>
+                    </div>
 
-                     {/* Initiative Count - More subtle */}
+                     {/* Initiative Count - Updated Phrasing */}
                     <p className="text-xs text-gray-500 font-medium pt-1">
-                       <span className="font-bold">{theme.initiativeCount}</span> {theme.initiativeCount === 1 ? 'Key Area Detailed' : 'Key Areas Detailed'}
+                       <span className="font-bold">{theme.initiativeCount}</span> {theme.initiativeCount === 1 ? 'Initiative & Achievement Area Listed' : 'Initiatives & Achievements Listed'}
                     </p>
 
                     {/* Call to Action: Bolder, Amber Color */}
-                    <div className="pt-1"> {/* Wrapper div for spacing */}
+                    <div className="pt-1">
                         <span className="inline-flex items-center text-sm font-semibold text-amber-700 group-hover:underline">
                           View Details
                           <ChevronRight className="ml-1 w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -275,7 +272,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
           <h2 className="text-2xl md:text-3xl font-semibold text-blue-900 mb-4">
             Share Your Thoughts on These Priorities
           </h2>
-          <p className="text-blue-700 mb-6">
+          <p className="text-blue-800 mb-6"> {/* Slightly darker text */}
             Your feedback is valuable. Let us know how we can work together to achieve these goals.
           </p>
           <a

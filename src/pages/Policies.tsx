@@ -5,7 +5,7 @@ interface PriorityArea {
   icon: React.ElementType;
   title: string;
   description: string;
-  imageComponent: React.ReactNode; // Now holds either a div with color or an img tag
+  imageComponent: React.ReactNode; // Holds either a div with color or an img tag
 }
 
 export function Policies() {
@@ -15,14 +15,14 @@ export function Policies() {
       icon: BookOpen,
       title: 'Education & Youth Empowerment',
       description: 'Supporting quality education, digital literacy, and youth skills training.',
-      // Updated to use the provided image URL
+      // Updated Education image
       imageComponent: (
         <div
           className="w-full relative overflow-hidden"
           style={{ aspectRatio: '820 / 360' }} // Maintain aspect ratio
         >
           <img
-            src="https://i.imgur.com/Zu4aGqF.jpeg" // Specific image URL for Education
+            src="https://i.imgur.com/Ozjnrli.jpeg" // New Education image URL
             alt="Education & Youth Empowerment" // Alt text for the image
             className="absolute inset-0 w-full h-full object-cover"
           />
@@ -59,12 +59,17 @@ export function Policies() {
       icon: Building,
       title: 'Infrastructure Development',
       description: 'Improving roads, electrification, and connectivity.',
+      // Updated Infrastructure image
       imageComponent: (
         <div
-          className="w-full h-48 sm:h-64 bg-red-200 flex items-center justify-center"
-          style={{ aspectRatio: '820 / 360' }}
+          className="w-full relative overflow-hidden"
+          style={{ aspectRatio: '820 / 360' }} // Maintain aspect ratio
         >
-          <Building className="w-16 h-16 text-gray-400 opacity-50" />
+          <img
+            src="https://i.imgur.com/AZqDymE.jpeg" // New Infrastructure image URL
+            alt="Infrastructure Development" // Alt text for the image
+            className="absolute inset-0 w-full h-full object-cover"
+          />
         </div>
       ),
     },
@@ -72,13 +77,17 @@ export function Policies() {
       icon: Wheat,
       title: 'Agriculture & Rural Growth',
       description: 'Supporting farmers with tools, training, and market access.',
-      // Kept placeholder as the provided blob URL is invalid
+      // Updated Agriculture image
       imageComponent: (
         <div
-          className="w-full h-48 sm:h-64 bg-yellow-200 flex items-center justify-center"
-          style={{ aspectRatio: '820 / 360' }}
+          className="w-full relative overflow-hidden"
+          style={{ aspectRatio: '820 / 360' }} // Maintain aspect ratio
         >
-          <Wheat className="w-16 h-16 text-gray-400 opacity-50" />
+          <img
+            src="https://i.imgur.com/TZ4jIJA.jpeg" // New Agriculture image URL
+            alt="Agriculture & Rural Growth" // Alt text for the image
+            className="absolute inset-0 w-full h-full object-cover"
+          />
         </div>
       ),
     },
@@ -118,7 +127,7 @@ export function Policies() {
           style={{ aspectRatio: '820 / 360' }} // Maintain aspect ratio
         >
           <img
-            src="https://i.imgur.com/NSWtjdU.jpeg" // Specific image URL for this item
+            src="https://i.imgur.com/NSWtjdU.jpeg" // Original Civic Engagement image URL
             alt="Good Governance & Civic Engagement" // Alt text for the image
             className="absolute inset-0 w-full h-full object-cover"
           />

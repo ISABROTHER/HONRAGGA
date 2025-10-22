@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { School, Briefcase, Award, Landmark, CheckSquare, Users, Star, Eye, BarChart3, GraduationCap, MapPin, Calendar } from 'lucide-react'; // Added MapPin, Calendar
+import { School, Briefcase, Award, Landmark, CheckSquare, Users, Star, Eye, BarChart3, GraduationCap, MapPin, User, Smile } from 'lucide-react'; // Added User, Smile
 
 // Helper component for animated sections
 const AnimatedSection = ({ children, delay = 0 }: { children: React.ReactNode, delay?: number }) => {
@@ -95,22 +95,27 @@ export function About() {
         {/* Section 1: Roots Table */}
         <AnimatedSection>
           <h2 className="text-3xl font-bold text-green-800 mb-6 border-b-2 border-amber-500 pb-2 inline-block">Roots</h2>
-          {/* Replaced paragraph with a simple table */}
-          <div className="overflow-x-auto bg-white rounded-lg shadow-md border border-gray-200">
+          {/* Updated table for Name, Nickname, Place of Birth */}
+          <div className="overflow-x-auto bg-white rounded-lg shadow-md border border-gray-200 mb-6"> {/* Added margin-bottom */}
              <table className="w-full text-sm text-left text-gray-700">
                  <tbody>
-                     <tr className="bg-white border-b border-gray-100 hover:bg-gray-50">
+                      <tr className="bg-white border-b border-gray-100 hover:bg-gray-50">
+                         <th scope="row" className="px-6 py-3 font-semibold text-blue-900 w-1/3"><User className="inline w-4 h-4 mr-2 text-blue-700"/>Full Name</th>
+                         <td className="px-6 py-3">Hon. Dr. Kwamena Minta Nyarku</td>
+                     </tr>
+                      <tr className="bg-white border-b border-gray-100 hover:bg-gray-50">
+                         <th scope="row" className="px-6 py-3 font-semibold text-blue-900 w-1/3"><Smile className="inline w-4 h-4 mr-2 text-blue-700"/>Nickname</th>
+                         <td className="px-6 py-3">Ragga</td>
+                     </tr>
+                     <tr className="bg-white hover:bg-gray-50">
                          <th scope="row" className="px-6 py-3 font-semibold text-blue-900 w-1/3"><MapPin className="inline w-4 h-4 mr-2 text-blue-700"/>Place of Birth</th>
                          <td className="px-6 py-3">Apewosika, Cape Coast</td>
                      </tr>
-                      <tr className="bg-white hover:bg-gray-50">
-                         <th scope="row" className="px-6 py-3 font-semibold text-blue-900 w-1/3"><Calendar className="inline w-4 h-4 mr-2 text-blue-700"/>Year of Birth</th>
-                         <td className="px-6 py-3">XXXX {/* Placeholder - Update with correct year */}</td>
-                     </tr>
+                      {/* Year of Birth row REMOVED */}
                  </tbody>
              </table>
           </div>
-          <p className="text-gray-700 mt-6 leading-relaxed"> {/* Kept this introductory sentence */}
+          <p className="text-gray-700 leading-relaxed"> {/* Kept this introductory sentence */}
             My story begins in Apewosika, where family, faith and community taught me humility, perseverance and purpose. From a young age, I came to see education not only as a way to grow personally but as a means to lift others and build stronger communities. That belief has guided my journey.
           </p>
         </AnimatedSection>
@@ -167,9 +172,7 @@ export function About() {
         {/* Section 4: Parliamentary Role & Election Results */}
         <AnimatedSection delay={300}>
             <h2 className="text-3xl font-bold text-green-800 mb-6 border-b-2 border-amber-500 pb-2 inline-block">Service in Parliament</h2>
-            <p className="text-gray-700 mb-8 leading-relaxed">
-                In 2020, the people of Cape Coast North elected me as their Member of Parliament on the ticket of the National Democratic Congress (NDC), and in 2024 they renewed that trust. My focus has always been on what changes lives most: quality education, good roads, reliable healthcare, clean surroundings and opportunities for the youth.
-            </p>
+             {/* Paragraph REMOVED */}
             {/* Combined Info Blocks and Table */}
             <div className="space-y-6">
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -271,4 +274,4 @@ export function About() {
       `}</style>
     </div>
   );
-} 
+}

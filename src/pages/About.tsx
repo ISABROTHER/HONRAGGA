@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { School, Briefcase, Award, Landmark, CheckSquare, Users, Star, Eye, BarChart3, GraduationCap, MapPin, User, Smile, Briefcase as DesignationIcon, Megaphone, Flag } from 'lucide-react'; // Added Flag icon
+import { School, Briefcase, Award, Landmark, CheckSquare, Users, Star, Eye, BarChart3, GraduationCap, MapPin, User, Smile, Briefcase as DesignationIcon, Megaphone, Flag } from 'lucide-react'; // Flag icon might be unused now
 
 // Helper component for animated sections
 const AnimatedSection = ({ children, delay = 0 }: { children: React.ReactNode, delay?: number }) => {
@@ -107,19 +107,19 @@ export function About() {
         {/* Section 1: Profile Grid */}
         <AnimatedSection>
           <h2 className="text-3xl font-bold text-green-800 mb-6 border-b-2 border-amber-500 pb-2 inline-block">Profile</h2>
-          {/* Reordered items, added Nationality, removed paragraph */}
+          {/* Reordered items, removed Nickname and Nationality */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                 <ProfileItem icon={User} label="Full Name" value="Hon. Dr. Kwamena Minta Nyarku, PhD" />
-                <ProfileItem icon={Smile} label="Nickname" value="Ragga" />
+                {/* Nickname Removed */}
                 <ProfileItem icon={DesignationIcon} label="Designation" value="MP for Cape Coast North" />
                 <ProfileItem icon={Megaphone} label="Slogan" value="Obiara Ka Ho (Everyone is involved)" />
                 <ProfileItem icon={MapPin} label="Place of Birth" value="Apewosika, Cape Coast" />
-                <ProfileItem icon={Flag} label="Nationality" value="Ghanaian" /> {/* Added Nationality */}
+                {/* Nationality Removed */}
           </div>
-           {/* Paragraph REMOVED */}
+          {/* Paragraph Removed */}
         </AnimatedSection>
 
-        {/* Section 2: Educational Qualifications Table */}
+        {/* Section 2: Educational Qualifications Table - Updated Layout */}
         <AnimatedSection delay={100}>
             <h3 className="text-2xl font-semibold text-blue-900 mb-4">Educational Qualifications</h3>
              <div className="overflow-x-auto bg-white rounded-lg shadow-md border border-gray-200">
@@ -132,10 +132,13 @@ export function About() {
                     <tbody>
                         {educationData.map((edu, index) => (
                             <tr key={edu.institution} className={`${index % 2 === 0 ? 'bg-white' : 'bg-blue-50'} border-b border-gray-100 last:border-b-0 hover:bg-gray-50`}>
-                                <td className="px-6 py-3 whitespace-nowrap">
-                                    <span className="font-medium text-gray-900 mr-4">{edu.institution}</span>
-                                    <span className="text-gray-600 mr-4">Qualification: <span className="font-medium">{edu.qualification}</span></span>
-                                    <span className="text-gray-600">Year: <span className="font-medium">{getYear(edu.completed)}</span></span>
+                                {/* Updated TD structure for line break */}
+                                <td className="px-6 py-3">
+                                    <span className="font-medium text-gray-900 block">{edu.institution}</span>
+                                    <div className="mt-1 text-gray-600"> {/* Div ensures Qualification and Year are grouped */}
+                                        <span className="mr-4">Qualification: <span className="font-medium">{edu.qualification}</span></span>
+                                        <span>Year: <span className="font-medium">{getYear(edu.completed)}</span></span>
+                                    </div>
                                 </td>
                             </tr>
                         ))}

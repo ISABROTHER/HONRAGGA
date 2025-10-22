@@ -64,6 +64,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       title: 'Education & Youth Empowerment',
       shortDescription: 'Supporting quality education, digital literacy, and youth skills training.',
       imageComponent: (
+        // Added overflow-hidden and group-hover:scale-105 for image zoom effect
         <div className="w-full relative overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
           <img src="https://i.imgur.com/Ozjnrli.jpeg" alt="Education & Youth Empowerment" className="absolute inset-0 w-full h-full object-cover"/>
         </div>
@@ -81,13 +82,14 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       title: 'Health & Sanitation',
       shortDescription: 'Expanding access to healthcare and clean water for all.',
       imageComponent: (
+        // Added overflow-hidden and group-hover:scale-105 for image zoom effect
         <div className="w-full h-48 sm:h-64 bg-blue-100 flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
           <Heart className="w-16 h-16 text-blue-300 opacity-70" />
         </div>
       ),
       initiativeCount: 2, // Health Facility Support, Sanitation Projects
       keyInitiatives: [
-          "Supported Kwaprow and Dankwakrom health centers",
+          "Supported Kwaprow & Dankwakrom health centers",
           "Constructed public toilets & sanitation manholes",
       ]
     },
@@ -97,6 +99,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       title: 'Employment & Entrepreneurship',
       shortDescription: 'Creating jobs and empowering local businesses.',
       imageComponent: (
+        // Added overflow-hidden and group-hover:scale-105 for image zoom effect
         <div className="w-full h-48 sm:h-64 bg-blue-100 flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
           <Users className="w-16 h-16 text-blue-300 opacity-70" />
         </div>
@@ -113,6 +116,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       title: 'Infrastructure Development',
       shortDescription: 'Improving roads, electrification, and connectivity.',
       imageComponent: (
+        // Added overflow-hidden and group-hover:scale-105 for image zoom effect
         <div className="w-full relative overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
           <img src="https://i.imgur.com/AZqDymE.jpeg" alt="Infrastructure Development" className="absolute inset-0 w-full h-full object-cover"/>
         </div>
@@ -130,6 +134,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       title: 'Agriculture & Rural Growth',
       shortDescription: 'Supporting farmers with tools, training, and market access.',
       imageComponent: (
+         // Added overflow-hidden and group-hover:scale-105 for image zoom effect
          <div className="w-full relative overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
           <img src="https://i.imgur.com/TZ4jIJA.jpeg" alt="Agriculture & Rural Growth" className="absolute inset-0 w-full h-full object-cover"/>
         </div>
@@ -146,6 +151,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       title: 'Social Welfare & Gender Equity',
       shortDescription: 'Empowering women, youth, and vulnerable groups.',
       imageComponent: (
+        // Added overflow-hidden and group-hover:scale-105 for image zoom effect
         <div className="w-full h-48 sm:h-64 bg-blue-100 flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
            <Handshake className="w-16 h-16 text-blue-300 opacity-70" />
         </div>
@@ -163,6 +169,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       title: 'Environment & Climate Action',
       shortDescription: 'Protecting our land, water, and natural heritage.',
       imageComponent: (
+        // Added overflow-hidden and group-hover:scale-105 for image zoom effect
         <div className="w-full h-48 sm:h-64 bg-blue-100 flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
           <Leaf className="w-16 h-16 text-blue-300 opacity-70" />
         </div>
@@ -179,6 +186,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       title: 'Good Governance & Civic Engagement',
       shortDescription: 'Promoting transparency, accountability, and participation.',
       imageComponent: (
+         // Added overflow-hidden and group-hover:scale-105 for image zoom effect
          <div className="w-full relative overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
            <img src="https://i.imgur.com/NSWtjdU.jpeg" alt="Good Governance & Civic Engagement" className="absolute inset-0 w-full h-full object-cover"/>
          </div>
@@ -193,11 +201,11 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
 
   return (
     <div className="min-h-screen bg-gray-100"> {/* Light gray background */}
-      {/* Section Header - **NEW: Dark Green Gradient** */}
+      {/* Section Header - Dark Green Gradient */}
       <section className="bg-gradient-to-r from-green-800 via-green-700 to-green-600 text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Our Key Development Priorities</h1>
-          <p className="text-lg md:text-xl text-green-100 max-w-3xl mx-auto"> {/* Lighter text on dark green */}
+          <p className="text-lg md:text-xl text-green-100 max-w-3xl mx-auto">
              Click on a priority area to explore our initiatives and achievements in detail.
           </p>
         </div>
@@ -214,7 +222,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
                   key={theme.id}
                   onClick={() => onSelectTheme(theme.id)}
                   // Refined hover/focus states using primary/secondary colors
-                  className={`group bg-white rounded-xl shadow-md overflow-hidden border border-gray-200 hover:shadow-2xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 transition-all duration-500 ease-out text-left transform hover:border-blue-300`}
+                  className="group bg-white rounded-xl shadow-md overflow-hidden border border-gray-200 hover:shadow-2xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 transition-all duration-500 ease-out text-left transform hover:border-blue-300"
                   style={{ transitionDelay: `${index * 100}ms` }}
                 >
                   {/* Image/Placeholder Component */}
@@ -233,7 +241,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
                       {theme.shortDescription}
                     </p>
 
-                    {/* Key Initiatives List - NEW */}
+                    {/* Key Initiatives List */}
                     <div className="pt-1">
                       <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Key Initiatives & Achievements</h3>
                       <ul className="space-y-1.5">

@@ -55,15 +55,15 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
   }, []);
 
 
-  // Array containing the main policy themes (Updated image positioning for Health)
+  // Array containing the main policy themes (Adjusted object-position for Health)
   const themes: PolicyTheme[] = [
     {
       id: 'education',
-      title: 'Education & Youth Empowerment',
+      title: 'Educational Support', // Updated Title
       shortDescription: 'Supporting quality education, digital literacy, and youth skills training.',
       imageComponent: (
         <div className="w-full relative overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
-          <img src="https://i.imgur.com/Ozjnrli.jpeg" alt="Education & Youth Empowerment" className="absolute inset-0 w-full h-full object-cover"/>
+          <img src="https://i.imgur.com/Ozjnrli.jpeg" alt="Educational Support" className="absolute inset-0 w-full h-full object-cover"/> {/* Updated Alt */}
         </div>
       ),
       initiativeCount: 3,
@@ -74,8 +74,8 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       shortDescription: 'Expanding access to healthcare and clean water for all.',
       imageComponent: (
         <div className="w-full relative overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
-           {/* Added object-top */}
-           <img src="https://i.imgur.com/XmWnKbH.jpeg" alt="Health & Sanitation" className="absolute inset-0 w-full h-full object-cover object-top"/>
+           {/* Changed object-top to object-[center_35%] */}
+           <img src="https://i.imgur.com/XmWnKbH.jpeg" alt="Health & Sanitation" className="absolute inset-0 w-full h-full object-cover object-[center_35%]"/>
         </div>
       ),
       initiativeCount: 2,
@@ -104,33 +104,33 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
     },
     {
       id: 'agriculture',
-      title: 'Agriculture & Rural Growth',
+      title: 'Agricultural Support', // Updated Title
       shortDescription: 'Supporting farmers with tools, training, and market access.',
       imageComponent: (
          <div className="w-full relative overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
-          <img src="https://i.imgur.com/TZ4jIJA.jpeg" alt="Agriculture & Rural Growth" className="absolute inset-0 w-full h-full object-cover"/>
+          <img src="https://i.imgur.com/TZ4jIJA.jpeg" alt="Agricultural Support" className="absolute inset-0 w-full h-full object-cover"/> {/* Updated Alt */}
         </div>
       ),
        initiativeCount: 1,
     },
      {
       id: 'community',
-      title: 'Social Welfare & Gender Equity',
+      title: 'Social Welfare', // Updated Title
       shortDescription: 'Empowering women, youth, and vulnerable groups.',
       imageComponent: (
         <div className="w-full relative overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
-            <img src="https://i.imgur.com/1M0b8mq.jpeg" alt="Social Welfare & Gender Equity" className="absolute inset-0 w-full h-full object-cover object-top"/>
+            <img src="https://i.imgur.com/1M0b8mq.jpeg" alt="Social Welfare" className="absolute inset-0 w-full h-full object-cover object-top"/> {/* Updated Alt */}
         </div>
       ),
       initiativeCount: 3,
     },
      {
       id: 'planning', // Corresponds to Governance
-      title: 'Good Governance & Civic Engagement',
+      title: 'Civic Engagement', // Updated Title
       shortDescription: 'Promoting transparency, accountability, and participation.',
       imageComponent: (
          <div className="w-full relative overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
-           <img src="https://i.imgur.com/NSWtjdU.jpeg" alt="Good Governance & Civic Engagement" className="absolute inset-0 w-full h-full object-cover"/>
+           <img src="https://i.imgur.com/NSWtjdU.jpeg" alt="Civic Engagement" className="absolute inset-0 w-full h-full object-cover"/> {/* Updated Alt Text */}
          </div>
       ),
       initiativeCount: 1,

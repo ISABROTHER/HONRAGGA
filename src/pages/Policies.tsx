@@ -9,7 +9,8 @@ interface PolicyTheme {
   shortDescription: string;
   imageComponent: React.ReactNode; // Holds either a div with color or an img tag
   initiativeCount: number; // Based on detailed text sections
-  keyInitiatives: string[]; // **NEW**: More descriptive list of initiatives/achievements
+  keyInitiatives: string[]; // List of initiatives/achievements
+  // Removed colorTheme object
 }
 
 // Props interface including the navigation function from App.tsx
@@ -56,24 +57,22 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
   }, []);
 
 
-  // Array containing the main policy themes with initiative/achievement examples
+  // Array containing the main policy themes
   const themes: PolicyTheme[] = [
-    {
+     {
       id: 'education',
       icon: BookOpen,
       title: 'Education & Youth Empowerment',
       shortDescription: 'Supporting quality education, digital literacy, and youth skills training.',
       imageComponent: (
-        // Added overflow-hidden and group-hover:scale-105 for image zoom effect
         <div className="w-full relative overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
           <img src="https://i.imgur.com/Ozjnrli.jpeg" alt="Education & Youth Empowerment" className="absolute inset-0 w-full h-full object-cover"/>
         </div>
       ),
-      initiativeCount: 3, // Basic/SHS, Tertiary, General
-      keyInitiatives: [ // More descriptive examples
+      initiativeCount: 3,
+      keyInitiatives: [
           "Donated 500 LED bulbs to Adisadel College",
           "Provided 100 dual desks to 10 schools",
-          // "Supported UCC, CCTU, and OLA Training College" // Keeping it to 2 for space
       ]
     },
     {
@@ -82,12 +81,11 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       title: 'Health & Sanitation',
       shortDescription: 'Expanding access to healthcare and clean water for all.',
       imageComponent: (
-        // Added overflow-hidden and group-hover:scale-105 for image zoom effect
         <div className="w-full h-48 sm:h-64 bg-blue-100 flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
           <Heart className="w-16 h-16 text-blue-300 opacity-70" />
         </div>
       ),
-      initiativeCount: 2, // Health Facility Support, Sanitation Projects
+      initiativeCount: 2,
       keyInitiatives: [
           "Supported Kwaprow & Dankwakrom health centers",
           "Constructed public toilets & sanitation manholes",
@@ -95,16 +93,15 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
     },
     {
       id: 'entrepreneurship',
-      icon: Users, // Placeholder Icon
+      icon: Users,
       title: 'Employment & Entrepreneurship',
       shortDescription: 'Creating jobs and empowering local businesses.',
       imageComponent: (
-        // Added overflow-hidden and group-hover:scale-105 for image zoom effect
         <div className="w-full h-48 sm:h-64 bg-blue-100 flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
           <Users className="w-16 h-16 text-blue-300 opacity-70" />
         </div>
       ),
-      initiativeCount: 2, // Factory Revival, Award Recognition
+      initiativeCount: 2,
        keyInitiatives: [
           "Advocating factory revival for job creation",
           "Recognized for entrepreneurship focus",
@@ -116,16 +113,14 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       title: 'Infrastructure Development',
       shortDescription: 'Improving roads, electrification, and connectivity.',
       imageComponent: (
-        // Added overflow-hidden and group-hover:scale-105 for image zoom effect
         <div className="w-full relative overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
           <img src="https://i.imgur.com/AZqDymE.jpeg" alt="Infrastructure Development" className="absolute inset-0 w-full h-full object-cover"/>
         </div>
       ),
-      initiativeCount: 3, // Roads, Lighting, Buildings
+      initiativeCount: 3,
        keyInitiatives: [
           "Installed over 2,500 streetlights ('Operation Light Up')",
           "Secured 10km of asphalted roads allocation",
-          // "Constructed Ankaful Community Centre"
       ]
     },
     {
@@ -134,13 +129,12 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       title: 'Agriculture & Rural Growth',
       shortDescription: 'Supporting farmers with tools, training, and market access.',
       imageComponent: (
-         // Added overflow-hidden and group-hover:scale-105 for image zoom effect
          <div className="w-full relative overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
           <img src="https://i.imgur.com/TZ4jIJA.jpeg" alt="Agriculture & Rural Growth" className="absolute inset-0 w-full h-full object-cover"/>
         </div>
       ),
        initiativeCount: 1,
-       keyInitiatives: [ // Made these more action-oriented
+       keyInitiatives: [
            "Provided essential tools & training",
            "Improved market access strategies",
        ]
@@ -151,16 +145,14 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       title: 'Social Welfare & Gender Equity',
       shortDescription: 'Empowering women, youth, and vulnerable groups.',
       imageComponent: (
-        // Added overflow-hidden and group-hover:scale-105 for image zoom effect
         <div className="w-full h-48 sm:h-64 bg-blue-100 flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
            <Handshake className="w-16 h-16 text-blue-300 opacity-70" />
         </div>
       ),
-      initiativeCount: 3, // Salary Donation, Leadership/Mentorship, Youth Sports
+      initiativeCount: 3,
        keyInitiatives: [
           "Donated 3 months' salary to support constituents",
           "Organized leadership summits & mentorship",
-          // "Funded youth sports development programs"
        ]
     },
     {
@@ -169,13 +161,12 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       title: 'Environment & Climate Action',
       shortDescription: 'Protecting our land, water, and natural heritage.',
       imageComponent: (
-        // Added overflow-hidden and group-hover:scale-105 for image zoom effect
         <div className="w-full h-48 sm:h-64 bg-blue-100 flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
           <Leaf className="w-16 h-16 text-blue-300 opacity-70" />
         </div>
       ),
        initiativeCount: 1,
-       keyInitiatives: [ // Made these more action-oriented
+       keyInitiatives: [
            "Championed protection of land & water resources",
            "Advocated for environmental sustainability",
        ]
@@ -186,12 +177,11 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       title: 'Good Governance & Civic Engagement',
       shortDescription: 'Promoting transparency, accountability, and participation.',
       imageComponent: (
-         // Added overflow-hidden and group-hover:scale-105 for image zoom effect
          <div className="w-full relative overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
            <img src="https://i.imgur.com/NSWtjdU.jpeg" alt="Good Governance & Civic Engagement" className="absolute inset-0 w-full h-full object-cover"/>
          </div>
       ),
-      initiativeCount: 1, // Based on detail text structure (8-Year Plan)
+      initiativeCount: 1,
        keyInitiatives: [
           "Launched Cape Coast 8-Year Development Plan",
           "Promoted intentional planning & heritage revival",
@@ -221,8 +211,8 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
                 <button
                   key={theme.id}
                   onClick={() => onSelectTheme(theme.id)}
-                  // Refined hover/focus states using primary/secondary colors
-                  className="group bg-white rounded-xl shadow-md overflow-hidden border border-gray-200 hover:shadow-2xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 transition-all duration-500 ease-out text-left transform hover:border-blue-300"
+                  // Refined hover/focus states, subtle blue border on hover
+                  className={`group bg-white rounded-xl shadow-md overflow-hidden border border-gray-200 hover:shadow-2xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 transition-all duration-500 ease-out text-left transform hover:border-blue-300`}
                   style={{ transitionDelay: `${index * 100}ms` }}
                 >
                   {/* Image/Placeholder Component */}
@@ -231,10 +221,10 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
                   </div>
 
                   {/* Content Area */}
-                  <div className="p-6 space-y-4"> {/* Increased default spacing */}
-                    {/* Heading: Bold, Primary Color Icon */}
-                    <h2 className="text-xl sm:text-2xl font-bold text-blue-900 flex items-center whitespace-nowrap overflow-hidden text-ellipsis">
-                      <Icon className="w-6 h-6 mr-3 text-blue-700 flex-shrink-0" />
+                  <div className="p-6 space-y-4">
+                    {/* Heading: Dark Green Text, Blue Icon */}
+                    <h2 className="text-xl sm:text-2xl font-bold text-green-800 flex items-center whitespace-nowrap overflow-hidden text-ellipsis"> {/* Dark green text */}
+                      <Icon className="w-6 h-6 mr-3 text-blue-700 flex-shrink-0" /> {/* Blue icon */}
                       {theme.title}
                     </h2>
                     <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
@@ -246,8 +236,8 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
                       <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Key Initiatives & Achievements</h3>
                       <ul className="space-y-1.5">
                           {theme.keyInitiatives.slice(0, 2).map((initiative, i) => ( // Show max 2
-                              <li key={i} className="flex items-start text-sm text-gray-700"> {/* Slightly larger text */}
-                                  <CheckCircle className="w-4 h-4 mr-2 mt-0.5 text-amber-600 flex-shrink-0" />
+                              <li key={i} className="flex items-start text-sm text-gray-700">
+                                  <CheckCircle className="w-4 h-4 mr-2 mt-0.5 text-amber-600 flex-shrink-0" /> {/* Amber check */}
                                   <span>{initiative}</span>
                               </li>
                           ))}
@@ -261,7 +251,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
 
                     {/* Call to Action: Bolder, Amber Color */}
                     <div className="pt-1">
-                        <span className="inline-flex items-center text-sm font-semibold text-amber-700 group-hover:underline">
+                        <span className="inline-flex items-center text-sm font-semibold text-amber-700 group-hover:underline"> {/* Amber text */}
                           View Details
                           <ChevronRight className="ml-1 w-4 h-4 transition-transform group-hover:translate-x-1" />
                         </span>
@@ -280,7 +270,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
           <h2 className="text-2xl md:text-3xl font-semibold text-blue-900 mb-4">
             Share Your Thoughts on These Priorities
           </h2>
-          <p className="text-blue-800 mb-6"> {/* Slightly darker text */}
+          <p className="text-blue-800 mb-6">
             Your feedback is valuable. Let us know how we can work together to achieve these goals.
           </p>
           <a

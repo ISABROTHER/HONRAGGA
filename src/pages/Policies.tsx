@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'; // Import hooks for animation
-import { BookOpen, Heart, Users, Building, Wheat, Handshake, Leaf, Landmark, ChevronRight } from 'lucide-react'; // Removed CheckCircle import
+import { BookOpen, Heart, Users, Building, Wheat, Handshake, Leaf /* Removed Leaf */, Landmark, ChevronRight } from 'lucide-react'; // Removed CheckCircle import
 
 // Define the structure for each *main* policy theme
 interface PolicyTheme {
@@ -116,10 +116,9 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       id: 'community',
       title: 'Social Welfare & Gender Equity',
       shortDescription: 'Empowering women, youth, and vulnerable groups.',
-      // Updated Social Welfare image
       imageComponent: (
         <div className="w-full relative overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
-            <img src="https://i.imgur.com/1M0b8mq.jpeg" alt="Social Welfare & Gender Equity" className="absolute inset-0 w-full h-full object-cover"/>
+            <img src="https://i.imgur.com/1M0b8mq.jpeg" alt="Social Welfare & Gender Equity" className="absolute inset-0 w-full h-full object-cover object-top"/>
         </div>
       ),
       initiativeCount: 3,
@@ -186,10 +185,10 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
 
                     {/* Bottom section: Count and View Details */}
                     <div className="mt-auto flex justify-between items-center pt-4">
-                        {/* Initiative Count */}
+                        {/* Initiative Count - Updated Phrasing */}
                         <p className="text-sm text-gray-700 font-medium">
                            <span className="font-extrabold text-lg text-amber-600 mr-1">{theme.initiativeCount}</span>
-                            {theme.initiativeCount === 1 ? 'Initiative Area Listed' : 'Initiative Areas Listed'}
+                            {theme.initiativeCount === 1 ? 'Initiative Listed' : 'Initiatives Listed'} {/* Removed 'Area' */}
                         </p>
 
                         {/* Call to Action: Right Aligned - No animated underline */}

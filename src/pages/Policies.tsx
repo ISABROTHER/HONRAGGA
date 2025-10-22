@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'; // Import hooks for animation
-import { BookOpen, Heart, Users, Building, Wheat, Handshake, Leaf, Landmark, ChevronRight, CheckCircle } from 'lucide-react'; // Added CheckCircle
+import { BookOpen, Heart, Users, Building, Wheat, Handshake, Leaf, Landmark, ChevronRight } from 'lucide-react'; // Removed CheckCircle import
 
 // Define the structure for each *main* policy theme
 interface PolicyTheme {
@@ -9,8 +9,7 @@ interface PolicyTheme {
   shortDescription: string;
   imageComponent: React.ReactNode; // Holds either a div with color or an img tag
   initiativeCount: number; // Based on detailed text sections
-  keyInitiatives: string[]; // List of initiatives/achievements
-  // Removed colorTheme object
+  // Removed keyInitiatives array
 }
 
 // Props interface including the navigation function from App.tsx
@@ -57,9 +56,9 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
   }, []);
 
 
-  // Array containing the main policy themes
+  // Array containing the main policy themes (keyInitiatives array removed)
   const themes: PolicyTheme[] = [
-     {
+    {
       id: 'education',
       icon: BookOpen,
       title: 'Education & Youth Empowerment',
@@ -70,10 +69,6 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
         </div>
       ),
       initiativeCount: 3,
-      keyInitiatives: [
-          "Donated 500 LED bulbs to Adisadel College",
-          "Provided 100 dual desks to 10 schools",
-      ]
     },
     {
       id: 'health',
@@ -86,10 +81,6 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
         </div>
       ),
       initiativeCount: 2,
-      keyInitiatives: [
-          "Supported Kwaprow & Dankwakrom health centers",
-          "Constructed public toilets & sanitation manholes",
-      ]
     },
     {
       id: 'entrepreneurship',
@@ -102,10 +93,6 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
         </div>
       ),
       initiativeCount: 2,
-       keyInitiatives: [
-          "Advocating factory revival for job creation",
-          "Recognized for entrepreneurship focus",
-      ]
     },
     {
       id: 'infrastructure',
@@ -118,10 +105,6 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
         </div>
       ),
       initiativeCount: 3,
-       keyInitiatives: [
-          "Installed over 2,500 streetlights ('Operation Light Up')",
-          "Secured 10km of asphalted roads allocation",
-      ]
     },
     {
       id: 'agriculture',
@@ -134,10 +117,6 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
         </div>
       ),
        initiativeCount: 1,
-       keyInitiatives: [
-           "Provided essential tools & training",
-           "Improved market access strategies",
-       ]
     },
      {
       id: 'community',
@@ -150,10 +129,6 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
         </div>
       ),
       initiativeCount: 3,
-       keyInitiatives: [
-          "Donated 3 months' salary to support constituents",
-          "Organized leadership summits & mentorship",
-       ]
     },
     {
       id: 'environment',
@@ -166,10 +141,6 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
         </div>
       ),
        initiativeCount: 1,
-       keyInitiatives: [
-           "Championed protection of land & water resources",
-           "Advocated for environmental sustainability",
-       ]
     },
      {
       id: 'planning', // Corresponds to Governance
@@ -182,10 +153,6 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
          </div>
       ),
       initiativeCount: 1,
-       keyInitiatives: [
-          "Launched Cape Coast 8-Year Development Plan",
-          "Promoted intentional planning & heritage revival",
-      ]
     },
   ];
 
@@ -211,7 +178,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
                 <button
                   key={theme.id}
                   onClick={() => onSelectTheme(theme.id)}
-                  // Refined hover/focus states, subtle blue border on hover
+                  // Styling remains the same
                   className={`group bg-white rounded-xl shadow-md overflow-hidden border border-gray-200 hover:shadow-2xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 transition-all duration-500 ease-out text-left transform hover:border-blue-300`}
                   style={{ transitionDelay: `${index * 100}ms` }}
                 >
@@ -221,37 +188,26 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
                   </div>
 
                   {/* Content Area */}
-                  <div className="p-6 space-y-4">
-                    {/* Heading: Dark Green Text, Blue Icon */}
-                    <h2 className="text-xl sm:text-2xl font-bold text-green-800 flex items-center whitespace-nowrap overflow-hidden text-ellipsis"> {/* Dark green text */}
-                      <Icon className="w-6 h-6 mr-3 text-blue-700 flex-shrink-0" /> {/* Blue icon */}
+                  <div className="p-6 space-y-3"> {/* Adjusted spacing */}
+                    {/* Heading */}
+                    <h2 className="text-xl sm:text-2xl font-bold text-green-800 flex items-center whitespace-nowrap overflow-hidden text-ellipsis">
+                      <Icon className="w-6 h-6 mr-3 text-blue-700 flex-shrink-0" />
                       {theme.title}
                     </h2>
                     <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
                       {theme.shortDescription}
                     </p>
 
-                    {/* Key Initiatives List */}
-                    <div className="pt-1">
-                      <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Key Initiatives & Achievements</h3>
-                      <ul className="space-y-1.5">
-                          {theme.keyInitiatives.slice(0, 2).map((initiative, i) => ( // Show max 2
-                              <li key={i} className="flex items-start text-sm text-gray-700">
-                                  <CheckCircle className="w-4 h-4 mr-2 mt-0.5 text-amber-600 flex-shrink-0" /> {/* Amber check */}
-                                  <span>{initiative}</span>
-                              </li>
-                          ))}
-                      </ul>
-                    </div>
+                    {/* Removed the Key Initiatives list section */}
 
-                     {/* Initiative Count - Updated Phrasing */}
-                    <p className="text-xs text-gray-500 font-medium pt-1">
+                     {/* Initiative Count */}
+                    <p className="text-xs text-gray-500 font-medium pt-1"> {/* Removed mb-4 */}
                        <span className="font-bold">{theme.initiativeCount}</span> {theme.initiativeCount === 1 ? 'Initiative & Achievement Area Listed' : 'Initiatives & Achievements Listed'}
                     </p>
 
-                    {/* Call to Action: Bolder, Amber Color */}
+                    {/* Call to Action */}
                     <div className="pt-1">
-                        <span className="inline-flex items-center text-sm font-semibold text-amber-700 group-hover:underline"> {/* Amber text */}
+                        <span className="inline-flex items-center text-sm font-semibold text-amber-700 group-hover:underline">
                           View Details
                           <ChevronRight className="ml-1 w-4 h-4 transition-transform group-hover:translate-x-1" />
                         </span>
@@ -264,7 +220,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
         </div>
       </section>
 
-      {/* Call to Action Section - Using Primary Colors */}
+      {/* Call to Action Section */}
       <section className="py-16 bg-blue-50 border-t border-blue-100">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl md:text-3xl font-semibold text-blue-900 mb-4">
@@ -275,7 +231,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
           </p>
           <a
             href="#" // Replace with actual contact link
-            className="inline-block px-6 py-3 bg-amber-600 text-white font-semibold rounded-lg shadow hover:bg-amber-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500" // Amber button
+            className="inline-block px-6 py-3 bg-amber-600 text-white font-semibold rounded-lg shadow hover:bg-amber-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500"
           >
             Contact Your MP
           </a>

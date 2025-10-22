@@ -1,20 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { School, Briefcase, Award, Landmark, CheckSquare, Users, Star, Eye, BarChart3, GraduationCap } from 'lucide-react'; // Added Briefcase
 
-// Helper component for timeline items
-const TimelineItem = ({ icon: Icon, title, institution, description, children }: { icon: React.ElementType, title: string, institution?: string, description?: string | React.ReactNode, children?: React.ReactNode }) => (
-  <li className="mb-10 ms-6 relative before:absolute before:left-[-1.5rem] before:top-[0.1rem] before:w-px before:h-full before:bg-gray-300 first:before:top-[1.2rem] last:before:h-[1.2rem]">
-    <span className="absolute flex items-center justify-center w-8 h-8 bg-blue-100 rounded-full -start-[2.6rem] ring-4 ring-white">
-      <Icon className="w-4 h-4 text-blue-700" />
-    </span>
-    <h3 className="flex items-center mb-1 text-lg font-semibold text-blue-900">
-      {title} {institution && <span className="bg-blue-100 text-blue-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded ms-3">{institution}</span>}
-    </h3>
-    {description && <p className="text-sm font-normal text-gray-600">{description}</p>}
-    {children}
-  </li>
-);
-
 // Helper component for animated sections
 const AnimatedSection = ({ children, delay = 0 }: { children: React.ReactNode, delay?: number }) => {
     const ref = useRef<HTMLDivElement>(null);
@@ -117,6 +103,7 @@ export function About() {
         {/* Section 2: Educational Qualifications Table */}
         <AnimatedSection delay={100}>
             <h3 className="text-2xl font-semibold text-blue-900 mb-4">Educational Qualifications</h3>
+             {/* Added overflow-x-auto for mobile responsiveness */}
              <div className="overflow-x-auto bg-white rounded-lg shadow-md border border-gray-200">
                 <table className="w-full text-sm text-left text-gray-700">
                     <thead className="text-xs text-gray-500 uppercase bg-blue-50">
@@ -134,13 +121,7 @@ export function About() {
                                 <td className="px-6 py-3 text-right">{getYear(edu.completed)}</td>
                             </tr>
                         ))}
-                         {/* Manually add UCC specific info from old timeline */}
-                        <tr className="bg-blue-50 border-b border-gray-100 last:border-b-0">
-                             <td className="px-6 py-3 font-medium text-gray-900">University of Cape Coast</td>
-                             <td className="px-6 py-3 italic text-blue-800" colSpan={2}> {/* Spanning 2 columns for emphasis */}
-                                <Star className="w-3 h-3 inline mr-1 text-amber-500" /> Served as <span className="font-semibold">JCRC President</span> of Casely Hayford Hall (Casford)
-                            </td>
-                        </tr>
+                         {/* JCRC President row REMOVED */}
                     </tbody>
                 </table>
              </div>
@@ -149,6 +130,7 @@ export function About() {
         {/* Section 3: Employment History Table */}
          <AnimatedSection delay={200}>
             <h3 className="text-2xl font-semibold text-blue-900 mb-4">Employment History</h3>
+             {/* Added overflow-x-auto for mobile responsiveness */}
              <div className="overflow-x-auto bg-white rounded-lg shadow-md border border-gray-200">
                 <table className="w-full text-sm text-left text-gray-700">
                     <thead className="text-xs text-gray-500 uppercase bg-blue-50">
@@ -180,7 +162,6 @@ export function About() {
             </p>
             {/* Combined Info Blocks and Table */}
             <div className="space-y-6">
-                {/* MP Info Blocks - Now a Grid */}
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
                     {/* Elected MP */}
@@ -193,26 +174,29 @@ export function About() {
                     </div>
 
                     {/* Election Results Table - Positioned after Elected MP */}
-                     <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm row-start-2 md:row-start-auto md:col-start-2"> {/* Positioning */}
+                     <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm row-start-2 md:row-start-auto md:col-start-2">
                          <div className="flex items-center mb-3">
                             <BarChart3 className="w-6 h-6 text-blue-700 mr-3 flex-shrink-0"/>
                             <h4 className="font-semibold text-blue-900">Election Results</h4>
                          </div>
+                         {/* Added overflow-x-auto for mobile responsiveness */}
                         <div className="overflow-x-auto">
                             <table className="w-full text-sm text-left text-gray-700">
                                 <thead className="text-xs text-gray-500 uppercase border-b border-gray-200">
                                     <tr>
-                                        <th scope="col" className="px-4 py-2">Year</th>
-                                        <th scope="col" className="px-4 py-2">Votes (NDC)</th>
-                                        <th scope="col" className="px-4 py-2">Margin</th>
+                                        {/* Reduced padding, simplified header */}
+                                        <th scope="col" className="px-3 py-2">Year</th>
+                                        <th scope="col" className="px-3 py-2">Votes (NDC %)</th>
+                                        <th scope="col" className="px-3 py-2">Margin</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {electionResults.map((result) => (
                                         <tr key={result.year} className="border-b border-gray-100 last:border-b-0 hover:bg-gray-50">
-                                            <th scope="row" className="px-4 py-3 font-medium text-gray-900">{result.year}</th>
-                                            <td className="px-4 py-3 font-semibold text-green-700">{result.nyarkuVotes} ({result.nyarkuPercent})</td>
-                                            <td className="px-4 py-3 font-medium text-blue-800">{result.margin}</td>
+                                            {/* Reduced padding */}
+                                            <th scope="row" className="px-3 py-3 font-medium text-gray-900">{result.year}</th>
+                                            <td className="px-3 py-3 font-semibold text-green-700">{result.nyarkuVotes} ({result.nyarkuPercent})</td>
+                                            <td className="px-3 py-3 font-medium text-blue-800">{result.margin}</td>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -221,7 +205,7 @@ export function About() {
                      </div>
 
                     {/* Party Affiliation */}
-                     <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-start shadow-sm row-start-3 md:row-start-auto md:col-start-1"> {/* Positioning */}
+                     <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-start shadow-sm row-start-3 md:row-start-auto md:col-start-1">
                         <Users className="w-6 h-6 text-blue-700 mr-3 mt-1 flex-shrink-0"/>
                         <div>
                             <h4 className="font-semibold text-blue-900">Party Affiliation</h4>
@@ -230,7 +214,7 @@ export function About() {
                     </div>
 
                     {/* Parliamentary Committees - Now with Bullets */}
-                    <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-start shadow-sm md:col-span-2 row-start-4 md:row-start-auto"> {/* Positioning */}
+                    <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-start shadow-sm md:col-span-2 row-start-4 md:row-start-auto">
                         <Landmark className="w-6 h-6 text-blue-700 mr-3 mt-1 flex-shrink-0"/>
                          <div>
                             <h4 className="font-semibold text-blue-900 mb-1">Parliamentary Committees</h4>

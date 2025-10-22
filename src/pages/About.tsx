@@ -100,7 +100,7 @@ export function About() {
           className="absolute inset-0 w-full h-full object-cover object-center"
         />
         {/* Updated Dark Green Gradient Overlay: Fades to transparent by the middle */}
-        <div className="absolute inset-0 bg-gradient-to-t from-green-1900 via-transparent to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-green-900 via-transparent to-transparent"></div>
       </section>
 
 

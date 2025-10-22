@@ -250,4 +250,4 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       `}</style>
     </div>
   );
-}
+} 

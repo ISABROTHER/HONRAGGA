@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { School, Briefcase, Award, Landmark, CheckSquare, Users, Star, Eye, BarChart3 } from 'lucide-react'; // Added BarChart3 for table icon
+import { School, Briefcase, Award, Landmark, CheckSquare, Users, Star, Eye, BarChart3, GraduationCap } from 'lucide-react'; // Added BarChart3, GraduationCap
 
 // Helper component for timeline items
 const TimelineItem = ({ icon: Icon, title, institution, description }: { icon: React.ElementType, title: string, institution?: string, description: string }) => (
@@ -67,6 +67,23 @@ export function About() {
     }
   ];
 
+  // Educational Qualifications Data
+  const educationData = [
+      { institution: "University of Ghana Business School", qualification: "PhD", completed: "07-2019" },
+      { institution: "University of Leicester, UK", qualification: "MBA", completed: "09-2003" },
+      { institution: "University of Cape Coast", qualification: "Bachelor of Education", completed: "06-2000" },
+      { institution: "Worker College", qualification: "A Level", completed: "09-1996" },
+      { institution: "Komenda Training College", qualification: "Teacher Certificate A", completed: "06-1995" },
+      { institution: "Adisadel College", qualification: "GCE O Level", completed: "09-1992" },
+  ];
+
+  // Helper to format date string (MM-YYYY or YYYY) -> Year
+  const getYear = (dateStr: string) => {
+      if (!dateStr) return 'N/A';
+      const parts = dateStr.split('-');
+      return parts.length > 1 ? parts[1] : dateStr; // Assumes YYYY or MM-YYYY
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section - Just an image */}
@@ -82,132 +99,29 @@ export function About() {
       {/* Main Content Sections */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20 space-y-16">
 
-        {/* Section 1: Roots & Education */}
+        {/* Section 1: Roots & Educational Journey */}
         <AnimatedSection>
           <h2 className="text-3xl font-bold text-green-800 mb-6 border-b-2 border-amber-500 pb-2 inline-block">Roots & Educational Journey</h2>
           <p className="text-gray-700 mb-8 leading-relaxed">
             My story begins in Apewosika, a quiet community in Cape Coast, where family, faith and community taught me humility, perseverance and purpose. From a young age, I came to see education not only as a way to grow personally but as a means to lift others and build stronger communities. That belief has guided my journey.
           </p>
-          <ol className="relative border-s border-gray-300 ms-4">
-              <TimelineItem icon={School} title="Adisadel College" description="Studied Business." />
-              <TimelineItem icon={School} title="Komenda Training College" description="Teacher Training." />
-              <TimelineItem icon={Award} title="University of Cape Coast (UCC)" description="Graduated. Served as JCRC President of Casely Hayford Hall (Casford), shaping my understanding of leadership and service." />
-              <TimelineItem icon={School} title="University of Ghana Business School" description="Earned an MBA in Marketing." />
-              <TimelineItem icon={School} title="University of Leicester, UK" description="Earned a PhD in Marketing. Every lecture reminded me that the future I spoke about in class depended on the people outside it." />
-          </ol>
+          {/* Timeline Replaced by Table Below */}
         </AnimatedSection>
 
-        {/* Section 2: Professional Path */}
-        <AnimatedSection delay={150}>
-            <h2 className="text-3xl font-bold text-green-800 mb-6 border-b-2 border-amber-500 pb-2 inline-block">Path to Parliament</h2>
-            <p className="text-gray-700 mb-6 leading-relaxed">
-                I saw the effort of traders, farmers and young people trying to make things work. That connection made me step out and serve in a bigger way. Before entering politics, I worked as a Senior Lecturer at the University of Cape Coast, teaching Marketing and Supply Chain Management. Those years allowed me to mentor students and see how ideas connect with the realities of Ghana’s markets, classrooms and communities.
-            </p>
-        </AnimatedSection>
-
-        {/* Section 3: Parliamentary Role & Election Results */}
-        <AnimatedSection delay={300}>
-            <h2 className="text-3xl font-bold text-green-800 mb-6 border-b-2 border-amber-500 pb-2 inline-block">Service in Parliament</h2>
-            <p className="text-gray-700 mb-8 leading-relaxed">
-                In 2020, the people of Cape Coast North elected me as their Member of Parliament on the ticket of the National Democratic Congress (NDC), and in 2024 they renewed that trust. In Parliament, I serve on the Defence and Interior, Environment, Science and Technology, and Ways and Means Committees. My focus has always been on what changes lives most: quality education, good roads, reliable healthcare, clean surroundings and opportunities for the youth.
-            </p>
-            {/* Combined Info Blocks and Table */}
-            <div className="space-y-6"> {/* Use space-y for consistent spacing */}
-                {/* MP Info Blocks */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-center shadow-sm">
-                        <CheckSquare className="w-6 h-6 text-blue-700 mr-3 flex-shrink-0"/>
-                        <div>
-                            <h4 className="font-semibold text-blue-900">Elected MP</h4>
-                            <p className="text-sm text-gray-600">Cape Coast North (2020, Re-elected 2024)</p>
-                        </div>
-                    </div>
-                     <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-center shadow-sm">
-                        <Users className="w-6 h-6 text-blue-700 mr-3 flex-shrink-0"/>
-                        <div>
-                            <h4 className="font-semibold text-blue-900">Party Affiliation</h4>
-                            <p className="text-sm text-gray-600">National Democratic Congress (NDC)</p>
-                        </div>
-                    </div>
-                    <div className="bg-white p-4 rounded-lg border border-gray-200 sm:col-span-2 flex items-center shadow-sm">
-                        <Landmark className="w-6 h-6 text-blue-700 mr-3 flex-shrink-0"/>
-                         <div>
-                            <h4 className="font-semibold text-blue-900">Parliamentary Committees</h4>
-                            <p className="text-sm text-gray-600">Defence & Interior; Environment, Science & Technology; Ways & Means</p>
-                        </div>
-                    </div>
-                </div>
-
-                 {/* Election Results Table - Styled as a card */}
-                 <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
-                     <div className="flex items-center mb-3"> {/* Title section */}
-                        <BarChart3 className="w-6 h-6 text-blue-700 mr-3 flex-shrink-0"/>
-                        <h4 className="font-semibold text-blue-900">Election Results (Cape Coast North)</h4>
-                     </div>
-                    <div className="overflow-x-auto">
-                        <table className="w-full text-sm text-left text-gray-700">
-                            {/* Adjusted thead styling */}
-                            <thead className="text-xs text-gray-500 uppercase border-b border-gray-200">
-                                <tr>
-                                    <th scope="col" className="px-4 py-2">Year</th>
-                                    <th scope="col" className="px-4 py-2">Dr. Nyarku (NDC) Votes</th>
-                                    <th scope="col" className="px-4 py-2">NDC %</th>
-                                    <th scope="col" className="px-4 py-2">Opponent (NPP) Votes</th>
-                                    <th scope="col" className="px-4 py-2">NPP %</th>
-                                    <th scope="col" className="px-4 py-2">Margin</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {electionResults.map((result) => (
-                                    // Adjusted tbody styling
-                                    <tr key={result.year} className="border-b border-gray-100 last:border-b-0 hover:bg-gray-50">
-                                        <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap">{result.year}</th>
-                                        <td className="px-4 py-3 font-semibold text-green-700">{result.nyarkuVotes}</td>
-                                        <td className="px-4 py-3 font-semibold text-green-700">{result.nyarkuPercent}</td>
-                                        <td className="px-4 py-3">{result.opponentVotes}</td>
-                                        <td className="px-4 py-3">{result.opponentPercent}</td>
-                                        <td className="px-4 py-3 font-medium text-blue-800">{result.margin}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                 </div>
-             </div>
-        </AnimatedSection>
-
-        {/* Section 4: Vision */}
-        <AnimatedSection delay={450}>
-            <h2 className="text-3xl font-bold text-green-800 mb-6 border-b-2 border-amber-500 pb-2 inline-block">My Vision</h2>
-            <blockquote className="relative p-6 bg-gradient-to-r from-blue-50 to-white border-l-4 border-amber-500 italic rounded-r-lg shadow-sm">
-                <Eye className="absolute top-4 right-4 w-8 h-8 text-amber-300 opacity-50" />
-                <p className="text-lg text-gray-700 leading-relaxed mb-4">
-                    "For me, leadership is not about titles or recognition. It is about what endures after one’s service, the systems, opportunities and hope that remain."
-                </p>
-                <p className="text-lg text-gray-700 leading-relaxed">
-                    "My vision is to help build a Cape Coast North where fairness, opportunity and respect are shared by all, where everyone feels they belong and every young person knows their dream matters."
-                </p>
-                 <footer className="mt-4 text-md font-semibold text-blue-800">
-                    — Hon. Dr. Kwamena Minta Nyarku (Ragga)
-                </footer>
-            </blockquote>
-        </AnimatedSection>
-
-      </div>
-       {/* CSS for animations */}
-      <style>{`
-        .animate-section-enter {
-          opacity: 1;
-          transform: translateY(0);
-        }
-        .animate-fade-in {
-            animation: fadeIn 1s ease-out forwards;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-      `}</style>
-    </div>
-  );
-}
+        {/* Section 1.5: Educational Qualifications Table */}
+        <AnimatedSection delay={100}>
+            <h3 className="text-2xl font-semibold text-blue-900 mb-4">Educational Qualifications</h3>
+             <div className="overflow-x-auto bg-white rounded-lg shadow-md border border-gray-200">
+                <table className="w-full text-sm text-left text-gray-700">
+                    <thead className="text-xs text-gray-500 uppercase bg-blue-50">
+                        <tr>
+                            <th scope="col" className="px-6 py-3">Institution</th>
+                            <th scope="col" className="px-6 py-3">Qualification</th>
+                            <th scope="col" className="px-6 py-3 text-right">Year Completed</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {educationData.map((edu) => (
+                            <tr key={edu.institution} className="bg-white border-b border-gray-100 last:border-b-0 hover:bg-gray-50">
+                                <td className="px-6 py-3 font-medium text-gray-900">{edu.institution}</td>
+                                <td className="px-6 py-3">{edu.

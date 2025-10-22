@@ -274,7 +274,7 @@ export function About() {
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
-        }
+        } 
       `}</style>
     </div>
   );

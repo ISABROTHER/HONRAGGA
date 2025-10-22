@@ -55,7 +55,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
   }, []);
 
 
-  // Array containing the main policy themes
+  // Array containing the main policy themes (keyInitiatives array removed)
   const themes: PolicyTheme[] = [
     {
       id: 'education',
@@ -181,7 +181,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
                   <div className="p-6 flex flex-col">
                     {/* Top section: Title and Description */}
                     <div className="mb-4">
-                        {/* Heading: Underline effect REMOVED */}
+                        {/* Heading: Icon and underline effect REMOVED */}
                         <h2 className="text-xl sm:text-2xl font-bold text-green-800 whitespace-nowrap overflow-hidden text-ellipsis mb-2">
                           {theme.title}
                         </h2>
@@ -200,9 +200,8 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
                             {theme.initiativeCount === 1 ? 'Initiative Area Listed' : 'Initiative Areas Listed'}
                         </p>
 
-                        {/* Call to Action: Right Aligned with underline effect */}
-                        <span className="relative inline-flex items-center text-sm font-semibold text-amber-700 pb-0.5 /* Added padding for underline space */
-                                       after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-amber-600 after:w-0 group-hover:after:w-full after:transition-all after:duration-300 after:ease-out">
+                        {/* Call to Action: Right Aligned - Underline effect REMOVED */}
+                        <span className="inline-flex items-center text-sm font-semibold text-amber-700 group-hover:underline"> {/* Removed relative, pb-0.5, after:* classes */}
                           View Details
                           <ChevronRight className="ml-1 w-4 h-4 transition-transform group-hover:translate-x-1" />
                         </span>

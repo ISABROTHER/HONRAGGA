@@ -77,7 +77,8 @@ export function About() {
 
    // Employment Data
    const employmentData = [
-       { institution: "University of Cape Coast", position: "Senior Lecturer" }
+       { institution: "University of Cape Coast", position: "Senior Lecturer" },
+       { institution: "GOIL PLC (Ghana Oil Company)", position: "Board Member" }
    ];
 
 

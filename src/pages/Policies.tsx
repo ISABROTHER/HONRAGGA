@@ -135,18 +135,20 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
     },
   ];
 
-  const headerImageUrl = "https://i.imgur.com/2BmP7xu.jpeg"; // New image URL
+  const headerImageUrl = "https://i.imgur.com/2BmP7xu.jpeg"; // Image URL
 
   return (
     <div className="min-h-screen bg-gray-100">
 
-      {/* Section Header - Image */}
+      {/* Section Header - Image with Gradient */}
       <section className="relative w-full overflow-hidden">
         <img
           src={headerImageUrl}
           alt="Our Key Development Priorities Banner"
           className="w-full h-auto object-cover object-center"
         />
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-40"></div> {/* Adjust opacity as needed */}
       </section>
 
       {/* Priorities Grid Section */}

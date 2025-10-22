@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'; // Import hooks for animation
-import { BookOpen, Heart, Users, Building, Wheat, Handshake, Leaf /* Removed Leaf */, Landmark, ChevronRight } from 'lucide-react';
+import { BookOpen, Heart, Users, Building, Wheat, Handshake, Landmark, ChevronRight } from 'lucide-react';
 
 // Define the structure for each *main* policy theme
 interface PolicyTheme {
@@ -15,7 +15,6 @@ interface PoliciesProps {
   onSelectTheme: (themeId: string) => void;
 }
 
-// **** MAKE SURE "export" is here ****
 export function Policies({ onSelectTheme }: PoliciesProps) {
   // Ref for the grid container to observe its children
   const gridRef = useRef<HTMLDivElement>(null);
@@ -136,7 +135,8 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
     },
   ];
 
-  const headerImageUrl = "https://i.imgur.com/2BmP7xu.jpeg"; // Image URL
+  // Updated header image URL
+  const headerImageUrl = "https://i.imgur.com/4s5NO8D.png";
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -146,7 +146,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
         <img
           src={headerImageUrl}
           alt="Our Key Development Priorities Banner"
-          className="w-full h-auto object-cover object-center"
+          className="w-full h-auto object-cover object-center" // Removed max height constraint if any
         />
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-40"></div>

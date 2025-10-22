@@ -1,17 +1,12 @@
-import { BookOpen, Heart, Users, Building, Wheat, Handshake, Leaf, Landmark, ChevronRight } from 'lucide-react';
+import { BookOpen, Heart, Users, Building, Wheat, Handshake, Leaf, Landmark } from 'lucide-react';
 
 // Define the structure for each *main* policy theme
 interface PolicyTheme {
   id: string; // Unique identifier (used for navigation)
   icon: React.ElementType;
   title: string;
-  shortDescription: string;
-  colorTheme: { // Colors for styling the card
-    bg: string; // e.g., 'bg-red-100'
-    iconBg: string; // e.g., 'bg-red-600'
-    text: string; // e.g., 'text-red-800'
-    hoverBorder: string; // e.g., 'hover:border-red-500'
-  }
+  shortDescription: string; // Keep short description for potential future use or screen readers
+  imageComponent: React.ReactNode; // Holds either a div with color or an img tag
 }
 
 // Props interface including the navigation function from App.tsx
@@ -21,105 +16,143 @@ interface PoliciesProps {
 
 export function Policies({ onSelectTheme }: PoliciesProps) {
 
-  // Array containing the main policy themes
+  // Array containing the main policy themes with their image components
   const themes: PolicyTheme[] = [
     {
       id: 'education',
       icon: BookOpen,
       title: 'Education & Youth Empowerment',
-      shortDescription: 'Investing in our students and future leaders.',
-      colorTheme: { bg: 'bg-red-50', iconBg: 'bg-red-500', text: 'text-red-800', hoverBorder: 'hover:border-red-400' }
+      shortDescription: 'Supporting quality education, digital literacy, and youth skills training.',
+      imageComponent: (
+        <div className="w-full relative overflow-hidden" style={{ aspectRatio: '820 / 360' }}>
+          <img src="https://i.imgur.com/Ozjnrli.jpeg" alt="Education & Youth Empowerment" className="absolute inset-0 w-full h-full object-cover"/>
+        </div>
+      ),
+    },
+    {
+      id: 'health',
+      icon: Heart,
+      title: 'Health & Sanitation',
+      shortDescription: 'Expanding access to healthcare and clean water for all.',
+      imageComponent: (
+        <div className="w-full h-48 sm:h-64 bg-yellow-200 flex items-center justify-center" style={{ aspectRatio: '820 / 360' }}>
+          <Heart className="w-16 h-16 text-gray-400 opacity-50" />
+        </div>
+      ),
+    },
+    {
+      id: 'entrepreneurship', // Changed from employment for consistency
+      icon: Users,
+      title: 'Employment & Entrepreneurship',
+      shortDescription: 'Creating jobs and empowering local businesses.',
+      imageComponent: (
+        <div className="w-full h-48 sm:h-64 bg-green-200 flex items-center justify-center" style={{ aspectRatio: '820 / 360' }}>
+          <Users className="w-16 h-16 text-gray-400 opacity-50" />
+        </div>
+      ),
     },
     {
       id: 'infrastructure',
       icon: Building,
       title: 'Infrastructure Development',
-      shortDescription: 'Building roads, connectivity, and essential facilities.',
-      colorTheme: { bg: 'bg-yellow-50', iconBg: 'bg-yellow-500', text: 'text-yellow-800', hoverBorder: 'hover:border-yellow-400' }
+      shortDescription: 'Improving roads, electrification, and connectivity.',
+      imageComponent: (
+        <div className="w-full relative overflow-hidden" style={{ aspectRatio: '820 / 360' }}>
+          <img src="https://i.imgur.com/AZqDymE.jpeg" alt="Infrastructure Development" className="absolute inset-0 w-full h-full object-cover"/>
+        </div>
+      ),
     },
-     {
-      id: 'health',
-      icon: Heart,
-      title: 'Health & Sanitation',
-      shortDescription: 'Ensuring access to healthcare and clean environments.',
-      colorTheme: { bg: 'bg-green-50', iconBg: 'bg-green-500', text: 'text-green-800', hoverBorder: 'hover:border-green-400' }
-    },
-     {
-      id: 'entrepreneurship',
-      icon: Users, // Consider Briefcase or similar if more appropriate
-      title: 'Entrepreneurship & Economic Development',
-      shortDescription: 'Creating jobs and supporting local businesses.',
-      colorTheme: { bg: 'bg-blue-50', iconBg: 'bg-blue-500', text: 'text-blue-800', hoverBorder: 'hover:border-blue-400' }
-    },
-     {
-      id: 'community',
-      icon: Handshake, // Changed from Users for better distinction
-      title: 'Community Engagement & Social Support',
-      shortDescription: 'Fostering welfare, cohesion, and empowerment.',
-      colorTheme: { bg: 'bg-purple-50', iconBg: 'bg-purple-500', text: 'text-purple-800', hoverBorder: 'hover:border-purple-400' }
-    },
-     {
-      id: 'planning',
-      icon: Landmark, // Changed from Wheat for better fit
-      title: 'Strategic Planning & Vision',
-      shortDescription: 'Guiding the long-term development of Cape Coast North.',
-      colorTheme: { bg: 'bg-indigo-50', iconBg: 'bg-indigo-500', text: 'text-indigo-800', hoverBorder: 'hover:border-indigo-400' }
-    },
-    // Adding back Agriculture and Environment placeholders based on the earlier structure
     {
       id: 'agriculture', // Added ID
       icon: Wheat,
       title: 'Agriculture & Rural Growth',
-      shortDescription: 'Supporting farmers and boosting rural economies.', // Added short description
-      colorTheme: { bg: 'bg-lime-50', iconBg: 'bg-lime-500', text: 'text-lime-800', hoverBorder: 'hover:border-lime-400' } // Added color theme
+      shortDescription: 'Supporting farmers with tools, training, and market access.',
+      imageComponent: (
+         <div className="w-full relative overflow-hidden" style={{ aspectRatio: '820 / 360' }}>
+          <img src="https://i.imgur.com/TZ4jIJA.jpeg" alt="Agriculture & Rural Growth" className="absolute inset-0 w-full h-full object-cover"/>
+        </div>
+      ),
+    },
+     {
+      id: 'community', // Added ID (matching App.tsx)
+      icon: Handshake,
+      title: 'Social Welfare & Gender Equity', // Title from previous version
+      shortDescription: 'Empowering women, youth, and vulnerable groups.', // Description from previous version
+      imageComponent: (
+        <div className="w-full h-48 sm:h-64 bg-green-200 flex items-center justify-center" style={{ aspectRatio: '820 / 360' }}>
+           <Handshake className="w-16 h-16 text-gray-400 opacity-50" />
+        </div>
+      ),
     },
     {
       id: 'environment', // Added ID
       icon: Leaf,
       title: 'Environment & Climate Action',
-      shortDescription: 'Protecting our natural heritage for future generations.', // Added short description
-      colorTheme: { bg: 'bg-teal-50', iconBg: 'bg-teal-500', text: 'text-teal-800', hoverBorder: 'hover:border-teal-400' } // Added color theme
+      shortDescription: 'Protecting our land, water, and natural heritage.',
+      imageComponent: (
+        <div className="w-full h-48 sm:h-64 bg-red-200 flex items-center justify-center" style={{ aspectRatio: '820 / 360' }}>
+          <Leaf className="w-16 h-16 text-gray-400 opacity-50" />
+        </div>
+      ),
+    },
+     {
+      id: 'planning', // Added ID (matching App.tsx)
+      icon: Landmark,
+      title: 'Good Governance & Civic Engagement', // Title from previous version
+      shortDescription: 'Promoting transparency, accountability, and participation.', // Description from previous version
+      imageComponent: (
+         <div className="w-full relative overflow-hidden" style={{ aspectRatio: '820 / 360' }}>
+           <img src="https://i.imgur.com/NSWtjdU.jpeg" alt="Good Governance & Civic Engagement" className="absolute inset-0 w-full h-full object-cover"/>
+         </div>
+      ),
     },
   ];
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Section Header - Remains similar */}
+      {/* Section Header */}
       <section className="bg-gradient-to-r from-green-600 via-yellow-500 to-red-600 text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Our Key Development Priorities</h1>
           <p className="text-lg md:text-xl text-white/90 max-w-3xl mx-auto">
-            Click on a priority area to learn more about our initiatives and achievements.
+             Click on a priority area to learn more about our initiatives and achievements.
           </p>
         </div>
       </section>
 
-      {/* Main Themes Grid Section */}
+      {/* Priorities Grid Section - Now using clickable cards with image/placeholder on top */}
       <section className="py-16 sm:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Updated grid layout */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {/* Using the 2-column layout from the image placeholder version */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 md:gap-12">
             {themes.map((theme) => {
               const Icon = theme.icon;
               return (
+                // Use a button for click functionality, styled like the card
                 <button
                   key={theme.id}
-                  onClick={() => onSelectTheme(theme.id)} // Call navigation function on click
-                  className={`group block p-6 rounded-xl border-2 border-transparent transition-all duration-300 text-left ${theme.colorTheme.bg} ${theme.colorTheme.hoverBorder} hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500`}
+                  onClick={() => onSelectTheme(theme.id)}
+                  className="group bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-shadow duration-300 text-left"
                 >
-                  <div className="flex items-start space-x-4">
-                     <div className={`flex-shrink-0 w-12 h-12 rounded-lg ${theme.colorTheme.iconBg} flex items-center justify-center transition-transform duration-300 group-hover:scale-110`}>
-                       <Icon className="w-6 h-6 text-white" />
-                     </div>
-                     <div className="flex-1">
-                       <h2 className={`text-lg font-semibold ${theme.colorTheme.text} mb-1`}>
-                         {theme.title}
-                       </h2>
-                       <p className="text-sm text-gray-600 leading-relaxed">
-                         {theme.shortDescription}
-                       </p>
-                     </div>
-                     <ChevronRight className={`w-5 h-5 ${theme.colorTheme.text} opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-transform duration-300`} />
+                  {/* Image/Placeholder Component */}
+                  {theme.imageComponent}
+
+                  {/* Content Area */}
+                  <div className="p-6">
+                    <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-2 flex items-center">
+                      {/* Using theme-specific icon color might be complex here, sticking to green */}
+                      <Icon className="w-5 h-5 mr-2 text-green-700 flex-shrink-0" />
+                      {theme.title}
+                    </h2>
+                    {/* Reinstated the short description */}
+                    <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
+                      {theme.shortDescription}
+                    </p>
+                    {/* Optional: Add a subtle 'Learn More' indicator */}
+                    <span className="mt-3 inline-flex items-center text-sm font-medium text-green-700 group-hover:underline">
+                      Learn More
+                      <ChevronRight className="ml-1 w-4 h-4 transition-transform group-hover:translate-x-1" />
+                    </span>
                   </div>
                 </button>
               );
@@ -128,7 +161,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
         </div>
       </section>
 
-       {/* Optional Call to Action Section - Remains the same */}
+      {/* Optional Call to Action Section */}
       <section className="py-16 bg-white border-t border-gray-200">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl md:text-3xl font-semibold text-gray-800 mb-4">

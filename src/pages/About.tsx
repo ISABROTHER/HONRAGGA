@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { School, Briefcase, Award, Landmark, CheckSquare, Users, Star, Eye, BarChart3, GraduationCap, MapPin, User, Smile, Briefcase as DesignationIcon, Megaphone, Flag } from 'lucide-react';
+import { School, Briefcase, Award, Landmark, CheckSquare, Users, Star, Eye, BarChart3, GraduationCap, MapPin, User, Smile, Briefcase as DesignationIcon, Megaphone } from 'lucide-react';
 
 // Helper component for animated sections
 const AnimatedSection = ({ children, delay = 0 }: { children: React.ReactNode, delay?: number }) => {
@@ -75,10 +75,9 @@ export function About() {
       { institution: "Adisadel College", qualification: "GCE O Level", completed: "09-1992" },
   ];
 
-   // Employment Data - Added GOIL PLC
+   // Employment Data
    const employmentData = [
-       { institution: "University of Cape Coast", position: "Senior Lecturer" },
-       { institution: "GOIL PLC (Ghana Oil Company)", position: "Board Member" } // Added entry
+       { institution: "University of Cape Coast", position: "Senior Lecturer" }
    ];
 
 
@@ -108,17 +107,19 @@ export function About() {
         {/* Section 1: Profile Grid */}
         <AnimatedSection>
           <h2 className="text-3xl font-bold text-green-800 mb-6 border-b-2 border-amber-500 pb-2 inline-block">Profile</h2>
-          {/* Reordered items, removed Nickname and Nationality */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                 <ProfileItem icon={User} label="Full Name" value="Hon. Dr. Kwamena Minta Nyarku, PhD" />
+                <ProfileItem icon={Smile} label="Nickname" value="Ragga" />
                 <ProfileItem icon={DesignationIcon} label="Designation" value="MP for Cape Coast North" />
                 <ProfileItem icon={Megaphone} label="Slogan" value="Obiara Ka Ho (Everyone is involved)" />
                 <ProfileItem icon={MapPin} label="Place of Birth" value="Apewosika, Cape Coast" />
-                <ProfileItem icon={Flag} label="Nationality" value="Ghanaian" />
           </div>
+          <p className="text-gray-700 leading-relaxed">
+            My story begins in Apewosika, where family, faith and community taught me humility, perseverance and purpose. From a young age, I came to see education not only as a way to grow personally but as a means to lift others and build stronger communities. That belief has guided my journey.
+          </p>
         </AnimatedSection>
 
-        {/* Section 2: Educational Qualifications Table */}
+        {/* Section 2: Educational Qualifications Table - Updated Layout */}
         <AnimatedSection delay={100}>
             <h3 className="text-2xl font-semibold text-blue-900 mb-4">Educational Qualifications</h3>
              <div className="overflow-x-auto bg-white rounded-lg shadow-md border border-gray-200">
@@ -131,11 +132,14 @@ export function About() {
                     <tbody>
                         {educationData.map((edu, index) => (
                             <tr key={edu.institution} className={`${index % 2 === 0 ? 'bg-white' : 'bg-blue-50'} border-b border-gray-100 last:border-b-0 hover:bg-gray-50`}>
+                                {/* Updated TD structure */}
                                 <td className="px-6 py-3">
+                                    {/* Institution on its own line */}
                                     <span className="font-medium text-gray-900 block">{edu.institution}</span>
-                                    <div className="mt-1 text-gray-600">
-                                        <span className="mr-4">Qualification: <span className="font-medium">{edu.qualification}</span></span>
-                                        <span>Year: <span className="font-medium">{getYear(edu.completed)}</span></span>
+                                    {/* Qualification and Year on the next line */}
+                                    <div className="mt-1"> {/* Add small margin-top */}
+                                        <span className="text-gray-600 mr-4">Qualification: <span className="font-medium">{edu.qualification}</span></span>
+                                        <span className="text-gray-600">Year: <span className="font-medium">{getYear(edu.completed)}</span></span>
                                     </div>
                                 </td>
                             </tr>
@@ -157,7 +161,7 @@ export function About() {
                         </tr>
                     </thead>
                     <tbody>
-                        {employmentData.map((job, index) => ( // Added index for alternating colors
+                        {employmentData.map((job, index) => (
                             <tr key={job.institution} className={`${index % 2 === 0 ? 'bg-white' : 'bg-blue-50'} border-b border-gray-100 last:border-b-0 hover:bg-gray-50`}>
                                 <td className="px-6 py-3 font-medium text-gray-900">{job.institution}</td>
                                 <td className="px-6 py-3">{job.position}</td>
@@ -172,49 +176,48 @@ export function About() {
         <AnimatedSection delay={300}>
             <h2 className="text-3xl font-bold text-green-800 mb-6 border-b-2 border-amber-500 pb-2 inline-block">Service in Parliament</h2>
             <div className="space-y-6">
-                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                    {/* Elected MP */}
-                    <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-start shadow-sm">
-                        <CheckSquare className="w-6 h-6 text-blue-700 mr-3 mt-1 flex-shrink-0"/>
-                        <div>
-                            <h4 className="font-semibold text-blue-900 mb-1">Elected MP (Cape Coast North)</h4>
-                            <ul className="list-none space-y-1 mb-3">
-                                {electionResults.map(result => (
-                                    <li key={result.year} className="text-sm text-gray-600 flex items-center flex-wrap">
-                                         <span className="font-semibold text-gray-800 mr-2">{result.year}:</span>
-                                         <span className="text-green-700 font-medium mr-2">{result.nyarkuVotes} votes ({result.nyarkuPercent})</span>
-                                         <span className="text-blue-800">(Margin: {result.margin})</span>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    </div>
+                  {/* Elected MP - Updated with Election Results inline */}
+                  <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-start shadow-sm">
+                      <CheckSquare className="w-6 h-6 text-blue-700 mr-3 mt-1 flex-shrink-0"/>
+                      <div>
+                          <h4 className="font-semibold text-blue-900 mb-1">Elected MP (Cape Coast North)</h4>
+                          <ul className="list-none space-y-1 mb-3">
+                              {electionResults.map(result => (
+                                  <li key={result.year} className="text-sm text-gray-600 flex items-center flex-wrap">
+                                       <span className="font-semibold text-gray-800 mr-2">{result.year}:</span>
+                                       <span className="text-green-700 font-medium mr-2">{result.nyarkuVotes} votes ({result.nyarkuPercent})</span>
+                                       <span className="text-blue-800">(Margin: {result.margin})</span>
+                                  </li>
+                              ))}
+                          </ul>
+                      </div>
+                  </div>
 
-                    {/* Party Affiliation */}
-                     <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-start shadow-sm">
-                        <Users className="w-6 h-6 text-blue-700 mr-3 mt-1 flex-shrink-0"/>
-                        <div>
-                            <h4 className="font-semibold text-blue-900">Party Affiliation</h4>
-                            <p className="text-sm text-gray-600">National Democratic Congress (NDC)</p>
-                        </div>
-                    </div>
+                  {/* Party Affiliation */}
+                   <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-start shadow-sm">
+                      <Users className="w-6 h-6 text-blue-700 mr-3 mt-1 flex-shrink-0"/>
+                      <div>
+                          <h4 className="font-semibold text-blue-900">Party Affiliation</h4>
+                          <p className="text-sm text-gray-600">National Democratic Congress (NDC)</p>
+                      </div>
+                  </div>
 
-                    {/* Parliamentary Committees */}
-                    <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-start shadow-sm md:col-span-2">
-                        <Landmark className="w-6 h-6 text-blue-700 mr-3 mt-1 flex-shrink-0"/>
-                         <div>
-                            <h4 className="font-semibold text-blue-900 mb-2">Parliamentary Committees</h4>
-                             <div className="space-y-1.5">
-                                 <p className="text-sm text-gray-700">Member, Committee on Defence & Interior.</p>
-                                 <p className="text-sm text-gray-700">Member, Committee on Environment, Science & Technology.</p>
-                                 <p className="text-sm text-gray-700">Member, Committee on Ways & Means.</p>
-                                 <p className="text-sm text-gray-700">Vice-Chairman, Committee of Petitions.</p>
-                             </div>
-                        </div>
-                    </div>
+                  {/* Parliamentary Committees */}
+                  <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-start shadow-sm md:col-span-2">
+                      <Landmark className="w-6 h-6 text-blue-700 mr-3 mt-1 flex-shrink-0"/>
+                       <div>
+                          <h4 className="font-semibold text-blue-900 mb-1">Parliamentary Committees</h4>
+                          <ul className="list-disc list-inside space-y-1">
+                              <li className="text-sm text-gray-600">Defence & Interior - Member</li>
+                              <li className="text-sm text-gray-600">Environment, Science & Technology - Member</li>
+                              <li className="text-sm text-gray-600">Ways & Means - Member</li>
+                          </ul>
+                      </div>
+                  </div>
 
-                 </div>
+               </div>
              </div>
         </AnimatedSection>
 

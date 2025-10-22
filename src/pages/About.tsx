@@ -256,7 +256,7 @@ export function About() {
                 </footer>
             </blockquote>
         </AnimatedSection>
-
+ 
       </div>
        {/* CSS for animations */}
       <style>{`

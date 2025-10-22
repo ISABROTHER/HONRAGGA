@@ -15,12 +15,17 @@ export function Policies() {
       icon: BookOpen,
       title: 'Education & Youth Empowerment',
       description: 'Supporting quality education, digital literacy, and youth skills training.',
+      // Updated to use the provided image URL
       imageComponent: (
         <div
-          className="w-full h-48 sm:h-64 bg-red-200 flex items-center justify-center"
-          style={{ aspectRatio: '820 / 360' }}
+          className="w-full relative overflow-hidden"
+          style={{ aspectRatio: '820 / 360' }} // Maintain aspect ratio
         >
-          <BookOpen className="w-16 h-16 text-gray-400 opacity-50" />
+          <img
+            src="https://i.imgur.com/Zu4aGqF.jpeg" // Specific image URL for Education
+            alt="Education & Youth Empowerment" // Alt text for the image
+            className="absolute inset-0 w-full h-full object-cover"
+          />
         </div>
       ),
     },
@@ -67,6 +72,7 @@ export function Policies() {
       icon: Wheat,
       title: 'Agriculture & Rural Growth',
       description: 'Supporting farmers with tools, training, and market access.',
+      // Kept placeholder as the provided blob URL is invalid
       imageComponent: (
         <div
           className="w-full h-48 sm:h-64 bg-yellow-200 flex items-center justify-center"

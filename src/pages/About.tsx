@@ -121,26 +121,26 @@ export function About() {
           </p>
         </AnimatedSection>
 
-        {/* Section 2: Educational Qualifications Table - Reverted to Table with Inline Labels */}
+        {/* Section 2: Educational Qualifications Table - Updated Layout */}
         <AnimatedSection delay={100}>
             <h3 className="text-2xl font-semibold text-blue-900 mb-4">Educational Qualifications</h3>
-             {/* Using overflow-x-auto for mobile responsiveness */}
              <div className="overflow-x-auto bg-white rounded-lg shadow-md border border-gray-200">
                 <table className="w-full text-sm text-left text-gray-700">
-                    <thead className="text-xs text-gray-500 uppercase bg-blue-50">
+                    <thead className="text-xs text-gray-500 uppercase bg-blue-100">
                         <tr>
-                            {/* Simplified header */}
-                            <th scope="col" className="px-6 py-3">Institution & Qualification</th>
+                            {/* Adjusted Header */}
+                            <th scope="col" className="px-6 py-3">Institution & Details</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {educationData.map((edu) => (
-                            <tr key={edu.institution} className="bg-white border-b border-gray-100 last:border-b-0 hover:bg-gray-50">
-                                {/* Combined data into one cell */}
-                                <td className="px-6 py-3">
-                                    <span className="font-medium text-gray-900 block sm:inline">{edu.institution}</span>
-                                    <span className="block sm:inline sm:ml-4 text-gray-600">Qualification: <span className="font-medium">{edu.qualification}</span></span>
-                                    <span className="block sm:inline sm:ml-4 text-gray-600">Year: <span className="font-medium">{getYear(edu.completed)}</span></span>
+                        {educationData.map((edu, index) => (
+                            <tr key={edu.institution} className={`${index % 2 === 0 ? 'bg-white' : 'bg-blue-50'} border-b border-gray-100 last:border-b-0 hover:bg-gray-50`}>
+                                {/* Combined data into one cell with spans for inline layout */}
+                                <td className="px-6 py-3 whitespace-nowrap"> {/* Added whitespace-nowrap */}
+                                    <span className="font-medium text-gray-900 mr-4">{edu.institution}</span> {/* Added margin */}
+                                    {/* Spans will stack on small screens if needed, but table scrolls */}
+                                    <span className="text-gray-600 mr-4">Qualification: <span className="font-medium">{edu.qualification}</span></span>
+                                    <span className="text-gray-600">Year: <span className="font-medium">{getYear(edu.completed)}</span></span>
                                 </td>
                             </tr>
                         ))}
@@ -154,15 +154,15 @@ export function About() {
             <h3 className="text-2xl font-semibold text-blue-900 mb-4">Employment History</h3>
              <div className="overflow-x-auto bg-white rounded-lg shadow-md border border-gray-200">
                 <table className="w-full text-sm text-left text-gray-700">
-                    <thead className="text-xs text-gray-500 uppercase bg-blue-50">
+                    <thead className="text-xs text-gray-500 uppercase bg-blue-100">
                         <tr>
                             <th scope="col" className="px-6 py-3">Institution</th>
                             <th scope="col" className="px-6 py-3">Position</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {employmentData.map((job) => (
-                            <tr key={job.institution} className="bg-white border-b border-gray-100 last:border-b-0 hover:bg-gray-50">
+                        {employmentData.map((job, index) => (
+                            <tr key={job.institution} className={`${index % 2 === 0 ? 'bg-white' : 'bg-blue-50'} border-b border-gray-100 last:border-b-0 hover:bg-gray-50`}>
                                 <td className="px-6 py-3 font-medium text-gray-900">{job.institution}</td>
                                 <td className="px-6 py-3">{job.position}</td>
                             </tr>
@@ -206,8 +206,8 @@ export function About() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {electionResults.map((result) => (
-                                        <tr key={result.year} className="border-b border-gray-100 last:border-b-0 hover:bg-gray-50">
+                                    {electionResults.map((result, index) => (
+                                        <tr key={result.year} className={`${index % 2 === 0 ? 'bg-white' : 'bg-blue-50/50'} border-b border-gray-100 last:border-b-0 hover:bg-gray-50`}>
                                             <th scope="row" className="px-3 py-3 font-medium text-gray-900">{result.year}</th>
                                             <td className="px-3 py-3 font-semibold text-green-700">{result.nyarkuVotes} ({result.nyarkuPercent})</td>
                                             <td className="px-3 py-3 font-medium text-blue-800">{result.margin}</td>

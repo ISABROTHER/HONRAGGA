@@ -92,15 +92,25 @@ export function About() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Hero Section - Image with Updated Gradient */}
-      <section className="relative w-full h-auto min-h-[250px] md:min-h-[400px] lg:min-h-[500px] overflow-hidden">
+      {/* Hero Section - Image with Gradient and Text */}
+      <section className="relative w-full h-auto min-h-[250px] md:min-h-[400px] lg:min-h-[500px] overflow-hidden flex items-end">
         <img
           src={heroImageUrl}
           alt="Hon. Dr. Kwamena Minta Nyarku - About Me Banner"
           className="absolute inset-0 w-full h-full object-cover object-center"
         />
-        {/* Updated Dark Green Gradient Overlay: Fades to transparent by the middle */}
-        <div className="absolute inset-0 bg-gradient-to-t from-green-900 via-transparent to-transparent"></div>
+        {/* Dark Green Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-green-900 via-green-900/70 to-transparent"></div> {/* Adjusted via color for more depth */}
+
+        {/* Text Overlay */}
+        <div className="relative z-10 w-full text-center text-white pb-8 px-4"> {/* Padding at bottom for spacing */}
+            <h2 className="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-none mb-2 drop-shadow-lg [text-shadow:_0_3px_6px_rgb(0_0_0_/_70%)]">
+                KNOW YOUR MP
+            </h2>
+            <p className="text-2xl md:text-3xl lg:text-4xl font-semibold text-amber-300 drop-shadow-lg [text-shadow:_0_2px_4px_rgb(0_0_0_/_60%)]">
+                HON. DR. KWAMENA MINTA NYARKU
+            </p>
+        </div>
       </section>
 
 

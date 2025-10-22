@@ -137,14 +137,13 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
 
   // Original header image
   const headerImageUrl = "https://i.imgur.com/2BmP7xu.jpeg";
-  // Overlay image containing text elements
-  const overlayImageUrl = "https://i.imgur.com/4s5NO8D.png";
+  // Overlay image REMOVED
 
   return (
     <div className="min-h-screen bg-gray-100">
 
-      {/* Section Header - Base Image, Gradient, Overlay Background & Text */}
-      <section className="relative w-full overflow-hidden min-h-[250px] sm:min-h-[350px] flex items-end">
+      {/* Section Header - Base Image, Gradient, and Text */}
+      <section className="relative w-full overflow-hidden min-h-[250px] sm:min-h-[350px] flex items-end justify-center pb-12 sm:pb-16"> {/* Added padding-bottom */}
         {/* Base Image */}
         <img
           src={headerImageUrl}
@@ -152,19 +151,14 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
           className="absolute inset-0 w-full h-full object-cover object-center"
         />
         {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-70"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent opacity-80"></div> {/* Slightly stronger gradient */}
 
-        {/* Content Overlay Div with Background */}
-        <div
-            // Added translate-y-[30%] to shift the overlay down
-            className="relative z-10 w-full bg-cover bg-center py-10 sm:py-16 text-white text-center transform translate-y-[30%]"
-            style={{ backgroundImage: `url(${overlayImageUrl})` }}
-        >
-            {/* Text remains centered on top of the background */}
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight mb-2 drop-shadow-md">
+        {/* Text Overlay (No background image) */}
+        <div className="relative z-10 text-white text-center px-4">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight mb-2 drop-shadow-lg [text-shadow:_0_2px_4px_rgb(0_0_0_/_50%)]">
                 INITIATIVES
             </h1>
-            <p className="text-lg sm:text-xl md:text-2xl font-semibold text-amber-300 drop-shadow-sm">
+            <p className="text-lg sm:text-xl md:text-2xl font-semibold text-amber-300 drop-shadow-md [text-shadow:_0_1px_2px_rgb(0_0_0_/_40%)]">
                 BY RAGGA
             </p>
         </div>

@@ -229,7 +229,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
           >
             Contact Your MP
           </a>
-        </div>
+        </div> 
       </section>
 
       {/* CSS for the zoom animation */}

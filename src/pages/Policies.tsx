@@ -55,7 +55,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
   }, []);
 
 
-  // Array containing the main policy themes (Updated images for Health and Entrepreneurship)
+  // Array containing the main policy themes (Updated Social Welfare image)
   const themes: PolicyTheme[] = [
     {
       id: 'education',
@@ -72,7 +72,6 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       id: 'health',
       title: 'Health & Sanitation',
       shortDescription: 'Expanding access to healthcare and clean water for all.',
-      // Updated Health image
       imageComponent: (
         <div className="w-full relative overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
            <img src="https://i.imgur.com/XmWnKbH.jpeg" alt="Health & Sanitation" className="absolute inset-0 w-full h-full object-cover"/>
@@ -84,7 +83,6 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       id: 'entrepreneurship',
       title: 'Employment & Entrepreneurship',
       shortDescription: 'Creating jobs and empowering local businesses.',
-      // Updated Employment image
       imageComponent: (
         <div className="w-full relative overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
            <img src="https://i.imgur.com/saQoFLV.png" alt="Employment & Entrepreneurship" className="absolute inset-0 w-full h-full object-cover"/>
@@ -118,14 +116,15 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       id: 'community',
       title: 'Social Welfare & Gender Equity',
       shortDescription: 'Empowering women, youth, and vulnerable groups.',
+      // Updated Social Welfare image
       imageComponent: (
-        // Keeping placeholder for Social Welfare as no image was provided
-        <div className="w-full h-48 sm:h-64 bg-blue-100 flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
-            <img src="https://via.placeholder.com/820x360/EBF8FF/3182CE?text=Social+Welfare" alt="Social Welfare Placeholder" className="w-full h-full object-cover opacity-70"/>
+        <div className="w-full relative overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
+            <img src="https://i.imgur.com/1M0b8mq.jpeg" alt="Social Welfare & Gender Equity" className="absolute inset-0 w-full h-full object-cover"/>
         </div>
       ),
       initiativeCount: 3,
     },
+    // Environment theme is still removed
      {
       id: 'planning', // Corresponds to Governance
       title: 'Good Governance & Civic Engagement',

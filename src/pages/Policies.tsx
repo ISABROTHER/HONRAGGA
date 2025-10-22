@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'; // Import hooks for animation
-import { BookOpen, Heart, Users, Building, Wheat, Handshake, Landmark, ChevronRight } from 'lucide-react'; // Removed Leaf import
+import { BookOpen, Heart, Users, Building, Wheat, Handshake, Leaf, Landmark, ChevronRight } from 'lucide-react'; // Removed CheckCircle import
 
 // Define the structure for each *main* policy theme
 interface PolicyTheme {
@@ -55,7 +55,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
   }, []);
 
 
-  // Array containing the main policy themes (Environment theme removed)
+  // Array containing the main policy themes (Updated images for Health and Entrepreneurship)
   const themes: PolicyTheme[] = [
     {
       id: 'education',
@@ -72,9 +72,10 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       id: 'health',
       title: 'Health & Sanitation',
       shortDescription: 'Expanding access to healthcare and clean water for all.',
+      // Updated Health image
       imageComponent: (
-        <div className="w-full h-48 sm:h-64 bg-blue-100 flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
-           <img src="https://via.placeholder.com/820x360/EBF8FF/3182CE?text=Health+%26+Sanitation" alt="Health & Sanitation Placeholder" className="w-full h-full object-cover opacity-70"/>
+        <div className="w-full relative overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
+           <img src="https://i.imgur.com/XmWnKbH.jpeg" alt="Health & Sanitation" className="absolute inset-0 w-full h-full object-cover"/>
         </div>
       ),
       initiativeCount: 2,
@@ -83,9 +84,10 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       id: 'entrepreneurship',
       title: 'Employment & Entrepreneurship',
       shortDescription: 'Creating jobs and empowering local businesses.',
+      // Updated Employment image
       imageComponent: (
-        <div className="w-full h-48 sm:h-64 bg-blue-100 flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
-           <img src="https://via.placeholder.com/820x360/EBF8FF/3182CE?text=Employment+%26+Entrepreneurship" alt="Employment Placeholder" className="w-full h-full object-cover opacity-70"/>
+        <div className="w-full relative overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
+           <img src="https://i.imgur.com/saQoFLV.png" alt="Employment & Entrepreneurship" className="absolute inset-0 w-full h-full object-cover"/>
         </div>
       ),
       initiativeCount: 2,
@@ -117,23 +119,13 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       title: 'Social Welfare & Gender Equity',
       shortDescription: 'Empowering women, youth, and vulnerable groups.',
       imageComponent: (
+        // Keeping placeholder for Social Welfare as no image was provided
         <div className="w-full h-48 sm:h-64 bg-blue-100 flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
             <img src="https://via.placeholder.com/820x360/EBF8FF/3182CE?text=Social+Welfare" alt="Social Welfare Placeholder" className="w-full h-full object-cover opacity-70"/>
         </div>
       ),
       initiativeCount: 3,
     },
-    // { // Environment theme REMOVED
-    //   id: 'environment',
-    //   title: 'Environment & Climate Action',
-    //   shortDescription: 'Protecting our land, water, and natural heritage.',
-    //   imageComponent: (
-    //     <div className="w-full h-48 sm:h-64 bg-blue-100 flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
-    //         <img src="https://via.placeholder.com/820x360/EBF8FF/3182CE?text=Environment" alt="Environment Placeholder" className="w-full h-full object-cover opacity-70"/>
-    //     </div>
-    //   ),
-    //    initiativeCount: 1,
-    // },
      {
       id: 'planning', // Corresponds to Governance
       title: 'Good Governance & Civic Engagement',
@@ -215,23 +207,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
         </div>
       </section>
 
-      {/* Call to Action Section */}
-      <section className="py-16 bg-blue-50 border-t border-blue-100">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-2xl md:text-3xl font-semibold text-blue-900 mb-4">
-            Share Your Thoughts on These Priorities
-          </h2>
-          <p className="text-blue-800 mb-6">
-            Your feedback is valuable. Let us know how we can work together to achieve these goals.
-          </p>
-          <a
-            href="#" // Replace with actual contact link
-            className="inline-block px-6 py-3 bg-amber-600 text-white font-semibold rounded-lg shadow hover:bg-amber-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500"
-          >
-            Contact Your MP
-          </a>
-        </div>
-      </section>
+      {/* Call to Action Section REMOVED */}
 
       {/* CSS for the zoom animation */}
       <style>{`

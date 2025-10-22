@@ -111,7 +111,9 @@ export function About() {
             <p className="text-gray-700 mb-8 leading-relaxed">
                 In 2020, the people of Cape Coast North elected me as their Member of Parliament on the ticket of the National Democratic Congress (NDC), and in 2024 they renewed that trust. In Parliament, I serve on the Defence and Interior, Environment, Science and Technology, and Ways and Means Committees. My focus has always been on what changes lives most: quality education, good roads, reliable healthcare, clean surroundings and opportunities for the youth.
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-12"> {/* Added margin-bottom */}
+            {/* Grid container for MP Info and Election Table */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-12">
+                {/* Elected MP Block */}
                 <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-center shadow-sm">
                     <CheckSquare className="w-6 h-6 text-blue-700 mr-3 flex-shrink-0"/>
                     <div>
@@ -119,6 +121,8 @@ export function About() {
                         <p className="text-sm text-gray-600">Cape Coast North (2020, Re-elected 2024)</p>
                     </div>
                 </div>
+
+                 {/* Party Affiliation Block */}
                  <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-center shadow-sm">
                     <Users className="w-6 h-6 text-blue-700 mr-3 flex-shrink-0"/>
                     <div>
@@ -126,6 +130,8 @@ export function About() {
                         <p className="text-sm text-gray-600">National Democratic Congress (NDC)</p>
                     </div>
                 </div>
+
+                {/* Committees Block (Spans 2 columns on small screens and up) */}
                 <div className="bg-white p-4 rounded-lg border border-gray-200 sm:col-span-2 flex items-center shadow-sm">
                     <Landmark className="w-6 h-6 text-blue-700 mr-3 flex-shrink-0"/>
                      <div>
@@ -133,36 +139,38 @@ export function About() {
                         <p className="text-sm text-gray-600">Defence & Interior; Environment, Science & Technology; Ways & Means</p>
                     </div>
                 </div>
-            </div>
 
-            {/* Election Results Table */}
-            <h3 className="text-2xl font-semibold text-blue-900 mb-4">Election Results (Cape Coast North)</h3>
-            <div className="overflow-x-auto bg-white rounded-lg shadow-md border border-gray-200">
-                <table className="w-full text-sm text-left text-gray-700">
-                    <thead className="text-xs text-gray-700 uppercase bg-blue-50">
-                        <tr>
-                            <th scope="col" className="px-6 py-3">Year</th>
-                            <th scope="col" className="px-6 py-3">Dr. Nyarku (NDC) Votes</th>
-                            <th scope="col" className="px-6 py-3">NDC %</th>
-                            <th scope="col" className="px-6 py-3">Opponent (NPP) Votes</th>
-                            <th scope="col" className="px-6 py-3">NPP %</th>
-                            <th scope="col" className="px-6 py-3">Margin</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {electionResults.map((result) => (
-                            <tr key={result.year} className="bg-white border-b hover:bg-gray-50">
-                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{result.year}</th>
-                                <td className="px-6 py-4 font-semibold text-green-700">{result.nyarkuVotes}</td>
-                                <td className="px-6 py-4 font-semibold text-green-700">{result.nyarkuPercent}</td>
-                                <td className="px-6 py-4">{result.opponentVotes}</td>
-                                <td className="px-6 py-4">{result.opponentPercent}</td>
-                                <td className="px-6 py-4 font-medium text-blue-800">{result.margin}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+                {/* Election Results Table (Spans 2 columns on small screens and up) */}
+                <div className="sm:col-span-2 mt-6"> {/* Added margin-top */}
+                    <h3 className="text-2xl font-semibold text-blue-900 mb-4">Election Results (Cape Coast North)</h3>
+                    <div className="overflow-x-auto bg-white rounded-lg shadow-md border border-gray-200">
+                        <table className="w-full text-sm text-left text-gray-700">
+                            <thead className="text-xs text-gray-700 uppercase bg-blue-50">
+                                <tr>
+                                    <th scope="col" className="px-6 py-3">Year</th>
+                                    <th scope="col" className="px-6 py-3">Dr. Nyarku (NDC) Votes</th>
+                                    <th scope="col" className="px-6 py-3">NDC %</th>
+                                    <th scope="col" className="px-6 py-3">Opponent (NPP) Votes</th>
+                                    <th scope="col" className="px-6 py-3">NPP %</th>
+                                    <th scope="col" className="px-6 py-3">Margin</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {electionResults.map((result) => (
+                                    <tr key={result.year} className="bg-white border-b hover:bg-gray-50">
+                                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{result.year}</th>
+                                        <td className="px-6 py-4 font-semibold text-green-700">{result.nyarkuVotes}</td>
+                                        <td className="px-6 py-4 font-semibold text-green-700">{result.nyarkuPercent}</td>
+                                        <td className="px-6 py-4">{result.opponentVotes}</td>
+                                        <td className="px-6 py-4">{result.opponentPercent}</td>
+                                        <td className="px-6 py-4 font-medium text-blue-800">{result.margin}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div> {/* End of grid container */}
 
         </AnimatedSection>
 
@@ -184,7 +192,7 @@ export function About() {
         </AnimatedSection>
 
       </div>
-       {/* CSS for animations (can be moved to index.css) */}
+       {/* CSS for animations */}
       <style>{`
         .animate-section-enter {
           opacity: 1;

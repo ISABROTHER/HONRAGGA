@@ -135,21 +135,40 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
     },
   ];
 
-  // Updated header image URL
-  const headerImageUrl = "https://i.imgur.com/4s5NO8D.png";
+  // Original header image
+  const headerImageUrl = "https://i.imgur.com/2BmP7xu.jpeg";
+  // New overlay image for text and visual element
+  const overlayImageUrl = "https://i.imgur.com/4s5NO8D.png";
 
   return (
     <div className="min-h-screen bg-gray-100">
 
-      {/* Section Header - Image with Gradient */}
-      <section className="relative w-full overflow-hidden">
+      {/* Section Header - Base Image, Gradient, Overlay Image & Text */}
+      <section className="relative w-full overflow-hidden min-h-[200px] sm:min-h-[300px] flex items-end justify-center"> {/* Added flex and items-end for positioning */}
+        {/* Base Image */}
         <img
           src={headerImageUrl}
           alt="Our Key Development Priorities Banner"
-          className="w-full h-auto object-cover object-center" // Removed max height constraint if any
+          className="absolute inset-0 w-full h-full object-cover object-center"
         />
         {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-40"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div> {/* Adjusted opacity and via-transparent removed for simpler bottom-heavy gradient */}
+
+        {/* Content Overlay (New Image and Text) */}
+        <div className="relative z-10 w-full py-8 text-white text-center">
+            {/* Overlay Image (e.g., a logo or icon related to initiatives) */}
+            <img
+                src={overlayImageUrl}
+                alt="Initiatives Icon"
+                className="mx-auto h-24 sm:h-32 object-contain mb-4" // Adjust height and margin as needed
+            />
+            <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight mb-2">
+                INITIATIVES
+            </h1>
+            <p className="text-lg sm:text-xl font-medium text-amber-300">
+                BY RAGGA
+            </p>
+        </div>
       </section>
 
       {/* Priorities Grid Section */}

@@ -55,7 +55,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
   }, []);
 
 
-  // Array containing the main policy themes (Updated Social Welfare image)
+  // Array containing the main policy themes (Updated image positioning for Health)
   const themes: PolicyTheme[] = [
     {
       id: 'education',
@@ -74,7 +74,8 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       shortDescription: 'Expanding access to healthcare and clean water for all.',
       imageComponent: (
         <div className="w-full relative overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
-           <img src="https://i.imgur.com/XmWnKbH.jpeg" alt="Health & Sanitation" className="absolute inset-0 w-full h-full object-cover"/>
+           {/* Added object-top */}
+           <img src="https://i.imgur.com/XmWnKbH.jpeg" alt="Health & Sanitation" className="absolute inset-0 w-full h-full object-cover object-top"/>
         </div>
       ),
       initiativeCount: 2,
@@ -123,7 +124,6 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       ),
       initiativeCount: 3,
     },
-    // Environment theme is still removed
      {
       id: 'planning', // Corresponds to Governance
       title: 'Good Governance & Civic Engagement',

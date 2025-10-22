@@ -1,217 +1,281 @@
-import { useEffect, useRef } from 'react'; // Import hooks for animation
-import { BookOpen, Heart, Users, Building, Wheat, Handshake, Leaf /* Removed Leaf */, Landmark, ChevronRight } from 'lucide-react'; // Removed CheckCircle import
+import { useEffect, useRef } from 'react';
+import { School, Briefcase, Award, Landmark, CheckSquare, Users, Star, Eye, BarChart3, GraduationCap } from 'lucide-react'; // Added Briefcase
 
-// Define the structure for each *main* policy theme
-interface PolicyTheme {
-  id: string; // Unique identifier (used for navigation)
-  title: string;
-  shortDescription: string;
-  imageComponent: React.ReactNode; // Holds either a div with color or an img tag
-  initiativeCount: number; // Based on detailed text sections
-  // Removed keyInitiatives array
+// Helper component for timeline items
+const TimelineItem = ({ icon: Icon, title, institution, description, children }: { icon: React.ElementType, title: string, institution?: string, description?: string | React.ReactNode, children?: React.ReactNode }) => (
+  <li className="mb-10 ms-6 relative before:absolute before:left-[-1.5rem] before:top-[0.1rem] before:w-px before:h-full before:bg-gray-300 first:before:top-[1.2rem] last:before:h-[1.2rem]">
+    <span className="absolute flex items-center justify-center w-8 h-8 bg-blue-100 rounded-full -start-[2.6rem] ring-4 ring-white">
+      <Icon className="w-4 h-4 text-blue-700" />
+    </span>
+    <h3 className="flex items-center mb-1 text-lg font-semibold text-blue-900">
+      {title} {institution && <span className="bg-blue-100 text-blue-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded ms-3">{institution}</span>}
+    </h3>
+    {description && <p className="text-sm font-normal text-gray-600">{description}</p>}
+    {children}
+  </li>
+);
+
+// Helper component for animated sections
+const AnimatedSection = ({ children, delay = 0 }: { children: React.ReactNode, delay?: number }) => {
+    const ref = useRef<HTMLDivElement>(null);
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-section-enter');
+                    entry.target.classList.remove('opacity-0', 'translate-y-5');
+                    observer.unobserve(entry.target); // Animate only once
+                }
+            },
+            { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+        );
+        const currentRef = ref.current;
+        if (currentRef) {
+            currentRef.classList.add('opacity-0', 'translate-y-5');
+            observer.observe(currentRef);
+        }
+        return () => {
+            if (currentRef) {
+                observer.unobserve(currentRef);
+            }
+        };
+    }, []);
+
+    return <div ref={ref} className="transition-all duration-700 ease-out" style={{ transitionDelay: `${delay}ms` }}>{children}</div>;
 }
 
-// Props interface including the navigation function from App.tsx
-interface PoliciesProps {
-  onSelectTheme: (themeId: string) => void;
-}
 
-export function Policies({ onSelectTheme }: PoliciesProps) {
-  // Ref for the grid container to observe its children
-  const gridRef = useRef<HTMLDivElement>(null);
+export function About() {
+  const heroImageUrl = "https://i.imgur.com/5H0XBuV.jpeg"; // New hero image
 
-  // Effect for scroll animation (zoom-in effect)
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('animate-card-enter-zoom');
-            entry.target.classList.remove('opacity-0', 'scale-95');
-          }
-        });
-      },
-      {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-      }
-    );
-
-    const gridElement = gridRef.current;
-    if (gridElement) {
-      Array.from(gridElement.children).forEach((card) => {
-        observer.observe(card);
-        card.classList.add('opacity-0', 'scale-95');
-      });
+  // Election Results Data
+  const electionResults = [
+    {
+        year: 2020,
+        nyarkuVotes: "22,972",
+        nyarkuPercent: "51.48%",
+        opponentVotes: "21,643",
+        opponentPercent: "48.51%",
+        margin: "1,329"
+    },
+    {
+        year: 2024,
+        nyarkuVotes: "23,521",
+        nyarkuPercent: "57.6%",
+        opponentVotes: "17,045",
+        opponentPercent: "41.7%",
+        margin: "6,476"
     }
-
-    return () => {
-      if (gridElement) {
-        Array.from(gridElement.children).forEach((card) => {
-          observer.unobserve(card);
-        });
-      }
-    };
-  }, []);
-
-
-  // Array containing the main policy themes (Titles updated, reverted Health image position)
-  const themes: PolicyTheme[] = [
-    {
-      id: 'education',
-      title: 'Educational Support', // Updated Title
-      shortDescription: 'Supporting quality education, digital literacy, and youth skills training.',
-      imageComponent: (
-        <div className="w-full relative overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
-          <img src="https://i.imgur.com/Ozjnrli.jpeg" alt="Educational Support" className="absolute inset-0 w-full h-full object-cover"/> {/* Updated Alt */}
-        </div>
-      ),
-      initiativeCount: 3,
-    },
-    {
-      id: 'health',
-      title: 'Health & Sanitation',
-      shortDescription: 'Expanding access to healthcare and clean water for all.',
-      imageComponent: (
-        <div className="w-full relative overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
-           {/* Reverted to object-top */}
-           <img src="https://i.imgur.com/XmWnKbH.jpeg" alt="Health & Sanitation" className="absolute inset-0 w-full h-full object-cover object-top"/>
-        </div>
-      ),
-      initiativeCount: 2,
-    },
-    {
-      id: 'entrepreneurship',
-      title: 'Employment & Entrepreneurship',
-      shortDescription: 'Creating jobs and empowering local businesses.',
-      imageComponent: (
-        <div className="w-full relative overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
-           <img src="https://i.imgur.com/saQoFLV.png" alt="Employment & Entrepreneurship" className="absolute inset-0 w-full h-full object-cover"/>
-        </div>
-      ),
-      initiativeCount: 2,
-    },
-    {
-      id: 'infrastructure',
-      title: 'Infrastructure Development',
-      shortDescription: 'Improving roads, electrification, and connectivity.',
-      imageComponent: (
-        <div className="w-full relative overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
-          <img src="https://i.imgur.com/AZqDymE.jpeg" alt="Infrastructure Development" className="absolute inset-0 w-full h-full object-cover"/>
-        </div>
-      ),
-      initiativeCount: 3,
-    },
-    {
-      id: 'agriculture',
-      title: 'Agricultural Support', // Updated Title
-      shortDescription: 'Supporting farmers with tools, training, and market access.',
-      imageComponent: (
-         <div className="w-full relative overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
-          <img src="https://i.imgur.com/TZ4jIJA.jpeg" alt="Agricultural Support" className="absolute inset-0 w-full h-full object-cover"/> {/* Updated Alt */}
-        </div>
-      ),
-       initiativeCount: 1,
-    },
-     {
-      id: 'community',
-      title: 'Social Welfare', // Updated Title
-      shortDescription: 'Empowering women, youth, and vulnerable groups.',
-      imageComponent: (
-        <div className="w-full relative overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
-            <img src="https://i.imgur.com/1M0b8mq.jpeg" alt="Social Welfare" className="absolute inset-0 w-full h-full object-cover object-top"/> {/* Updated Alt */}
-        </div>
-      ),
-      initiativeCount: 3,
-    },
-     {
-      id: 'planning', // Corresponds to Governance
-      title: 'Civic Engagement', // Updated Title
-      shortDescription: 'Promoting transparency, accountability, and participation.',
-      imageComponent: (
-         <div className="w-full relative overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
-           <img src="https://i.imgur.com/NSWtjdU.jpeg" alt="Civic Engagement" className="absolute inset-0 w-full h-full object-cover"/> {/* Updated Alt Text */}
-         </div>
-      ),
-      initiativeCount: 1,
-    },
   ];
 
+  // Educational Qualifications Data
+  const educationData = [
+      { institution: "University of Ghana Business School", qualification: "PhD", completed: "07-2019" },
+      { institution: "University of Leicester, UK", qualification: "MBA", completed: "09-2003" },
+      { institution: "University of Cape Coast", qualification: "Bachelor of Education", completed: "06-2000" },
+      { institution: "Worker College", qualification: "A Level", completed: "09-1996" },
+      { institution: "Komenda Training College", qualification: "Teacher Certificate A", completed: "06-1995" },
+      { institution: "Adisadel College", qualification: "GCE O Level", completed: "09-1992" },
+  ];
+
+   // Employment Data
+   const employmentData = [
+       { institution: "University of Cape Coast", position: "Senior Lecturer" }
+   ];
+
+
+  // Helper to format date string (MM-YYYY or YYYY) -> Year
+  const getYear = (dateStr: string) => {
+      if (!dateStr) return 'N/A';
+      const parts = dateStr.split('-');
+      return parts.length > 1 ? parts[1] : dateStr; // Assumes YYYY or MM-YYYY
+  }
+
   return (
-    <div className="min-h-screen bg-gray-100"> {/* Light gray background */}
-      {/* Section Header - Dark Green Gradient */}
-      <section className="bg-gradient-to-r from-green-800 via-green-700 to-green-600 text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Our Key Development Priorities</h1>
-          <p className="text-lg md:text-xl text-green-100 max-w-3xl mx-auto">
-             Click on a priority area to explore our initiatives and achievements in detail.
+    <div className="min-h-screen bg-gray-50">
+      {/* Hero Section - Just an image */}
+      <section className="relative w-full h-auto min-h-[250px] md:min-h-[400px] lg:min-h-[500px] overflow-hidden">
+        <img
+          src={heroImageUrl}
+          alt="Hon. Dr. Kwamena Minta Nyarku - About Me Banner"
+          className="absolute inset-0 w-full h-full object-cover object-center"
+        />
+      </section>
+
+
+      {/* Main Content Sections */}
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20 space-y-16">
+
+        {/* Section 1: Roots */}
+        <AnimatedSection>
+          <h2 className="text-3xl font-bold text-green-800 mb-6 border-b-2 border-amber-500 pb-2 inline-block">Roots & Journey</h2>
+          <p className="text-gray-700 mb-8 leading-relaxed">
+            My story begins in Apewosika, a quiet community in Cape Coast, where family, faith and community taught me humility, perseverance and purpose. From a young age, I came to see education not only as a way to grow personally but as a means to lift others and build stronger communities. That belief has guided my journey.
           </p>
-        </div>
-      </section>
+        </AnimatedSection>
 
-      {/* Priorities Grid Section */}
-      <section className="py-16 sm:py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-           <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 md:gap-10">
-            {themes.map((theme, index) => {
-              // Removed const Icon = theme.icon;
-              return (
-                <button
-                  key={theme.id}
-                  onClick={() => onSelectTheme(theme.id)}
-                  className={`group bg-white rounded-xl shadow-md overflow-hidden border border-gray-200 hover:shadow-2xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 transition-all duration-500 ease-out text-left transform hover:border-blue-300`}
-                  style={{ transitionDelay: `${index * 100}ms` }}
-                >
-                  {/* Image/Placeholder Component */}
-                  <div className="overflow-hidden">
-                    {theme.imageComponent}
-                  </div>
+        {/* Section 2: Educational Qualifications Table */}
+        <AnimatedSection delay={100}>
+            <h3 className="text-2xl font-semibold text-blue-900 mb-4">Educational Qualifications</h3>
+             <div className="overflow-x-auto bg-white rounded-lg shadow-md border border-gray-200">
+                <table className="w-full text-sm text-left text-gray-700">
+                    <thead className="text-xs text-gray-500 uppercase bg-blue-50">
+                        <tr>
+                            <th scope="col" className="px-6 py-3">Institution</th>
+                            <th scope="col" className="px-6 py-3">Qualification</th>
+                            <th scope="col" className="px-6 py-3 text-right">Year Completed</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {educationData.map((edu) => (
+                            <tr key={edu.institution} className="bg-white border-b border-gray-100 last:border-b-0 hover:bg-gray-50">
+                                <td className="px-6 py-3 font-medium text-gray-900">{edu.institution}</td>
+                                <td className="px-6 py-3">{edu.qualification}</td>
+                                <td className="px-6 py-3 text-right">{getYear(edu.completed)}</td>
+                            </tr>
+                        ))}
+                         {/* Manually add UCC specific info from old timeline */}
+                        <tr className="bg-blue-50 border-b border-gray-100 last:border-b-0">
+                             <td className="px-6 py-3 font-medium text-gray-900">University of Cape Coast</td>
+                             <td className="px-6 py-3 italic text-blue-800" colSpan={2}> {/* Spanning 2 columns for emphasis */}
+                                <Star className="w-3 h-3 inline mr-1 text-amber-500" /> Served as <span className="font-semibold">JCRC President</span> of Casely Hayford Hall (Casford)
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+             </div>
+        </AnimatedSection>
 
-                  {/* Content Area */}
-                  <div className="p-6 flex flex-col">
-                    {/* Top section: Title and Description */}
-                    <div className="mb-4">
-                        {/* Heading: Underline effect restored */}
-                        <h2 className="relative inline-block text-xl sm:text-2xl font-bold text-green-800 whitespace-nowrap overflow-hidden text-ellipsis mb-2 pb-1
-                                       after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-amber-600 after:w-0 group-hover:after:w-full after:transition-all after:duration-300 after:ease-out">
-                          {theme.title}
-                        </h2>
-                        <p className="text-gray-600 text-sm sm:text-base leading-relaxed mt-1">
-                          {theme.shortDescription}
-                        </p>
+        {/* Section 3: Employment History Table */}
+         <AnimatedSection delay={200}>
+            <h3 className="text-2xl font-semibold text-blue-900 mb-4">Employment History</h3>
+             <div className="overflow-x-auto bg-white rounded-lg shadow-md border border-gray-200">
+                <table className="w-full text-sm text-left text-gray-700">
+                    <thead className="text-xs text-gray-500 uppercase bg-blue-50">
+                        <tr>
+                            <th scope="col" className="px-6 py-3">Institution</th>
+                            <th scope="col" className="px-6 py-3">Position</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {employmentData.map((job) => (
+                            <tr key={job.institution} className="bg-white border-b border-gray-100 last:border-b-0 hover:bg-gray-50">
+                                <td className="px-6 py-3 font-medium text-gray-900">{job.institution}</td>
+                                <td className="px-6 py-3">{job.position}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+             </div>
+             <p className="text-gray-700 mt-6 leading-relaxed">
+                 Before entering politics, my role as a Senior Lecturer allowed me to mentor students and see how ideas connect with the realities of Ghana’s markets, classrooms and communities. I saw the effort of traders, farmers and young people trying to make things work. That connection made me step out and serve in a bigger way.
+             </p>
+        </AnimatedSection>
+
+        {/* Section 4: Parliamentary Role & Election Results */}
+        <AnimatedSection delay={300}>
+            <h2 className="text-3xl font-bold text-green-800 mb-6 border-b-2 border-amber-500 pb-2 inline-block">Service in Parliament</h2>
+            <p className="text-gray-700 mb-8 leading-relaxed">
+                In 2020, the people of Cape Coast North elected me as their Member of Parliament on the ticket of the National Democratic Congress (NDC), and in 2024 they renewed that trust. My focus has always been on what changes lives most: quality education, good roads, reliable healthcare, clean surroundings and opportunities for the youth.
+            </p>
+            {/* Combined Info Blocks and Table */}
+            <div className="space-y-6">
+                {/* MP Info Blocks - Now a Grid */}
+                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                    {/* Elected MP */}
+                    <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-start shadow-sm">
+                        <CheckSquare className="w-6 h-6 text-blue-700 mr-3 mt-1 flex-shrink-0"/>
+                        <div>
+                            <h4 className="font-semibold text-blue-900">Elected MP</h4>
+                            <p className="text-sm text-gray-600">Cape Coast North (2020, Re-elected 2024)</p>
+                        </div>
                     </div>
 
-                    {/* Middle section: Initiatives List REMOVED */}
+                    {/* Election Results Table - Positioned after Elected MP */}
+                     <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm row-start-2 md:row-start-auto md:col-start-2"> {/* Positioning */}
+                         <div className="flex items-center mb-3">
+                            <BarChart3 className="w-6 h-6 text-blue-700 mr-3 flex-shrink-0"/>
+                            <h4 className="font-semibold text-blue-900">Election Results</h4>
+                         </div>
+                        <div className="overflow-x-auto">
+                            <table className="w-full text-sm text-left text-gray-700">
+                                <thead className="text-xs text-gray-500 uppercase border-b border-gray-200">
+                                    <tr>
+                                        <th scope="col" className="px-4 py-2">Year</th>
+                                        <th scope="col" className="px-4 py-2">Votes (NDC)</th>
+                                        <th scope="col" className="px-4 py-2">Margin</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {electionResults.map((result) => (
+                                        <tr key={result.year} className="border-b border-gray-100 last:border-b-0 hover:bg-gray-50">
+                                            <th scope="row" className="px-4 py-3 font-medium text-gray-900">{result.year}</th>
+                                            <td className="px-4 py-3 font-semibold text-green-700">{result.nyarkuVotes} ({result.nyarkuPercent})</td>
+                                            <td className="px-4 py-3 font-medium text-blue-800">{result.margin}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                     </div>
 
-                    {/* Bottom section: Count and View Details */}
-                    <div className="mt-auto flex justify-between items-center pt-4">
-                        {/* Initiative Count - Updated Phrasing */}
-                        <p className="text-sm text-gray-700 font-medium">
-                           <span className="font-extrabold text-lg text-amber-600 mr-1">{theme.initiativeCount}</span>
-                            {theme.initiativeCount === 1 ? 'Initiative Listed' : 'Initiatives Listed'} {/* Removed 'Area' */}
-                        </p>
-
-                        {/* Call to Action: Right Aligned - No animated underline */}
-                        <span className="inline-flex items-center text-sm font-semibold text-amber-700 group-hover:underline">
-                          View Details
-                          <ChevronRight className="ml-1 w-4 h-4 transition-transform group-hover:translate-x-1" />
-                        </span>
+                    {/* Party Affiliation */}
+                     <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-start shadow-sm row-start-3 md:row-start-auto md:col-start-1"> {/* Positioning */}
+                        <Users className="w-6 h-6 text-blue-700 mr-3 mt-1 flex-shrink-0"/>
+                        <div>
+                            <h4 className="font-semibold text-blue-900">Party Affiliation</h4>
+                            <p className="text-sm text-gray-600">National Democratic Congress (NDC)</p>
+                        </div>
                     </div>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      </section>
 
-      {/* Call to Action Section REMOVED */}
+                    {/* Parliamentary Committees - Now with Bullets */}
+                    <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-start shadow-sm md:col-span-2 row-start-4 md:row-start-auto"> {/* Positioning */}
+                        <Landmark className="w-6 h-6 text-blue-700 mr-3 mt-1 flex-shrink-0"/>
+                         <div>
+                            <h4 className="font-semibold text-blue-900 mb-1">Parliamentary Committees</h4>
+                            <ul className="list-disc list-inside space-y-1">
+                                <li className="text-sm text-gray-600">Defence & Interior</li>
+                                <li className="text-sm text-gray-600">Environment, Science & Technology</li>
+                                <li className="text-sm text-gray-600">Ways & Means</li>
+                            </ul>
+                        </div>
+                    </div>
 
-      {/* CSS for the zoom animation */}
+                 </div>
+             </div>
+        </AnimatedSection>
+
+        {/* Section 5: Vision */}
+        <AnimatedSection delay={400}> {/* Adjusted delay */}
+            <h2 className="text-3xl font-bold text-green-800 mb-6 border-b-2 border-amber-500 pb-2 inline-block">My Vision</h2>
+            <blockquote className="relative p-6 bg-gradient-to-r from-blue-50 to-white border-l-4 border-amber-500 italic rounded-r-lg shadow-sm">
+                <Eye className="absolute top-4 right-4 w-8 h-8 text-amber-300 opacity-50" />
+                <p className="text-lg text-gray-700 leading-relaxed mb-4">
+                    "For me, leadership is not about titles or recognition. It is about what endures after one’s service, the systems, opportunities and hope that remain."
+                </p>
+                <p className="text-lg text-gray-700 leading-relaxed">
+                    "My vision is to help build a Cape Coast North where fairness, opportunity and respect are shared by all, where everyone feels they belong and every young person knows their dream matters."
+                </p>
+                 <footer className="mt-4 text-md font-semibold text-blue-800">
+                    — Hon. Dr. Kwamena Minta Nyarku (Ragga)
+                </footer>
+            </blockquote>
+        </AnimatedSection>
+
+      </div>
+       {/* CSS for animations */}
       <style>{`
-        .animate-card-enter-zoom {
+        .animate-section-enter {
           opacity: 1;
-          transform: scale(1);
+          transform: translateY(0);
+        }
+        .animate-fade-in {
+            animation: fadeIn 1s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
       `}</style>
     </div>

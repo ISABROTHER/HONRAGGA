@@ -140,18 +140,19 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
   return (
     <div className="min-h-screen bg-gray-100">
 
-      {/* Section Header - Replaced with YouTube Video */}
-      <section className="bg-black py-8 md:py-12"> {/* Background color for potential letterboxing */}
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8"> {/* Constrained width */}
+      {/* Section Header - YouTube Video */}
+      {/* Removed max-width and horizontal padding from inner div */}
+      <section className="bg-black py-8 md:py-12">
+        <div> {/* Removed max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 */}
             {/* Responsive Video Wrapper */}
-            <div className="aspect-video w-full rounded-lg overflow-hidden shadow-xl">
+            <div className="aspect-video w-full"> {/* Removed rounded-lg overflow-hidden shadow-xl */}
                  <iframe
                     className="w-full h-full"
-                    src={`https://www.youtube.com/embed/${videoId}`}
-                    title="YouTube video player - Development Priorities" // Descriptive title
+                    src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0`} // Added autoplay, mute, loop, playlist, controls=0
+                    title="YouTube video player - Development Priorities"
                     frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowFullScreen // Use allowFullScreen (camelCase) in React
+                    allowFullScreen
                  ></iframe>
             </div>
         </div>

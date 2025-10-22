@@ -45,33 +45,21 @@ const AnimatedSection = ({ children, delay = 0 }: { children: React.ReactNode, d
 
 
 export function About() {
-  // Placeholder image URL - Replace with the actual image
-  const imageUrl = "https://via.placeholder.com/800x1000/cccccc/969696?text=Hon.+Dr.+Kwamena+Minta+Nyarku";
+  const heroImageUrl = "https://i.imgur.com/5H0XBuV.jpeg"; // New hero image
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700 text-white overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center py-16 md:py-24">
-                {/* Text Content */}
-                <div className="relative z-10 animate-fade-in">
-                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">About Me</h1>
-                    <p className="text-lg md:text-xl text-blue-100 mb-6 leading-relaxed">
-                        I am Ragga. The name began in the community and has followed me through the classroom to Parliament. My full name is Hon. Dr. Kwamena Minta Nyarku...
-                    </p>
-                    <p className="text-sm text-blue-200">
-                        Member of Parliament, Cape Coast North Constituency
-                    </p>
-                </div>
-                {/* Image */}
-                <div className="relative h-80 md:h-96 lg:h-auto lg:aspect-[3/4] rounded-lg overflow-hidden shadow-2xl animate-fade-in" style={{ animationDelay: '200ms'}}>
-                    <img src={imageUrl} alt="Hon. Dr. Kwamena Minta Nyarku" className="absolute inset-0 w-full h-full object-cover object-center lg:object-top" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-blue-900/30 via-transparent to-transparent lg:hidden"></div> {/* Mobile gradient overlay */}
-                </div>
-            </div>
-        </div>
+      {/* Hero Section - Now just an image */}
+      <section className="relative w-full h-auto min-h-[250px] md:min-h-[400px] lg:min-h-[500px] overflow-hidden">
+        <img
+          src={heroImageUrl}
+          alt="Hon. Dr. Kwamena Minta Nyarku - About Me Banner"
+          className="absolute inset-0 w-full h-full object-cover object-center"
+        />
+        {/* Optional: Add an overlay if the image needs text to be more readable, but usually not needed if text is part of the image */}
+        {/* <div className="absolute inset-0 bg-black bg-opacity-30"></div> */}
       </section>
+
 
       {/* Main Content Sections */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20 space-y-16">
@@ -149,7 +137,7 @@ export function About() {
 
       </div>
        {/* CSS for animations (can be moved to index.css) */}
-      <style>{` 
+      <style>{`
         .animate-section-enter {
           opacity: 1;
           transform: translateY(0);

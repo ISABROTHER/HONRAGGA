@@ -57,7 +57,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
 
   // Array containing the main policy themes (keyInitiatives array removed)
   const themes: PolicyTheme[] = [
-    {
+     {
       id: 'education',
       title: 'Education & Youth Empowerment',
       shortDescription: 'Supporting quality education, digital literacy, and youth skills training.',
@@ -181,11 +181,12 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
                   <div className="p-6 flex flex-col">
                     {/* Top section: Title and Description */}
                     <div className="mb-4">
-                        {/* Heading: Icon removed, Dark Green text */}
-                        <h2 className="text-xl sm:text-2xl font-bold text-green-800 whitespace-nowrap overflow-hidden text-ellipsis mb-2">
+                        {/* Heading: Added underline effect classes */}
+                        <h2 className="relative inline-block text-xl sm:text-2xl font-bold text-green-800 whitespace-nowrap overflow-hidden text-ellipsis mb-2 pb-1 /* Added padding-bottom for space */
+                                       after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-amber-600 after:w-0 group-hover:after:w-full after:transition-all after:duration-300 after:ease-out">
                           {theme.title}
                         </h2>
-                        <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
+                        <p className="text-gray-600 text-sm sm:text-base leading-relaxed mt-1"> {/* Added margin-top */}
                           {theme.shortDescription}
                         </p>
                     </div>
@@ -193,10 +194,10 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
                     {/* Middle section: Initiatives List REMOVED */}
 
                     {/* Bottom section: Count and View Details */}
-                    <div className="mt-auto flex justify-between items-center pt-4"> {/* Added more top padding */}
-                        {/* Initiative Count - Updated Styling */}
-                        <p className="text-sm text-gray-700 font-medium"> {/* Larger text, slightly darker color */}
-                           <span className="font-extrabold text-lg text-amber-600 mr-1">{theme.initiativeCount}</span> {/* Catchy number */}
+                    <div className="mt-auto flex justify-between items-center pt-4">
+                        {/* Initiative Count */}
+                        <p className="text-sm text-gray-700 font-medium">
+                           <span className="font-extrabold text-lg text-amber-600 mr-1">{theme.initiativeCount}</span>
                             {theme.initiativeCount === 1 ? 'Initiative Area Listed' : 'Initiative Areas Listed'}
                         </p>
 
@@ -229,7 +230,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
           >
             Contact Your MP
           </a>
-        </div> 
+        </div>
       </section>
 
       {/* CSS for the zoom animation */}

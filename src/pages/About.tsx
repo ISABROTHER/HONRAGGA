@@ -149,7 +149,7 @@ export function About() {
 
       </div>
        {/* CSS for animations (can be moved to index.css) */}
-      <style>{`
+      <style>{` 
         .animate-section-enter {
           opacity: 1;
           transform: translateY(0);

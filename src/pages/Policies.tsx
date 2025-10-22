@@ -1,4 +1,4 @@
-import { BookOpen, Building, Heart, Users, Wheat, Handshake, Leaf, Landmark, ChevronRight } from 'lucide-react';
+import { BookOpen, Heart, Users, Building, Wheat, Handshake, Leaf, Landmark, ChevronRight } from 'lucide-react';
 
 // Define the structure for each *main* policy theme
 interface PolicyTheme {
@@ -65,21 +65,21 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       shortDescription: 'Guiding the long-term development of Cape Coast North.',
       colorTheme: { bg: 'bg-indigo-50', iconBg: 'bg-indigo-500', text: 'text-indigo-800', hoverBorder: 'hover:border-indigo-400' }
     },
-    // You can add back Agriculture and Environment if you have detail pages for them
-    // {
-    //   id: 'agriculture',
-    //   icon: Wheat,
-    //   title: 'Agriculture & Rural Growth',
-    //   shortDescription: 'Supporting farmers and boosting rural economies.',
-    //   colorTheme: { bg: 'bg-lime-50', iconBg: 'bg-lime-500', text: 'text-lime-800', hoverBorder: 'hover:border-lime-400' }
-    // },
-    // {
-    //   id: 'environment',
-    //   icon: Leaf,
-    //   title: 'Environment & Climate Action',
-    //   shortDescription: 'Protecting our natural heritage for future generations.',
-    //   colorTheme: { bg: 'bg-teal-50', iconBg: 'bg-teal-500', text: 'text-teal-800', hoverBorder: 'hover:border-teal-400' }
-    // },
+    // Adding back Agriculture and Environment placeholders based on the earlier structure
+    {
+      id: 'agriculture', // Added ID
+      icon: Wheat,
+      title: 'Agriculture & Rural Growth',
+      shortDescription: 'Supporting farmers and boosting rural economies.', // Added short description
+      colorTheme: { bg: 'bg-lime-50', iconBg: 'bg-lime-500', text: 'text-lime-800', hoverBorder: 'hover:border-lime-400' } // Added color theme
+    },
+    {
+      id: 'environment', // Added ID
+      icon: Leaf,
+      title: 'Environment & Climate Action',
+      shortDescription: 'Protecting our natural heritage for future generations.', // Added short description
+      colorTheme: { bg: 'bg-teal-50', iconBg: 'bg-teal-500', text: 'text-teal-800', hoverBorder: 'hover:border-teal-400' } // Added color theme
+    },
   ];
 
   return (

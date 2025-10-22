@@ -107,7 +107,7 @@ export function About() {
             <h2 className="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-none mb-2 drop-shadow-lg [text-shadow:_0_3px_6px_rgb(0_0_0_/_70%)]">
                 KNOW YOUR MP
             </h2>
-            <p className="text-2xl md:text-3xl lg:text-4xl font-semibold text-amber-300 drop-shadow-lg [text-shadow:_0_2px_4px_rgb(0_0_0_/_60%)]">
+            <p className="text-2xl md:text-3xl lg:text-4xl font-semibold text-amber-300 drop-shadow-lg [text-shadow:_0_2px_4px_rgb(0_0_0_/_100%)]">
                 HON. DR. KWAMENA MINTA NYARKU
             </p>
         </div>

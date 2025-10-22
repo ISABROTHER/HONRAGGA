@@ -75,9 +75,10 @@ export function About() {
       { institution: "Adisadel College", qualification: "GCE O Level", completed: "09-1992" },
   ];
 
-   // Employment Data
+   // Employment Data - Added GOIL PLC
    const employmentData = [
-       { institution: "University of Cape Coast", position: "Senior Lecturer" }
+       { institution: "University of Cape Coast", position: "Senior Lecturer" },
+       { institution: "GOIL PLC (Ghana Oil Company)", position: "Board Member" } // Added entry
    ];
 
 
@@ -107,9 +108,9 @@ export function About() {
         {/* Section 1: Profile Grid */}
         <AnimatedSection>
           <h2 className="text-3xl font-bold text-green-800 mb-6 border-b-2 border-amber-500 pb-2 inline-block">Profile</h2>
+          {/* Reordered items, removed Nickname and Nationality */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                 <ProfileItem icon={User} label="Full Name" value="Hon. Dr. Kwamena Minta Nyarku, PhD" />
-                <ProfileItem icon={Smile} label="Nickname" value="Ragga" />
                 <ProfileItem icon={DesignationIcon} label="Designation" value="MP for Cape Coast North" />
                 <ProfileItem icon={Megaphone} label="Slogan" value="Obiara Ka Ho (Everyone is involved)" />
                 <ProfileItem icon={MapPin} label="Place of Birth" value="Apewosika, Cape Coast" />
@@ -156,7 +157,7 @@ export function About() {
                         </tr>
                     </thead>
                     <tbody>
-                        {employmentData.map((job, index) => (
+                        {employmentData.map((job, index) => ( // Added index for alternating colors
                             <tr key={job.institution} className={`${index % 2 === 0 ? 'bg-white' : 'bg-blue-50'} border-b border-gray-100 last:border-b-0 hover:bg-gray-50`}>
                                 <td className="px-6 py-3 font-medium text-gray-900">{job.institution}</td>
                                 <td className="px-6 py-3">{job.position}</td>
@@ -199,12 +200,11 @@ export function About() {
                         </div>
                     </div>
 
-                    {/* Parliamentary Committees - Updated List */}
+                    {/* Parliamentary Committees */}
                     <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-start shadow-sm md:col-span-2">
                         <Landmark className="w-6 h-6 text-blue-700 mr-3 mt-1 flex-shrink-0"/>
                          <div>
                             <h4 className="font-semibold text-blue-900 mb-2">Parliamentary Committees</h4>
-                             {/* Replaced bullet list with styled paragraphs */}
                              <div className="space-y-1.5">
                                  <p className="text-sm text-gray-700">Member, Committee on Defence & Interior.</p>
                                  <p className="text-sm text-gray-700">Member, Committee on Environment, Science & Technology.</p>

@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'; // Import hooks for animation
-import { BookOpen, Heart, Users, Building, Wheat, Handshake, Leaf, Landmark, ChevronRight } from 'lucide-react'; // Removed CheckCircle import
+import { BookOpen, Heart, Users, Building, Wheat, Handshake, Landmark, ChevronRight } from 'lucide-react'; // Removed Leaf import
 
 // Define the structure for each *main* policy theme
 interface PolicyTheme {
@@ -55,7 +55,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
   }, []);
 
 
-  // Array containing the main policy themes
+  // Array containing the main policy themes (Environment theme removed)
   const themes: PolicyTheme[] = [
     {
       id: 'education',
@@ -123,17 +123,17 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       ),
       initiativeCount: 3,
     },
-    {
-      id: 'environment',
-      title: 'Environment & Climate Action',
-      shortDescription: 'Protecting our land, water, and natural heritage.',
-      imageComponent: (
-        <div className="w-full h-48 sm:h-64 bg-blue-100 flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
-            <img src="https://via.placeholder.com/820x360/EBF8FF/3182CE?text=Environment" alt="Environment Placeholder" className="w-full h-full object-cover opacity-70"/>
-        </div>
-      ),
-       initiativeCount: 1,
-    },
+    // { // Environment theme REMOVED
+    //   id: 'environment',
+    //   title: 'Environment & Climate Action',
+    //   shortDescription: 'Protecting our land, water, and natural heritage.',
+    //   imageComponent: (
+    //     <div className="w-full h-48 sm:h-64 bg-blue-100 flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
+    //         <img src="https://via.placeholder.com/820x360/EBF8FF/3182CE?text=Environment" alt="Environment Placeholder" className="w-full h-full object-cover opacity-70"/>
+    //     </div>
+    //   ),
+    //    initiativeCount: 1,
+    // },
      {
       id: 'planning', // Corresponds to Governance
       title: 'Good Governance & Civic Engagement',
@@ -181,8 +181,8 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
                   <div className="p-6 flex flex-col">
                     {/* Top section: Title and Description */}
                     <div className="mb-4">
-                        {/* Heading: Underline effect RE-ADDED */}
-                        <h2 className="relative inline-block text-xl sm:text-2xl font-bold text-green-800 whitespace-nowrap overflow-hidden text-ellipsis mb-2 pb-1 /* Added padding-bottom */
+                        {/* Heading: Underline effect restored */}
+                        <h2 className="relative inline-block text-xl sm:text-2xl font-bold text-green-800 whitespace-nowrap overflow-hidden text-ellipsis mb-2 pb-1
                                        after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-amber-600 after:w-0 group-hover:after:w-full after:transition-all after:duration-300 after:ease-out">
                           {theme.title}
                         </h2>
@@ -201,8 +201,8 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
                             {theme.initiativeCount === 1 ? 'Initiative Area Listed' : 'Initiative Areas Listed'}
                         </p>
 
-                        {/* Call to Action: Right Aligned - Standard hover underline REMOVED */}
-                        <span className="inline-flex items-center text-sm font-semibold text-amber-700"> {/* Removed group-hover:underline */}
+                        {/* Call to Action: Right Aligned - No animated underline */}
+                        <span className="inline-flex items-center text-sm font-semibold text-amber-700 group-hover:underline">
                           View Details
                           <ChevronRight className="ml-1 w-4 h-4 transition-transform group-hover:translate-x-1" />
                         </span>

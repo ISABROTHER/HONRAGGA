@@ -26,7 +26,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add('animate-card-enter-zoom'); // Use new animation class
+            entry.target.classList.add('animate-card-enter-zoom'); // Use zoom animation class
             entry.target.classList.remove('opacity-0', 'scale-95'); // Ensure initial state is removed
           }
           // Optional: Remove class if you want animation to repeat when scrolling back up
@@ -63,7 +63,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
   }, []); // Empty dependency array ensures this runs only once on mount
 
 
-  // Array containing the main policy themes (same as previous version)
+  // Array containing the main policy themes
   const themes: PolicyTheme[] = [
     {
       id: 'education',
@@ -71,7 +71,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       title: 'Education & Youth Empowerment',
       shortDescription: 'Supporting quality education, digital literacy, and youth skills training.',
       imageComponent: (
-        <div className="w-full relative overflow-hidden" style={{ aspectRatio: '820 / 360' }}>
+        <div className="w-full relative overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
           <img src="https://i.imgur.com/Ozjnrli.jpeg" alt="Education & Youth Empowerment" className="absolute inset-0 w-full h-full object-cover"/>
         </div>
       ),
@@ -83,7 +83,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       title: 'Health & Sanitation',
       shortDescription: 'Expanding access to healthcare and clean water for all.',
       imageComponent: (
-        <div className="w-full h-48 sm:h-64 bg-yellow-200 flex items-center justify-center" style={{ aspectRatio: '820 / 360' }}>
+        <div className="w-full h-48 sm:h-64 bg-yellow-200 flex items-center justify-center group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
           <Heart className="w-16 h-16 text-gray-400 opacity-50" />
         </div>
       ),
@@ -95,7 +95,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       title: 'Employment & Entrepreneurship',
       shortDescription: 'Creating jobs and empowering local businesses.',
       imageComponent: (
-        <div className="w-full h-48 sm:h-64 bg-green-200 flex items-center justify-center" style={{ aspectRatio: '820 / 360' }}>
+        <div className="w-full h-48 sm:h-64 bg-green-200 flex items-center justify-center group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
           <Users className="w-16 h-16 text-gray-400 opacity-50" />
         </div>
       ),
@@ -107,7 +107,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       title: 'Infrastructure Development',
       shortDescription: 'Improving roads, electrification, and connectivity.',
       imageComponent: (
-        <div className="w-full relative overflow-hidden" style={{ aspectRatio: '820 / 360' }}>
+        <div className="w-full relative overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
           <img src="https://i.imgur.com/AZqDymE.jpeg" alt="Infrastructure Development" className="absolute inset-0 w-full h-full object-cover"/>
         </div>
       ),
@@ -119,7 +119,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       title: 'Agriculture & Rural Growth',
       shortDescription: 'Supporting farmers with tools, training, and market access.',
       imageComponent: (
-         <div className="w-full relative overflow-hidden" style={{ aspectRatio: '820 / 360' }}>
+         <div className="w-full relative overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
           <img src="https://i.imgur.com/TZ4jIJA.jpeg" alt="Agriculture & Rural Growth" className="absolute inset-0 w-full h-full object-cover"/>
         </div>
       ),
@@ -131,7 +131,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       title: 'Social Welfare & Gender Equity',
       shortDescription: 'Empowering women, youth, and vulnerable groups.',
       imageComponent: (
-        <div className="w-full h-48 sm:h-64 bg-green-200 flex items-center justify-center" style={{ aspectRatio: '820 / 360' }}>
+        <div className="w-full h-48 sm:h-64 bg-green-200 flex items-center justify-center group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
            <Handshake className="w-16 h-16 text-gray-400 opacity-50" />
         </div>
       ),
@@ -143,7 +143,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       title: 'Environment & Climate Action',
       shortDescription: 'Protecting our land, water, and natural heritage.',
       imageComponent: (
-        <div className="w-full h-48 sm:h-64 bg-red-200 flex items-center justify-center" style={{ aspectRatio: '820 / 360' }}>
+        <div className="w-full h-48 sm:h-64 bg-red-200 flex items-center justify-center group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
           <Leaf className="w-16 h-16 text-gray-400 opacity-50" />
         </div>
       ),
@@ -155,7 +155,7 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
       title: 'Good Governance & Civic Engagement',
       shortDescription: 'Promoting transparency, accountability, and participation.',
       imageComponent: (
-         <div className="w-full relative overflow-hidden" style={{ aspectRatio: '820 / 360' }}>
+         <div className="w-full relative overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
            <img src="https://i.imgur.com/NSWtjdU.jpeg" alt="Good Governance & Civic Engagement" className="absolute inset-0 w-full h-full object-cover"/>
          </div>
       ),
@@ -191,23 +191,28 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
                   // Added delay based on index for staggered effect
                   style={{ transitionDelay: `${index * 100}ms` }}
                 >
-                  {/* Image/Placeholder Component */}
-                  {theme.imageComponent}
+                  {/* Image/Placeholder Component - Wrapped div for hover effect */}
+                  <div className="overflow-hidden"> {/* Added overflow-hidden */}
+                    {theme.imageComponent}
+                  </div>
 
                   {/* Content Area */}
                   <div className="p-6">
-                    <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-2 flex items-center">
+                    {/* Added whitespace-nowrap and responsive font size */}
+                    <h2 className="text-lg sm:text-xl font-semibold text-gray-800 mb-2 flex items-center whitespace-nowrap overflow-hidden text-ellipsis">
                       <Icon className="w-5 h-5 mr-2 text-green-700 flex-shrink-0" />
                       {theme.title}
                     </h2>
-                    <p className="text-gray-600 text-sm sm:text-base leading-relaxed mb-3">
+                    <p className="text-gray-600 text-sm sm:text-base leading-relaxed mb-2"> {/* Adjusted margin */}
                       {theme.shortDescription}
                     </p>
+                    {/* Updated Initiative Count Text */}
                     <p className="text-xs text-gray-500 font-medium mb-3">
-                       {theme.initiativeCount} {theme.initiativeCount === 1 ? 'Key Initiative Area' : 'Key Initiative Areas'} Detailed
+                       Explore {theme.initiativeCount} {theme.initiativeCount === 1 ? 'Key Area' : 'Key Areas'}
                     </p>
+                    {/* Updated Call to Action Text */}
                     <span className="inline-flex items-center text-sm font-medium text-green-700 group-hover:underline">
-                      Learn More
+                      View Details
                       <ChevronRight className="ml-1 w-4 h-4 transition-transform group-hover:translate-x-1" />
                     </span>
                   </div>
@@ -236,12 +241,11 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
         </div>
       </section>
 
-      {/* CSS for the NEW zoom animation */}
+      {/* CSS for the zoom animation */}
       <style>{`
-        /* Removed the old animate-card-enter class */
         .animate-card-enter-zoom {
           opacity: 1;
-          transform: scale(1); /* Change from translateY(0) to scale(1) */
+          transform: scale(1);
         }
       `}</style>
     </div>

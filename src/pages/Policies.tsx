@@ -1,15 +1,16 @@
 import { useEffect, useRef } from 'react'; // Import hooks for animation
-import { BookOpen, Heart, Users, Building, Wheat, Handshake, Leaf, Landmark, ChevronRight } from 'lucide-react'; // Removed CheckCircle import
+// Removed specific icon imports as they are no longer used next to titles
+import { ChevronRight, CheckCircle } from 'lucide-react';
 
 // Define the structure for each *main* policy theme
 interface PolicyTheme {
   id: string; // Unique identifier (used for navigation)
-  icon: React.ElementType;
+  // Removed icon property as it's no longer used next to the title
   title: string;
   shortDescription: string;
   imageComponent: React.ReactNode; // Holds either a div with color or an img tag
   initiativeCount: number; // Based on detailed text sections
-  // Removed keyInitiatives array
+  keyInitiatives: string[]; // List of initiatives
 }
 
 // Props interface including the navigation function from App.tsx
@@ -56,11 +57,10 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
   }, []);
 
 
-  // Array containing the main policy themes (keyInitiatives array removed)
+  // Array containing the main policy themes (icon property removed)
   const themes: PolicyTheme[] = [
     {
       id: 'education',
-      icon: BookOpen,
       title: 'Education & Youth Empowerment',
       shortDescription: 'Supporting quality education, digital literacy, and youth skills training.',
       imageComponent: (
@@ -69,34 +69,43 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
         </div>
       ),
       initiativeCount: 3,
+      keyInitiatives: [
+          "Donated 500 LED bulbs to Adisadel College",
+          "Provided 100 dual desks to 10 schools",
+      ]
     },
     {
       id: 'health',
-      icon: Heart,
       title: 'Health & Sanitation',
       shortDescription: 'Expanding access to healthcare and clean water for all.',
       imageComponent: (
         <div className="w-full h-48 sm:h-64 bg-blue-100 flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
-          <Heart className="w-16 h-16 text-blue-300 opacity-70" />
+          <img src="https://via.placeholder.com/820x360/EBF8FF/3182CE?text=Health+%26+Sanitation" alt="Health & Sanitation Placeholder" className="w-full h-full object-cover opacity-70"/> {/* Using placeholder image */}
         </div>
       ),
       initiativeCount: 2,
+      keyInitiatives: [
+          "Supported Kwaprow & Dankwakrom health centers",
+          "Constructed public toilets & sanitation manholes",
+      ]
     },
     {
       id: 'entrepreneurship',
-      icon: Users,
       title: 'Employment & Entrepreneurship',
       shortDescription: 'Creating jobs and empowering local businesses.',
       imageComponent: (
         <div className="w-full h-48 sm:h-64 bg-blue-100 flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
-          <Users className="w-16 h-16 text-blue-300 opacity-70" />
+           <img src="https://via.placeholder.com/820x360/EBF8FF/3182CE?text=Employment+%26+Entrepreneurship" alt="Employment Placeholder" className="w-full h-full object-cover opacity-70"/> {/* Using placeholder image */}
         </div>
       ),
       initiativeCount: 2,
+       keyInitiatives: [
+          "Advocating factory revival for job creation",
+          "Recognized for entrepreneurship focus",
+      ]
     },
     {
       id: 'infrastructure',
-      icon: Building,
       title: 'Infrastructure Development',
       shortDescription: 'Improving roads, electrification, and connectivity.',
       imageComponent: (
@@ -105,10 +114,13 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
         </div>
       ),
       initiativeCount: 3,
+       keyInitiatives: [
+          "Installed over 2,500 streetlights ('Operation Light Up')",
+          "Secured 10km of asphalted roads allocation",
+      ]
     },
     {
       id: 'agriculture',
-      icon: Wheat,
       title: 'Agriculture & Rural Growth',
       shortDescription: 'Supporting farmers with tools, training, and market access.',
       imageComponent: (
@@ -117,34 +129,43 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
         </div>
       ),
        initiativeCount: 1,
+       keyInitiatives: [
+           "Provided essential tools & training",
+           "Improved market access strategies",
+       ]
     },
      {
       id: 'community',
-      icon: Handshake,
       title: 'Social Welfare & Gender Equity',
       shortDescription: 'Empowering women, youth, and vulnerable groups.',
       imageComponent: (
         <div className="w-full h-48 sm:h-64 bg-blue-100 flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
-           <Handshake className="w-16 h-16 text-blue-300 opacity-70" />
+           <img src="https://via.placeholder.com/820x360/EBF8FF/3182CE?text=Social+Welfare" alt="Social Welfare Placeholder" className="w-full h-full object-cover opacity-70"/> {/* Using placeholder image */}
         </div>
       ),
       initiativeCount: 3,
+       keyInitiatives: [
+          "Donated 3 months' salary to support constituents",
+          "Organized leadership summits & mentorship",
+       ]
     },
     {
       id: 'environment',
-      icon: Leaf,
       title: 'Environment & Climate Action',
       shortDescription: 'Protecting our land, water, and natural heritage.',
       imageComponent: (
         <div className="w-full h-48 sm:h-64 bg-blue-100 flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
-          <Leaf className="w-16 h-16 text-blue-300 opacity-70" />
+           <img src="https://via.placeholder.com/820x360/EBF8FF/3182CE?text=Environment" alt="Environment Placeholder" className="w-full h-full object-cover opacity-70"/> {/* Using placeholder image */}
         </div>
       ),
        initiativeCount: 1,
+       keyInitiatives: [
+           "Championed protection of land & water resources",
+           "Advocated for environmental sustainability",
+       ]
     },
      {
       id: 'planning', // Corresponds to Governance
-      icon: Landmark,
       title: 'Good Governance & Civic Engagement',
       shortDescription: 'Promoting transparency, accountability, and participation.',
       imageComponent: (
@@ -153,6 +174,10 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
          </div>
       ),
       initiativeCount: 1,
+       keyInitiatives: [
+          "Launched Cape Coast 8-Year Development Plan",
+          "Promoted intentional planning & heritage revival",
+      ]
     },
   ];
 
@@ -173,12 +198,11 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
            <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 md:gap-10">
             {themes.map((theme, index) => {
-              const Icon = theme.icon;
+              // Removed const Icon = theme.icon;
               return (
                 <button
                   key={theme.id}
                   onClick={() => onSelectTheme(theme.id)}
-                  // Styling remains the same
                   className={`group bg-white rounded-xl shadow-md overflow-hidden border border-gray-200 hover:shadow-2xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 transition-all duration-500 ease-out text-left transform hover:border-blue-300`}
                   style={{ transitionDelay: `${index * 100}ms` }}
                 >
@@ -188,25 +212,39 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
                   </div>
 
                   {/* Content Area */}
-                  <div className="p-6 space-y-3"> {/* Adjusted spacing */}
-                    {/* Heading */}
-                    <h2 className="text-xl sm:text-2xl font-bold text-green-800 flex items-center whitespace-nowrap overflow-hidden text-ellipsis">
-                      <Icon className="w-6 h-6 mr-3 text-blue-700 flex-shrink-0" />
-                      {theme.title}
-                    </h2>
-                    <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
-                      {theme.shortDescription}
-                    </p>
+                  <div className="p-6 flex flex-col">
+                    {/* Top section: Title and Description */}
+                    <div className="mb-4">
+                        {/* Heading: Icon removed */}
+                        <h2 className="text-xl sm:text-2xl font-bold text-green-800 whitespace-nowrap overflow-hidden text-ellipsis mb-2">
+                          {theme.title}
+                        </h2>
+                        <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
+                          {theme.shortDescription}
+                        </p>
+                    </div>
 
-                    {/* Removed the Key Initiatives list section */}
+                    {/* Middle section: Initiatives List */}
+                    <div className="pt-1 mb-4">
+                      <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Key Initiatives Listed</h3>
+                      <ul className="space-y-1.5">
+                          {theme.keyInitiatives.slice(0, 2).map((initiative, i) => (
+                              <li key={i} className="flex items-start text-sm text-gray-700">
+                                  <CheckCircle className="w-4 h-4 mr-2 mt-0.5 text-amber-600 flex-shrink-0" />
+                                  <span>{initiative}</span>
+                              </li>
+                          ))}
+                      </ul>
+                    </div>
 
-                     {/* Initiative Count */}
-                    <p className="text-xs text-gray-500 font-medium pt-1"> {/* Removed mb-4 */}
-                       <span className="font-bold">{theme.initiativeCount}</span> {theme.initiativeCount === 1 ? 'Initiative & Achievement Area Listed' : 'Initiatives & Achievements Listed'}
-                    </p>
+                    {/* Bottom section: Count and View Details */}
+                    <div className="mt-auto flex justify-between items-center pt-2">
+                        {/* Initiative Count */}
+                        <p className="text-xs text-gray-500 font-medium">
+                           <span className="font-bold">{theme.initiativeCount}</span> {theme.initiativeCount === 1 ? 'Initiative Area Listed' : 'Initiative Areas Listed'}
+                        </p>
 
-                    {/* Call to Action */}
-                    <div className="pt-1">
+                        {/* Call to Action: Right Aligned */}
                         <span className="inline-flex items-center text-sm font-semibold text-amber-700 group-hover:underline">
                           View Details
                           <ChevronRight className="ml-1 w-4 h-4 transition-transform group-hover:translate-x-1" />

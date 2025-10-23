@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { School, Briefcase, Award, Landmark, CheckSquare, Users, Star, Eye, BarChart3, GraduationCap, MapPin, User, Smile, Briefcase as DesignationIcon, Megaphone, Flag } from 'lucide-react'; // Added Flag
+import { School, Briefcase, Award, Landmark, CheckSquare, Users, Star, Eye, BarChart3, GraduationCap, MapPin, User, Smile, Briefcase as DesignationIcon, Megaphone, Flag } from 'lucide-react';
 
 // Helper component for animated sections
 const AnimatedSection = ({ children, delay = 0 }: { children: React.ReactNode, delay?: number }) => {
@@ -92,7 +92,7 @@ export function About() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Hero Section - Just an image */}
+      {/* Hero Section - Image with Gradient and Text */}
       <section className="relative w-full h-auto min-h-[250px] md:min-h-[400px] lg:min-h-[500px] overflow-hidden flex items-end">
         <img
           src={heroImageUrl}
@@ -120,14 +120,14 @@ export function About() {
         {/* Section 1: Profile Grid */}
         <AnimatedSection>
           <h2 className="text-3xl font-bold text-green-800 mb-6 border-b-2 border-amber-500 pb-2 inline-block">Profile</h2>
-          {/* Reordered items, removed Nickname and Nationality */}
+          {/* Reordered items, added Nationality */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                 <ProfileItem icon={User} label="Full Name" value="Hon. Dr. Kwamena Minta Nyarku, PhD" />
-                <ProfileItem icon={DesignationIcon} label="Designation" value="MP for Cape Coast North" />
-                <ProfileItem icon={Megaphone} label="Slogan" value="Obiara Ka Ho (Everyone is involved)" />
-                <ProfileItem icon={MapPin} label="Place of Birth" value="Apewosika, Cape Coast" />
+                <ProfileItem icon={Smile} label="Nickname" value="Ragga" />
                 <ProfileItem icon={Flag} label="Nationality" value="Ghanaian" />
-                {/* Nickname Removed */}
+                <ProfileItem icon={DesignationIcon} label="Designation" value="MP for Cape Coast North" />
+                <ProfileItem icon={MapPin} label="Place of Birth" value="Apewosika, Cape Coast" />
+                <ProfileItem icon={Megaphone} label="Slogan" value="Obiara Ka Ho (Everyone is involved)" />
           </div>
            {/* Paragraph REMOVED */}
         </AnimatedSection>

@@ -1,406 +1,212 @@
-import { useState } from 'react';
-import { Users, Heart, Phone, Mail, DollarSign, CreditCard } from 'lucide-react';
-import { supabase } from '../lib/supabase';
+import { ArrowRight, Tool, Zap, Code, Landmark, GraduationCap, Banknote, BarChart3, TrendingUp, Handshake } from 'lucide-react';
 import { Button } from '../components/Button';
 
+// Note: Removed old imports (useState, useEffect, supabase, etc.) as the page is now static content.
+
+// Define the structure for the program pillars
+interface ProgramPillar {
+  title: string;
+  subtitle: string;
+  icon: React.ElementType;
+  description: string;
+}
+
+const programs: ProgramPillar[] = [
+  {
+    title: 'Cape Works Initiative (CWI)',
+    subtitle: 'Youth working, Cape Coast shining.',
+    icon: Tool,
+    description: 'Scaling vocational skills and practical employment programs for immediate job access.',
+  },
+  {
+    title: 'Cape Innovates Accelerator (CIA)',
+    subtitle: 'Turning local ideas into global businesses.',
+    icon: Zap,
+    description: 'Providing seed funding, intensive mentorship, and tech incubation space for high-potential startups.',
+  },
+  {
+    title: 'Digital Cape Project (DCP)',
+    subtitle: 'Train local, work global.',
+    icon: Code,
+    description: 'Comprehensive training in digital literacy, coding, and remote work, leading to global job placement.',
+  },
+  {
+    title: 'Heritage Jobs 360 (HJ360)',
+    subtitle: 'Our history, our hustle.',
+    icon: Landmark,
+    description: 'Creating sustainable employment in revitalized tourism, arts, cultural preservation, and hospitality sectors.',
+  },
+  {
+    title: 'Classroom to Career (C2C)',
+    subtitle: 'No graduate left idle.',
+    icon: GraduationCap,
+    description: 'Bridging education with industry through targeted internships, career guidance, and robust employment partnerships.',
+  },
+  {
+    title: 'CCNYDF - Youth Development Fund',
+    subtitle: 'Financial fuel for youth dreams.',
+    icon: Banknote,
+    description: 'A self-sustaining public trust fund providing micro-loans and grants to support youth-led business startups.',
+  },
+  {
+    title: 'Cape Impact Dashboard (CID)',
+    subtitle: 'Transparency and tracking for every goal.',
+    icon: BarChart3,
+    description: 'A public-facing dashboard to monitor employment metrics, fund usage, and real-time program outcomes transparently.',
+  },
+];
+
+// Custom Colors based on user request: Deep Blue (#002B5B) and Orange Accent (#FF6B00)
+const DeepBlue = '#002B5B';
+const OrangeAccent = '#FF6B00';
+
 export function Volunteer() {
-  const [activeTab, setActiveTab] = useState<'volunteer' | 'donate'>('volunteer');
-  const [volunteerForm, setVolunteerForm] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    interests: '',
-    availability: ''
-  });
-  const [contactForm, setContactForm] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
-  });
-  const [submitting, setSubmitting] = useState(false);
-  const [message, setMessage] = useState('');
-
-  const handleVolunteerSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitting(true);
-    setMessage('');
-
-    try {
-      const { error } = await supabase
-        .from('volunteer_signups')
-        .insert([volunteerForm]);
-
-      if (error) throw error;
-
-      setMessage('Thank you for volunteering! We will be in touch soon.');
-      setVolunteerForm({ name: '', email: '', phone: '', interests: '', availability: '' });
-    } catch (error: any) {
-      setMessage('Something went wrong. Please try again.');
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  const handleContactSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitting(true);
-    setMessage('');
-
-    try {
-      const { error } = await supabase
-        .from('contact_messages')
-        .insert([contactForm]);
-
-      if (error) throw error;
-
-      setMessage('Message sent! We will respond as soon as possible.');
-      setContactForm({ name: '', email: '', subject: '', message: '' });
-    } catch (error: any) {
-      setMessage('Something went wrong. Please try again.');
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  const opportunities = [
-    {
-      icon: Phone,
-      title: 'Phone Banking',
-      description: 'Connect with voters and share our message from the comfort of your home'
-    },
-    {
-      icon: Users,
-      title: 'Canvassing',
-      description: 'Meet voters face-to-face in your neighborhood and help spread the word'
-    },
-    {
-      icon: Mail,
-      title: 'Digital Outreach',
-      description: 'Help manage social media, email campaigns, and online engagement'
-    },
-    {
-      icon: Heart,
-      title: 'Event Support',
-      description: 'Assist with organizing and running campaign events and rallies'
-    }
-  ];
-
-  const donationAmounts = [25, 50, 100, 250, 500, 1000];
-
   return (
-    <div className="min-h-screen">
-      <section className="relative bg-gradient-to-br from-blue-950 via-blue-900 to-blue-800 text-white py-20">
+    <div className="min-h-screen bg-white">
+
+      {/* 1. Hero Section */}
+      <section 
+        className="relative py-24 sm:py-32 lg:py-48 text-white animate-fade-in shadow-2xl"
+        style={{ backgroundColor: DeepBlue }}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight mb-4 drop-shadow-lg">
+            CETRA2030 
+          </h1>
+          <p className="text-xl sm:text-2xl font-light mb-8 max-w-4xl mx-auto">
+            <span className="font-semibold" style={{ color: OrangeAccent }}>
+              Cape Coast North Youth Employment Transformation Agenda
+            </span>
+          </p>
+
+          <h2 className="text-2xl sm:text-3xl font-bold mb-6 tracking-wide" style={{ color: OrangeAccent }}>
+            "Every Youth Productive by 2030."
+          </h2>
+
+          <p className="text-lg sm:text-xl font-medium text-blue-100 max-w-3xl mx-auto leading-relaxed mb-10">
+            A bold, integrated strategy to unlock the economic potential of Cape Coast North's youth through skills, innovation, and sustainable financing.
+          </p>
+
+          <Button 
+            variant="secondary" // Maps to a vibrant orange/amber
+            size="lg"
+            className="shadow-xl hover:shadow-2xl transition-shadow"
+            onClick={() => {
+              // Smooth scroll to the programs section
+              document.getElementById('programs-section')?.scrollIntoView({ behavior: 'smooth' });
+            }}
+          >
+            Explore Programs
+            <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+          </Button>
+
+        </div>
+      </section>
+
+      {/* 2. Programs Section */}
+      <section id="programs-section" className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h1 className="text-5xl md:text-6xl font-bold mb-6">Get Involved</h1>
-            <p className="text-xl text-blue-100 max-w-3xl mx-auto leading-relaxed">
-              Your time and support make this campaign possible. Join us in building a better future.
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              The 7 Pillars of CETRA2030
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Focused initiatives designed to cover every aspect of the youth employment ecosystem.
             </p>
           </div>
-        </div>
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent"></div>
-      </section>
-
-      <section className="py-8 bg-white border-b border-gray-200 sticky top-20 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-center space-x-4">
-            <button
-              onClick={() => setActiveTab('volunteer')}
-              className={`px-8 py-3 rounded-lg font-semibold transition-all ${
-                activeTab === 'volunteer'
-                  ? 'bg-blue-900 text-white shadow-lg'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              Volunteer
-            </button>
-            <button
-              onClick={() => setActiveTab('donate')}
-              className={`px-8 py-3 rounded-lg font-semibold transition-all ${
-                activeTab === 'donate'
-                  ? 'bg-blue-900 text-white shadow-lg'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              Donate
-            </button>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+            {programs.map((program, index) => {
+              const Icon = program.icon;
+              return (
+                <div 
+                  key={index} 
+                  className="bg-white rounded-2xl p-8 shadow-xl border border-gray-200 hover:shadow-2xl transition-all duration-300 group hover:-translate-y-1"
+                  style={{ transitionDelay: `${index * 80}ms` }}
+                >
+                  <div 
+                    className="inline-flex items-center justify-center w-14 h-14 rounded-full mb-4 transition-transform group-hover:scale-110"
+                    style={{ backgroundColor: OrangeAccent }} // Icon background
+                  >
+                    <Icon className="w-7 h-7 text-white" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                    {program.title}
+                  </h3>
+                  <p className="font-medium text-lg mb-3" style={{ color: DeepBlue }}>
+                    {program.subtitle}
+                  </p>
+                  <p className="text-gray-600 leading-relaxed text-base">
+                    {program.description}
+                  </p>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
 
-      {activeTab === 'volunteer' ? (
-        <>
-          <section className="py-20 bg-gradient-to-b from-white to-gray-50">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="text-center mb-16">
-                <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                  Volunteer Opportunities
-                </h2>
-                <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                  Find the perfect way to contribute your time and skills
-                </p>
-              </div>
-
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-                {opportunities.map(({ icon: Icon, title, description }) => (
-                  <div
-                    key={title}
-                    className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all border border-gray-200 text-center group"
-                  >
-                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-100 text-blue-900 mb-4 group-hover:scale-110 transition-transform">
-                      <Icon className="w-8 h-8" />
-                    </div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">
-                      {title}
-                    </h3>
-                    <p className="text-gray-600 text-sm leading-relaxed">
-                      {description}
-                    </p>
-                  </div>
-                ))}
-              </div>
-
-              <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-2xl p-8 border border-gray-200">
-                <h3 className="text-2xl font-bold text-gray-900 mb-6">
-                  Sign Up to Volunteer
-                </h3>
-
-                <form onSubmit={handleVolunteerSubmit} className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Full Name *
-                    </label>
-                    <input
-                      type="text"
-                      value={volunteerForm.name}
-                      onChange={(e) => setVolunteerForm({ ...volunteerForm, name: e.target.value })}
-                      required
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Email *
-                    </label>
-                    <input
-                      type="email"
-                      value={volunteerForm.email}
-                      onChange={(e) => setVolunteerForm({ ...volunteerForm, email: e.target.value })}
-                      required
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Phone *
-                    </label>
-                    <input
-                      type="tel"
-                      value={volunteerForm.phone}
-                      onChange={(e) => setVolunteerForm({ ...volunteerForm, phone: e.target.value })}
-                      required
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Areas of Interest
-                    </label>
-                    <textarea
-                      value={volunteerForm.interests}
-                      onChange={(e) => setVolunteerForm({ ...volunteerForm, interests: e.target.value })}
-                      rows={3}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
-                      placeholder="What activities interest you most?"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Availability
-                    </label>
-                    <textarea
-                      value={volunteerForm.availability}
-                      onChange={(e) => setVolunteerForm({ ...volunteerForm, availability: e.target.value })}
-                      rows={3}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
-                      placeholder="When are you available to volunteer?"
-                    />
-                  </div>
-
-                  {message && (
-                    <div className={`p-4 rounded-lg ${message.includes('Thank') ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                      {message}
-                    </div>
-                  )}
-
-                  <Button
-                    type="submit"
-                    variant="primary"
-                    disabled={submitting}
-                    className="w-full"
-                    size="lg"
-                  >
-                    {submitting ? 'Submitting...' : 'Sign Up to Volunteer'}
-                  </Button>
-                </form>
-              </div>
-            </div>
-          </section>
-
-          <section className="py-20 bg-white">
-            <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="bg-white rounded-2xl shadow-2xl p-8 border border-gray-200">
-                <h3 className="text-2xl font-bold text-gray-900 mb-6">
-                  Contact Us
-                </h3>
-
-                <form onSubmit={handleContactSubmit} className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Name *
-                    </label>
-                    <input
-                      type="text"
-                      value={contactForm.name}
-                      onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
-                      required
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Email *
-                    </label>
-                    <input
-                      type="email"
-                      value={contactForm.email}
-                      onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
-                      required
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Subject *
-                    </label>
-                    <input
-                      type="text"
-                      value={contactForm.subject}
-                      onChange={(e) => setContactForm({ ...contactForm, subject: e.target.value })}
-                      required
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Message *
-                    </label>
-                    <textarea
-                      value={contactForm.message}
-                      onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
-                      required
-                      rows={5}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
-                    />
-                  </div>
-
-                  {message && (
-                    <div className={`p-4 rounded-lg ${message.includes('sent') ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                      {message}
-                    </div>
-                  )}
-
-                  <Button
-                    type="submit"
-                    variant="primary"
-                    disabled={submitting}
-                    className="w-full"
-                    size="lg"
-                  >
-                    {submitting ? 'Sending...' : 'Send Message'}
-                  </Button>
-                </form>
-              </div>
-            </div>
-          </section>
-        </>
-      ) : (
-        <section className="py-20 bg-gradient-to-b from-white to-gray-50">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                Support Our Campaign
-              </h2>
-              <p className="text-xl text-gray-600">
-                Your donation helps us reach more voters and build a stronger movement
+      {/* 3. Vision & Mission Section */}
+      <section className="py-20" style={{ backgroundColor: DeepBlue }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-white">
+          <div className="grid md:grid-cols-2 gap-12">
+            
+            {/* Vision */}
+            <div className="p-8 rounded-2xl border-2 border-blue-700 shadow-xl">
+              <h3 className="text-3xl font-bold mb-4" style={{ color: OrangeAccent }}>
+                Our Vision
+              </h3>
+              <p className="text-xl font-light leading-relaxed">
+                To make every youth in Cape Coast North **employable, empowered, or earning** by 2030.
               </p>
             </div>
 
-            <div className="bg-white rounded-2xl shadow-2xl p-8 border border-gray-200">
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
-                {donationAmounts.map((amount) => (
-                  <button
-                    key={amount}
-                    className="px-6 py-4 border-2 border-gray-300 rounded-lg font-semibold text-gray-900 hover:border-blue-500 hover:bg-blue-50 transition-all"
-                  >
-                    ${amount}
-                  </button>
-                ))}
-              </div>
-
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Custom Amount
-                </label>
-                <div className="relative">
-                  <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                  <input
-                    type="number"
-                    min="1"
-                    placeholder="Enter amount"
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
-                  />
-                </div>
-              </div>
-
-              <div className="bg-amber-50 border border-amber-200 rounded-lg p-6 mb-8">
-                <div className="flex items-start space-x-3">
-                  <CreditCard className="w-6 h-6 text-amber-600 flex-shrink-0 mt-1" />
-                  <div>
-                    <h3 className="font-semibold text-amber-900 mb-2">
-                      Stripe Integration Ready
-                    </h3>
-                    <p className="text-sm text-amber-800 leading-relaxed">
-                      This campaign accepts secure donations via Stripe. Payment processing will be enabled once you connect your Stripe account. Federal contribution limits apply: $3,300 per election.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <Button
-                variant="secondary"
-                size="lg"
-                className="w-full"
-                onClick={() => alert('Stripe payment integration required. This is a demo placeholder.')}
-              >
-                Contribute Now
-              </Button>
-
-              <p className="text-xs text-gray-500 text-center mt-4">
-                Contributions are not tax-deductible. By contributing, you certify that you are a U.S. citizen or permanent resident, and this contribution is made from your own funds.
+            {/* Mission */}
+            <div className="p-8 rounded-2xl border-2 border-blue-700 shadow-xl">
+              <h3 className="text-3xl font-bold mb-4" style={{ color: OrangeAccent }}>
+                Our Mission
+              </h3>
+              <p className="text-xl font-light leading-relaxed">
+                To build a **self-sustaining youth economy** through innovation, advanced skills training, and entrepreneurship support.
               </p>
             </div>
+
           </div>
-        </section>
-      )}
+        </div>
+      </section>
+
+      {/* 4. Call-to-Action Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-4xl font-bold text-gray-900 mb-6">
+            Join the CETRA2030 Movement
+          </h2>
+          <p className="text-xl text-gray-600 mb-10 leading-relaxed">
+            CETRA2030 is a movement, not just a plan. We call upon corporate partners, NGOs, diaspora investors, and volunteers to help us build a productive future for our youth. Your investment is an investment in Cape Coast North.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button
+              size="lg"
+              variant="secondary" // Use secondary for the OrangeAccent look
+              className="shadow-lg hover:shadow-xl"
+              onClick={() => {/* Placeholder: Navigate to a Contact or Partnership page */}}
+            >
+              Partner With Us
+              <Handshake className="ml-2 w-5 h-5 group-hover:translate-x-0 transition-transform" />
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="border-blue-900 text-blue-900 hover:text-white hover:bg-blue-900"
+              onClick={() => {/* Placeholder: Navigate to Impact Dashboard page */}}
+            >
+              See Impact Dashboard
+              <TrendingUp className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </Button>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

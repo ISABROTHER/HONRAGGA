@@ -258,7 +258,7 @@ export function Events() {
                     setMessage('');
                   }}
                   className="flex-1"
-                > 
+                >
                   Cancel
                 </Button>
                 <Button
@@ -268,7 +268,7 @@ export function Events() {
                   className="flex-1"
                 >
                   {submitting ? 'Submitting...' : 'Confirm RSVP'}
-                </Button>
+                </Button> 
               </div>
             </form>
           </div>

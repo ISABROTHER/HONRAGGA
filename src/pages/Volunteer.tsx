@@ -397,7 +397,7 @@ export function Volunteer() {
               <p className="text-xs text-gray-500 text-center mt-4">
                 Contributions are not tax-deductible. By contributing, you certify that you are a U.S. citizen or permanent resident, and this contribution is made from your own funds.
               </p>
-            </div> 
+            </div>
           </div>
         </section>
       )}

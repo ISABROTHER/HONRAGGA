@@ -1,279 +1,210 @@
-import { useState, useEffect } from 'react';
-import { Calendar, MapPin, Users, Clock } from 'lucide-react';
-import { supabase } from '../lib/supabase';
+import { ArrowRight, Tool, Zap, Code, Landmark, GraduationCap, Banknote, BarChart3, TrendingUp, Handshake } from 'lucide-react';
 import { Button } from '../components/Button';
-import type { Database } from '../lib/database.types';
 
-type Event = Database['public']['Tables']['events']['Row'];
+// Define the structure for the program pillars
+interface ProgramPillar {
+  title: string;
+  subtitle: string;
+  icon: React.ElementType;
+  description: string;
+}
+
+const programs: ProgramPillar[] = [
+  {
+    title: 'Cape Works Initiative (CWI)',
+    subtitle: 'Youth working, Cape Coast shining.',
+    icon: Tool,
+    description: 'Scaling vocational skills and practical employment programs for immediate job access.',
+  },
+  {
+    title: 'Cape Innovates Accelerator (CIA)',
+    subtitle: 'Turning local ideas into global businesses.',
+    icon: Zap,
+    description: 'Providing seed funding, intensive mentorship, and tech incubation space for high-potential startups.',
+  },
+  {
+    title: 'Digital Cape Project (DCP)',
+    subtitle: 'Train local, work global.',
+    icon: Code,
+    description: 'Comprehensive training in digital literacy, coding, and remote work, leading to global job placement.',
+  },
+  {
+    title: 'Heritage Jobs 360 (HJ360)',
+    subtitle: 'Our history, our hustle.',
+    icon: Landmark,
+    description: 'Creating sustainable employment in revitalized tourism, arts, cultural preservation, and hospitality sectors.',
+  },
+  {
+    title: 'Classroom to Career (C2C)',
+    subtitle: 'No graduate left idle.',
+    icon: GraduationCap,
+    description: 'Bridging education with industry through targeted internships, career guidance, and robust employment partnerships.',
+  },
+  {
+    title: 'CCNYDF - Youth Development Fund',
+    subtitle: 'Financial fuel for youth dreams.',
+    icon: Banknote,
+    description: 'A self-sustaining public trust fund providing micro-loans and grants to support youth-led business startups.',
+  },
+  {
+    title: 'Cape Impact Dashboard (CID)',
+    subtitle: 'Transparency and tracking for every goal.',
+    icon: BarChart3,
+    description: 'A public-facing dashboard to monitor employment metrics, fund usage, and real-time program outcomes transparently.',
+  },
+];
+
+// Custom Colors based on user request: Deep Blue (#002B5B) and Orange Accent (#FF6B00)
+const DeepBlue = '#002B5B';
+const OrangeAccent = '#FF6B00';
 
 export function Events() {
-  const [events, setEvents] = useState<Event[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
-  const [rsvpForm, setRsvpForm] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    guests: 0
-  });
-  const [submitting, setSubmitting] = useState(false);
-  const [message, setMessage] = useState('');
-
-  useEffect(() => {
-    fetchEvents();
-  }, []);
-
-  const fetchEvents = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('events')
-        .select('*')
-        .gte('event_date', new Date().toISOString())
-        .order('event_date', { ascending: true });
-
-      if (error) throw error;
-      setEvents(data || []);
-    } catch (error) {
-      console.error('Error fetching events:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleRSVP = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!selectedEvent) return;
-
-    setSubmitting(true);
-    setMessage('');
-
-    try {
-      const { error } = await supabase
-        .from('event_rsvps')
-        .insert([{
-          event_id: selectedEvent.id,
-          ...rsvpForm
-        }]);
-
-      if (error) throw error;
-
-      setMessage('RSVP successful! We look forward to seeing you.');
-      setRsvpForm({ name: '', email: '', phone: '', guests: 0 });
-      setTimeout(() => {
-        setSelectedEvent(null);
-        setMessage('');
-      }, 3000);
-    } catch (error: any) {
-      setMessage('Something went wrong. Please try again.');
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  };
-
-  const formatTime = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleTimeString('en-US', {
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true
-    });
-  };
-
   return (
-    <div className="min-h-screen">
-      <section className="relative bg-gradient-to-br from-blue-950 via-blue-900 to-blue-800 text-white py-20">
+    <div className="min-h-screen bg-white">
+
+      {/* 1. Hero Section */}
+      <section 
+        className="relative py-24 sm:py-32 lg:py-48 text-white animate-fade-in shadow-2xl"
+        style={{ backgroundColor: DeepBlue }}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight mb-4 drop-shadow-lg">
+            CETRA2030 
+          </h1>
+          <p className="text-xl sm:text-2xl font-light mb-8 max-w-4xl mx-auto">
+            <span className="font-semibold" style={{ color: OrangeAccent }}>
+              Cape Coast North Youth Employment Transformation Agenda
+            </span>
+          </p>
+
+          <h2 className="text-2xl sm:text-3xl font-bold mb-6 tracking-wide" style={{ color: OrangeAccent }}>
+            "Every Youth Productive by 2030."
+          </h2>
+
+          <p className="text-lg sm:text-xl font-medium text-blue-100 max-w-3xl mx-auto leading-relaxed mb-10">
+            A bold, integrated strategy to unlock the economic potential of Cape Coast North's youth through skills, innovation, and sustainable financing.
+          </p>
+
+          <Button 
+            variant="secondary" // Maps to a vibrant orange/amber
+            size="lg"
+            className="shadow-xl hover:shadow-2xl transition-shadow"
+            onClick={() => {
+              // Smooth scroll to the programs section
+              document.getElementById('programs-section')?.scrollIntoView({ behavior: 'smooth' });
+            }}
+          >
+            Explore Programs
+            <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+          </Button>
+
+        </div>
+      </section>
+
+      {/* 2. Programs Section */}
+      <section id="programs-section" className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h1 className="text-5xl md:text-6xl font-bold mb-6">Campaign Events</h1>
-            <p className="text-xl text-blue-100 max-w-3xl mx-auto leading-relaxed">
-              Join us at upcoming events and be part of the movement for change
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              The 7 Pillars of CETRA2030
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Focused initiatives designed to cover every aspect of the youth employment ecosystem.
             </p>
           </div>
-        </div>
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent"></div>
-      </section>
-
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {loading ? (
-            <div className="text-center py-12">
-              <div className="inline-block w-16 h-16 border-4 border-blue-900 border-t-transparent rounded-full animate-spin"></div>
-              <p className="mt-4 text-gray-600">Loading events...</p>
-            </div>
-          ) : events.length === 0 ? (
-            <div className="text-center py-12">
-              <Calendar className="w-16 h-16 mx-auto text-gray-400 mb-4" />
-              <p className="text-xl text-gray-600">No upcoming events at this time.</p>
-              <p className="text-gray-500 mt-2">Check back soon for new events!</p>
-            </div>
-          ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {events.map((event) => (
-                <div
-                  key={event.id}
-                  className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 overflow-hidden group"
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+            {programs.map((program, index) => {
+              const Icon = program.icon;
+              return (
+                <div 
+                  key={index} 
+                  className="bg-white rounded-2xl p-8 shadow-xl border border-gray-200 hover:shadow-2xl transition-all duration-300 group hover:-translate-y-1"
+                  style={{ transitionDelay: `${index * 80}ms` }}
                 >
-                  {event.image_url && (
-                    <div className="h-48 bg-gradient-to-br from-blue-200 to-blue-300">
-                      <img
-                        src={event.image_url}
-                        alt={event.title}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  )}
-
-                  <div className="p-6 space-y-4">
-                    <div>
-                      <h3 className="text-2xl font-bold text-gray-900 mb-2 group-hover:text-blue-900 transition-colors">
-                        {event.title}
-                      </h3>
-                      <p className="text-gray-600 leading-relaxed">
-                        {event.description}
-                      </p>
-                    </div>
-
-                    <div className="space-y-2 text-sm">
-                      <div className="flex items-start space-x-2 text-gray-700">
-                        <Calendar className="w-5 h-5 text-blue-900 flex-shrink-0 mt-0.5" />
-                        <span>{formatDate(event.event_date)}</span>
-                      </div>
-                      <div className="flex items-start space-x-2 text-gray-700">
-                        <Clock className="w-5 h-5 text-blue-900 flex-shrink-0 mt-0.5" />
-                        <span>{formatTime(event.event_date)}</span>
-                      </div>
-                      <div className="flex items-start space-x-2 text-gray-700">
-                        <MapPin className="w-5 h-5 text-blue-900 flex-shrink-0 mt-0.5" />
-                        <span>{event.location}</span>
-                      </div>
-                      {event.max_attendees && (
-                        <div className="flex items-center space-x-2 text-gray-700">
-                          <Users className="w-5 h-5 text-blue-900 flex-shrink-0" />
-                          <span>Limited to {event.max_attendees} attendees</span>
-                        </div>
-                      )}
-                    </div>
-
-                    {event.rsvp_enabled && (
-                      <Button
-                        onClick={() => setSelectedEvent(event)}
-                        variant="primary"
-                        className="w-full"
-                      >
-                        RSVP Now
-                      </Button>
-                    )}
+                  <div 
+                    className="inline-flex items-center justify-center w-14 h-14 rounded-full mb-4 transition-transform group-hover:scale-110"
+                    style={{ backgroundColor: OrangeAccent }} // Icon background
+                  >
+                    <Icon className="w-7 h-7 text-white" />
                   </div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                    {program.title}
+                  </h3>
+                  <p className="font-medium text-lg mb-3" style={{ color: DeepBlue }}>
+                    {program.subtitle}
+                  </p>
+                  <p className="text-gray-600 leading-relaxed text-base">
+                    {program.description}
+                  </p>
                 </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
-
-      {selectedEvent && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl">
-            <div className="p-6 border-b border-gray-200">
-              <h2 className="text-2xl font-bold text-gray-900">
-                RSVP for {selectedEvent.title}
-              </h2>
-            </div>
-
-            <form onSubmit={handleRSVP} className="p-6 space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Full Name *
-                </label>
-                <input
-                  type="text"
-                  value={rsvpForm.name}
-                  onChange={(e) => setRsvpForm({ ...rsvpForm, name: e.target.value })}
-                  required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Email *
-                </label>
-                <input
-                  type="email"
-                  value={rsvpForm.email}
-                  onChange={(e) => setRsvpForm({ ...rsvpForm, email: e.target.value })}
-                  required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Phone
-                </label>
-                <input
-                  type="tel"
-                  value={rsvpForm.phone}
-                  onChange={(e) => setRsvpForm({ ...rsvpForm, phone: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Number of Guests
-                </label>
-                <input
-                  type="number"
-                  min="0"
-                  max="10"
-                  value={rsvpForm.guests}
-                  onChange={(e) => setRsvpForm({ ...rsvpForm, guests: parseInt(e.target.value) || 0 })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
-                />
-              </div>
-
-              {message && (
-                <div className={`p-3 rounded-lg ${message.includes('successful') ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                  {message}
-                </div>
-              )}
-
-              <div className="flex space-x-3 pt-4">
-                <Button
-                  type="button"
-                  variant="ghost"
-                  onClick={() => {
-                    setSelectedEvent(null);
-                    setMessage('');
-                  }}
-                  className="flex-1"
-                >
-                  Cancel
-                </Button>
-                <Button
-                  type="submit"
-                  variant="primary"
-                  disabled={submitting}
-                  className="flex-1"
-                >
-                  {submitting ? 'Submitting...' : 'Confirm RSVP'}
-                </Button>
-              </div>
-            </form>
+              );
+            })}
           </div>
         </div>
-      )}
+      </section>
+
+      {/* 3. Vision & Mission Section */}
+      <section className="py-20" style={{ backgroundColor: DeepBlue }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-white">
+          <div className="grid md:grid-cols-2 gap-12">
+            
+            {/* Vision */}
+            <div className="p-8 rounded-2xl border-2 border-blue-700 shadow-xl">
+              <h3 className="text-3xl font-bold mb-4" style={{ color: OrangeAccent }}>
+                Our Vision
+              </h3>
+              <p className="text-xl font-light leading-relaxed">
+                To make every youth in Cape Coast North **employable, empowered, or earning** by 2030.
+              </p>
+            </div>
+
+            {/* Mission */}
+            <div className="p-8 rounded-2xl border-2 border-blue-700 shadow-xl">
+              <h3 className="text-3xl font-bold mb-4" style={{ color: OrangeAccent }}>
+                Our Mission
+              </h3>
+              <p className="text-xl font-light leading-relaxed">
+                To build a **self-sustaining youth economy** through innovation, advanced skills training, and entrepreneurship support.
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* 4. Call-to-Action Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-4xl font-bold text-gray-900 mb-6">
+            Join the CETRA2030 Movement
+          </h2>
+          <p className="text-xl text-gray-600 mb-10 leading-relaxed">
+            CETRA2030 is a movement, not just a plan. We call upon corporate partners, NGOs, diaspora investors, and volunteers to help us build a productive future for our youth. Your investment is an investment in Cape Coast North.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button
+              size="lg"
+              variant="secondary" // Use secondary for the OrangeAccent look
+              className="shadow-lg hover:shadow-xl"
+              onClick={() => {/* Placeholder: Navigate to Volunteer page or Contact section */}}
+            >
+              Partner With Us
+              <Handshake className="ml-2 w-5 h-5 group-hover:translate-x-0 transition-transform" />
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="border-blue-900 text-blue-900 hover:text-white hover:bg-blue-900"
+              onClick={() => {/* Placeholder: Navigate to Impact Dashboard page */}}
+            >
+              See Impact Dashboard
+              <TrendingUp className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </Button>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

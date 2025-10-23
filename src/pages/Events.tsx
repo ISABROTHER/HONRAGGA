@@ -264,7 +264,7 @@ export function Events() {
                 <Button
                   type="submit"
                   variant="primary"
-                  disabled={submitting} 
+                  disabled={submitting}
                   className="flex-1"
                 >
                   {submitting ? 'Submitting...' : 'Confirm RSVP'}

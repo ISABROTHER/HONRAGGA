@@ -104,17 +104,16 @@ export function About() {
       {/* Main Content Sections */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20 space-y-16">
 
-        {/* Section 1: Profile Grid */}
+        {/* Section 1: Profile Grid - Reordered, Nationality added, Intro Para removed */}
         <AnimatedSection>
           <h2 className="text-3xl font-bold text-green-800 mb-6 border-b-2 border-amber-500 pb-2 inline-block">Profile</h2>
-          {/* Reordered Profile Items, Added Nationality, Removed Nickname */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                 <ProfileItem icon={User} label="Full Name" value="Hon. Dr. Kwamena Minta Nyarku, PhD" />
-                <ProfileItem icon={Smile} label="Nickname" value="Ragga" />
-                <ProfileItem icon={Flag} label="Nationality" value="Ghanaian" />
                 <ProfileItem icon={DesignationIcon} label="Designation" value="MP for Cape Coast North" />
-                <ProfileItem icon={MapPin} label="Place of Birth" value="Apewosika, Cape Coast" />
                 <ProfileItem icon={Megaphone} label="Slogan" value="Obiara Ka Ho (Everyone is involved)" />
+                <ProfileItem icon={MapPin} label="Place of Birth" value="Apewosika, Cape Coast" />
+                <ProfileItem icon={Flag} label="Nationality" value="Ghanaian" /> {/* Added Nationality */}
+                {/* Nickname Removed */}
           </div>
            {/* Paragraph REMOVED */}
         </AnimatedSection>
@@ -132,14 +131,12 @@ export function About() {
                     <tbody>
                         {educationData.map((edu, index) => (
                             <tr key={edu.institution} className={`${index % 2 === 0 ? 'bg-white' : 'bg-blue-50'} border-b border-gray-100 last:border-b-0 hover:bg-gray-50`}>
-                                {/* Updated TD structure */}
+                                {/* Updated TD structure for line break */}
                                 <td className="px-6 py-3">
-                                    {/* Institution on its own line */}
                                     <span className="font-medium text-gray-900 block">{edu.institution}</span>
-                                    {/* Qualification and Year on the next line */}
-                                    <div className="mt-1"> {/* Add small margin-top */}
-                                        <span className="text-gray-600 mr-4">Qualification: <span className="font-medium">{edu.qualification}</span></span>
-                                        <span className="text-gray-600">Year: <span className="font-medium">{getYear(edu.completed)}</span></span>
+                                    <div className="mt-1 text-gray-600"> {/* Div ensures Qualification and Year are grouped */}
+                                        <span className="mr-4">Qualification: <span className="font-medium">{edu.qualification}</span></span>
+                                        <span>Year: <span className="font-medium">{getYear(edu.completed)}</span></span>
                                     </div>
                                 </td>
                             </tr>
@@ -176,48 +173,48 @@ export function About() {
         <AnimatedSection delay={300}>
             <h2 className="text-3xl font-bold text-green-800 mb-6 border-b-2 border-amber-500 pb-2 inline-block">Service in Parliament</h2>
             <div className="space-y-6">
-               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                  {/* Elected MP - Updated with Election Results inline */}
-                  <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-start shadow-sm">
-                      <CheckSquare className="w-6 h-6 text-blue-700 mr-3 mt-1 flex-shrink-0"/>
-                      <div>
-                          <h4 className="font-semibold text-blue-900 mb-1">Elected MP (Cape Coast North)</h4>
-                          <ul className="list-none space-y-1 mb-3">
-                              {electionResults.map(result => (
-                                  <li key={result.year} className="text-sm text-gray-600 flex items-center flex-wrap">
-                                       <span className="font-semibold text-gray-800 mr-2">{result.year}:</span>
-                                       <span className="text-green-700 font-medium mr-2">{result.nyarkuVotes} votes ({result.nyarkuPercent})</span>
-                                       <span className="text-blue-800">(Margin: {result.margin})</span>
-                                  </li>
-                              ))}
-                          </ul>
-                      </div>
-                  </div>
+                    {/* Elected MP */}
+                    <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-start shadow-sm">
+                        <CheckSquare className="w-6 h-6 text-blue-700 mr-3 mt-1 flex-shrink-0"/>
+                        <div>
+                            <h4 className="font-semibold text-blue-900 mb-1">Elected MP (Cape Coast North)</h4>
+                            <ul className="list-none space-y-1 mb-3">
+                                {electionResults.map(result => (
+                                    <li key={result.year} className="text-sm text-gray-600 flex items-center flex-wrap">
+                                         <span className="font-semibold text-gray-800 mr-2">{result.year}:</span>
+                                         <span className="text-green-700 font-medium mr-2">{result.nyarkuVotes} votes ({result.nyarkuPercent})</span>
+                                         <span className="text-blue-800">(Margin: {result.margin})</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
 
-                  {/* Party Affiliation */}
-                   <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-start shadow-sm">
-                      <Users className="w-6 h-6 text-blue-700 mr-3 mt-1 flex-shrink-0"/>
-                      <div>
-                          <h4 className="font-semibold text-blue-900">Party Affiliation</h4>
-                          <p className="text-sm text-gray-600">National Democratic Congress (NDC)</p>
-                      </div>
-                  </div>
+                    {/* Party Affiliation */}
+                     <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-start shadow-sm">
+                        <Users className="w-6 h-6 text-blue-700 mr-3 mt-1 flex-shrink-0"/>
+                        <div>
+                            <h4 className="font-semibold text-blue-900">Party Affiliation</h4>
+                            <p className="text-sm text-gray-600">National Democratic Congress (NDC)</p>
+                        </div>
+                    </div>
 
-                  {/* Parliamentary Committees */}
-                  <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-start shadow-sm md:col-span-2">
-                      <Landmark className="w-6 h-6 text-blue-700 mr-3 mt-1 flex-shrink-0"/>
-                       <div>
-                          <h4 className="font-semibold text-blue-900 mb-1">Parliamentary Committees</h4>
-                          <ul className="list-disc list-inside space-y-1">
-                              <li className="text-sm text-gray-600">Defence & Interior - Member</li>
-                              <li className="text-sm text-gray-600">Environment, Science & Technology - Member</li>
-                              <li className="text-sm text-gray-600">Ways & Means - Member</li>
-                          </ul>
-                      </div>
-                  </div>
+                    {/* Parliamentary Committees */}
+                    <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-start shadow-sm md:col-span-2">
+                        <Landmark className="w-6 h-6 text-blue-700 mr-3 mt-1 flex-shrink-0"/>
+                         <div>
+                            <h4 className="font-semibold text-blue-900 mb-1">Parliamentary Committees</h4>
+                            <ul className="list-disc list-inside space-y-1">
+                                <li className="text-sm text-gray-600">Defence & Interior - Member</li>
+                                <li className="text-sm text-gray-600">Environment, Science & Technology - Member</li>
+                                <li className="text-sm text-gray-600">Ways & Means - Member</li>
+                            </ul>
+                        </div>
+                    </div>
 
-               </div>
+                 </div>
              </div>
         </AnimatedSection>
 
@@ -230,4 +227,29 @@ export function About() {
                     "For me, leadership is not about titles or recognition. It is about what endures after one’s service, the systems, opportunities and hope that remain."
                 </p>
                 <p className="text-lg text-gray-700 leading-relaxed">
-                    "My vision is to help build a Cape Coast North where
+                    "My vision is to help build a Cape Coast North where fairness, opportunity and respect are shared by all, where everyone feels they belong and every young person knows their dream matters."
+                </p>
+                 <footer className="mt-4 text-md font-semibold text-blue-800">
+                    — Hon. Dr. Kwamena Minta Nyarku (Ragga)
+                </footer>
+            </blockquote>
+        </AnimatedSection>
+
+      </div>
+       {/* CSS for animations */}
+      <style>{`
+        .animate-section-enter {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        .animate-fade-in {
+            animation: fadeIn 1s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+      `}</style>
+    </div>
+  );
+}

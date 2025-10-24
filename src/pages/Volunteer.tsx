@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
-import { DollarSign, CreditCard, Gift } from 'lucide-react';
+import { DollarSign, CreditCard, Gift, X, User, Phone } from 'lucide-react'; // Added X, User, Phone
 import { supabase } from '../lib/supabase';
 import { Button } from '../components/Button';
+import { motion, AnimatePresence } from 'framer-motion'; // Added framer-motion
 
 // --- Data Duplication for Pillars (from Events.tsx) ---
 const pillars = [
@@ -15,12 +16,14 @@ const pillars = [
 ];
 // --- End Data Duplication ---
 
+// Updated Donation type definition
 type Donation = {
   id: string;
   created_at: string;
   name: string;
   amount: number;
   project_supported: string;
+  display_publicly?: boolean; // Added optional field
 };
 
 const AnimatedSection = ({
@@ -78,6 +81,135 @@ function formatCurrency(n: number): string {
   }
 }
 
+// --- NEW MODAL COMPONENT ---
+interface ContributionConfirmModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  amount: number;
+  pillarSlug: string;
+  donorName: string;
+  setDonorName: (name: string) => void;
+  donorPhone: string;
+  setDonorPhone: (phone: string) => void;
+  showPublicly: boolean;
+  setShowPublicly: (show: boolean) => void;
+  onConfirmAndPay: () => void; // Renamed for clarity
+}
+
+function ContributionConfirmModal({
+  isOpen,
+  onClose,
+  amount,
+  pillarSlug,
+  donorName,
+  setDonorName,
+  donorPhone,
+  setDonorPhone,
+  showPublicly,
+  setShowPublicly,
+  onConfirmAndPay,
+}: ContributionConfirmModalProps) {
+  const pillarTitle = getPillarTitleFromSlug(pillarSlug);
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black/70 backdrop-blur-md z-50 flex items-center justify-center p-4"
+          onClick={onClose} // Close on backdrop click
+        >
+          <motion.div
+            initial={{ scale: 0.9, y: 20 }}
+            animate={{ scale: 1, y: 0 }}
+            exit={{ scale: 0.9, y: 20, opacity: 0 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+            className="bg-white text-gray-900 rounded-2xl shadow-2xl max-w-md w-full overflow-hidden"
+            onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside modal
+          >
+            <div className="p-6 relative">
+              <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-gray-700" aria-label="Close modal">
+                <X size={24} />
+              </button>
+              <h2 className="text-2xl font-bold text-[#002B5B] mb-2 text-center">Confirm Contribution</h2>
+              
+              {/* Donation Details */}
+              <div className="my-5 text-center bg-gray-50 p-4 rounded-lg border border-gray-200">
+                <p className="text-sm text-gray-600">You are contributing</p>
+                <p className="text-3xl font-bold text-[#002B5B] my-1">{formatCurrency(amount)}</p>
+                <p className="text-sm text-gray-600">towards</p>
+                <p className="font-semibold text-[#FF6B00]">{pillarTitle}</p>
+              </div>
+
+              {/* Form Fields */}
+              <form onSubmit={(e) => { e.preventDefault(); onConfirmAndPay(); }} className="space-y-4">
+                 <div className="relative">
+                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                    <input
+                      type="text"
+                      placeholder="Your Name *"
+                      required
+                      value={donorName}
+                      onChange={(e) => setDonorName(e.target.value)}
+                      className="w-full pl-9 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent bg-white text-gray-900 text-sm"
+                      aria-label="Your Name (required)"
+                    />
+                 </div>
+                 <div className="relative">
+                    <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                    <input
+                      type="tel"
+                      placeholder="Phone Number (Optional)"
+                      value={donorPhone}
+                      onChange={(e) => setDonorPhone(e.target.value)}
+                      className="w-full pl-9 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent bg-white text-gray-900 text-sm"
+                      aria-label="Phone Number (optional)"
+                    />
+                 </div>
+
+                 {/* Public Display Preference */}
+                 <div className="flex items-center space-x-2 pt-2">
+                    <input
+                       type="checkbox"
+                       id="showPublicly"
+                       checked={showPublicly}
+                       onChange={(e) => setShowPublicly(e.target.checked)}
+                       className="h-4 w-4 rounded border-gray-300 text-[#FF6B00] focus:ring-[#FF6B00]/50"
+                    />
+                    <label htmlFor="showPublicly" className="text-xs text-gray-600 cursor-pointer select-none">
+                       Show my name in the 'Recent Contributions' feed as appreciation
+                    </label>
+                 </div>
+
+                 <Button
+                    type="submit"
+                    size="lg"
+                    className="w-full bg-[#FF6B00] hover:bg-[#E66000] focus:ring-[#FF6B00] text-white shadow-lg flex items-center justify-center mt-4"
+                    disabled={!donorName} // Require name
+                 >
+                    <Gift className="w-5 h-5 mr-2" />
+                    Confirm & Proceed to Payment
+                 </Button>
+              </form>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+// --- END MODAL COMPONENT ---
+
+
+// Helper function outside component
+const getPillarTitleFromSlug = (slug: string): string => {
+  if (slug === 'general') return 'General CETRA2030 Support';
+  const pillar = pillars.find((p) => p.slug === slug);
+  return pillar ? pillar.title : 'General Support';
+};
+
 export function Volunteer() {
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -95,6 +227,13 @@ export function Volunteer() {
   const [donations, setDonations] = useState<Donation[]>([]);
   const [loadingDonations, setLoadingDonations] = useState(true);
 
+  // Modal State
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [donorName, setDonorName] = useState('');
+  const [donorPhone, setDonorPhone] = useState('');
+  const [showPublicly, setShowPublicly] = useState(true); // Default to checked
+
+
   useEffect(() => {
     fetchRecentDonations();
   }, []);
@@ -105,6 +244,7 @@ export function Volunteer() {
       const { data, error } = await supabase
         .from('donations')
         .select('id, created_at, name, amount, project_supported')
+        .eq('display_publicly', true) // Only fetch donations marked for public display
         .order('created_at', { ascending: false })
         .limit(5);
 
@@ -123,7 +263,6 @@ export function Volunteer() {
 
   const handleCustomAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    // Allow only digits (empty ok)
     if (value === '' || /^\d+$/.test(value)) {
       const numeric = value === '' ? 0 : parseInt(value, 10);
       setDonationForm((prev) => ({ ...prev, customAmount: value, amount: numeric }));
@@ -134,48 +273,94 @@ export function Volunteer() {
     setDonationForm((prev) => ({ ...prev, selectedPillar: e.target.value }));
   };
 
+  // Opens the confirmation modal
   const handleDonateSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const finalAmount = donationForm.amount;
-    const selectedPillarInfo = pillars.find((p) => p.slug === donationForm.selectedPillar);
-
-    if (finalAmount <= 0) {
+    if (donationForm.amount <= 0) {
       setMessage('Please select or enter a valid donation amount.');
+      window.setTimeout(() => setMessage(''), 5000); // Clear message
       return;
     }
+    // Clear previous message before opening modal
+    setMessage(''); 
+    setIsConfirmModalOpen(true);
+  };
 
+  // Triggered from the modal's confirm button
+  const handleConfirmAndPay = () => {
+    const finalAmount = donationForm.amount;
+    const selectedPillarInfo = pillars.find((p) => p.slug === donationForm.selectedPillar);
+    const pillarTitle = selectedPillarInfo?.title || 'CETRA2030 General Support';
+
+    // Close modal immediately
+    setIsConfirmModalOpen(false);
+
+    // Show processing alert (placeholder for actual payment)
     alert(
-      `Initiating donation of ${formatCurrency(finalAmount)} towards ${
-        selectedPillarInfo?.title || 'CETRA2030'
-      }.\n(Stripe/Payment integration required - This is a demo placeholder.)`,
+      `Initiating donation of ${formatCurrency(finalAmount)} for ${donorName} towards ${pillarTitle}.\n(Proceeding to Stripe/Payment... - This is a demo placeholder.)`
     );
 
-    setMessage('Thank you for your generous contribution!');
-    // Auto-hide feedback gently after 5s
-    window.setTimeout(() => setMessage(''), 5000);
+    // --- Placeholder for Post-Payment Success ---
+    // In a real app, this block would run *after* successful payment confirmation from Stripe/Paystack
+    const saveDonationToSupabase = async () => {
+      try {
+        const { error } = await supabase.from('donations').insert([
+          { 
+            name: donorName, 
+            amount: finalAmount, 
+            project_supported: donationForm.selectedPillar,
+            display_publicly: showPublicly,
+            // phone: donorPhone, // Optional: Add phone column to Supabase if needed
+          },
+        ]);
+        if (error) throw error;
+        
+        // Donation saved successfully
+        setMessage('Thank you for your generous contribution!');
+        fetchRecentDonations(); // Refresh the feed
+        
+        // Reset form state after successful save
+        setDonationForm({ amount: 0, selectedPillar: pillars[0].slug, customAmount: '' });
+        setDonorName('');
+        setDonorPhone('');
+        setShowPublicly(true); // Reset checkbox
+      
+      } catch (error) {
+        console.error('Error saving donation:', error);
+        setMessage('Thank you! There was an issue saving your contribution details, but payment may have succeeded.');
+      } finally {
+         window.setTimeout(() => setMessage(''), 5000); // Auto-hide message
+      }
+    };
+    
+    // Simulate successful save for demo purposes (REMOVE THIS in real app)
+     console.log("Simulating save:", { name: donorName, amount: finalAmount, project: donationForm.selectedPillar, public: showPublicly });
+     setMessage('Thank you for your generous contribution!');
+     // You might manually add a donation to Supabase for testing the feed
+     // fetchRecentDonations(); // Uncomment if you manually add data to see refresh
+     setDonationForm({ amount: 0, selectedPillar: pillars[0].slug, customAmount: '' });
+     setDonorName('');
+     setDonorPhone('');
+     setShowPublicly(true);
+     window.setTimeout(() => setMessage(''), 5000);
+    // saveDonationToSupabase(); // Call this function after real payment success
+    // --- End Placeholder ---
   };
+
 
   const donationAmounts = [25, 50, 100, 250, 500, 1000];
-
-  const getPillarTitleFromSlug = (slug: string): string => {
-    if (slug === 'general') return 'General CETRA2030 Support';
-    const pillar = pillars.find((p) => p.slug === slug);
-    return pillar ? pillar.title : 'General Support';
-  };
-
   const hasValidAmount = donationForm.amount > 0;
 
   const submitForm = () => {
-    // Trigger the same form submit from mobile sticky/floating CTA
-    formRef.current?.requestSubmit();
+    formRef.current?.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
   };
 
   return (
-    <div className="min-h-screen bg-gray-50" style={{ fontFamily: 'Inter, sans-serif' }}>
-      {/* Hero Section (mobile-first visual punch) */}
+    <div className="min-h-screen bg-gray-50 pb-20 md:pb-0" style={{ fontFamily: 'Inter, sans-serif' }}> {/* Added padding-bottom for mobile sticky button */}
+      {/* Hero Section */}
       <section className="relative overflow-hidden bg-[#002B5B] text-white py-16 md:py-24">
-        {/* Subtle premium background texture */}
-        <div
+         {/* ... (Hero content remains the same) ... */}
+         <div
           className="absolute inset-0 pointer-events-none"
           aria-hidden="true"
           style={{
@@ -203,7 +388,8 @@ export function Volunteer() {
       <section id="donate" className="py-12 md:py-20 bg-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection>
-            <div className="text-center mb-8 md:mb-12">
+            {/* ... (Donate section title remains the same) ... */}
+             <div className="text-center mb-8 md:mb-12">
               <h2 className="text-2xl md:text-4xl font-extrabold text-[#002B5B] mb-3 md:mb-4">
                 Fuel the Transformation: Support CETRA2030
               </h2>
@@ -215,10 +401,11 @@ export function Volunteer() {
           </AnimatedSection>
 
           <AnimatedSection delay={80}>
-            <form ref={formRef} onSubmit={handleDonateSubmit} aria-labelledby="donate-title">
+             {/* Form now triggers modal */}
+            <form ref={formRef} onSubmit={handleDonateSubmit} aria-labelledby="donate-title"> 
               <div className="bg-white/80 backdrop-blur rounded-2xl shadow-xl border border-gray-100 p-5 md:p-8 space-y-6">
-                {/* Initiative Selection */}
-                <div>
+                {/* ... (Initiative Selection remains the same) ... */}
+                 <div>
                   <label htmlFor="pillarSelect" className="block text-sm font-medium text-gray-700 mb-2">
                     Support a Specific Initiative (Optional)
                   </label>
@@ -237,8 +424,7 @@ export function Volunteer() {
                     <option value="general">General CETRA2030 Support</option>
                   </select>
                 </div>
-
-                {/* Amount Selection */}
+                {/* ... (Amount Selection remains the same) ... */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Choose Donation Amount (USD)
@@ -285,9 +471,8 @@ export function Volunteer() {
                     Pick a preset or enter any whole number.
                   </p>
                 </div>
-
-                {/* Payment Notice & Trust Badges */}
-                <div className="grid gap-3 md:gap-4 md:grid-cols-2">
+                {/* ... (Payment Notice & Trust Badges remain the same) ... */}
+                 <div className="grid gap-3 md:gap-4 md:grid-cols-2">
                   <div className="bg-[#FF6B00]/10 border border-[#FF6B00]/30 rounded-xl p-4">
                     <div className="flex items-start space-x-3">
                       <CreditCard className="w-5 h-5 text-[#FF6B00] flex-shrink-0 mt-0.5" />
@@ -317,7 +502,7 @@ export function Volunteer() {
                   </div>
                 </div>
 
-                {/* Donation Feedback (accessible) */}
+                {/* Main page feedback message area */}
                 <div aria-live="polite" className="min-h-[1.25rem]">
                   {message && (
                     <div
@@ -332,9 +517,9 @@ export function Volunteer() {
                   )}
                 </div>
 
-                {/* Main Donate Button (desktop & tablet primary) */}
+                {/* Main Donate Button (now opens modal) */}
                 <Button
-                  type="submit"
+                  type="submit" // Changed back to submit to trigger form handler
                   size="lg"
                   className={`hidden md:flex w-full bg-[#FF6B00] hover:bg-[#E66000] focus:ring-[#FF6B00] text-white shadow-lg items-center justify-center ${
                     hasValidAmount ? '' : 'opacity-60 cursor-not-allowed'
@@ -343,12 +528,13 @@ export function Volunteer() {
                   aria-disabled={!hasValidAmount}
                   aria-label={
                     hasValidAmount
-                      ? `Contribute ${formatCurrency(donationForm.amount)}`
+                      ? `Continue Contribution of ${formatCurrency(donationForm.amount)}`
                       : 'Select an amount to continue'
                   }
                 >
                   <Gift className="w-5 h-5 mr-2" />
-                  Contribute Now ({formatCurrency(donationForm.amount)})
+                   Continue ({formatCurrency(donationForm.amount)}) 
+                   {/* Text changed to 'Continue' */}
                 </Button>
 
                 <p className="text-xs text-gray-500 text-center">
@@ -360,7 +546,8 @@ export function Volunteer() {
 
           {/* Recent Contributions Feed */}
           <AnimatedSection delay={140}>
-            <div className="mt-12 md:mt-16">
+            {/* ... (Feed content remains the same) ... */}
+              <div className="mt-12 md:mt-16">
               <h3 className="text-xl md:text-2xl font-bold text-[#002B5B] mb-4 md:mb-6 text-center">
                 Recent Contributions
               </h3>
@@ -412,48 +599,56 @@ export function Volunteer() {
         </div>
       </section>
 
-      {/* Mobile Sticky Quick Donate Bar (one-tap donate, submits same form) */}
+      {/* Mobile Sticky Quick Donate Bar (now opens modal) */}
       <div className="md:hidden fixed bottom-4 inset-x-4 z-40">
         <Button
-          type="button"
+          type="button" // Changed type to button to prevent default form submission
           size="lg"
-          onClick={submitForm}
+          onClick={submitForm} // Still triggers the form submit handler
           className={`w-full rounded-2xl shadow-xl bg-[#FF6B00] hover:bg-[#E66000] focus:ring-[#FF6B00] text-white flex items-center justify-center ${
             donationForm.amount > 0 ? '' : 'opacity-60 cursor-not-allowed'
           }`}
           disabled={!hasValidAmount}
           aria-disabled={!hasValidAmount}
           aria-label={
-            hasValidAmount ? `Contribute ${formatCurrency(donationForm.amount)}` : 'Select an amount to continue'
+            hasValidAmount ? `Continue Contribution of ${formatCurrency(donationForm.amount)}` : 'Select an amount to continue'
           }
         >
           <Gift className="w-5 h-5 mr-2" />
-          Contribute {formatCurrency(donationForm.amount)}
+          Continue ({formatCurrency(donationForm.amount)}) 
+          {/* Text changed to 'Continue' */}
         </Button>
       </div>
+      
+      {/* --- RENDER THE MODAL --- */}
+      <ContributionConfirmModal
+          isOpen={isConfirmModalOpen}
+          onClose={() => setIsConfirmModalOpen(false)}
+          amount={donationForm.amount}
+          pillarSlug={donationForm.selectedPillar}
+          donorName={donorName}
+          setDonorName={setDonorName}
+          donorPhone={donorPhone}
+          setDonorPhone={setDonorPhone}
+          showPublicly={showPublicly}
+          setShowPublicly={setShowPublicly}
+          onConfirmAndPay={handleConfirmAndPay}
+      />
 
-      {/* CSS for animations and skeleton shimmer */}
+
+      {/* CSS */}
       <style>{`
-        .animate-section-enter {
-          opacity: 1;
-          transform: translateY(0);
-        }
+        .animate-section-enter { opacity: 1; transform: translateY(0); }
         @media (prefers-reduced-motion: reduce) {
-          .transition-all, .animate-section-enter {
-            transition: none !important;
-          }
+          .transition-all, .animate-section-enter { transition: none !important; }
         }
         .shimmer::before {
-          content: "";
-          position: absolute;
-          inset: 0;
+          content: ""; position: absolute; inset: 0;
           transform: translateX(-100%);
           background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
           animation: shimmer 1.4s infinite;
         }
-        @keyframes shimmer {
-          100% { transform: translateX(100%); }
-        }
+        @keyframes shimmer { 100% { transform: translateX(100%); } }
       `}</style>
     </div>
   );

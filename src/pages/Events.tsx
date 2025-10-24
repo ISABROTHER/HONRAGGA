@@ -145,19 +145,16 @@ export function Events() {
             </div>
           </AnimatedSection>
 
-          {/* --- NEW CARD DESIGN with Picture Holder + Gradient Overlay --- */}
+          {/* --- CARD DESIGN with Placeholder Background + Gradient Overlay --- */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {pillars.map((pillar, index) => (
               <AnimatedSection key={pillar.title} delay={200 + index * 50}>
                 <div className="relative aspect-[4/3] rounded-xl shadow-lg overflow-hidden group transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
                   
-                  {/* Background Picture Holder */}
-                  <img 
-                    // Using unsplash random with a seed from the title to get varied photos
-                    src={`https://source.unsplash.com/random/400x300?${pillar.title.split(' ')[0]}&sig=${index}`} 
-                    alt={pillar.title} 
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" 
-                  />
+                  {/* Placeholder Background */}
+                  <div className="absolute inset-0 w-full h-full bg-gray-300 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+                    <pillar.icon className="w-16 h-16 text-gray-400" />
+                  </div>
 
                   {/* Gradient Overlay for Text */}
                   <div className="absolute inset-0 w-full h-full bg-gradient-to-t from-[#002B5B]/90 via-[#002B5B]/60 to-transparent" />
@@ -169,7 +166,7 @@ export function Events() {
                     </h3>
                     <p className="text-sm text-gray-200">
                       {pillar.description}
-                    </p> {/* Correct closing tag */}
+                    </p>
                   </div>
 
                 </div>

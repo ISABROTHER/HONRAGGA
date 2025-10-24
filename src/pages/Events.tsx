@@ -145,27 +145,33 @@ export function Events() {
             </div>
           </AnimatedSection>
 
-          {/* --- NEW CARD DESIGN --- */}
+          {/* --- NEW CARD DESIGN with Picture Holder + Gradient Overlay --- */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {pillars.map((pillar, index) => (
               <AnimatedSection key={pillar.title} delay={200 + index * 50}>
-                <div className="bg-[#002B5B] text-white p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-2xl hover:bg-[#0d3863] hover:-translate-y-1 group">
-                  <div className="mb-4">
-                    {/* Stylized Icon */}
-                    <div className="w-12 h-12 rounded-lg bg-white/10 flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:bg-white/20">
-                      <pillar.icon className="w-6 h-6 text-[#FF6B00]" />
-                    </div>
-                  </div>
+                <div className="relative aspect-[4/3] rounded-xl shadow-lg overflow-hidden group transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
                   
-                  {/* Content */}
-                  <div>
+                  {/* Background Picture Holder */}
+                  <img 
+                    // Using unsplash random with a seed from the title to get varied photos
+                    src={`https://source.unsplash.com/random/400x300?${pillar.title.split(' ')[0]}&sig=${index}`} 
+                    alt={pillar.title} 
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" 
+                  />
+
+                  {/* Gradient Overlay for Text */}
+                  <div className="absolute inset-0 w-full h-full bg-gradient-to-t from-[#002B5B]/90 via-[#002B5B]/60 to-transparent" />
+
+                  {/* Text Content */}
+                  <div className="absolute bottom-0 left-0 right-0 p-5">
                     <h3 className="text-lg font-semibold text-white mb-1">
                       {pillar.title}
                     </h3>
-                    <p className="text-sm text-gray-300">
+                    <p className="text-sm text-gray-200">
                       {pillar.description}
-                    </p>
+                    </S4B-G2-output>
                   </div>
+
                 </div>
               </AnimatedSection>
             ))}

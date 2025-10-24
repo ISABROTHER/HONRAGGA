@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
-import { Users, Heart, Phone, Mail, DollarSign, CreditCard, Gift, ArrowRight } from 'lucide-react';
+// Removed unused icons: Users, Heart, Phone, Mail, ArrowRight
+import { DollarSign, CreditCard, Gift } from 'lucide-react'; 
 import { supabase } from '../lib/supabase';
 import { Button } from '../components/Button';
 import type { Database } from '../lib/database.types'; // Assuming Donation type will be added here or inferred
@@ -72,27 +73,15 @@ const AnimatedSection = ({
 
 
 export function Volunteer() {
-  // Removed activeTab state
-  const [volunteerForm, setVolunteerForm] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    interests: '',
-    availability: ''
-  });
-  const [contactForm, setContactForm] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
-  });
+  // Removed volunteerForm and contactForm states
   const [donationForm, setDonationForm] = useState({
     amount: 0,
     selectedPillar: pillars[0].slug, // Default to first pillar
     customAmount: '',
   });
-  const [submitting, setSubmitting] = useState(false);
-  const [message, setMessage] = useState(''); // Used for multiple forms now
+  // Removed submitting state as it's not used by donation form currently
+  // const [submitting, setSubmitting] = useState(false); 
+  const [message, setMessage] = useState(''); // Only used for potential donation feedback
   const [donations, setDonations] = useState<Donation[]>([]);
   const [loadingDonations, setLoadingDonations] = useState(true);
 
@@ -121,50 +110,7 @@ export function Volunteer() {
     }
   };
 
-
-  const handleVolunteerSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitting(true);
-    setMessage('');
-
-    try {
-      const { error } = await supabase
-        .from('volunteer_signups')
-        .insert([volunteerForm]);
-
-      if (error) throw error;
-
-      setMessage('Thank you for volunteering! We will be in touch soon.');
-      setVolunteerForm({ name: '', email: '', phone: '', interests: '', availability: '' });
-    } catch (error: unknown) { // Use unknown for better type safety
-      setMessage(`Error submitting volunteer form: ${error instanceof Error ? error.message : 'Unknown error'}. Please try again.`);
-    } finally {
-      setSubmitting(false);
-      setTimeout(() => setMessage(''), 5000); // Clear message after 5s
-    }
-  };
-
-  const handleContactSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitting(true);
-    setMessage('');
-
-    try {
-      const { error } = await supabase
-        .from('contact_messages')
-        .insert([contactForm]);
-
-      if (error) throw error;
-
-      setMessage('Message sent! We will respond as soon as possible.');
-      setContactForm({ name: '', email: '', subject: '', message: '' });
-    } catch (error: unknown) {
-      setMessage(`Error sending message: ${error instanceof Error ? error.message : 'Unknown error'}. Please try again.`);
-    } finally {
-      setSubmitting(false);
-      setTimeout(() => setMessage(''), 5000); // Clear message after 5s
-    }
-  };
+  // Removed handleVolunteerSubmit and handleContactSubmit functions
 
   const handleAmountSelect = (amount: number) => {
     setDonationForm({ ...donationForm, amount, customAmount: '' });
@@ -197,38 +143,23 @@ export function Volunteer() {
      // In a real app:
      // 1. Call Stripe/Paystack API with amount and selectedPillar info
      // 2. On successful payment, save donation details (name, amount, project) to Supabase 'donations' table
-     // 3. Optionally refresh the donation feed
+     // 3. Optionally refresh the donation feed, clear form, set success message
+     // setMessage('Thank you for your generous contribution!');
+     // setDonationForm({ amount: 0, selectedPillar: pillars[0].slug, customAmount: '' });
+     // fetchRecentDonations(); 
+     // setTimeout(() => setMessage(''), 5000); 
   };
 
 
-  const opportunities = [
-    {
-      icon: Phone,
-      title: 'Phone Banking',
-      description: 'Connect with voters and share our message from the comfort of your home'
-    },
-    {
-      icon: Users,
-      title: 'Canvassing',
-      description: 'Meet voters face-to-face in your neighborhood and help spread the word'
-    },
-    {
-      icon: Mail,
-      title: 'Digital Outreach',
-      description: 'Help manage social media, email campaigns, and online engagement'
-    },
-    {
-      icon: Heart,
-      title: 'Event Support',
-      description: 'Assist with organizing and running campaign events and rallies'
-    }
-  ];
+  // Removed opportunities array
 
   const donationAmounts = [25, 50, 100, 250, 500, 1000];
   
   const getPillarTitleFromSlug = (slug: string): string => {
+    // Handle 'general' support case
+    if (slug === 'general') return 'General CETRA2030 Support'; 
     const pillar = pillars.find(p => p.slug === slug);
-    return pillar ? pillar.title : 'General Support';
+    return pillar ? pillar.title : 'General Support'; // Fallback
   };
 
   return (
@@ -237,10 +168,10 @@ export function Volunteer() {
       <section className="relative bg-[#002B5B] text-white py-20 md:py-28">
         <AnimatedSection>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h1 className="text-4xl md:text-6xl font-extrabold mb-4">Get Involved</h1>
+            {/* Updated Hero Title */}
+            <h1 className="text-4xl md:text-6xl font-extrabold mb-4">Support the Movement</h1> 
             <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-              Your time, talent, and support fuel the transformation of Cape Coast North. 
-              Join us in building a brighter future, together.
+              Your contribution fuels the CETRA2030 agenda, directly empowering the youth of Cape Coast North.
             </p>
           </div>
         </AnimatedSection>
@@ -334,15 +265,24 @@ export function Volunteer() {
                     </div>
                   </div>
                 </div>
+                 
+                 {/* Donation Success/Error Message Area */}
+                 {message && message.includes('contribution') && (
+                    <div className={`p-3 rounded-lg text-sm ${message.includes('Thank') ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                      {message}
+                    </div>
+                  )}
 
                 {/* Donate Button */}
                 <Button
                   type="submit"
                   size="lg"
                   className="w-full bg-[#FF6B00] hover:bg-[#E66000] focus:ring-[#FF6B00] text-white shadow-lg flex items-center justify-center"
+                  // disabled={submitting} // Re-enable if you add submitting state back
                 >
                   <Gift className="w-5 h-5 mr-2" />
-                  Contribute Now (${donationForm.amount > 0 ? donationForm.amount : '...'})
+                   {/* {submitting ? 'Processing...' : `Contribute Now ($${donationForm.amount > 0 ? donationForm.amount : '...'})`} */}
+                   Contribute Now (${donationForm.amount > 0 ? donationForm.amount : '...'})
                 </Button>
 
                 <p className="text-xs text-gray-500 text-center mt-2">
@@ -390,145 +330,9 @@ export function Volunteer() {
         </div>
       </section>
 
-      {/* Volunteer Section */}
-      <section id="volunteer" className="py-20 md:py-24 bg-gray-50 border-t border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <AnimatedSection>
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-extrabold text-[#002B5B] mb-4">
-                Volunteer Your Time & Skills
-              </h2>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Join our dedicated team and contribute directly to the campaign's success. 
-                Find an opportunity that matches your passion.
-              </p>
-            </div>
-          </AnimatedSection>
-
-          <AnimatedSection delay={100}>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-              {opportunities.map(({ icon: Icon, title, description }) => (
-                <div
-                  key={title}
-                  className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all border border-gray-100 text-center group"
-                >
-                  <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-[#002B5B]/10 text-[#002B5B] mb-4 group-hover:scale-110 transition-transform">
-                    <Icon className="w-7 h-7" />
-                  </div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">
-                    {title}
-                  </h3>
-                  <p className="text-gray-600 text-sm leading-relaxed">
-                    {description}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </AnimatedSection>
-
-          <AnimatedSection delay={200}>
-            <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-                Sign Up to Volunteer
-              </h3>
-
-              <form onSubmit={handleVolunteerSubmit} className="space-y-4">
-                {/* Volunteer form fields remain the same */}
-                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
-                    <input type="text" value={volunteerForm.name} onChange={(e) => setVolunteerForm({ ...volunteerForm, name: e.target.value })} required className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent bg-white text-gray-900"/>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Email *</label>
-                    <input type="email" value={volunteerForm.email} onChange={(e) => setVolunteerForm({ ...volunteerForm, email: e.target.value })} required className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent bg-white text-gray-900"/>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
-                    <input type="tel" value={volunteerForm.phone} onChange={(e) => setVolunteerForm({ ...volunteerForm, phone: e.target.value })} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent bg-white text-gray-900"/>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Areas of Interest</label>
-                    <textarea value={volunteerForm.interests} onChange={(e) => setVolunteerForm({ ...volunteerForm, interests: e.target.value })} rows={3} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent bg-white text-gray-900" placeholder="e.g., Canvassing, Event planning, Digital media"/>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Availability</label>
-                    <textarea value={volunteerForm.availability} onChange={(e) => setVolunteerForm({ ...volunteerForm, availability: e.target.value })} rows={2} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent bg-white text-gray-900" placeholder="e.g., Weekends, Evenings after 6 PM"/>
-                  </div>
-                
-                {/* Message display - slightly improved styling */}
-                 {message && message.includes('volunteering') && (
-                    <div className={`p-3 rounded-lg text-sm ${message.includes('Thank') ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                      {message}
-                    </div>
-                  )}
-
-                <Button
-                  type="submit"
-                  variant="primary" // Existing primary button style
-                  disabled={submitting}
-                  className="w-full flex items-center justify-center"
-                  size="lg"
-                >
-                  {submitting ? 'Submitting...' : 'Sign Up to Volunteer'}
-                   {!submitting && <ArrowRight className="w-4 h-4 ml-2" />}
-                </Button>
-              </form>
-            </div>
-          </AnimatedSection>
-        </div>
-      </section>
-
-      {/* Contact Us Section */}
-      <section id="contact" className="py-20 md:py-24 bg-white">
-        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-         <AnimatedSection>
-            <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-                Contact Us
-              </h3>
-              <p className="text-center text-gray-600 mb-6 -mt-2">Have questions or ideas? Get in touch with the campaign team.</p>
-
-              <form onSubmit={handleContactSubmit} className="space-y-4">
-                {/* Contact form fields remain the same */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Name *</label>
-                    <input type="text" value={contactForm.name} onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })} required className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent bg-white text-gray-900"/>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Email *</label>
-                    <input type="email" value={contactForm.email} onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })} required className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent bg-white text-gray-900"/>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Subject *</label>
-                    <input type="text" value={contactForm.subject} onChange={(e) => setContactForm({ ...contactForm, subject: e.target.value })} required className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent bg-white text-gray-900"/>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Message *</label>
-                    <textarea value={contactForm.message} onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })} required rows={5} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent bg-white text-gray-900"/>
-                  </div>
-                  
-                {/* Message display */}
-                 {message && message.includes('Message sent') && (
-                    <div className={`p-3 rounded-lg text-sm ${message.includes('sent') ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                      {message}
-                    </div>
-                  )}
-
-                <Button
-                  type="submit"
-                  variant="primary" // Existing primary button style
-                  disabled={submitting}
-                  className="w-full flex items-center justify-center"
-                  size="lg"
-                >
-                  {submitting ? 'Sending...' : 'Send Message'}
-                   {!submitting && <ArrowRight className="w-4 h-4 ml-2" />}
-                </Button>
-              </form>
-            </div>
-          </AnimatedSection>
-        </div>
-      </section>
+      {/* Volunteer Section - REMOVED */}
+      
+      {/* Contact Us Section - REMOVED */}
       
        {/* CSS for animations */}
       <style>{`

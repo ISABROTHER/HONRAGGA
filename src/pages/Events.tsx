@@ -145,24 +145,26 @@ export function Events() {
             </div>
           </AnimatedSection>
 
+          {/* --- NEW CARD DESIGN --- */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {pillars.map((pillar, index) => (
               <AnimatedSection key={pillar.title} delay={200 + index * 50}>
-                <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
-                  <div className="flex items-center space-x-4">
-                    <div className="flex-shrink-0">
-                      <div className="w-12 h-12 rounded-full bg-[#002B5B]/10 text-[#002B5B] flex items-center justify-center">
-                        <pillar.icon className="w-6 h-6" />
-                      </div>
+                <div className="bg-[#002B5B] text-white p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-2xl hover:bg-[#0d3863] hover:-translate-y-1 group">
+                  <div className="mb-4">
+                    {/* Stylized Icon */}
+                    <div className="w-12 h-12 rounded-lg bg-white/10 flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:bg-white/20">
+                      <pillar.icon className="w-6 h-6 text-[#FF6B00]" />
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="text-lg font-semibold text-[#002B5B] truncate">
-                        {pillar.title}
-                      </h3>
-                      <p className="text-sm text-gray-600">
-                        {pillar.description}
-                      </p>
-                    </div>
+                  </div>
+                  
+                  {/* Content */}
+                  <div>
+                    <h3 className="text-lg font-semibold text-white mb-1">
+                      {pillar.title}
+                    </h3>
+                    <p className="text-sm text-gray-300">
+                      {pillar.description}
+                    </p>
                   </div>
                 </div>
               </AnimatedSection>
@@ -212,7 +214,7 @@ export function Events() {
       </section>
 
       {/* 4. Call-to-Action Section */}
-      <section className="bg-[#0D3863] text-white py-20 md:py-24" style={{ backgroundColor: '#002B5B' }}>
+      <section className="bg-[#002B5B] text-white py-20 md:py-24">
         <AnimatedSection>
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl md:text-4xl font-extrabold mb-4">

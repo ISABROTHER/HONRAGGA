@@ -62,36 +62,43 @@ const pillars = [
     icon: Briefcase,
     title: 'Cape Works Initiative (CWI)',
     description: 'Youth working, Cape Coast shining.',
+    imageUrl: 'https://images.pexels.com/photos/6567674/pexels-photo-6567674.jpeg', // Image 1
   },
   {
     icon: Rocket,
     title: 'Cape Innovates Accelerator (CIA)',
     description: 'Turning local ideas into global businesses.',
+    imageUrl: 'https://images.pexels.com/photos/11535807/pexels-photo-11535807.jpeg', // Image 2
   },
   {
     icon: Laptop,
     title: 'Digital Cape Project (DCP)',
     description: 'Train local, work global.',
+    imageUrl: 'https://images.pexels.com/photos/2306222/pexels-photo-2306222.jpeg', // Image 3
   },
   {
     icon: Landmark,
     title: 'Heritage Jobs 360 (HJ360)',
     description: 'Our history, our hustle.',
+    imageUrl: 'https://images.pexels.com/photos/1422408/pexels-photo-1422408.jpeg', // Image 4
   },
   {
     icon: GraduationCap,
     title: 'Classroom to Career (C2C)',
     description: 'No graduate left idle.',
+    imageUrl: 'https://images.pexels.com/photos/6567674/pexels-photo-6567674.jpeg', // Image 1 (reused)
   },
   {
     icon: Banknote,
     title: 'Cape Coast North Youth Development Fund (CCNYDF)',
     description: 'Funding the next generation of entrepreneurs.',
+    imageUrl: 'https://images.pexels.com/photos/11535807/pexels-photo-11535807.jpeg', // Image 2 (reused)
   },
   {
     icon: LayoutDashboard,
     title: 'Cape Impact Dashboard (CID)',
     description: 'Tracking our progress, ensuring accountability.',
+    imageUrl: 'https://images.pexels.com/photos/2306222/pexels-photo-2306222.jpeg', // Image 3 (reused)
   },
 ];
 
@@ -145,16 +152,18 @@ export function Events() {
             </div>
           </AnimatedSection>
 
-          {/* --- CARD DESIGN with Placeholder Background + Gradient Overlay --- */}
+          {/* --- CARD DESIGN with Specific Images + Gradient Overlay --- */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {pillars.map((pillar, index) => (
               <AnimatedSection key={pillar.title} delay={200 + index * 50}>
                 <div className="relative aspect-[4/3] rounded-xl shadow-lg overflow-hidden group transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
                   
-                  {/* Placeholder Background */}
-                  <div className="absolute inset-0 w-full h-full bg-gray-300 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
-                    <pillar.icon className="w-16 h-16 text-gray-400" />
-                  </div>
+                  {/* Background Picture */}
+                  <img 
+                    src={pillar.imageUrl} 
+                    alt={pillar.title} 
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" 
+                  />
 
                   {/* Gradient Overlay for Text */}
                   <div className="absolute inset-0 w-full h-full bg-gradient-to-t from-[#002B5B]/90 via-[#002B5B]/60 to-transparent" />

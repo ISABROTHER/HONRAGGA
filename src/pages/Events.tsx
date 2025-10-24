@@ -169,7 +169,7 @@ export function Events() {
                     </h3>
                     <p className="text-sm text-gray-200">
                       {pillar.description}
-                    </S4B-G2-output>
+                    </p> {/* Correct closing tag */}
                   </div>
 
                 </div>

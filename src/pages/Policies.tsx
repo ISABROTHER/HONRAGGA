@@ -137,13 +137,13 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
 
   // Original header image
   const headerImageUrl = "https://i.imgur.com/2BmP7xu.jpeg";
-  // Overlay image containing text elements
-  const overlayImageUrl = "https://i.imgur.com/4s5NO8D.png";
+  // Overlay image REMOVED
+  // const overlayImageUrl = "https://i.imgur.com/4s5NO8D.png";
 
   return (
     <div className="min-h-screen bg-gray-100">
 
-      {/* Section Header - Base Image, Gradient, Overlay Background & Text */}
+      {/* Section Header - Base Image, Gradient, and Text */}
       <section className="relative w-full overflow-hidden min-h-[250px] sm:min-h-[350px] flex items-end">
         {/* Base Image */}
         <img
@@ -151,16 +151,16 @@ export function Policies({ onSelectTheme }: PoliciesProps) {
           alt="Our Key Development Priorities Banner"
           className="absolute inset-0 w-full h-full object-cover object-center"
         />
-        {/* Gradient Overlay */}
+        {/* Dark Gradient Overlay for Text Contrast */}
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-70"></div>
 
-        {/* Content Overlay Div with Background */}
+        {/* Content Text Container */}
         <div
-            // Added translate-y-[30%] to shift the overlay down
-            className="relative z-10 w-full bg-cover bg-center py-10 sm:py-16 text-white text-center transform translate-y-[30%]"
-            style={{ backgroundImage: `url(${overlayImageUrl})` }}
+            // Removed background image style, set translate-y to 0, adjusted padding
+            className="relative z-10 w-full py-8 sm:py-12 text-white text-center transform translate-y-0" 
+            // style={{ backgroundImage: `url(${overlayImageUrl})` }} // Removed overlay image
         >
-            {/* Text remains centered on top of the background */}
+            {/* Text remains centered */}
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight mb-2 drop-shadow-md">
                 INITIATIVES
             </h1>

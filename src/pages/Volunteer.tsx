@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
-import { DollarSign, CreditCard, Gift, X, User, Phone } from 'lucide-react'; // Added X, User, Phone
-import { supabase } from '../lib/supabase';
+import { DollarSign, CreditCard, Gift, X, User, Phone, Filter } from 'lucide-react'; // Added Filter
+import { supabase } from '../lib/supabase'; // Keep supabase import for potential future use
 import { Button } from '../components/Button';
-import { motion, AnimatePresence } from 'framer-motion'; // Added framer-motion
+import { motion, AnimatePresence } from 'framer-motion';
 
 // --- Data Duplication for Pillars (from Events.tsx) ---
 const pillars = [
@@ -19,12 +19,14 @@ const pillars = [
 // Updated Donation type definition
 type Donation = {
   id: string;
-  created_at: string;
+  created_at: string; // ISO String format
   name: string;
   amount: number;
   project_supported: string;
-  display_publicly?: boolean; // Added optional field
+  display_publicly?: boolean;
 };
+
+type SortPeriod = 'all' | 'today' | 'this_month' | 'this_year'; // Define sort types
 
 const AnimatedSection = ({
   children,
@@ -81,7 +83,29 @@ function formatCurrency(n: number): string {
   }
 }
 
-// --- NEW MODAL COMPONENT ---
+// Helper to format timestamps relative to now
+function formatRelativeTime(isoString: string): string {
+  const date = new Date(isoString);
+  const now = new Date();
+  const diffSeconds = Math.round((now.getTime() - date.getTime()) / 1000);
+  const diffMinutes = Math.round(diffSeconds / 60);
+  const diffHours = Math.round(diffMinutes / 60);
+  const diffDays = Math.round(diffHours / 24);
+  const diffMonths = Math.round(diffDays / 30); // Approximate
+  const diffYears = Math.round(diffDays / 365); // Approximate
+
+  if (diffSeconds < 60) return 'Just now';
+  if (diffMinutes < 60) return `${diffMinutes} min ago`;
+  if (diffHours < 24) return `${diffHours} hr ago`;
+  if (diffDays === 1) return 'Yesterday';
+  if (diffDays < 7) return `${diffDays} days ago`;
+  if (diffMonths < 1) return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); // e.g., Oct 20
+  if (diffYears < 1) return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); // e.g., Oct 20
+  return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' }); // e.g., Oct 2024
+}
+
+
+// --- MODAL COMPONENT (Unchanged) ---
 interface ContributionConfirmModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -93,7 +117,7 @@ interface ContributionConfirmModalProps {
   setDonorPhone: (phone: string) => void;
   showPublicly: boolean;
   setShowPublicly: (show: boolean) => void;
-  onConfirmAndPay: () => void; // Renamed for clarity
+  onConfirmAndPay: () => void;
 }
 
 function ContributionConfirmModal({
@@ -119,7 +143,7 @@ function ContributionConfirmModal({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           className="fixed inset-0 bg-black/70 backdrop-blur-md z-50 flex items-center justify-center p-4"
-          onClick={onClose} // Close on backdrop click
+          onClick={onClose}
         >
           <motion.div
             initial={{ scale: 0.9, y: 20 }}
@@ -127,7 +151,7 @@ function ContributionConfirmModal({
             exit={{ scale: 0.9, y: 20, opacity: 0 }}
             transition={{ type: 'spring', stiffness: 300, damping: 25 }}
             className="bg-white text-gray-900 rounded-2xl shadow-2xl max-w-md w-full overflow-hidden"
-            onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside modal
+            onClick={(e) => e.stopPropagation()}
           >
             <div className="p-6 relative">
               <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-gray-700" aria-label="Close modal">
@@ -135,7 +159,6 @@ function ContributionConfirmModal({
               </button>
               <h2 className="text-2xl font-bold text-[#002B5B] mb-2 text-center">Confirm Contribution</h2>
               
-              {/* Donation Details */}
               <div className="my-5 text-center bg-gray-50 p-4 rounded-lg border border-gray-200">
                 <p className="text-sm text-gray-600">You are contributing</p>
                 <p className="text-3xl font-bold text-[#002B5B] my-1">{formatCurrency(amount)}</p>
@@ -143,7 +166,6 @@ function ContributionConfirmModal({
                 <p className="font-semibold text-[#FF6B00]">{pillarTitle}</p>
               </div>
 
-              {/* Form Fields */}
               <form onSubmit={(e) => { e.preventDefault(); onConfirmAndPay(); }} className="space-y-4">
                  <div className="relative">
                     <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -169,7 +191,6 @@ function ContributionConfirmModal({
                     />
                  </div>
 
-                 {/* Public Display Preference */}
                  <div className="flex items-center space-x-2 pt-2">
                     <input
                        type="checkbox"
@@ -224,38 +245,61 @@ export function Volunteer() {
   });
 
   const [message, setMessage] = useState('');
-  const [donations, setDonations] = useState<Donation[]>([]);
+  const [allDonations, setAllDonations] = useState<Donation[]>([]); // Store all fetched/mock donations
   const [loadingDonations, setLoadingDonations] = useState(true);
+  const [sortPeriod, setSortPeriod] = useState<SortPeriod>('all'); // State for sorting
 
   // Modal State
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [donorName, setDonorName] = useState('');
   const [donorPhone, setDonorPhone] = useState('');
-  const [showPublicly, setShowPublicly] = useState(true); // Default to checked
+  const [showPublicly, setShowPublicly] = useState(true);
 
 
   useEffect(() => {
-    fetchRecentDonations();
+    // Replace fetch with mock data generation
+    generateMockDonations(); 
   }, []);
 
-  const fetchRecentDonations = async () => {
+  // --- MOCK DATA GENERATION ---
+  const generateMockDonations = () => {
     setLoadingDonations(true);
-    try {
-      const { data, error } = await supabase
-        .from('donations')
-        .select('id, created_at, name, amount, project_supported')
-        .eq('display_publicly', true) // Only fetch donations marked for public display
-        .order('created_at', { ascending: false })
-        .limit(5);
+    const mockData: Donation[] = [];
+    const names = ["Ama P.", "Kwesi Mensah", "Yaw B.", "Adwoa Ltd", "Kofi Annan", "Efua S.", "Nana K.", "Aisha Co.", "Kwabena F.", "Akosua"];
+    const now = new Date();
 
-      if (error) throw error;
-      setDonations(data || []);
-    } catch (error) {
-      console.error('Error fetching donations:', error);
-    } finally {
-      setLoadingDonations(false);
+    for (let i = 0; i < 20; i++) {
+        // Create dates spanning today, this month, this year, and previous years
+        let date = new Date(now);
+        if (i < 3) { // Today
+             date.setHours(now.getHours() - i * 3);
+        } else if (i < 7) { // This month
+             date.setDate(now.getDate() - i);
+        } else if (i < 12) { // This year
+             date.setMonth(now.getMonth() - Math.floor(i / 2));
+             date.setDate(Math.random() * 28 + 1); // Random day
+        } else { // Previous years
+             date.setFullYear(now.getFullYear() - Math.floor((i - 10) / 3));
+             date.setMonth(Math.floor(Math.random() * 12));
+             date.setDate(Math.random() * 28 + 1);
+        }
+
+        mockData.push({
+            id: `mock-${i}`,
+            created_at: date.toISOString(),
+            name: names[i % names.length],
+            amount: [25, 50, 100, 250, 50, 75, 500, 30][i % 8], // Vary amounts
+            project_supported: i % 4 === 0 ? 'general' : pillars[i % pillars.length].slug,
+            display_publicly: true, // Assume all mock data is public
+        });
     }
+    // Sort by date descending initially
+    mockData.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+    setAllDonations(mockData);
+    setLoadingDonations(false);
   };
+  // --- END MOCK DATA ---
+
 
   const handleAmountSelect = (amount: number) => {
     setDonationForm((prev) => ({ ...prev, amount, customAmount: '' }));
@@ -273,78 +317,51 @@ export function Volunteer() {
     setDonationForm((prev) => ({ ...prev, selectedPillar: e.target.value }));
   };
 
-  // Opens the confirmation modal
   const handleDonateSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (donationForm.amount <= 0) {
       setMessage('Please select or enter a valid donation amount.');
-      window.setTimeout(() => setMessage(''), 5000); // Clear message
+      window.setTimeout(() => setMessage(''), 5000);
       return;
     }
-    // Clear previous message before opening modal
     setMessage(''); 
     setIsConfirmModalOpen(true);
   };
 
-  // Triggered from the modal's confirm button
   const handleConfirmAndPay = () => {
     const finalAmount = donationForm.amount;
-    const selectedPillarInfo = pillars.find((p) => p.slug === donationForm.selectedPillar);
-    const pillarTitle = selectedPillarInfo?.title || 'CETRA2030 General Support';
+    const pillarTitle = getPillarTitleFromSlug(donationForm.selectedPillar);
 
-    // Close modal immediately
     setIsConfirmModalOpen(false);
-
-    // Show processing alert (placeholder for actual payment)
     alert(
       `Initiating donation of ${formatCurrency(finalAmount)} for ${donorName} towards ${pillarTitle}.\n(Proceeding to Stripe/Payment... - This is a demo placeholder.)`
     );
 
-    // --- Placeholder for Post-Payment Success ---
-    // In a real app, this block would run *after* successful payment confirmation from Stripe/Paystack
-    const saveDonationToSupabase = async () => {
-      try {
-        const { error } = await supabase.from('donations').insert([
-          { 
-            name: donorName, 
-            amount: finalAmount, 
-            project_supported: donationForm.selectedPillar,
-            display_publicly: showPublicly,
-            // phone: donorPhone, // Optional: Add phone column to Supabase if needed
-          },
-        ]);
-        if (error) throw error;
-        
-        // Donation saved successfully
-        setMessage('Thank you for your generous contribution!');
-        fetchRecentDonations(); // Refresh the feed
-        
-        // Reset form state after successful save
-        setDonationForm({ amount: 0, selectedPillar: pillars[0].slug, customAmount: '' });
-        setDonorName('');
-        setDonorPhone('');
-        setShowPublicly(true); // Reset checkbox
-      
-      } catch (error) {
-        console.error('Error saving donation:', error);
-        setMessage('Thank you! There was an issue saving your contribution details, but payment may have succeeded.');
-      } finally {
-         window.setTimeout(() => setMessage(''), 5000); // Auto-hide message
-      }
+    // --- MOCK: Add to list instantly (REMOVE THIS in real app) ---
+    const newDonation: Donation = {
+        id: `new-${Date.now()}`,
+        created_at: new Date().toISOString(),
+        name: donorName,
+        amount: finalAmount,
+        project_supported: donationForm.selectedPillar,
+        display_publicly: showPublicly,
     };
+    // Add to the top and re-sort
+    const updatedDonations = [newDonation, ...allDonations]
+        .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+    setAllDonations(updatedDonations); 
+    // --- END MOCK ---
+
+    setMessage('Thank you for your generous contribution!');
+    // Reset form state
+    setDonationForm({ amount: 0, selectedPillar: pillars[0].slug, customAmount: '' });
+    setDonorName('');
+    setDonorPhone('');
+    setShowPublicly(true);
+    window.setTimeout(() => setMessage(''), 5000); 
     
-    // Simulate successful save for demo purposes (REMOVE THIS in real app)
-     console.log("Simulating save:", { name: donorName, amount: finalAmount, project: donationForm.selectedPillar, public: showPublicly });
-     setMessage('Thank you for your generous contribution!');
-     // You might manually add a donation to Supabase for testing the feed
-     // fetchRecentDonations(); // Uncomment if you manually add data to see refresh
-     setDonationForm({ amount: 0, selectedPillar: pillars[0].slug, customAmount: '' });
-     setDonorName('');
-     setDonorPhone('');
-     setShowPublicly(true);
-     window.setTimeout(() => setMessage(''), 5000);
-    // saveDonationToSupabase(); // Call this function after real payment success
-    // --- End Placeholder ---
+    // In real app, call Supabase insert *after* payment success
+    // saveDonationToSupabase(newDonation); // Pass newDonation data
   };
 
 
@@ -355,18 +372,39 @@ export function Volunteer() {
     formRef.current?.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
   };
 
+  // --- FILTERING LOGIC ---
+  const filteredDonations = allDonations.filter(donation => {
+      const donationDate = new Date(donation.created_at);
+      const now = new Date();
+      
+      switch (sortPeriod) {
+          case 'today':
+              return donationDate.toDateString() === now.toDateString();
+          case 'this_month':
+              return donationDate.getFullYear() === now.getFullYear() && donationDate.getMonth() === now.getMonth();
+          case 'this_year':
+              return donationDate.getFullYear() === now.getFullYear();
+          case 'all':
+          default:
+              return true;
+      }
+  }).slice(0, 10); // Limit display to 10 after filtering for performance
+
+  const sortOptions: { label: string; value: SortPeriod }[] = [
+      { label: 'All Time', value: 'all' },
+      { label: 'Today', value: 'today' },
+      { label: 'This Month', value: 'this_month' },
+      { label: 'This Year', value: 'this_year' },
+  ];
+
+
   return (
-    <div className="min-h-screen bg-gray-50 pb-20 md:pb-0" style={{ fontFamily: 'Inter, sans-serif' }}> {/* Added padding-bottom for mobile sticky button */}
+    <div className="min-h-screen bg-gray-50 pb-20 md:pb-0" style={{ fontFamily: 'Inter, sans-serif' }}>
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-[#002B5B] text-white py-16 md:py-24">
-         {/* ... (Hero content remains the same) ... */}
          <div
-          className="absolute inset-0 pointer-events-none"
-          aria-hidden="true"
-          style={{
-            background:
-              'radial-gradient(1200px 600px at 50% -10%, rgba(255,107,0,0.18), transparent 60%), radial-gradient(800px 400px at 100% 20%, rgba(255,255,255,0.10), transparent 50%)',
-          }}
+          className="absolute inset-0 pointer-events-none" aria-hidden="true"
+          style={{ background: 'radial-gradient(1200px 600px at 50% -10%, rgba(255,107,0,0.18), transparent 60%), radial-gradient(800px 400px at 100% 20%, rgba(255,255,255,0.10), transparent 50%)' }}
         />
         <div className="absolute inset-0 opacity-20 pointer-events-none bg-gradient-to-br from-white/10 via-transparent to-[#FF6B00]/20" />
         <AnimatedSection>
@@ -388,7 +426,6 @@ export function Volunteer() {
       <section id="donate" className="py-12 md:py-20 bg-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection>
-            {/* ... (Donate section title remains the same) ... */}
              <div className="text-center mb-8 md:mb-12">
               <h2 className="text-2xl md:text-4xl font-extrabold text-[#002B5B] mb-3 md:mb-4">
                 Fuel the Transformation: Support CETRA2030
@@ -401,179 +438,112 @@ export function Volunteer() {
           </AnimatedSection>
 
           <AnimatedSection delay={80}>
-             {/* Form now triggers modal */}
             <form ref={formRef} onSubmit={handleDonateSubmit} aria-labelledby="donate-title"> 
               <div className="bg-white/80 backdrop-blur rounded-2xl shadow-xl border border-gray-100 p-5 md:p-8 space-y-6">
-                {/* ... (Initiative Selection remains the same) ... */}
+                 {/* ... Form fields remain the same ... */}
                  <div>
                   <label htmlFor="pillarSelect" className="block text-sm font-medium text-gray-700 mb-2">
                     Support a Specific Initiative (Optional)
                   </label>
-                  <select
-                    id="pillarSelect"
-                    name="pillarSelect"
-                    value={donationForm.selectedPillar}
-                    onChange={handlePillarChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent bg-white text-gray-900"
-                  >
-                    {pillars.map((pillar) => (
-                      <option key={pillar.slug} value={pillar.slug}>
-                        {pillar.title}
-                      </option>
-                    ))}
+                  <select id="pillarSelect" name="pillarSelect" value={donationForm.selectedPillar} onChange={handlePillarChange} className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent bg-white text-gray-900">
+                    {pillars.map((pillar) => (<option key={pillar.slug} value={pillar.slug}>{pillar.title}</option>))}
                     <option value="general">General CETRA2030 Support</option>
                   </select>
                 </div>
-                {/* ... (Amount Selection remains the same) ... */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Choose Donation Amount (USD)
-                  </label>
-                  <div
-                    role="group"
-                    aria-label="Quick amounts"
-                    className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 mb-4"
-                  >
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Choose Donation Amount (USD)</label>
+                  <div role="group" aria-label="Quick amounts" className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 mb-4">
                     {donationAmounts.map((amount) => {
                       const isActive = donationForm.amount === amount && donationForm.customAmount === '';
-                      return (
-                        <button
-                          type="button"
-                          key={amount}
-                          onClick={() => handleAmountSelect(amount)}
-                          aria-pressed={isActive}
-                          className={[
-                            'px-5 py-4 border rounded-xl font-semibold transition-all text-center outline-none text-base',
-                            isActive
-                              ? 'bg-[#002B5B] text-white border-[#002B5B] ring-2 ring-offset-2 ring-[#FF6B00]'
-                              : 'bg-gray-50 text-gray-800 border-gray-300 hover:border-[#002B5B] hover:bg-gray-100 focus:ring-2 focus:ring-offset-2 focus:ring-[#FF6B00]',
-                          ].join(' ')}
-                        >
-                          ${amount}
-                        </button>
-                      );
+                      return (<button type="button" key={amount} onClick={() => handleAmountSelect(amount)} aria-pressed={isActive} className={['px-5 py-4 border rounded-xl font-semibold transition-all text-center outline-none text-base', isActive ? 'bg-[#002B5B] text-white border-[#002B5B] ring-2 ring-offset-2 ring-[#FF6B00]' : 'bg-gray-50 text-gray-800 border-gray-300 hover:border-[#002B5B] hover:bg-gray-100 focus:ring-2 focus:ring-offset-2 focus:ring-[#FF6B00]',].join(' ')}>${amount}</button>);
                     })}
                   </div>
                   <div className="relative">
                     <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                    <input
-                      inputMode="numeric"
-                      type="number"
-                      min={1}
-                      placeholder="Or enter custom amount"
-                      value={donationForm.customAmount}
-                      onChange={handleCustomAmountChange}
-                      className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent bg-white text-gray-900"
-                      aria-describedby="amountHelp"
-                    />
+                    <input inputMode="numeric" type="number" min={1} placeholder="Or enter custom amount" value={donationForm.customAmount} onChange={handleCustomAmountChange} className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent bg-white text-gray-900" aria-describedby="amountHelp" />
                   </div>
-                  <p id="amountHelp" className="mt-2 text-xs text-gray-500">
-                    Pick a preset or enter any whole number.
-                  </p>
+                  <p id="amountHelp" className="mt-2 text-xs text-gray-500">Pick a preset or enter any whole number.</p>
                 </div>
-                {/* ... (Payment Notice & Trust Badges remain the same) ... */}
                  <div className="grid gap-3 md:gap-4 md:grid-cols-2">
                   <div className="bg-[#FF6B00]/10 border border-[#FF6B00]/30 rounded-xl p-4">
                     <div className="flex items-start space-x-3">
                       <CreditCard className="w-5 h-5 text-[#FF6B00] flex-shrink-0 mt-0.5" />
                       <div>
                         <h3 className="text-sm font-semibold text-[#002B5B] mb-1">Secure Payment via Stripe</h3>
-                        <p className="text-xs text-gray-600 leading-relaxed">
-                          Payment processing will be enabled via Stripe. Contribution limits may apply. (Demo: No actual payment).
-                        </p>
+                        <p className="text-xs text-gray-600 leading-relaxed">Payment processing will be enabled via Stripe. Contribution limits may apply. (Demo: No actual payment).</p>
                       </div>
                     </div>
                   </div>
                   <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
                     <ul className="text-xs text-gray-600 space-y-2">
-                      <li className="flex items-center">
-                        <span className="inline-block h-2 w-2 rounded-full bg-[#FF6B00] mr-2" />
-                        SSL secured & privacy-first
-                      </li>
-                      <li className="flex items-center">
-                        <span className="inline-block h-2 w-2 rounded-full bg-[#FF6B00] mr-2" />
-                        Industry-standard processing
-                      </li>
-                      <li className="flex items-center">
-                        <span className="inline-block h-2 w-2 rounded-full bg-[#FF6B00] mr-2" />
-                        Funds support local initiatives
-                      </li>
+                      <li className="flex items-center"><span className="inline-block h-2 w-2 rounded-full bg-[#FF6B00] mr-2" />SSL secured & privacy-first</li>
+                      <li className="flex items-center"><span className="inline-block h-2 w-2 rounded-full bg-[#FF6B00] mr-2" />Industry-standard processing</li>
+                      <li className="flex items-center"><span className="inline-block h-2 w-2 rounded-full bg-[#FF6B00] mr-2" />Funds support local initiatives</li>
                     </ul>
                   </div>
                 </div>
-
-                {/* Main page feedback message area */}
                 <div aria-live="polite" className="min-h-[1.25rem]">
-                  {message && (
-                    <div
-                      className={`mt-1 p-3 rounded-lg text-sm ${
-                        message.toLowerCase().includes('thank')
-                          ? 'bg-green-100 text-green-800'
-                          : 'bg-red-100 text-red-800'
-                      }`}
-                    >
-                      {message}
-                    </div>
-                  )}
+                  {message && (<div className={`mt-1 p-3 rounded-lg text-sm ${message.toLowerCase().includes('thank') ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>{message}</div>)}
                 </div>
-
-                {/* Main Donate Button (now opens modal) */}
-                <Button
-                  type="submit" // Changed back to submit to trigger form handler
-                  size="lg"
-                  className={`hidden md:flex w-full bg-[#FF6B00] hover:bg-[#E66000] focus:ring-[#FF6B00] text-white shadow-lg items-center justify-center ${
-                    hasValidAmount ? '' : 'opacity-60 cursor-not-allowed'
-                  }`}
-                  disabled={!hasValidAmount}
-                  aria-disabled={!hasValidAmount}
-                  aria-label={
-                    hasValidAmount
-                      ? `Continue Contribution of ${formatCurrency(donationForm.amount)}`
-                      : 'Select an amount to continue'
-                  }
-                >
-                  <Gift className="w-5 h-5 mr-2" />
-                   Continue ({formatCurrency(donationForm.amount)}) 
-                   {/* Text changed to 'Continue' */}
+                <Button type="submit" size="lg" className={`hidden md:flex w-full bg-[#FF6B00] hover:bg-[#E66000] focus:ring-[#FF6B00] text-white shadow-lg items-center justify-center ${hasValidAmount ? '' : 'opacity-60 cursor-not-allowed'}`} disabled={!hasValidAmount} aria-disabled={!hasValidAmount} aria-label={hasValidAmount ? `Continue Contribution of ${formatCurrency(donationForm.amount)}` : 'Select an amount to continue'}>
+                  <Gift className="w-5 h-5 mr-2" /> Continue ({formatCurrency(donationForm.amount)}) 
                 </Button>
-
-                <p className="text-xs text-gray-500 text-center">
-                  By contributing, you confirm you understand applicable campaign finance regulations.
-                </p>
+                <p className="text-xs text-gray-500 text-center">By contributing, you confirm you understand applicable campaign finance regulations.</p>
               </div>
             </form>
           </AnimatedSection>
 
-          {/* Recent Contributions Feed */}
+          {/* Recent Contributions Feed with Sorting */}
           <AnimatedSection delay={140}>
-            {/* ... (Feed content remains the same) ... */}
-              <div className="mt-12 md:mt-16">
-              <h3 className="text-xl md:text-2xl font-bold text-[#002B5B] mb-4 md:mb-6 text-center">
-                Recent Contributions
-              </h3>
+            <div className="mt-12 md:mt-16">
+              <div className="flex flex-col sm:flex-row justify-between items-center mb-4 md:mb-6 px-1">
+                 <h3 className="text-xl md:text-2xl font-bold text-[#002B5B] mb-3 sm:mb-0">
+                    Recent Contributions
+                 </h3>
+                 {/* Sort Controls */}
+                 <div className="flex items-center space-x-2 bg-gray-100 p-1 rounded-lg">
+                    <Filter size={16} className="text-gray-500 ml-1" />
+                    {sortOptions.map(option => (
+                      <button 
+                        key={option.value}
+                        onClick={() => setSortPeriod(option.value)}
+                        className={`px-3 py-1 rounded-md text-xs font-medium transition-colors ${
+                          sortPeriod === option.value 
+                            ? 'bg-white text-[#002B5B] shadow-sm' 
+                            : 'text-gray-600 hover:text-[#002B5B]'
+                        }`}
+                        aria-pressed={sortPeriod === option.value}
+                      >
+                        {option.label}
+                      </button>
+                    ))}
+                 </div>
+              </div>
+              
               {loadingDonations ? (
-                <div className="space-y-3 max-w-lg mx-auto">
-                  {/* Skeleton shimmer cards */}
-                  {[...Array(3)].map((_, i) => (
-                    <div
-                      key={i}
-                      className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm overflow-hidden relative"
-                    >
-                      <div className="h-4 w-40 bg-gray-200 rounded mb-2" />
-                      <div className="h-3 w-56 bg-gray-100 rounded" />
-                      <div className="shimmer absolute inset-0" />
-                    </div>
-                  ))}
-                  <p className="text-center text-sm text-gray-500">Loading recent contributions...</p>
-                </div>
-              ) : donations.length === 0 ? (
-                <p className="text-center text-gray-500 py-8">Be the first to contribute!</p>
+                 <div className="space-y-3 max-w-lg mx-auto">
+                    {[...Array(3)].map((_, i) => (
+                      <div key={i} className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm overflow-hidden relative">
+                         <div className="h-4 w-40 bg-gray-200 rounded mb-2" />
+                         <div className="h-3 w-56 bg-gray-100 rounded" />
+                         <div className="shimmer absolute inset-0" />
+                      </div>
+                    ))}
+                    <p className="text-center text-sm text-gray-500">Loading contributions...</p>
+                 </div>
+              ) : filteredDonations.length === 0 ? (
+                 <p className="text-center text-gray-500 py-8">
+                    No contributions found for this period. Be the first!
+                 </p>
               ) : (
                 <div role="list" className="space-y-3 md:space-y-4 max-w-lg mx-auto">
-                  {donations.map((donation) => (
-                    <div
+                  {filteredDonations.map((donation) => (
+                    <motion.div
                       role="listitem"
                       key={donation.id}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3 }}
                       className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm flex justify-between items-center"
                     >
                       <div className="pr-3">
@@ -586,41 +556,41 @@ export function Volunteer() {
                         <span className="text-sm font-bold text-[#002B5B] block">
                           {formatCurrency(donation.amount)}
                         </span>
+                        {/* Show Relative Time */}
+                        <span className="text-xs text-gray-400 block mt-0.5"> 
+                          {formatRelativeTime(donation.created_at)}
+                        </span>
                       </div>
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
               )}
               <p className="text-xs text-gray-500 text-center mt-4">
-                Showing the latest contributions. Your support makes a difference!
+                 Showing contributions. Your support makes a difference! 
+                 {/* Removed 'the latest' as it depends on filter */}
               </p>
             </div>
           </AnimatedSection>
         </div>
       </section>
 
-      {/* Mobile Sticky Quick Donate Bar (now opens modal) */}
+      {/* Mobile Sticky Quick Donate Bar */}
       <div className="md:hidden fixed bottom-4 inset-x-4 z-40">
         <Button
-          type="button" // Changed type to button to prevent default form submission
+          type="button" 
           size="lg"
-          onClick={submitForm} // Still triggers the form submit handler
-          className={`w-full rounded-2xl shadow-xl bg-[#FF6B00] hover:bg-[#E66000] focus:ring-[#FF6B00] text-white flex items-center justify-center ${
-            donationForm.amount > 0 ? '' : 'opacity-60 cursor-not-allowed'
-          }`}
+          onClick={submitForm} 
+          className={`w-full rounded-2xl shadow-xl bg-[#FF6B00] hover:bg-[#E66000] focus:ring-[#FF6B00] text-white flex items-center justify-center ${ hasValidAmount ? '' : 'opacity-60 cursor-not-allowed' }`}
           disabled={!hasValidAmount}
           aria-disabled={!hasValidAmount}
-          aria-label={
-            hasValidAmount ? `Continue Contribution of ${formatCurrency(donationForm.amount)}` : 'Select an amount to continue'
-          }
+          aria-label={ hasValidAmount ? `Continue Contribution of ${formatCurrency(donationForm.amount)}` : 'Select an amount to continue' }
         >
           <Gift className="w-5 h-5 mr-2" />
           Continue ({formatCurrency(donationForm.amount)}) 
-          {/* Text changed to 'Continue' */}
         </Button>
       </div>
       
-      {/* --- RENDER THE MODAL --- */}
+      {/* Render the Modal */}
       <ContributionConfirmModal
           isOpen={isConfirmModalOpen}
           onClose={() => setIsConfirmModalOpen(false)}
@@ -634,7 +604,6 @@ export function Volunteer() {
           setShowPublicly={setShowPublicly}
           onConfirmAndPay={handleConfirmAndPay}
       />
-
 
       {/* CSS */}
       <style>{`

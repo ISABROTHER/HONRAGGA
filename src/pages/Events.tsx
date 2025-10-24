@@ -165,8 +165,8 @@ export function Events() {
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" 
                   />
 
-                  {/* Gradient Overlay for Text */}
-                  <div className="absolute inset-0 w-full h-full bg-gradient-to-t from-[#002B5B]/90 via-[#002B5B]/60 to-transparent" />
+                  {/* Gradient Overlay for Text (Dark Green at bottom, transparent middle/top) */}
+                  <div className="absolute inset-0 w-full h-full bg-gradient-to-t from-[#002B5B] via-[#002B5B]/0 to-transparent" />
 
                   {/* Text Content */}
                   <div className="absolute bottom-0 left-0 right-0 p-5">

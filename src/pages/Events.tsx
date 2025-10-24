@@ -1,279 +1,266 @@
-import { useState, useEffect } from 'react';
-import { Calendar, MapPin, Users, Clock } from 'lucide-react';
-import { supabase } from '../lib/supabase';
+import { useEffect, useRef } from 'react';
 import { Button } from '../components/Button';
-import type { Database } from '../lib/database.types';
+import {
+  ArrowRight,
+  Briefcase,
+  Rocket,
+  Laptop,
+  Landmark,
+  GraduationCap,
+  Banknote,
+  LayoutDashboard,
+  Eye,
+  Target,
+} from 'lucide-react';
 
-type Event = Database['public']['Tables']['events']['Row'];
-
-export function Events() {
-  const [events, setEvents] = useState<Event[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
-  const [rsvpForm, setRsvpForm] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    guests: 0
-  });
-  const [submitting, setSubmitting] = useState(false);
-  const [message, setMessage] = useState('');
-
+// Helper component for animated sections (copied from project pattern)
+const AnimatedSection = ({
+  children,
+  delay = 0,
+}: {
+  children: React.ReactNode;
+  delay?: number;
+}) => {
+  const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    fetchEvents();
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-section-enter');
+          entry.target.classList.remove('opacity-0', 'translate-y-5');
+          observer.unobserve(entry.target); // Animate only once
+        }
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' },
+    );
+    const currentRef = ref.current;
+    if (currentRef) {
+      currentRef.classList.add('opacity-0', 'translate-y-5');
+      observer.observe(currentRef);
+    }
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
   }, []);
 
-  const fetchEvents = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('events')
-        .select('*')
-        .gte('event_date', new Date().toISOString())
-        .order('event_date', { ascending: true });
+  return (
+    <div
+      ref={ref}
+      className="transition-all duration-700 ease-out"
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      {children}
+    </div>
+  );
+};
 
-      if (error) throw error;
-      setEvents(data || []);
-    } catch (error) {
-      console.error('Error fetching events:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+// Data for the 7 Pillars
+const pillars = [
+  {
+    icon: Briefcase,
+    title: 'Cape Works Initiative (CWI)',
+    description: 'Youth working, Cape Coast shining.',
+  },
+  {
+    icon: Rocket,
+    title: 'Cape Innovates Accelerator (CIA)',
+    description: 'Turning local ideas into global businesses.',
+  },
+  {
+    icon: Laptop,
+    title: 'Digital Cape Project (DCP)',
+    description: 'Train local, work global.',
+  },
+  {
+    icon: Landmark,
+    title: 'Heritage Jobs 360 (HJ360)',
+    description: 'Our history, our hustle.',
+  },
+  {
+    icon: GraduationCap,
+    title: 'Classroom to Career (C2C)',
+    description: 'No graduate left idle.',
+  },
+  {
+    icon: Banknote,
+    title: 'Cape Coast North Youth Development Fund (CCNYDF)',
+    description: 'Funding the next generation of entrepreneurs.',
+  },
+  {
+    icon: LayoutDashboard,
+    title: 'Cape Impact Dashboard (CID)',
+    description: 'Tracking our progress, ensuring accountability.',
+  },
+];
 
-  const handleRSVP = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!selectedEvent) return;
-
-    setSubmitting(true);
-    setMessage('');
-
-    try {
-      const { error } = await supabase
-        .from('event_rsvps')
-        .insert([{
-          event_id: selectedEvent.id,
-          ...rsvpForm
-        }]);
-
-      if (error) throw error;
-
-      setMessage('RSVP successful! We look forward to seeing you.');
-      setRsvpForm({ name: '', email: '', phone: '', guests: 0 });
-      setTimeout(() => {
-        setSelectedEvent(null);
-        setMessage('');
-      }, 3000);
-    } catch (error: any) {
-      setMessage('Something went wrong. Please try again.');
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  };
-
-  const formatTime = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleTimeString('en-US', {
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true
-    });
-  };
+export function Events() {
+  const currentYear = new Date().getFullYear();
 
   return (
-    <div className="min-h-screen">
-      <section className="relative bg-gradient-to-br from-blue-950 via-blue-900 to-blue-800 text-white py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h1 className="text-5xl md:text-6xl font-bold mb-6">Campaign Events</h1>
-            <p className="text-xl text-blue-100 max-w-3xl mx-auto leading-relaxed">
-              Join us at upcoming events and be part of the movement for change
+    <div className="min-h-screen bg-gray-50 text-gray-800" style={{ fontFamily: 'Inter, sans-serif' }}>
+      
+      {/* 1. Hero Section */}
+      <section className="bg-[#002B5B] text-white py-24 md:py-32">
+        <AnimatedSection>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight">
+              CETRA2030
+            </h1>
+            <p className="mt-2 text-2xl md:text-4xl font-medium text-gray-300">
+              Cape Coast North Youth Employment Transformation Agenda
             </p>
+            <h2 className="mt-6 text-3xl md:text-5xl font-bold text-[#FF6B00]">
+              "Every Youth Productive by 2030."
+            </h2>
+            <p className="mt-6 max-w-3xl mx-auto text-lg md:text-xl text-gray-200">
+              A bold, non-partisan agenda to build a self-sustaining youth economy 
+              through innovation, skills, and entrepreneurship.
+            </p>
+            <div className="mt-10">
+              <Button
+                size="lg"
+                className="bg-[#FF6B00] hover:bg-[#E66000] focus:ring-[#FF6B00] text-white shadow-lg"
+              >
+                Explore Programs
+                <ArrowRight className="ml-2 w-5 h-5" />
+              </Button>
+            </div>
           </div>
-        </div>
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent"></div>
+        </AnimatedSection>
       </section>
 
-      <section className="py-20 bg-white">
+      {/* 2. Programs Section */}
+      <section className="py-20 md:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {loading ? (
-            <div className="text-center py-12">
-              <div className="inline-block w-16 h-16 border-4 border-blue-900 border-t-transparent rounded-full animate-spin"></div>
-              <p className="mt-4 text-gray-600">Loading events...</p>
+          <AnimatedSection delay={100}>
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-extrabold text-[#002B5B]">
+                The 7 Pillars of CETRA2030
+              </h2>
+              <p className="mt-4 text-lg text-gray-600">
+                A comprehensive strategy for youth empowerment and job creation.
+              </p>
             </div>
-          ) : events.length === 0 ? (
-            <div className="text-center py-12">
-              <Calendar className="w-16 h-16 mx-auto text-gray-400 mb-4" />
-              <p className="text-xl text-gray-600">No upcoming events at this time.</p>
-              <p className="text-gray-500 mt-2">Check back soon for new events!</p>
-            </div>
-          ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {events.map((event) => (
-                <div
-                  key={event.id}
-                  className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 overflow-hidden group"
-                >
-                  {event.image_url && (
-                    <div className="h-48 bg-gradient-to-br from-blue-200 to-blue-300">
-                      <img
-                        src={event.image_url}
-                        alt={event.title}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  )}
+          </AnimatedSection>
 
-                  <div className="p-6 space-y-4">
-                    <div>
-                      <h3 className="text-2xl font-bold text-gray-900 mb-2 group-hover:text-blue-900 transition-colors">
-                        {event.title}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {pillars.map((pillar, index) => (
+              <AnimatedSection key={pillar.title} delay={200 + index * 50}>
+                <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
+                  <div className="flex items-center space-x-4">
+                    <div className="flex-shrink-0">
+                      <div className="w-12 h-12 rounded-full bg-[#002B5B]/10 text-[#002B5B] flex items-center justify-center">
+                        <pillar.icon className="w-6 h-6" />
+                      </div>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-lg font-semibold text-[#002B5B] truncate">
+                        {pillar.title}
                       </h3>
-                      <p className="text-gray-600 leading-relaxed">
-                        {event.description}
+                      <p className="text-sm text-gray-600">
+                        {pillar.description}
                       </p>
                     </div>
-
-                    <div className="space-y-2 text-sm">
-                      <div className="flex items-start space-x-2 text-gray-700">
-                        <Calendar className="w-5 h-5 text-blue-900 flex-shrink-0 mt-0.5" />
-                        <span>{formatDate(event.event_date)}</span>
-                      </div>
-                      <div className="flex items-start space-x-2 text-gray-700">
-                        <Clock className="w-5 h-5 text-blue-900 flex-shrink-0 mt-0.5" />
-                        <span>{formatTime(event.event_date)}</span>
-                      </div>
-                      <div className="flex items-start space-x-2 text-gray-700">
-                        <MapPin className="w-5 h-5 text-blue-900 flex-shrink-0 mt-0.5" />
-                        <span>{event.location}</span>
-                      </div>
-                      {event.max_attendees && (
-                        <div className="flex items-center space-x-2 text-gray-700">
-                          <Users className="w-5 h-5 text-blue-900 flex-shrink-0" />
-                          <span>Limited to {event.max_attendees} attendees</span>
-                        </div>
-                      )}
-                    </div>
-
-                    {event.rsvp_enabled && (
-                      <Button
-                        onClick={() => setSelectedEvent(event)}
-                        variant="primary"
-                        className="w-full"
-                      >
-                        RSVP Now
-                      </Button>
-                    )}
                   </div>
                 </div>
-              ))}
-            </div>
-          )}
+              </AnimatedSection>
+            ))}
+          </div>
         </div>
       </section>
 
-      {selectedEvent && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl">
-            <div className="p-6 border-b border-gray-200">
-              <h2 className="text-2xl font-bold text-gray-900">
-                RSVP for {selectedEvent.title}
-              </h2>
-            </div>
-
-            <form onSubmit={handleRSVP} className="p-6 space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Full Name *
-                </label>
-                <input
-                  type="text"
-                  value={rsvpForm.name}
-                  onChange={(e) => setRsvpForm({ ...rsvpForm, name: e.target.value })}
-                  required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Email *
-                </label>
-                <input
-                  type="email"
-                  value={rsvpForm.email}
-                  onChange={(e) => setRsvpForm({ ...rsvpForm, email: e.target.value })}
-                  required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Phone
-                </label>
-                <input
-                  type="tel"
-                  value={rsvpForm.phone}
-                  onChange={(e) => setRsvpForm({ ...rsvpForm, phone: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Number of Guests
-                </label>
-                <input
-                  type="number"
-                  min="0"
-                  max="10"
-                  value={rsvpForm.guests}
-                  onChange={(e) => setRsvpForm({ ...rsvpForm, guests: parseInt(e.target.value) || 0 })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
-                />
-              </div>
-
-              {message && (
-                <div className={`p-3 rounded-lg ${message.includes('successful') ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                  {message}
+      {/* 3. Vision & Mission Section */}
+      <section className="py-20 md:py-24 bg-gray-50 border-t border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <AnimatedSection delay={100}>
+              <div className="flex items-start space-x-4">
+                <div className="flex-shrink-0 w-12 h-12 rounded-full bg-[#FF6B00]/10 text-[#FF6B00] flex items-center justify-center">
+                  <Eye className="w-6 h-6" />
                 </div>
-              )}
-
-              <div className="flex space-x-3 pt-4">
-                <Button
-                  type="button"
-                  variant="ghost"
-                  onClick={() => {
-                    setSelectedEvent(null);
-                    setMessage('');
-                  }}
-                  className="flex-1"
-                >
-                  Cancel
-                </Button>
-                <Button
-                  type="submit"
-                  variant="primary"
-                  disabled={submitting}
-                  className="flex-1"
-                >
-                  {submitting ? 'Submitting...' : 'Confirm RSVP'}
-                </Button> 
+                <div>
+                  <h3 className="text-2xl font-bold text-[#002B5B] mb-2">
+                    Our Vision
+                  </h3>
+                  <p className="text-lg text-gray-700 leading-relaxed">
+                    To make every youth in Cape Coast North employable, empowered, 
+                    or earning by 2030.
+                  </p>
+                </div>
               </div>
-            </form>
+            </AnimatedSection>
+            <AnimatedSection delay={200}>
+              <div className="flex items-start space-x-4">
+                <div className="flex-shrink-0 w-12 h-12 rounded-full bg-[#FF6B00]/10 text-[#FF6B00] flex items-center justify-center">
+                  <Target className="w-6 h-6" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-[#002B5B] mb-2">
+                    Our Mission
+                  </h3>
+                  <p className="text-lg text-gray-700 leading-relaxed">
+                    To build a self-sustaining youth economy through innovation, 
+                    skills, and entrepreneurship.
+                  </p>
+                </div>
+              </div>
+            </AnimatedSection>
           </div>
         </div>
-      )}
+      </section>
+
+      {/* 4. Call-to-Action Section */}
+      <section className="bg-[#002B5B] text-white py-20 md:py-24">
+        <AnimatedSection>
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 className="text-3xl md:text-4xl font-extrabold mb-4">
+              Join the CETRA2030 Movement
+            </h2>
+            <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-8">
+              This agenda belongs to all of us. Whether you are a business leader, 
+              an investor, an educator, or a passionate resident, we need your 
+              partnership to bring this vision to life.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button
+                size="lg"
+                className="bg-[#FF6B00] hover:bg-[#E66000] focus:ring-[#FF6B00] text-white shadow-lg"
+              >
+                Partner With Us
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-white text-white hover:bg-white hover:text-[#002B5B] focus:ring-white"
+              >
+                See Impact Dashboard
+              </Button>
+            </div>
+          </div>
+        </AnimatedSection>
+      </section>
+
+      {/* 5. Footer */}
+      <footer className="bg-gray-900 text-gray-400 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <p className="font-semibold text-gray-200">
+            Office of the Member of Parliament, Cape Coast North Constituency
+          </p>
+          <p className="text-sm mt-1">
+            &copy; {currentYear} All rights reserved.
+          </p>
+        </div>
+      </footer>
+
+      {/* CSS for animations */}
+      <style>{`
+        .animate-section-enter {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      `}</style>
     </div>
   );
 }

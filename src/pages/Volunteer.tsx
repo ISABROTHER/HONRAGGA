@@ -28,17 +28,19 @@ type Donation = {
 };
 
 type SortPeriod = 'all' | 'today' | 'this_month' | 'this_year';
+type Currency = 'USD' | 'GHS';
+type PaymentMethod = 'paystack' | 'applePay';
 
 // Static targets (can be replaced by DB later)
-const targets: Record<string, { goal: number; raised: number; currency: 'USD' | 'GHS' }> = {
-  cwi: { goal: 50000, raised: 32000, currency: 'GHS' },
-  cia: { goal: 40000, raised: 21000, currency: 'GHS' },
-  dcp: { goal: 60000, raised: 42000, currency: 'GHS' },
-  hj360: { goal: 30000, raised: 18000, currency: 'GHS' },
-  c2c: { goal: 50000, raised: 36000, currency: 'GHS' },
-  ccnydf: { goal: 80000, raised: 54000, currency: 'GHS' },
-  cid: { goal: 45000, raised: 12000, currency: 'GHS' },
-  general: { goal: 100000, raised: 74000, currency: 'GHS' },
+const targets: Record<string, { goal: number; raised: number }> = {
+  cwi: { goal: 50000, raised: 32000 },
+  cia: { goal: 40000, raised: 21000 },
+  dcp: { goal: 60000, raised: 42000 },
+  hj360: { goal: 30000, raised: 18000 },
+  c2c: { goal: 50000, raised: 36000 },
+  ccnydf: { goal: 80000, raised: 54000 },
+  cid: { goal: 45000, raised: 12000 },
+  general: { goal: 100000, raised: 74000 },
 };
 
 const AnimatedSection = ({
@@ -286,7 +288,8 @@ export function Volunteer() {
     customAmount: '',
   });
 
-  const [currency, setCurrency] = useState<'USD' | 'GHS'>(userLocale.includes('GH') ? 'GHS' : 'USD');
+  const [currency, setCurrency] = useState<Currency>(userLocale.includes('GH') ? 'GHS' : 'USD');
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(currency === 'GHS' ? 'paystack' : 'applePay');
   const fmt = (n: number) =>
     new Intl.NumberFormat(userLocale, { style: 'currency', currency, maximumFractionDigits: 0 }).format(
       Math.max(0, Math.round(n || 0)),
@@ -307,10 +310,6 @@ export function Volunteer() {
   const [donorEmail, setDonorEmail] = useState('');
   const [showPublicly, setShowPublicly] = useState(true);
   const [showAmountPublicly, setShowAmountPublicly] = useState(true);
-
-  useEffect(() => {
-    generateMockDonations();
-  }, []);
 
   // Remember last amount & pillar
   useEffect(() => {
@@ -342,22 +341,18 @@ export function Volunteer() {
     }
   }, [donationForm.amount, donationForm.selectedPillar]);
 
+  // Keep payment method valid when currency changes
+  useEffect(() => {
+    if (currency === 'GHS' && paymentMethod === 'applePay') {
+      setPaymentMethod('paystack');
+    }
+  }, [currency, paymentMethod]);
+
   // --- MOCK DATA GENERATION ---
-  const generateMockDonations = () => {
+  useEffect(() => {
     setLoadingDonations(true);
     const mockData: Donation[] = [];
-    const names = [
-      'Ama P.',
-      'Kwesi Mensah',
-      'Yaw B.',
-      'Adwoa Ltd',
-      'Kofi Annan',
-      'Efua S.',
-      'Nana K.',
-      'Aisha Co.',
-      'Kwabena F.',
-      'Akosua',
-    ];
+    const names = ['Ama P.', 'Kwesi Mensah', 'Yaw B.', 'Adwoa Ltd', 'Kofi Annan', 'Efua S.', 'Nana K.', 'Aisha Co.', 'Kwabena F.', 'Akosua'];
     const now = new Date();
     for (let i = 0; i < 20; i++) {
       const date = new Date(now);
@@ -386,7 +381,7 @@ export function Volunteer() {
     mockData.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
     setAllDonations(mockData);
     setLoadingDonations(false);
-  };
+  }, []);
   // --- END MOCK DATA ---
 
   const handleAmountSelect = (amount: number) => {
@@ -406,7 +401,6 @@ export function Volunteer() {
   };
 
   const primeModalPrivacyFromAnonymous = () => {
-    // If anonymous is on, default modal privacy toggles to false
     setShowPublicly(!anonymous);
     setShowAmountPublicly(!anonymous);
   };
@@ -418,24 +412,13 @@ export function Volunteer() {
       window.setTimeout(() => setMessage(''), 5000);
       return;
     }
+    // Ensure a valid method is chosen (Apple Pay hidden for GHS, so this is defensive)
+    if (currency === 'GHS' && paymentMethod !== 'paystack') {
+      setPaymentMethod('paystack');
+    }
     setMessage('');
     primeModalPrivacyFromAnonymous();
     setIsConfirmModalOpen(true);
-  };
-
-  const handleExpressPay = (method: 'paystack' | 'applePay') => {
-    if (donationForm.amount <= 0) {
-      setMessage('Select an amount before using Express Pay.');
-      window.setTimeout(() => setMessage(''), 4000);
-      return;
-    }
-    const pillarTitle = getPillarTitleFromSlug(donationForm.selectedPillar);
-    alert(
-      `Express Pay (${method === 'paystack' ? 'Paystack' : 'Apple Pay'}) for ${fmt(
-        donationForm.amount,
-      )} towards ${pillarTitle}.\n(Mock integration)`,
-    );
-    // In real flow: redirect/initiate payment and collect donor details after success.
   };
 
   const handleConfirmAndPay = () => {
@@ -443,16 +426,17 @@ export function Volunteer() {
     const pillarTitle = getPillarTitleFromSlug(donationForm.selectedPillar);
     setIsConfirmModalOpen(false);
 
+    const methodLabel = paymentMethod === 'applePay' ? 'Apple Pay' : 'Paystack (Visa/Mastercard/MoMo)';
     alert(
-      `Initiating donation of ${fmt(finalAmount)} for ${donorName} (Email: ${donorEmail}) towards ${pillarTitle}${
+      `Initiating ${methodLabel} for ${fmt(finalAmount)} towards ${pillarTitle}${
         isRecurring ? ' • Monthly' : ''
-      }.\n(Proceeding to Paystack/Apple Pay... - This is a demo placeholder.)`,
+      }.\n(This is a demo placeholder.)`,
     );
 
     const newDonation: Donation = {
       id: `new-${Date.now()}`,
       created_at: new Date().toISOString(),
-      name: anonymous ? 'Anonymous' : donorName,
+      name: anonymous ? 'Anonymous' : donorName || 'Supporter',
       amount: finalAmount,
       project_supported: donationForm.selectedPillar,
       display_publicly: !anonymous,
@@ -503,13 +487,6 @@ export function Volunteer() {
     })
     .slice(0, 10);
 
-  const sortOptions: { label: string; value: SortPeriod }[] = [
-    { label: 'All Time', value: 'all' },
-    { label: 'Today', value: 'today' },
-    { label: 'This Month', value: 'this_month' },
-    { label: 'This Year', value: 'this_year' },
-  ];
-
   // Determine target/progress for selected pillar (fallback to general)
   const currentTarget = targets[donationForm.selectedPillar] || targets.general;
   const progressPct = Math.min(100, Math.round((currentTarget.raised / currentTarget.goal) * 100));
@@ -545,29 +522,9 @@ export function Volunteer() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection delay={80}>
             <form ref={formRef} onSubmit={handleDonateSubmit} aria-labelledby="donate-form-heading">
-              <h2 id="donate-form-heading" className="sr-only">
-                Donation Form
-              </h2>
+              <h2 id="donate-form-heading" className="sr-only">Donation Form</h2>
 
               <div className="bg-white/80 backdrop-blur rounded-2xl shadow-xl border border-gray-100 p-5 md:p-8 space-y-6">
-                {/* Express Pay */}
-                <div className="grid grid-cols-2 gap-3">
-                  <Button
-                    type="button"
-                    onClick={() => handleExpressPay('paystack')}
-                    className="w-full bg-gray-900 hover:bg-black text-white rounded-xl"
-                  >
-                    Pay with Paystack
-                  </Button>
-                  <Button
-                    type="button"
-                    onClick={() => handleExpressPay('applePay')}
-                    className="w-full bg-gray-900 hover:bg-black text-white rounded-xl"
-                  >
-                     Apple&nbsp;Pay
-                  </Button>
-                </div>
-
                 {/* Initiative Selection */}
                 <div>
                   <label htmlFor="pillarSelect" className="block text-sm font-medium text-gray-700 mb-2">
@@ -589,14 +546,11 @@ export function Volunteer() {
                   </select>
                 </div>
 
-                {/* Progress Bar for selected initiative */}
+                {/* Progress Bar (percent only; amounts removed) */}
                 <div>
                   <div className="flex items-center justify-between text-xs text-gray-600 mb-2">
                     <span>{progressPct}% funded</span>
-                    <span>
-                      {currentTarget.currency} {Math.round(currentTarget.raised).toLocaleString()} /{' '}
-                      {currentTarget.currency} {Math.round(currentTarget.goal).toLocaleString()}
-                    </span>
+                    <span aria-hidden="true">&nbsp;</span>
                   </div>
                   <div className="h-2 bg-gray-200 rounded">
                     <div
@@ -610,18 +564,16 @@ export function Volunteer() {
                   </div>
                 </div>
 
-                {/* Amount Selection */}
+                {/* Amount + Currency */}
                 <div>
                   <div className="flex items-center justify-between mb-2">
                     <label className="block text-sm font-medium text-gray-700">Choose Donation Amount</label>
                     <div className="flex items-center gap-2">
-                      <label htmlFor="currency" className="text-xs text-gray-600">
-                        Currency
-                      </label>
+                      <label htmlFor="currency" className="text-xs text-gray-600">Currency</label>
                       <select
                         id="currency"
                         value={currency}
-                        onChange={(e) => setCurrency(e.target.value as 'USD' | 'GHS')}
+                        onChange={(e) => setCurrency(e.target.value as Currency)}
                         className="text-xs border border-gray-300 rounded px-2 py-1"
                       >
                         <option value="USD">USD</option>
@@ -631,7 +583,7 @@ export function Volunteer() {
                   </div>
 
                   <div role="group" aria-label="Quick amounts" className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 mb-4">
-                    {donationAmounts.map((amount) => {
+                    {[25, 50, 100, 250, 500, 1000].map((amount) => {
                       const isActive = donationForm.amount === amount && donationForm.customAmount === '';
                       return (
                         <button
@@ -665,16 +617,57 @@ export function Volunteer() {
                       aria-describedby="amountHelp"
                     />
                   </div>
-                  <p id="amountHelp" className="mt-2 text-xs text-gray-500">
-                    Pick a preset or enter any whole number.
+                  <p id="amountHelp" className="mt-2 text-xs text-gray-500">Pick a preset or enter any whole number.</p>
+                </div>
+
+                {/* Payment Method (must be selected before paying) */}
+                <div>
+                  <p className="text-sm font-medium text-gray-700 mb-2">Choose Payment Method</p>
+                  <div className="grid grid-cols-2 gap-3">
+                    {/* Paystack always available (Visa/Mastercard/MoMo). Required for GHS. */}
+                    <button
+                      type="button"
+                      onClick={() => setPaymentMethod('paystack')}
+                      aria-pressed={paymentMethod === 'paystack'}
+                      className={[
+                        'w-full rounded-xl px-4 py-3 border transition',
+                        paymentMethod === 'paystack'
+                          ? 'bg-gray-900 text-white border-gray-900'
+                          : 'bg-white text-gray-800 border-gray-300 hover:bg-gray-50',
+                      ].join(' ')}
+                    >
+                      Pay with Paystack
+                    </button>
+
+                    {/* Apple Pay only shown for USD */}
+                    {currency === 'USD' ? (
+                      <button
+                        type="button"
+                        onClick={() => setPaymentMethod('applePay')}
+                        aria-pressed={paymentMethod === 'applePay'}
+                        className={[
+                          'w-full rounded-xl px-4 py-3 border transition',
+                          paymentMethod === 'applePay'
+                            ? 'bg-gray-900 text-white border-gray-900'
+                            : 'bg-white text-gray-800 border-gray-300 hover:bg-gray-50',
+                        ].join(' ')}
+                      >
+                         Apple&nbsp;Pay
+                      </button>
+                    ) : (
+                      <div className="w-full rounded-xl px-4 py-3 border border-dashed border-gray-300 text-gray-400 text-center">
+                         Apple&nbsp;Pay (USD only)
+                      </div>
+                    )}
+                  </div>
+                  <p className="mt-2 text-xs text-gray-500">
+                    Using Visa? Select <span className="font-semibold">Paystack</span>. For GHS, Paystack (MoMo/Card) is required. Apple Pay is available for USD.
                   </p>
                 </div>
 
                 {/* Recurring + Anonymous */}
                 <div className="flex items-center justify-between bg-gray-50 border rounded-xl p-3">
-                  <label htmlFor="recurring" className="text-sm text-gray-700">
-                    Make this a monthly donation
-                  </label>
+                  <label htmlFor="recurring" className="text-sm text-gray-700">Make this a monthly donation</label>
                   <input
                     id="recurring"
                     type="checkbox"
@@ -693,7 +686,7 @@ export function Volunteer() {
                   Give anonymously
                 </label>
 
-                {/* Payment Info / Trust */}
+                {/* Trust / Info */}
                 <div className="grid gap-3 md:gap-4">
                   <div className="text-center text-xs text-gray-500">
                     Secure payments via <span className="font-semibold">Paystack</span> &{' '}
@@ -701,18 +694,9 @@ export function Volunteer() {
                   </div>
                   <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
                     <ul className="text-xs text-gray-600 space-y-2">
-                      <li className="flex items-center">
-                        <span className="inline-block h-2 w-2 rounded-full bg-[#FF6B00] mr-2" />
-                        SSL secured & privacy-first
-                      </li>
-                      <li className="flex items-center">
-                        <span className="inline-block h-2 w-2 rounded-full bg-[#FF6B00] mr-2" />
-                        Industry-standard processing
-                      </li>
-                      <li className="flex items-center">
-                        <span className="inline-block h-2 w-2 rounded-full bg-[#FF6B00] mr-2" />
-                        Funds support local initiatives
-                      </li>
+                      <li className="flex items-center"><span className="inline-block h-2 w-2 rounded-full bg-[#FF6B00] mr-2" />SSL secured & privacy-first</li>
+                      <li className="flex items-center"><span className="inline-block h-2 w-2 rounded-full bg-[#FF6B00] mr-2" />Industry-standard processing</li>
+                      <li className="flex items-center"><span className="inline-block h-2 w-2 rounded-full bg-[#FF6B00] mr-2" />Funds support local initiatives</li>
                     </ul>
                   </div>
                 </div>
@@ -739,7 +723,7 @@ export function Volunteer() {
                   }`}
                   disabled={!hasValidAmount}
                   aria-disabled={!hasValidAmount}
-                  aria-label={hasValidAmount ? `Contribute ${fmt(donationForm.amount)}` : 'Select an amount to continue'}
+                  aria-label={`Contribute ${fmt(donationForm.amount)} with ${paymentMethod === 'applePay' ? 'Apple Pay' : 'Paystack'}`}
                 >
                   <Gift className="w-5 h-5 mr-2" />
                   Contribute {fmt(donationForm.amount)}
@@ -759,18 +743,21 @@ export function Volunteer() {
                 <h3 className="text-xl md:text-2xl font-bold text-[#002B5B] mb-3 sm:mb-0">Recent Contributions</h3>
                 <div className="flex items-center space-x-2 bg-gray-100 p-1 rounded-lg">
                   <Filter size={16} className="text-gray-500 ml-1" />
-                  {sortOptions.map((option) => (
-                    <button
-                      key={option.value}
-                      onClick={() => setSortPeriod(option.value)}
-                      className={`px-3 py-1 rounded-md text-xs font-medium transition-colors ${
-                        sortPeriod === option.value ? 'bg-white text-[#002B5B] shadow-sm' : 'text-gray-600 hover:text-[#002B5B]'
-                      }`}
-                      aria-pressed={sortPeriod === option.value}
-                    >
-                      {option.label}
-                    </button>
-                  ))}
+                  {(['all','today','this_month','this_year'] as SortPeriod[]).map((value) => {
+                    const label = value === 'all' ? 'All Time' : value === 'today' ? 'Today' : value === 'this_month' ? 'This Month' : 'This Year';
+                    return (
+                      <button
+                        key={value}
+                        onClick={() => setSortPeriod(value)}
+                        className={`px-3 py-1 rounded-md text-xs font-medium transition-colors ${
+                          sortPeriod === value ? 'bg-white text-[#002B5B] shadow-sm' : 'text-gray-600 hover:text-[#002B5B]'
+                        }`}
+                        aria-pressed={sortPeriod === value}
+                      >
+                        {label}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
@@ -822,9 +809,7 @@ export function Volunteer() {
                   ))}
                 </div>
               )}
-              <p className="text-xs text-gray-500 text-center mt-4">
-                Showing contributions. Your support makes a difference!
-              </p>
+              <p className="text-xs text-gray-500 text-center mt-4">Showing contributions. Your support makes a difference!</p>
             </div>
           </AnimatedSection>
         </div>
@@ -835,7 +820,7 @@ export function Volunteer() {
         {hasValidAmount ? (
           <div className="bg-white/90 backdrop-blur border border-gray-200 rounded-full px-3 py-2 shadow">
             {fmt(donationForm.amount)} • {getPillarTitleFromSlug(donationForm.selectedPillar).split(' (')[0]}
-            {isRecurring ? ' • Monthly' : ''}
+            {isRecurring ? ' • Monthly' : ''} • {paymentMethod === 'applePay' ? 'Apple Pay' : 'Paystack'}
           </div>
         ) : null}
       </div>
@@ -850,7 +835,7 @@ export function Volunteer() {
           }`}
           disabled={!hasValidAmount}
           aria-disabled={!hasValidAmount}
-          aria-label={hasValidAmount ? `Contribute ${fmt(donationForm.amount)}` : 'Select an amount to continue'}
+          aria-label={`Contribute ${fmt(donationForm.amount)} with ${paymentMethod === 'applePay' ? 'Apple Pay' : 'Paystack'}`}
         >
           <Gift className="w-5 h-5 mr-2" />
           Contribute {fmt(donationForm.amount)}

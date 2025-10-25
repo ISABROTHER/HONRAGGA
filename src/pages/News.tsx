@@ -287,7 +287,7 @@ function ContributionConfirmModal({
 }
 // --- END MODAL ---
 
-export function Volunteer() {
+export function News() {
   const formRef = useRef<HTMLFormElement>(null);
   const userLocale = typeof navigator !== 'undefined' ? navigator.language : 'en-US';
 

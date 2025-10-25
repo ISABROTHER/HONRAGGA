@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Calendar, ArrowRight, FileText, Video, Newspaper } from 'lucide-react';
 import { supabase } from '../lib/supabase';
-import type { Database } from '../lib/database.types';
+import type { Database } from  '../lib/database.types';
 
 type BlogPost = Database['public']['Tables']['blog_posts']['Row'];
 
@@ -13,7 +13,7 @@ export function News() {
 
   useEffect(() => {
     fetchPosts();
-  , []);
+  }, []);
 
   const fetchPosts = async () => {
     try {

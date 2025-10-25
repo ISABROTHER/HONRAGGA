@@ -1,590 +1,426 @@
-import { useState, useEffect, useRef, ChangeEvent, FormEvent } from 'react';
-import { supabase } from '../lib/supabase'; // Import supabase client
-import { Button } from '../components/Button';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
-  Road, School, HeartPulse, Zap, Users, Building, ShieldCheck, // Category Icons
-  MapPin, Camera, AlertTriangle, AlertCircle, CheckCircle, Upload, // Form/Status Icons
-  ArrowLeft, Send, ListChecks, ChevronDown, ChevronUp // UI Icons
+  ArrowRight, Calendar, CheckCircle2, ChevronRight, Clock, FileText, Handshake, HeartHandshake,
+  HelpCircle, MapPin, Megaphone, MessageCircle, Newspaper, Phone, Send, ThumbsUp, Users, Video, Vote
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { supabase } from '../lib/supabase';
+import type { Database } from '../lib/database.types';
 
-// --- Data Structure for Categories & Subcategories ---
-type Subcategory = { value: string; label: string };
-type Category = {
-  id: string;
-  label: string;
-  icon: React.ElementType;
-  subcategories: Subcategory[];
+type BlogPost = Database['public']['Tables']['blog_posts']['Row'];
+
+type IssueKey = 'jobs' | 'education' | 'health' | 'infrastructure';
+type PollOption = 'strongly_agree' | 'agree' | 'neutral' | 'disagree';
+
+const ISSUES: Record<IssueKey, { title: string; summary: string; bullets: string[]; icon: any; color: string }> = {
+  jobs: {
+    title: 'Jobs & Enterprise',
+    summary: 'Unlock local opportunity through skills, MSME support, and value-chain acceleration.',
+    bullets: [
+      '1,000 youth into paid internships & apprenticeships',
+      'Seed fund + coaching for 200 micro businesses',
+      'Public–private projects prioritizing local hires'
+    ],
+    icon: Handshake,
+    color: 'from-emerald-500/20 to-emerald-700/20'
+  },
+  education: {
+    title: 'Education & Skills',
+    summary: 'Modern classrooms, digital labs, and real pipelines to first jobs.',
+    bullets: [
+      'STEM & digital labs in 10 schools',
+      'Teacher upskilling with local industry mentors',
+      'Classroom-to-Career pathways with employers'
+    ],
+    icon: FileText,
+    color: 'from-sky-500/20 to-sky-700/20'
+  },
+  health: {
+    title: 'Health & Wellbeing',
+    summary: 'Primary care that is closer, faster, and kinder.',
+    bullets: [
+      'Community clinics with telehealth access',
+      'Maternal health outreach & screenings',
+      'Mental health first-aid in schools'
+    ],
+    icon: HeartHandshake,
+    color: 'from-rose-500/20 to-rose-700/20'
+  },
+  infrastructure: {
+    title: 'Roads & Infrastructure',
+    summary: 'Fix critical links, light the streets, and maintain what we build.',
+    bullets: [
+      'Road patch + maintenance tracker',
+      'Street lighting coverage to 95%',
+      'Water points & drainage clean-ups'
+    ],
+    icon: MapPin,
+    color: 'from-amber-500/20 to-amber-700/20'
+  }
 };
 
-const categories: Category[] = [
-  { id: 'roads', label: 'Roads & Infrastructure', icon: Road, subcategories: [
-    { value: 'potholes', label: 'Potholes / Damaged Road' },
-    { value: 'unfinished_road', label: 'Unfinished Road Project' },
-    { value: 'drainage', label: 'Blocked / Broken Drainage' },
-    { value: 'streetlight', label: 'Streetlight Not Working' },
-    { value: 'bridge_culvert', label: 'Damaged Bridge / Culvert' },
-    { value: 'flooding', label: 'Flooding After Rain' },
-    { value: 'crossings_markings', label: 'Lack of Pedestrian Crossings / Markings' },
-    { value: 'waste_collection', label: 'Poor Waste Collection / Litter Overflow' },
-  ]},
-  { id: 'education', label: 'Education & Schools', icon: School, subcategories: [
-    { value: 'broken_furniture', label: 'Broken Desks / Chairs / Roofs' },
-    { value: 'shortage', label: 'Shortage of Teachers / Textbooks' },
-    { value: 'sanitation_school', label: 'Poor School Sanitation' },
-    { value: 'unsafe_structure', label: 'Unsafe Learning Structure (e.g., under trees)' },
-    { value: 'need_facilities', label: 'Need for ICT Lab / Library / Water' },
-    { value: 'delayed_support', label: 'Delayed Govt. Support (Feeding, Bursaries)' },
-  ]},
-  { id: 'health', label: 'Health & Sanitation', icon: HeartPulse, subcategories: [
-    { value: 'clinic_chps_issue', label: 'Non-functioning Clinic / CHPS' },
-    { value: 'lack_staff_drugs', label: 'Lack of Drugs / Nurses / Midwives' },
-    { value: 'water_sanitation_health', label: 'Water / Sanitation Problem (Borehole, Toilet)' },
-    { value: 'waste_dumping', label: 'Improper Waste Dumping / Burning' },
-    { value: 'mosquito_malaria', label: 'Mosquito Breeding Areas / Malaria Concerns' },
-    { value: 'unsafe_transport', label: 'Unsafe Maternity / Emergency Transport' },
-  ]},
-  { id: 'utilities', label: 'Utilities & Environment', icon: Zap, subcategories: [
-    { value: 'power_outage', label: 'Power Outage / Faulty Transformer' },
-    { value: 'water_shortage', label: 'Water Shortage / Burst Pipe' },
-    { value: 'refuse_disposal', label: 'Improper Refuse Disposal / Landfill Overflow' },
-    { value: 'environment_damage', label: 'Deforestation / Sand Winning' },
-    { value: 'pollution', label: 'Air / Noise Pollution' },
-    { value: 'public_toilet_shortage', label: 'Inadequate Public Toilets' },
-  ]},
-  { id: 'social', label: 'Youth, Jobs & Social Welfare', icon: Users, subcategories: [
-    { value: 'unemployment_hiring', label: 'Unemployment / Unfair Hiring' },
-    { value: 'group_support_needed', label: 'Youth / Women Group Needs Support' },
-    { value: 'abandoned_program', label: 'Abandoned Livelihood Program' },
-    { value: 'delayed_grants', label: 'Delayed Grants / Support Packages' },
-    { value: 'training_needed', label: 'Need for Entrepreneurship Training' },
-    { value: 'child_protection', label: 'Child Protection / Abuse / Neglect Case' },
-  ]},
-  { id: 'community', label: 'Community Development', icon: Building, subcategories: [
-    { value: 'abandoned_project', label: 'Abandoned Community Center / Project' },
-    { value: 'market_facilities', label: 'Poor Market Facilities / Toilets' },
-    { value: 'public_space_needed', label: 'Need for Public Seating / Parks / Lighting' },
-    { value: 'broken_water_source', label: 'Broken Borehole / Water Tank / Pump' },
-    { value: 'unkept_grounds', label: 'Unkept Cemetery / Community Grounds' },
-    { value: 'security_concern', label: 'Security Concern (Theft, No Police Post)' },
-    { value: 'traditional_dispute', label: 'Traditional Dispute Mediation Needed' },
-  ]},
-  { id: 'governance', label: 'Governance & Public Service', icon: ShieldCheck, subcategories: [
-    { value: 'poor_conduct', label: 'Poor Conduct by Public Official' },
-    { value: 'delayed_service', label: 'Delayed Govt. Forms / Permits' },
-    { value: 'bribery_favouritism', label: 'Bribery / Favouritism in Public Office' },
-    { value: 'no_response', label: 'Lack of Response to Previous Request' },
-    { value: 'corruption_misuse', label: 'Corruption / Misuse of Public Resources' },
-  ]},
-];
-// --- End Data Structure ---
+export default function MPPortal() {
+  const [activeIssue, setActiveIssue] = useState<IssueKey>('jobs');
 
-type ReportStatus = 'Submitted' | 'In Progress' | 'Resolved';
-type PriorityLevel = 'Normal' | 'Urgent' | 'Life-threatening';
-
-// Define the structure for a submitted report
-interface Report {
-  id: string; // Unique ID (e.g., generated or from DB)
-  submittedAt: Date;
-  category: Category; // Store the whole category object
-  subcategory: Subcategory; // Store the whole subcategory object
-  description: string;
-  location: string;
-  priority: PriorityLevel;
-  photo?: File | null; // Optional photo
-  photoPreview?: string; // For displaying uploaded image
-  contactName?: string;
-  contactPhone?: string;
-  contactEmail?: string;
-  status: ReportStatus;
-}
-
-// Initial form state
-const initialReportData = {
-  category: null as Category | null,
-  subcategoryValue: '',
-  description: '',
-  location: '',
-  priority: 'Normal' as PriorityLevel,
-  photo: null as File | null,
-  photoPreview: '',
-  contactName: '',
-  contactPhone: '',
-  contactEmail: '',
-};
-
-// --- Helper Components ---
-const AnimatedSection = ({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) => {
-  // ... (AnimatedSection component remains the same)
-  const ref = useRef<HTMLDivElement>(null); useEffect(() => { const observer = new IntersectionObserver( ([entry]) => { if (entry.isIntersecting) { entry.target.classList.add('animate-section-enter'); entry.target.classList.remove('opacity-0', 'translate-y-5'); observer.unobserve(entry.target); } }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }, ); const currentRef = ref.current; if (currentRef) { currentRef.classList.add('opacity-0', 'translate-y-5'); observer.observe(currentRef); } return () => { if (currentRef) observer.unobserve(currentRef); }; }, []); return ( <div ref={ref} className="transition-all duration-700 ease-out" style={{ transitionDelay: `${delay}ms` }}> {children} </div> );
-};
-
-const StatusBadge = ({ status }: { status: ReportStatus }) => {
-  const statusConfig = {
-    Submitted: { icon: Send, color: 'bg-blue-100 text-blue-800', label: 'Submitted' },
-    'In Progress': { icon: AlertCircle, color: 'bg-yellow-100 text-yellow-800', label: 'In Progress' },
-    Resolved: { icon: CheckCircle, color: 'bg-green-100 text-green-800', label: 'Resolved' },
-  };
-  const config = statusConfig[status];
-  return (
-    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${config.color}`}>
-      <config.icon className="-ml-0.5 mr-1.5 h-3 w-3" />
-      {config.label}
-    </span>
-  );
-};
-
-// --- Main Page Component ---
-export function News() { // Renaming to News as per file structure
-  const [reportData, setReportData] = useState(initialReportData);
-  const [submittedReports, setSubmittedReports] = useState<Report[]>([]); // Local state for mock tracking
-  const [loading, setLoading] = useState(false); // For form submission
-  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
-  const [showContactInfo, setShowContactInfo] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  // Mock fetching existing reports on load (replace with Supabase call)
+  // Micro-poll state (stored locally)
+  const [pollAnswer, setPollAnswer] = useState<PollOption | null>(null);
+  const [pollData, setPollData] = useState<Record<PollOption, number>>({
+    strongly_agree: 42, agree: 24, neutral: 13, disagree: 7
+  });
   useEffect(() => {
-    // --- MOCK DATA ---
-    const mockReports: Report[] = [
-        // Add a few mock reports with varying statuses and dates
-        { id: 'rep-001', submittedAt: new Date(Date.now() - 86400000 * 2), category: categories[0], subcategory: categories[0].subcategories[1], description: 'Road near market needs urgent repair.', location: 'Market Junction', priority: 'Urgent', status: 'In Progress', photoPreview: 'https://via.placeholder.com/100x100.png?text=Mock+1'},
-        { id: 'rep-002', submittedAt: new Date(Date.now() - 86400000 * 5), category: categories[1], subcategory: categories[1].subcategories[0], description: 'Broken chairs in P6 classroom.', location: 'St. Peter\'s Basic School', priority: 'Normal', status: 'Resolved' },
-        { id: 'rep-003', submittedAt: new Date(Date.now() - 3600000 * 3), category: categories[3], subcategory: categories[3].subcategories[0], description: 'Transformer sparking dangerously.', location: 'Adisadel Estate, Blk 5', priority: 'Life-threatening', status: 'Submitted' },
-    ];
-    setSubmittedReports(mockReports);
-    // --- END MOCK DATA ---
+    try {
+      const saved = localStorage.getItem('mp_portal_poll');
+      if (saved) {
+        const { answer, data } = JSON.parse(saved);
+        setPollAnswer(answer);
+        if (data) setPollData(data);
+      }
+    } catch {}
+  }, []);
+  const submitPoll = (choice: PollOption) => {
+    if (pollAnswer) return;
+    const next = { ...pollData, [choice]: pollData[choice] + 1 };
+    setPollData(next);
+    setPollAnswer(choice);
+    try { localStorage.setItem('mp_portal_poll', JSON.stringify({ answer: choice, data: next })); } catch {}
+  };
+  const pollTotal = Object.values(pollData).reduce((a, b) => a + b, 0);
 
-    /* --- SUPABASE FETCH (replace mock data) ---
-    const fetchReports = async () => {
-        // Assume reports are linked to a user ID or stored locally if anonymous
-        // const { data: { user } } = await supabase.auth.getUser();
-        // if (!user) return; // Or handle anonymous reports differently
-        setLoading(true); // You might want a different loading state for fetching vs submitting
-        try {
-            const { data, error } = await supabase
-                .from('constituent_reports')
-                .select('*')
-                // .eq('user_id', user.id) // Example: Fetch reports for logged-in user
-                .order('submitted_at', { ascending: false });
+  // Ask Your MP (mini Q&A)
+  const [question, setQuestion] = useState('');
+  const [faq, setFaq] = useState<{ q: string; a: string }[]>([
+    { q: 'How do I request community support?', a: 'Use the “Constituency Desk” WhatsApp number in the Action Dock, or visit the constituency office Mon–Fri, 9am–4pm.' },
+    { q: 'How are road repairs prioritized?', a: 'Reported hazards + school/health access routes are prioritized first. Use the report link in the Action Dock to log locations.' },
+    { q: 'How can students get internships?', a: 'Apply through Classroom-to-Career partners. We publish calls in the Media section and at schools.' }
+  ]);
+  const askMP = () => {
+    if (!question.trim()) return;
+    // simple heuristic answer
+    const lower = question.toLowerCase();
+    let a = 'Thanks for your question! The team will follow up by email/WhatsApp within 48 hours.';
+    if (lower.includes('road') || lower.includes('pothole')) a = 'Road issues are mapped and triaged weekly. Share GPS pin + photo via the Report link; urgent hazards get same-week action.';
+    if (lower.includes('scholar') || lower.includes('bursary')) a = 'Scholarship announcements are posted before each academic term. Prepare transcripts and a referee letter.';
+    if (lower.includes('health') || lower.includes('clinic')) a = 'Primary clinics operate 8am–6pm; telehealth is available after hours. Screening days are announced monthly.';
+    setFaq(prev => [{ q: question.trim(), a }, ...prev].slice(0, 6));
+    setQuestion('');
+  };
 
-            if (error) throw error;
-            // You'd need to map the fetched data (string category/subcategory IDs)
-            // back to the full Category/Subcategory objects if needed for display
-            setSubmittedReports(data || []);
-        } catch (err) {
-            console.error("Error fetching reports:", err);
-            setMessage({type: 'error', text: 'Could not load previous reports.'});
-        } finally {
-            setLoading(false);
-        }
-    }
-    fetchReports();
-    */
+  // Timeline
+  const timeline = [
+    { date: 'Q1', title: 'Youth Skills Cohort I', desc: '250 trainees onboarded with stipends.', icon: Users },
+    { date: 'Q2', title: 'Clinic Upgrade Phase', desc: 'Two facilities refitted; telehealth pilot live.', icon: HeartHandshake },
+    { date: 'Q3', title: 'Road Fix Blitz', desc: 'Major patchwork & drainage cleared in 6 zones.', icon: MapPin },
+    { date: 'Q4', title: 'SME Seed Fund', desc: '200 micro-businesses funded & mentored.', icon: Handshake },
+  ];
 
+  // Events (mock)
+  const events = [
+    { id: 'ev1', title: 'Constituency Townhall – North Zone', date: '2025-11-05T17:00:00', where: 'Community Centre A', type: 'Townhall' },
+    { id: 'ev2', title: 'Health Outreach & Screenings', date: '2025-11-12T09:00:00', where: 'Clinic B Grounds', type: 'Outreach' },
+    { id: 'ev3', title: 'Youth Jobs Fair', date: '2025-11-20T10:00:00', where: 'Technical Institute Hall', type: 'Jobs' },
+  ];
+  const [rsvp, setRsvp] = useState<Record<string, boolean>>({});
+
+  // Media snapshot (from your Supabase table)
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [loadingPosts, setLoadingPosts] = useState(true);
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data, error } = await supabase
+          .from('blog_posts')
+          .select('*')
+          .eq('published', true)
+          .order('published_at', { ascending: false })
+          .limit(3);
+        if (error) throw error;
+        setPosts(data || []);
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setLoadingPosts(false);
+      }
+    })();
   }, []);
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setReportData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleCategorySelect = (category: Category) => {
-    setReportData(prev => ({
-        ...initialReportData, // Reset most fields when category changes
-        category: category,
-        priority: prev.priority, // Keep priority if user set it
-    }));
-    setMessage(null); // Clear message on new selection
-  };
-  
-  const handlePriorityChange = (e: ChangeEvent<HTMLInputElement>) => {
-       setReportData(prev => ({ ...prev, priority: e.target.value as PriorityLevel }));
-  };
-
-  const handlePhotoChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      setReportData(prev => ({ ...prev, photo: file, photoPreview: URL.createObjectURL(file) }));
-    } else {
-      setReportData(prev => ({ ...prev, photo: null, photoPreview: '' }));
-    }
-  };
-
-  const removePhoto = () => {
-      setReportData(prev => ({ ...prev, photo: null, photoPreview: '' }));
-      if(fileInputRef.current) {
-          fileInputRef.current.value = ""; // Reset file input
-      }
-  };
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    if (!reportData.category || !reportData.subcategoryValue || !reportData.description || !reportData.location) {
-      setMessage({ type: 'error', text: 'Please fill in all required fields (Category, Issue, Description, Location).' });
-      return;
-    }
-    setLoading(true);
-    setMessage(null);
-
-    // Find the full subcategory object
-    const subcategory = reportData.category.subcategories.find(sc => sc.value === reportData.subcategoryValue);
-    if (!subcategory) {
-        setMessage({ type: 'error', text: 'Invalid subcategory selected.' });
-        setLoading(false);
-        return;
-    }
-
-
-    const newReport: Report = {
-      id: `rep-${Date.now()}`, // Simple mock ID
-      submittedAt: new Date(),
-      category: reportData.category,
-      subcategory: subcategory, // Store full object
-      description: reportData.description,
-      location: reportData.location,
-      priority: reportData.priority,
-      photo: reportData.photo,
-      photoPreview: reportData.photoPreview,
-      contactName: reportData.contactName,
-      contactPhone: reportData.contactPhone,
-      contactEmail: reportData.contactEmail,
-      status: 'Submitted',
-    };
-
-    /* --- SUPABASE INSERT ---
-    try {
-        // 1. Upload photo if exists (implement Supabase Storage upload)
-        let photoUrl = null;
-        if (reportData.photo) {
-            // const filePath = `reports/${user?.id || 'anon'}/${Date.now()}_${reportData.photo.name}`;
-            // const { data: uploadData, error: uploadError } = await supabase.storage
-            //     .from('report-photos') // Ensure bucket exists and has policies
-            //     .upload(filePath, reportData.photo);
-            // if (uploadError) throw uploadError;
-            // // Get public URL or signed URL
-            // const { data: urlData } = supabase.storage.from('report-photos').getPublicUrl(filePath);
-            // photoUrl = urlData?.publicUrl;
-            console.warn("Photo upload needs implementation"); // Placeholder
-        }
-
-        // 2. Insert report data into the table
-        const { error: insertError } = await supabase
-            .from('constituent_reports') // Ensure table exists with correct columns
-            .insert([{
-                // user_id: user?.id, // Optional: Link to user
-                category_id: reportData.category.id, // Store ID
-                subcategory_value: reportData.subcategoryValue, // Store value/slug
-                description: reportData.description,
-                location: reportData.location,
-                priority: reportData.priority,
-                photo_url: photoUrl, // Store URL from storage
-                contact_name: reportData.contactName || null,
-                contact_phone: reportData.contactPhone || null,
-                contact_email: reportData.contactEmail || null,
-                status: 'Submitted', // Initial status
-                submitted_at: new Date().toISOString(),
-            }]);
-
-        if (insertError) throw insertError;
-
-        // Success: Add to local state, reset form, show message
-        setSubmittedReports(prev => [newReport, ...prev]); // Add mock locally even if using DB
-        setReportData(initialReportData);
-        setShowContactInfo(false);
-        setMessage({ type: 'success', text: 'Report submitted successfully! Track its status below.' });
-
-    } catch (err: any) {
-        console.error("Error submitting report:", err);
-        setMessage({ type: 'error', text: `Submission failed: ${err.message || 'Please try again.'}` });
-    } finally {
-        setLoading(false);
-    }
-    */
-
-    // --- MOCK SUBMISSION ---
-    await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate network delay
-    setSubmittedReports(prev => [newReport, ...prev].sort((a,b) => b.submittedAt.getTime() - a.submittedAt.getTime()));
-    setReportData(initialReportData); // Reset form
-    setShowContactInfo(false); // Hide optional fields
-    setMessage({ type: 'success', text: 'Report submitted successfully! Track its status below.' });
-    setLoading(false);
-    window.scrollTo({ top: document.getElementById('submitted-reports')?.offsetTop || 0, behavior: 'smooth' }); // Scroll to submitted reports
-    // --- END MOCK ---
-  };
+  const active = ISSUES[activeIssue];
 
   return (
-    // Updated background to white
-    <div className="min-h-screen bg-white" style={{ fontFamily: 'Inter, sans-serif' }}> 
-      {/* Hero Section */}
-       <section className="relative bg-green-900 text-white py-20 md:py-28">
-          {/* ... (Hero unchanged from previous Volunteer page) ... */}
-           <div className="absolute inset-0 pointer-events-none" aria-hidden="true" style={{ background: 'radial-gradient(1200px 600px at 50% -10%, rgba(255,107,0,0.12), transparent 60%), radial-gradient(800px 400px at 100% 20%, rgba(255,255,255,0.08), transparent 50%)', }} /> <div className="absolute inset-0 opacity-10 pointer-events-none bg-gradient-to-br from-white/5 via-transparent to-[#FF6B00]/10" /> <AnimatedSection> <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center"> <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-3 md:mb-4 text-[#FF6B00]"> Report an Issue </h1> <div className="flex justify-center"><span className="h-1 w-20 md:w-24 rounded-full bg-white/50" /></div> <p className="mt-5 md:mt-6 text-lg md:text-xl text-green-100/90 max-w-3xl mx-auto leading-relaxed">Your feedback helps improve our constituency. Report issues related to infrastructure, schools, health, and more.</p> </div> </AnimatedSection>
-      </section>
-
-      {/* Report Form Section */}
-      <section className="py-12 md:py-16">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <AnimatePresence mode="wait">
-             {!reportData.category ? (
-                 // --- Step 1: Category Selection ---
-                 <motion.div
-                     key="step1"
-                     initial={{ opacity: 0 }}
-                     animate={{ opacity: 1 }}
-                     exit={{ opacity: 0 }}
-                 >
-                     <AnimatedSection>
-                         <h2 className="text-2xl md:text-3xl font-bold text-green-900 mb-6 text-center">
-                            What type of issue are you reporting?
-                         </h2>
-                         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                            {categories.map((cat) => (
-                                <motion.button
-                                    key={cat.id}
-                                    onClick={() => handleCategorySelect(cat)}
-                                    className="flex flex-col items-center justify-center p-4 md:p-6 bg-white rounded-xl border-2 border-gray-200 hover:border-green-600 hover:bg-green-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FF6B00] transition-all text-center"
-                                    whileHover={{ scale: 1.05 }}
-                                    whileTap={{ scale: 0.98 }}
-                                >
-                                    <cat.icon size={32} className="text-green-800 mb-2"/>
-                                    <span className="text-sm font-semibold text-green-900">{cat.label}</span>
-                                </motion.button>
-                            ))}
-                         </div>
-                     </AnimatedSection>
-                 </motion.div>
-             ) : (
-                 // --- Step 2: Details Form ---
-                 <motion.div
-                     key="step2"
-                     initial={{ opacity: 0, x: 50 }}
-                     animate={{ opacity: 1, x: 0 }}
-                     exit={{ opacity: 0, x: -50 }}
-                     transition={{ duration: 0.3 }}
-                 >
-                     <AnimatedSection delay={50}>
-                        <div className="flex items-center justify-between mb-6">
-                            <Button variant="ghost" size="sm" onClick={() => setReportData(initialReportData)} className="text-gray-600 hover:text-green-800">
-                                <ArrowLeft size={16} className="mr-1"/> Back to Categories
-                            </Button>
-                            <div className="flex items-center space-x-2 text-green-800 font-semibold">
-                                <reportData.category.icon size={20}/>
-                                <span>{reportData.category.label}</span>
-                            </div>
-                        </div>
-
-                        <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 md:p-8 rounded-xl shadow-lg border border-gray-100">
-                            {/* Subcategory */}
-                            <div>
-                               <label htmlFor="subcategoryValue" className="block text-sm font-medium text-gray-700 mb-1">Specific Issue *</label>
-                               <select
-                                 id="subcategoryValue" name="subcategoryValue" required
-                                 value={reportData.subcategoryValue} onChange={handleInputChange}
-                                 className="w-full text-base px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent bg-white text-gray-900 appearance-none"
-                               >
-                                  <option value="" disabled>-- Select the specific issue --</option>
-                                  {reportData.category.subcategories.map(sub => (
-                                      <option key={sub.value} value={sub.value}>{sub.label}</option>
-                                  ))}
-                               </select>
-                            </div>
-
-                            {/* Description */}
-                            <div>
-                               <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">Description * <span className="text-xs text-gray-500">(Max 250 words)</span></label>
-                               <textarea
-                                 id="description" name="description" rows={4} required maxLength={1500} // Approx 250 words limit
-                                 value={reportData.description} onChange={handleInputChange}
-                                 className="w-full text-base px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent bg-white text-gray-900"
-                                 placeholder="Please provide details about the issue..."
-                               />
-                            </div>
-
-                            {/* Location */}
-                            <div className="relative">
-                               <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-1">Location *</label>
-                               <input
-                                 type="text" id="location" name="location" required
-                                 value={reportData.location} onChange={handleInputChange}
-                                 className="w-full text-base px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent bg-white text-gray-900 pr-10" // Padding for button
-                                 placeholder="e.g., Near Adisadel Junction, Abura Road"
-                               />
-                               {/* Placeholder GPS Button */}
-                               <button type="button" className="absolute top-8 right-2 p-1.5 text-gray-400 hover:text-green-700" title="Use current location (Feature coming soon)">
-                                   <MapPin size={20}/>
-                               </button>
-                            </div>
-
-                            {/* Priority */}
-                            <div>
-                               <label className="block text-sm font-medium text-gray-700 mb-2">Priority Level *</label>
-                               <div className="flex flex-wrap gap-3">
-                                  {(['Normal', 'Urgent', 'Life-threatening'] as PriorityLevel[]).map(level => (
-                                      <label key={level} className={`flex items-center px-4 py-2 border rounded-lg cursor-pointer transition-colors ${reportData.priority === level ? 'bg-green-100 border-green-600 ring-1 ring-green-600' : 'border-gray-300 hover:bg-gray-50'}`}>
-                                          <input type="radio" name="priority" value={level} checked={reportData.priority === level} onChange={handlePriorityChange} className="h-4 w-4 mr-2 border-gray-300 text-[#FF6B00] focus:ring-[#FF6B00]/50"/>
-                                           {level === 'Life-threatening' ? <AlertTriangle size={16} className="mr-1 text-red-600"/> : level === 'Urgent' ? <AlertCircle size={16} className="mr-1 text-yellow-600"/> : null}
-                                          <span className={`text-sm font-medium ${reportData.priority === level ? 'text-green-900' : 'text-gray-700'}`}>{level}</span>
-                                      </label>
-                                  ))}
-                               </div>
-                            </div>
-
-                            {/* Photo Upload */}
-                            <div>
-                               <label className="block text-sm font-medium text-gray-700 mb-1">Add Photo (Optional)</label>
-                               {reportData.photoPreview ? (
-                                   <div className="flex items-center space-x-3">
-                                       <img src={reportData.photoPreview} alt="Preview" className="h-16 w-16 rounded-lg object-cover border border-gray-300"/>
-                                       <button type="button" onClick={removePhoto} className="text-xs text-red-600 hover:underline">Remove</button>
-                                   </div>
-                               ) : (
-                                   <label className="w-full flex items-center justify-center px-4 py-3 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
-                                       <Upload size={20} className="text-gray-400 mr-2"/>
-                                       <span className="text-sm text-gray-600">Click to upload image</span>
-                                       <input ref={fileInputRef} type="file" name="photo" accept="image/*" onChange={handlePhotoChange} className="sr-only"/>
-                                   </label>
-                               )}
-                            </div>
-
-                            {/* Optional Contact Info */}
-                            <div>
-                                <button type="button" onClick={() => setShowContactInfo(!showContactInfo)} className="flex items-center text-sm text-green-700 hover:underline mb-3">
-                                    {showContactInfo ? <ChevronUp size={16} className="mr-1"/> : <ChevronDown size={16} className="mr-1"/>}
-                                    Add Contact Info (Optional - for updates)
-                                </button>
-                                <AnimatePresence>
-                                {showContactInfo && (
-                                    <motion.div
-                                        initial={{ opacity: 0, height: 0 }}
-                                        animate={{ opacity: 1, height: 'auto' }}
-                                        exit={{ opacity: 0, height: 0 }}
-                                        className="space-y-4 overflow-hidden border-t pt-4"
-                                    >
-                                         <input type="text" name="contactName" value={reportData.contactName} onChange={handleInputChange} placeholder="Your Name" className="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent bg-white text-gray-900"/>
-                                         <input type="tel" name="contactPhone" value={reportData.contactPhone} onChange={handleInputChange} placeholder="Phone Number" className="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent bg-white text-gray-900"/>
-                                         <input type="email" name="contactEmail" value={reportData.contactEmail} onChange={handleInputChange} placeholder="Email Address" className="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent bg-white text-gray-900"/>
-                                    </motion.div>
-                                )}
-                                </AnimatePresence>
-                            </div>
-
-                            {/* Submission Feedback */}
-                             <div aria-live="polite" className="min-h-[1rem]">
-                              {message && (
-                                <div className={`p-3 rounded-lg text-sm ${message.type === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                                  {message.text}
-                                </div>
-                              )}
-                            </div>
-
-                            {/* Submit Button */}
-                            <Button type="submit" size="lg" className="w-full bg-[#FF6B00] hover:bg-[#E66000] text-white" disabled={loading}>
-                               {loading ? 'Submitting...' : 'Submit Report'}
-                               {!loading && <Send size={18} className="ml-2"/>}
-                            </Button>
-
-                        </form>
-                     </AnimatedSection>
-                 </motion.div>
-             )}
-            </AnimatePresence>
+    <div className="min-h-screen bg-[radial-gradient(900px_500px_at_100%_-10%,rgba(0,43,91,0.06),transparent_60%),radial-gradient(900px_700px_at_0%_10%,rgba(255,107,0,0.06),transparent_60%)]">
+      {/* HERO */}
+      <section className="relative overflow-hidden bg-[#002B5B] text-white">
+        <div className="absolute -top-24 -right-20 h-72 w-72 rounded-full bg-[#FF6B00] blur-3xl opacity-30" />
+        <div className="absolute top-10 -left-10 h-72 w-72 rounded-full bg-white blur-3xl opacity-10" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">
+          <div className="text-center">
+            <motion.h1 initial={{ y: 14, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="text-4xl md:text-6xl font-extrabold tracking-tight">
+              Working For You — Every Day
+            </motion.h1>
+            <p className="mt-4 md:mt-6 text-base md:text-xl text-white/90 max-w-3xl mx-auto">
+              Real progress on jobs, schools, clinics, and roads — with your voice at the centre.
+            </p>
+            <div className="mt-8 flex items-center justify-center gap-3">
+              <a href="#issues" className="px-5 py-3 rounded-full bg-white text-[#002B5B] font-semibold hover:bg-white/90 transition">
+                Explore Agenda
+              </a>
+              <a href="#media" className="px-5 py-3 rounded-full bg-[#FF6B00] text-white font-semibold hover:bg-[#E66000] transition flex items-center">
+                Latest Updates <ArrowRight className="w-4 h-4 ml-2" />
+              </a>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Submitted Reports Section */}
-      <section id="submitted-reports" className="py-12 md:py-16 bg-gray-50 border-t border-gray-200">
-         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <AnimatedSection delay={200}>
-                <h2 className="text-2xl md:text-3xl font-bold text-green-900 mb-6 text-center">My Reported Issues</h2>
-                {submittedReports.length === 0 ? (
-                    <p className="text-center text-gray-500">You haven't submitted any reports yet.</p>
-                ) : (
-                    <div className="space-y-4">
-                        {submittedReports.map(report => (
-                            <motion.div
-                                key={report.id}
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.3 }}
-                                className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm flex flex-col sm:flex-row sm:items-center sm:justify-between"
-                            >
-                                <div className="flex-1 mb-3 sm:mb-0 sm:pr-4">
-                                    <div className="flex items-center text-xs text-gray-500 mb-1">
-                                        <report.category.icon size={14} className="mr-1.5 text-green-700"/>
-                                        <span>{report.category.label} &rarr; {report.subcategory.label}</span>
-                                    </div>
-                                    <p className="text-sm font-medium text-gray-800 mb-1 line-clamp-2">{report.description}</p>
-                                    <div className="flex items-center text-xs text-gray-500">
-                                        <MapPin size={12} className="mr-1"/> {report.location} • {formatRelativeTime(report.submittedAt.toISOString())}
-                                    </div>
-                                </div>
-                                <div className="flex-shrink-0 flex items-center space-x-3">
-                                     {report.photoPreview && <img src={report.photoPreview} alt="Report attachment" className="h-10 w-10 rounded object-cover"/>}
-                                    <StatusBadge status={report.status} />
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
-                )}
-            </AnimatedSection>
-         </div>
+      {/* ISSUES NAVIGATOR */}
+      <section id="issues" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+        <div className="rounded-3xl p-[1px] bg-gradient-to-br from-[#FF6B00]/40 via-amber-300/30 to-[#002B5B]/40 shadow-[0_8px_40px_rgba(0,0,0,0.08)]">
+          <div className="relative rounded-3xl bg-white/25 backdrop-blur-xl border border-white/40 p-6 md:p-8">
+            <div className="flex gap-2 overflow-auto no-scrollbar pb-2 mb-6">
+              {Object.keys(ISSUES).map((k) => {
+                const key = k as IssueKey;
+                const Icon = ISSUES[key].icon;
+                const activeTab = activeIssue === key;
+                return (
+                  <button
+                    key={key}
+                    onClick={() => setActiveIssue(key)}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-full border transition ${
+                      activeTab
+                        ? 'bg-[#002B5B] text-white border-[#002B5B]'
+                        : 'bg-white/70 text-gray-800 border-white/60 hover:bg-white'
+                    }`}
+                  >
+                    <Icon className="w-4 h-4" /> {ISSUES[key].title}
+                  </button>
+                );
+              })}
+            </div>
+
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeIssue}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className={`rounded-2xl p-6 bg-gradient-to-br ${active.color} border border-white/40`}
+              >
+                <h3 className="text-2xl font-extrabold text-gray-900 mb-2">{active.title}</h3>
+                <p className="text-gray-700 mb-4">{active.summary}</p>
+                <ul className="grid sm:grid-cols-2 gap-3">
+                  {active.bullets.map((b, i) => (
+                    <li key={i} className="flex items-start gap-2">
+                      <CheckCircle2 className="w-5 h-5 text-[#FF6B00] mt-0.5" />
+                      <span className="text-gray-800">{b}</span>
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            </AnimatePresence>
+
+            {/* Pulse Poll */}
+            <div className="mt-6 grid md:grid-cols-2 gap-6">
+              <div className="rounded-xl bg-white/70 backdrop-blur border border-white/60 p-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <Vote className="w-4 h-4 text-[#002B5B]" />
+                  <h4 className="font-semibold text-gray-900">Townhall Pulse</h4>
+                </div>
+                <p className="text-sm text-gray-700 mb-3">“This plan addresses the most urgent needs.” Do you agree?</p>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                  {(['strongly_agree', 'agree', 'neutral', 'disagree'] as PollOption[]).map(opt => {
+                    const label = opt.replace('_', ' ');
+                    const pct = Math.round((pollData[opt] / (pollTotal || 1)) * 100);
+                    const selected = pollAnswer === opt;
+                    return (
+                      <button
+                        key={opt}
+                        onClick={() => submitPoll(opt)}
+                        className={`rounded-lg border p-2 text-xs font-medium transition ${
+                          selected ? 'bg-[#002B5B] text-white border-[#002B5B]' : 'bg-white/70 border-white/60 hover:bg-white'
+                        }`}
+                      >
+                        <div className="capitalize">{label}</div>
+                        <div className="text-[11px] opacity-70">{pct}%</div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Ask Your MP */}
+              <div className="rounded-xl bg-white/70 backdrop-blur border border-white/60 p-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <HelpCircle className="w-4 h-4 text-[#002B5B]" />
+                  <h4 className="font-semibold text-gray-900">Ask Your MP</h4>
+                </div>
+                <div className="flex gap-2">
+                  <input
+                    value={question}
+                    onChange={(e) => setQuestion(e.target.value)}
+                    placeholder="Type your question…"
+                    className="flex-1 rounded-lg border border-gray-200 bg-white/80 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#FF6B00]"
+                  />
+                  <button
+                    onClick={askMP}
+                    className="px-4 py-2 rounded-lg bg-[#FF6B00] text-white font-semibold hover:bg-[#E66000] transition flex items-center"
+                  >
+                    <Send className="w-4 h-4 mr-1" /> Send
+                  </button>
+                </div>
+                <ul className="mt-4 space-y-3">
+                  {faq.map((item, i) => (
+                    <li key={i} className="rounded-lg bg-white/70 border border-white/60 p-3">
+                      <p className="text-sm font-semibold text-gray-900">Q: {item.q}</p>
+                      <p className="text-sm text-gray-700 mt-1">A: {item.a}</p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+          </div>
+        </div>
       </section>
 
-      {/* CSS */}
+      {/* TIMELINE */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div className="mb-6 flex items-center gap-2">
+          <Clock className="w-5 h-5 text-[#002B5B]" />
+          <h3 className="text-xl font-extrabold text-gray-900">This Year’s Milestones</h3>
+        </div>
+        <div className="grid md:grid-cols-4 gap-4">
+          {timeline.map((t, i) => {
+            const Icon = t.icon;
+            return (
+              <div key={i} className="rounded-xl bg-white/70 backdrop-blur border border-white/60 p-4">
+                <div className="text-xs text-gray-600">{t.date}</div>
+                <div className="mt-1 flex items-center gap-2">
+                  <Icon className="w-4 h-4 text-[#FF6B00]" />
+                  <div className="font-semibold text-gray-900">{t.title}</div>
+                </div>
+                <p className="mt-2 text-sm text-gray-700">{t.desc}</p>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* EVENTS */}
+      <section id="events" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div className="mb-6 flex items-center gap-2">
+          <Calendar className="w-5 h-5 text-[#002B5B]" />
+          <h3 className="text-xl font-extrabold text-gray-900">Upcoming Events</h3>
+        </div>
+        <div className="grid md:grid-cols-3 gap-6">
+          {events.map(ev => {
+            const date = new Date(ev.date);
+            const dateLabel = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            return (
+              <div key={ev.id} className="rounded-2xl bg-white/70 backdrop-blur border border-white/60 p-5">
+                <div className="text-xs text-gray-600">{ev.type}</div>
+                <div className="mt-1 font-bold text-gray-900">{ev.title}</div>
+                <div className="mt-1 text-sm text-gray-700 flex items-center gap-2">
+                  <MapPin className="w-4 h-4" /> {ev.where}
+                </div>
+                <div className="mt-1 text-sm text-gray-700 flex items-center gap-2">
+                  <Calendar className="w-4 h-4" /> {date.toLocaleString()}
+                </div>
+                <div className="mt-4 flex items-center justify-between">
+                  <button
+                    onClick={() => setRsvp(prev => ({ ...prev, [ev.id]: !prev[ev.id] }))}
+                    className={`px-3 py-2 rounded-lg text-sm font-semibold transition ${
+                      rsvp[ev.id] ? 'bg-[#002B5B] text-white' : 'bg-white border border-white/60 hover:bg-white'
+                    }`}
+                  >
+                    {rsvp[ev.id] ? '✔ RSVPed' : 'RSVP'}
+                  </button>
+                  <a
+                    className="text-sm text-[#FF6B00] hover:underline flex items-center"
+                    href={`data:text/calendar;charset=utf8,BEGIN:VCALENDAR%0AVERSION:2.0%0ABEGIN:VEVENT%0ASUMMARY:${encodeURIComponent(ev.title)}%0ADTSTART:${date
+                      .toISOString()
+                      .replace(/[-:]/g, '')
+                      .replace(/\.\d{3}Z$/, 'Z')}%0ALOCATION:${encodeURIComponent(ev.where)}%0AEND:VEVENT%0AEND:VCALENDAR`}
+                    download={`${ev.title}.ics`}
+                  >
+                    Add to calendar <ChevronRight className="w-4 h-4 ml-1" />
+                  </a>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* MEDIA SNAPSHOT (Supabase) */}
+      <section id="media" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="mb-6 flex items-center gap-2">
+          <Newspaper className="w-5 h-5 text-[#002B5B]" />
+          <h3 className="text-xl font-extrabold text-gray-900">Latest from the Media Desk</h3>
+        </div>
+        {loadingPosts ? (
+          <div className="text-center py-10">
+            <div className="inline-block w-10 h-10 border-4 border-[#002B5B] border-t-transparent rounded-full animate-spin"></div>
+            <p className="text-sm text-gray-600 mt-3">Loading…</p>
+          </div>
+        ) : posts.length === 0 ? (
+          <div className="text-gray-600">No recent posts yet.</div>
+        ) : (
+          <div className="grid md:grid-cols-3 gap-6">
+            {posts.map((p) => {
+              const Icon = ((p.category || '').toLowerCase() === 'video') ? Video
+                : ((p.category || '').toLowerCase().includes('press')) ? Megaphone
+                : FileText;
+              return (
+                <article key={p.id} className="rounded-2xl bg-white/70 backdrop-blur border border-white/60 overflow-hidden">
+                  {p.image_url ? (
+                    <div className="h-40 overflow-hidden">
+                      <img src={p.image_url} alt={p.title || 'post image'} className="w-full h-full object-cover" />
+                    </div>
+                  ) : null}
+                  <div className="p-5">
+                    <div className="flex items-center gap-2 text-xs text-gray-600 mb-2">
+                      <Icon className="w-4 h-4 text-[#FF6B00]" />
+                      <span className="uppercase tracking-wide">{(p.category || 'article').replace('-', ' ')}</span>
+                      <span>•</span>
+                      <span>{p.published_at ? new Date(p.published_at).toLocaleDateString() : ''}</span>
+                    </div>
+                    <h4 className="font-bold text-gray-900 line-clamp-2">{p.title}</h4>
+                    <p className="text-sm text-gray-700 mt-2 line-clamp-3">{p.excerpt}</p>
+                    <div className="mt-4">
+                      <a href="/news" className="text-[#002B5B] font-semibold hover:underline inline-flex items-center">
+                        Read more <ArrowRight className="w-4 h-4 ml-1" />
+                      </a>
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        )}
+      </section>
+
+      {/* ACTION DOCK (floating) */}
+      <div className="fixed bottom-4 right-4 z-50">
+        <div className="rounded-2xl bg-white/80 backdrop-blur border border-white/60 shadow-lg p-2 flex flex-col gap-2">
+          <a href="tel:+233200000000" className="flex items-center gap-2 px-3 py-2 rounded-xl bg-[#002B5B] text-white hover:bg-[#013766] transition">
+            <Phone className="w-4 h-4" /> Call Office
+          </a>
+          <a href="https://wa.me/233200000000" target="_blank" rel="noreferrer" className="flex items-center gap-2 px-3 py-2 rounded-xl bg-green-600 text-white hover:bg-green-700 transition">
+            <MessageCircle className="w-4 h-4" /> WhatsApp Desk
+          </a>
+          <a href="/volunteer" className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white text-[#002B5B] border border-white/60 hover:bg-white transition">
+            <Users className="w-4 h-4" /> Volunteer
+          </a>
+          <a href="/donate" className="flex items-center gap-2 px-3 py-2 rounded-xl bg-[#FF6B00] text-white hover:bg-[#E66000] transition">
+            <ThumbsUp className="w-4 h-4" /> Donate
+          </a>
+        </div> 
+      </div>
+
+      {/* Small CSS helpers */}
       <style>{`
-        .animate-section-enter { opacity: 1; transform: translateY(0); }
-        @media (prefers-reduced-motion: reduce) { .transition-all, .animate-section-enter { transition: none !important; } }
-        select {
-          background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-          background-position: right 0.7rem center; background-repeat: no-repeat; background-size: 1.5em 1.5em; padding-right: 2.8rem;
-        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
     </div>
   );
 }
-
-/*
---- Supabase Table Structure (constituent_reports) ---
-
-CREATE TABLE constituent_reports (
-  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id uuid REFERENCES auth.users(id) ON DELETE SET NULL, -- Optional: Link to logged-in user
-  submitted_at timestamptz DEFAULT now(),
-  category_id text NOT NULL, -- e.g., 'roads', 'education'
-  subcategory_value text NOT NULL, -- e.g., 'potholes', 'broken_furniture'
-  description text NOT NULL CHECK (char_length(description) <= 1500),
-  location text NOT NULL,
-  priority text NOT NULL DEFAULT 'Normal', -- 'Normal', 'Urgent', 'Life-threatening'
-  photo_url text, -- URL from Supabase Storage
-  contact_name text,
-  contact_phone text,
-  contact_email text,
-  status text NOT NULL DEFAULT 'Submitted', -- 'Submitted', 'In Progress', 'Resolved'
-  resolved_at timestamptz, -- Optional: Track resolution time
-  notes text -- Optional: For MP office internal notes
-);
-
--- Enable RLS
-ALTER TABLE constituent_reports ENABLE ROW LEVEL SECURITY;
-
--- Policies (Example: Allow insert, allow user to see their own reports)
-CREATE POLICY "Allow authenticated users to insert reports"
-  ON constituent_reports FOR INSERT TO authenticated WITH CHECK (true);
-
-CREATE POLICY "Allow users to view their own reports"
-  ON constituent_reports FOR SELECT TO authenticated USING (auth.uid() = user_id);
-
--- Optional: Allow anonymous inserts (if user_id is nullable)
--- CREATE POLICY "Allow anonymous users to insert reports"
---   ON constituent_reports FOR INSERT TO anon WITH CHECK (true);
-
--- Optional: Allow admins (e.g., service_role or custom role) to view/update all
--- CREATE POLICY "Allow admin read access" ON constituent_reports FOR SELECT TO service_role USING (true);
--- CREATE POLICY "Allow admin update access" ON constituent_reports FOR UPDATE TO service_role USING (true) WITH CHECK (true);
-
--- Storage Bucket (report-photos)
--- Create a bucket named 'report-photos'
--- Set appropriate policies (e.g., allow authenticated users to upload to their own folder, allow public read if needed)
-
-*/

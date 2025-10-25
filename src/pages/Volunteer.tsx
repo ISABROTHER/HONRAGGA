@@ -31,17 +31,8 @@ type SortPeriod = 'all' | 'today' | 'this_month' | 'this_year';
 type Currency = 'USD' | 'GHS';
 type PaymentMethod = 'paystack' | 'applePay';
 
-// Static targets (can be replaced by DB later)
-const targets: Record<string, { goal: number; raised: number }> = {
-  cwi: { goal: 50000, raised: 32000 },
-  cia: { goal: 40000, raised: 21000 },
-  dcp: { goal: 60000, raised: 42000 },
-  hj360: { goal: 30000, raised: 18000 },
-  c2c: { goal: 50000, raised: 36000 },
-  ccnydf: { goal: 80000, raised: 54000 },
-  cid: { goal: 45000, raised: 12000 },
-  general: { goal: 100000, raised: 74000 },
-};
+// Static targets (REMOVED: Now unused)
+// const targets: Record<string, { goal: number; raised: number }> = { ... };
 
 const AnimatedSection = ({
   children,
@@ -146,6 +137,20 @@ function ContributionConfirmModal({
   onConfirmAndPay,
 }: ContributionConfirmModalProps) {
   const pillarTitle = getPillarTitleFromSlug(pillarSlug);
+  // Re-added formatCurrency locally for the modal
+  const formatCurrencyModal = (n: number, currency = 'USD'): string => {
+      if (!n || n <= 0) return '...';
+      try {
+          return new Intl.NumberFormat(undefined, { // Use user's locale
+              style: 'currency',
+              currency: currency,
+              maximumFractionDigits: 0,
+          }).format(Math.round(n));
+      } catch {
+          return `${currency === 'GHS' ? 'GH₵' : '$'}${Math.round(n)}`;
+      }
+  }
+
 
   return (
     <AnimatePresence>
@@ -177,7 +182,8 @@ function ContributionConfirmModal({
 
               <div className="my-5 text-center bg-gray-50 p-4 rounded-lg border border-gray-200">
                 <p className="text-sm text-gray-600">You are contributing</p>
-                <p className="text-3xl font-bold text-[#002B5B] my-1">${Math.round(amount)}</p>
+                {/* Use the local formatCurrencyModal */}
+                <p className="text-3xl font-bold text-[#002B5B] my-1">{formatCurrencyModal(amount)}</p> 
                 <p className="text-sm text-gray-600">towards</p>
                 <p className="font-semibold text-[#FF6B00]">{pillarTitle}</p>
               </div>
@@ -290,10 +296,21 @@ export function Volunteer() {
 
   const [currency, setCurrency] = useState<Currency>(userLocale.includes('GH') ? 'GHS' : 'USD');
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(currency === 'GHS' ? 'paystack' : 'applePay');
-  const fmt = (n: number) =>
-    new Intl.NumberFormat(userLocale, { style: 'currency', currency, maximumFractionDigits: 0 }).format(
-      Math.max(0, Math.round(n || 0)),
-    );
+  
+  // Moved formatCurrency function definition inside the main component
+   const fmt = (n: number) => {
+      if (!n || n <= 0) return '...';
+      try {
+          return new Intl.NumberFormat(userLocale, { 
+              style: 'currency', 
+              currency, 
+              maximumFractionDigits: 0 
+          }).format(Math.round(n || 0));
+      } catch {
+          return `${currency === 'GHS' ? 'GH₵' : '$'}${Math.round(n || 0)}`;
+      }
+   }
+
 
   const [isRecurring, setIsRecurring] = useState(false);
   const [anonymous, setAnonymous] = useState(false);
@@ -312,34 +329,8 @@ export function Volunteer() {
   const [showAmountPublicly, setShowAmountPublicly] = useState(true);
 
   // Remember last amount & pillar
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem('donation_pref');
-      if (saved) {
-        const p = JSON.parse(saved) as { amount?: number; pillar?: string };
-        setDonationForm((prev) => ({
-          ...prev,
-          amount: p.amount && p.amount > 0 ? p.amount : prev.amount,
-          selectedPillar: p.pillar || prev.selectedPillar,
-        }));
-      }
-    } catch {
-      // ignore
-    }
-  }, []);
-
-  useEffect(() => {
-    try {
-      if (donationForm.amount > 0) {
-        localStorage.setItem(
-          'donation_pref',
-          JSON.stringify({ amount: donationForm.amount, pillar: donationForm.selectedPillar }),
-        );
-      }
-    } catch {
-      // ignore
-    }
-  }, [donationForm.amount, donationForm.selectedPillar]);
+  useEffect(() => { /* ... unchanged ... */ try { const saved = localStorage.getItem('donation_pref'); if (saved) { const p = JSON.parse(saved) as { amount?: number; pillar?: string }; setDonationForm((prev) => ({ ...prev, amount: p.amount && p.amount > 0 ? p.amount : prev.amount, selectedPillar: p.pillar || prev.selectedPillar, })); } } catch { /* ignore */ } }, []);
+  useEffect(() => { /* ... unchanged ... */ try { if (donationForm.amount > 0) { localStorage.setItem( 'donation_pref', JSON.stringify({ amount: donationForm.amount, pillar: donationForm.selectedPillar }), ); } } catch { /* ignore */ } }, [donationForm.amount, donationForm.selectedPillar]);
 
   // Keep payment method valid when currency changes
   useEffect(() => {
@@ -349,39 +340,7 @@ export function Volunteer() {
   }, [currency, paymentMethod]);
 
   // --- MOCK DATA GENERATION ---
-  useEffect(() => {
-    setLoadingDonations(true);
-    const mockData: Donation[] = [];
-    const names = ['Ama P.', 'Kwesi Mensah', 'Yaw B.', 'Adwoa Ltd', 'Kofi Annan', 'Efua S.', 'Nana K.', 'Aisha Co.', 'Kwabena F.', 'Akosua'];
-    const now = new Date();
-    for (let i = 0; i < 20; i++) {
-      const date = new Date(now);
-      if (i < 3) {
-        date.setHours(now.getHours() - i * 3);
-      } else if (i < 7) {
-        date.setDate(now.getDate() - i);
-      } else if (i < 12) {
-        date.setMonth(now.getMonth() - Math.floor(i / 2));
-        date.setDate(Math.floor(Math.random() * 28) + 1);
-      } else {
-        date.setFullYear(now.getFullYear() - Math.floor((i - 10) / 3));
-        date.setMonth(Math.floor(Math.random() * 12));
-        date.setDate(Math.floor(Math.random() * 28) + 1);
-      }
-      mockData.push({
-        id: `mock-${i}`,
-        created_at: date.toISOString(),
-        name: names[i % names.length],
-        amount: [25, 50, 100, 250, 50, 75, 500, 30][i % 8],
-        project_supported: i % 4 === 0 ? 'general' : pillars[i % pillars.length].slug,
-        display_publicly: true,
-        display_amount_publicly: i % 3 !== 0,
-      });
-    }
-    mockData.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
-    setAllDonations(mockData);
-    setLoadingDonations(false);
-  }, []);
+  useEffect(() => { /* ... unchanged ... */ setLoadingDonations(true); const mockData: Donation[] = []; const names = ['Ama P.', 'Kwesi Mensah', 'Yaw B.', 'Adwoa Ltd', 'Kofi Annan', 'Efua S.', 'Nana K.', 'Aisha Co.', 'Kwabena F.', 'Akosua']; const now = new Date(); for (let i = 0; i < 20; i++) { const date = new Date(now); if (i < 3) { date.setHours(now.getHours() - i * 3); } else if (i < 7) { date.setDate(now.getDate() - i); } else if (i < 12) { date.setMonth(now.getMonth() - Math.floor(i / 2)); date.setDate(Math.floor(Math.random() * 28) + 1); } else { date.setFullYear(now.getFullYear() - Math.floor((i - 10) / 3)); date.setMonth(Math.floor(Math.random() * 12)); date.setDate(Math.floor(Math.random() * 28) + 1); } mockData.push({ id: `mock-${i}`, created_at: date.toISOString(), name: names[i % names.length], amount: [25, 50, 100, 250, 50, 75, 500, 30][i % 8], project_supported: i % 4 === 0 ? 'general' : pillars[i % pillars.length].slug, display_publicly: true, display_amount_publicly: i % 3 !== 0, }); } mockData.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()); setAllDonations(mockData); setLoadingDonations(false); }, []);
   // --- END MOCK DATA ---
 
   const handleAmountSelect = (amount: number) => {
@@ -412,7 +371,6 @@ export function Volunteer() {
       window.setTimeout(() => setMessage(''), 5000);
       return;
     }
-    // Ensure a valid method is chosen (Apple Pay hidden for GHS, so this is defensive)
     if (currency === 'GHS' && paymentMethod !== 'paystack') {
       setPaymentMethod('paystack');
     }
@@ -421,45 +379,7 @@ export function Volunteer() {
     setIsConfirmModalOpen(true);
   };
 
-  const handleConfirmAndPay = () => {
-    const finalAmount = donationForm.amount;
-    const pillarTitle = getPillarTitleFromSlug(donationForm.selectedPillar);
-    setIsConfirmModalOpen(false);
-
-    const methodLabel = paymentMethod === 'applePay' ? 'Apple Pay' : 'Paystack (Visa/Mastercard/MoMo)';
-    alert(
-      `Initiating ${methodLabel} for ${fmt(finalAmount)} towards ${pillarTitle}${
-        isRecurring ? ' • Monthly' : ''
-      }.\n(This is a demo placeholder.)`,
-    );
-
-    const newDonation: Donation = {
-      id: `new-${Date.now()}`,
-      created_at: new Date().toISOString(),
-      name: anonymous ? 'Anonymous' : donorName || 'Supporter',
-      amount: finalAmount,
-      project_supported: donationForm.selectedPillar,
-      display_publicly: !anonymous,
-      display_amount_publicly: !anonymous && showAmountPublicly,
-    };
-
-    const updatedDonations = [newDonation, ...allDonations].sort(
-      (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
-    );
-    setAllDonations(updatedDonations);
-
-    setMessage('Thank you for your generous contribution!');
-    setDonationForm({ amount: 0, selectedPillar: pillars[0].slug, customAmount: '' });
-    setDonorName('');
-    setDonorPhone('');
-    setDonorEmail('');
-    setShowPublicly(true);
-    setShowAmountPublicly(true);
-    setAnonymous(false);
-    setIsRecurring(false);
-
-    window.setTimeout(() => setMessage(''), 5000);
-  };
+  const handleConfirmAndPay = () => { /* ... unchanged ... */ const finalAmount = donationForm.amount; const pillarTitle = getPillarTitleFromSlug(donationForm.selectedPillar); setIsConfirmModalOpen(false); const methodLabel = paymentMethod === 'applePay' ? 'Apple Pay' : 'Paystack (Visa/Mastercard/MoMo)'; alert( `Initiating ${methodLabel} for ${fmt(finalAmount)} towards ${pillarTitle}${ isRecurring ? ' • Monthly' : '' }.\n(This is a demo placeholder.)` ); const newDonation: Donation = { id: `new-${Date.now()}`, created_at: new Date().toISOString(), name: anonymous ? 'Anonymous' : donorName || 'Supporter', amount: finalAmount, project_supported: donationForm.selectedPillar, display_publicly: !anonymous, display_amount_publicly: !anonymous && showAmountPublicly, }; const updatedDonations = [newDonation, ...allDonations].sort( (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime(), ); setAllDonations(updatedDonations); setMessage('Thank you for your generous contribution!'); setDonationForm({ amount: 0, selectedPillar: pillars[0].slug, customAmount: '' }); setDonorName(''); setDonorPhone(''); setDonorEmail(''); setShowPublicly(true); setShowAmountPublicly(true); setAnonymous(false); setIsRecurring(false); window.setTimeout(() => setMessage(''), 5000); };
 
   const donationAmounts = [25, 50, 100, 250, 500, 1000];
   const hasValidAmount = donationForm.amount > 0;
@@ -468,53 +388,19 @@ export function Volunteer() {
     formRef.current?.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
   };
 
-  // Filtered donations by period (top 10)
+  // Filtered donations
   const filteredDonations = allDonations
-    .filter((donation) => {
-      const donationDate = new Date(donation.created_at);
-      const now = new Date();
-      switch (sortPeriod) {
-        case 'today':
-          return donationDate.toDateString() === now.toDateString();
-        case 'this_month':
-          return donationDate.getFullYear() === now.getFullYear() && donationDate.getMonth() === now.getMonth();
-        case 'this_year':
-          return donationDate.getFullYear() === now.getFullYear();
-        case 'all':
-        default:
-          return true;
-      }
-    })
+    .filter((donation) => { /* ...unchanged... */ const donationDate = new Date(donation.created_at); const now = new Date(); switch (sortPeriod) { case 'today': return donationDate.toDateString() === now.toDateString(); case 'this_month': return donationDate.getFullYear() === now.getFullYear() && donationDate.getMonth() === now.getMonth(); case 'this_year': return donationDate.getFullYear() === now.getFullYear(); case 'all': default: return true; } })
     .slice(0, 10);
 
-  // Determine target/progress for selected pillar (fallback to general)
-  const currentTarget = targets[donationForm.selectedPillar] || targets.general;
-  const progressPct = Math.min(100, Math.round((currentTarget.raised / currentTarget.goal) * 100));
+  // REMOVED: Progress Bar variables `currentTarget` and `progressPct` are no longer needed
 
   return (
     <div className="min-h-screen bg-gray-50 pb-24 md:pb-0" style={{ fontFamily: 'Inter, sans-serif' }}>
       {/* Hero */}
       <section className="relative overflow-hidden bg-[#002B5B] text-white py-16 md:py-24">
-        <div
-          className="absolute inset-0 pointer-events-none"
-          aria-hidden="true"
-          style={{
-            background:
-              'radial-gradient(1200px 600px at 50% -10%, rgba(255,107,0,0.18), transparent 60%), radial-gradient(800px 400px at 100% 20%, rgba(255,255,255,0.10), transparent 50%)',
-          }}
-        />
-        <div className="absolute inset-0 opacity-20 pointer-events-none bg-gradient-to-br from-white/10 via-transparent to-[#FF6B00]/20" />
-        <AnimatedSection>
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h1 className="text-3xl md:text-6xl font-extrabold tracking-tight mb-3 md:mb-4">Support the Movement</h1>
-            <div className="flex justify-center">
-              <span className="h-1 w-20 md:w-24 rounded-full bg-[#FF6B00]" />
-            </div>
-            <p className="mt-5 md:mt-6 text-base md:text-2xl text-gray-200/90 max-w-3xl mx-auto leading-relaxed">
-              Your contribution fuels the CETRA2030 agenda, directly empowering the youth of Cape Coast North.
-            </p>
-          </div>
-        </AnimatedSection>
+        {/* ... (Hero unchanged) ... */}
+         <div className="absolute inset-0 pointer-events-none" aria-hidden="true" style={{ background: 'radial-gradient(1200px 600px at 50% -10%, rgba(255,107,0,0.18), transparent 60%), radial-gradient(800px 400px at 100% 20%, rgba(255,255,255,0.10), transparent 50%)' }} /> <div className="absolute inset-0 opacity-20 pointer-events-none bg-gradient-to-br from-white/10 via-transparent to-[#FF6B00]/20" /> <AnimatedSection> <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center"> <h1 className="text-3xl md:text-6xl font-extrabold tracking-tight mb-3 md:mb-4">Support the Movement</h1> <div className="flex justify-center"><span className="h-1 w-20 md:w-24 rounded-full bg-[#FF6B00]" /></div> <p className="mt-5 md:mt-6 text-base md:text-2xl text-gray-200/90 max-w-3xl mx-auto leading-relaxed">Your contribution fuels the CETRA2030 agenda, directly empowering the youth of Cape Coast North.</p> </div> </AnimatedSection>
       </section>
 
       {/* Donate Section */}
@@ -527,27 +413,12 @@ export function Volunteer() {
               <div className="bg-white/80 backdrop-blur rounded-2xl shadow-xl border border-gray-100 p-5 md:p-8 space-y-6">
                 {/* Initiative Selection */}
                 <div>
-                  <label htmlFor="pillarSelect" className="block text-sm font-medium text-gray-700 mb-2">
-                    Support a Specific Initiative (Optional)
-                  </label>
-                  <select
-                    id="pillarSelect"
-                    name="pillarSelect"
-                    value={donationForm.selectedPillar}
-                    onChange={handlePillarChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent bg-white text-gray-900"
-                  >
-                    {pillars.map((pillar) => (
-                      <option key={pillar.slug} value={pillar.slug}>
-                        {pillar.title}
-                      </option>
-                    ))}
-                    <option value="general">General CETRA2030 Support</option>
-                  </select>
+                  {/* ... (Initiative select unchanged) ... */}
+                  <label htmlFor="pillarSelect" className="block text-sm font-medium text-gray-700 mb-2">Support a Specific Initiative (Optional)</label><select id="pillarSelect" name="pillarSelect" value={donationForm.selectedPillar} onChange={handlePillarChange} className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent bg-white text-gray-900">{pillars.map((pillar) => (<option key={pillar.slug} value={pillar.slug}>{pillar.title}</option>))}<option value="general">General CETRA2030 Support</option></select>
                 </div>
 
-                {/* Progress Bar (percent only; amounts removed) */}
-                <div>
+                {/* --- REMOVED PROGRESS BAR SECTION --- */}
+                {/* <div>
                   <div className="flex items-center justify-between text-xs text-gray-600 mb-2">
                     <span>{progressPct}% funded</span>
                     <span aria-hidden="true">&nbsp;</span>
@@ -562,156 +433,38 @@ export function Volunteer() {
                       role="progressbar"
                     />
                   </div>
-                </div>
+                </div> 
+                */}
+                 {/* --- END REMOVED SECTION --- */}
 
                 {/* Amount + Currency */}
                 <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <label className="block text-sm font-medium text-gray-700">Choose Donation Amount</label>
-                    <div className="flex items-center gap-2">
-                      <label htmlFor="currency" className="text-xs text-gray-600">Currency</label>
-                      <select
-                        id="currency"
-                        value={currency}
-                        onChange={(e) => setCurrency(e.target.value as Currency)}
-                        className="text-xs border border-gray-300 rounded px-2 py-1"
-                      >
-                        <option value="USD">USD</option>
-                        <option value="GHS">GHS</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div role="group" aria-label="Quick amounts" className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 mb-4">
-                    {[25, 50, 100, 250, 500, 1000].map((amount) => {
-                      const isActive = donationForm.amount === amount && donationForm.customAmount === '';
-                      return (
-                        <button
-                          type="button"
-                          key={amount}
-                          onClick={() => handleAmountSelect(amount)}
-                          aria-pressed={isActive}
-                          className={[
-                            'px-5 py-4 border rounded-xl font-semibold transition-all text-center outline-none text-base',
-                            isActive
-                              ? 'bg-[#002B5B] text-white border-[#002B5B] ring-2 ring-offset-2 ring-[#FF6B00]'
-                              : 'bg-gray-50 text-gray-800 border-gray-300 hover:border-[#002B5B] hover:bg-gray-100 focus:ring-2 focus:ring-offset-2 focus:ring-[#FF6B00]',
-                          ].join(' ')}
-                        >
-                          {fmt(amount)}
-                        </button>
-                      );
-                    })}
-                  </div>
-
-                  <div className="relative">
-                    <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                    <input
-                      inputMode="numeric"
-                      type="number"
-                      min={1}
-                      placeholder="Or enter custom amount"
-                      value={donationForm.customAmount}
-                      onChange={handleCustomAmountChange}
-                      className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent bg-white text-gray-900"
-                      aria-describedby="amountHelp"
-                    />
-                  </div>
-                  <p id="amountHelp" className="mt-2 text-xs text-gray-500">Pick a preset or enter any whole number.</p>
+                  {/* ... (Amount + Currency inputs unchanged) ... */}
+                   <div className="flex items-center justify-between mb-2"><label className="block text-sm font-medium text-gray-700">Choose Donation Amount</label><div className="flex items-center gap-2"><label htmlFor="currency" className="text-xs text-gray-600">Currency</label><select id="currency" value={currency} onChange={(e) => setCurrency(e.target.value as Currency)} className="text-xs border border-gray-300 rounded px-2 py-1"><option value="USD">USD</option><option value="GHS">GHS</option></select></div></div><div role="group" aria-label="Quick amounts" className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 mb-4">{[25, 50, 100, 250, 500, 1000].map((amount) => { const isActive = donationForm.amount === amount && donationForm.customAmount === ''; return ( <button type="button" key={amount} onClick={() => handleAmountSelect(amount)} aria-pressed={isActive} className={['px-5 py-4 border rounded-xl font-semibold transition-all text-center outline-none text-base', isActive ? 'bg-[#002B5B] text-white border-[#002B5B] ring-2 ring-offset-2 ring-[#FF6B00]' : 'bg-gray-50 text-gray-800 border-gray-300 hover:border-[#002B5B] hover:bg-gray-100 focus:ring-2 focus:ring-offset-2 focus:ring-[#FF6B00]',].join(' ')}>{fmt(amount)}</button> ); })}</div><div className="relative"><DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" /><input inputMode="numeric" type="number" min={1} placeholder="Or enter custom amount" value={donationForm.customAmount} onChange={handleCustomAmountChange} className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent bg-white text-gray-900" aria-describedby="amountHelp" /></div><p id="amountHelp" className="mt-2 text-xs text-gray-500">Pick a preset or enter any whole number.</p>
                 </div>
 
-                {/* Payment Method (must be selected before paying) */}
+                {/* Payment Method */}
                 <div>
-                  <p className="text-sm font-medium text-gray-700 mb-2">Choose Payment Method</p>
-                  <div className="grid grid-cols-2 gap-3">
-                    {/* Paystack always available (Visa/Mastercard/MoMo). Required for GHS. */}
-                    <button
-                      type="button"
-                      onClick={() => setPaymentMethod('paystack')}
-                      aria-pressed={paymentMethod === 'paystack'}
-                      className={[
-                        'w-full rounded-xl px-4 py-3 border transition',
-                        paymentMethod === 'paystack'
-                          ? 'bg-gray-900 text-white border-gray-900'
-                          : 'bg-white text-gray-800 border-gray-300 hover:bg-gray-50',
-                      ].join(' ')}
-                    >
-                      Pay with Paystack
-                    </button>
-
-                    {/* Apple Pay only shown for USD */}
-                    {currency === 'USD' ? (
-                      <button
-                        type="button"
-                        onClick={() => setPaymentMethod('applePay')}
-                        aria-pressed={paymentMethod === 'applePay'}
-                        className={[
-                          'w-full rounded-xl px-4 py-3 border transition',
-                          paymentMethod === 'applePay'
-                            ? 'bg-gray-900 text-white border-gray-900'
-                            : 'bg-white text-gray-800 border-gray-300 hover:bg-gray-50',
-                        ].join(' ')}
-                      >
-                         Apple&nbsp;Pay
-                      </button>
-                    ) : (
-                      <div className="w-full rounded-xl px-4 py-3 border border-dashed border-gray-300 text-gray-400 text-center">
-                         Apple&nbsp;Pay (USD only)
-                      </div>
-                    )}
-                  </div>
-                  <p className="mt-2 text-xs text-gray-500">
-                    Using Visa? Select <span className="font-semibold">Paystack</span>. For GHS, Paystack (MoMo/Card) is required. Apple Pay is available for USD.
-                  </p>
+                  {/* ... (Payment Method select unchanged) ... */}
+                   <p className="text-sm font-medium text-gray-700 mb-2">Choose Payment Method</p><div className="grid grid-cols-2 gap-3"><button type="button" onClick={() => setPaymentMethod('paystack')} aria-pressed={paymentMethod === 'paystack'} className={['w-full rounded-xl px-4 py-3 border transition', paymentMethod === 'paystack' ? 'bg-gray-900 text-white border-gray-900' : 'bg-white text-gray-800 border-gray-300 hover:bg-gray-50',].join(' ')}>Pay with Paystack</button>{currency === 'USD' ? (<button type="button" onClick={() => setPaymentMethod('applePay')} aria-pressed={paymentMethod === 'applePay'} className={['w-full rounded-xl px-4 py-3 border transition', paymentMethod === 'applePay' ? 'bg-gray-900 text-white border-gray-900' : 'bg-white text-gray-800 border-gray-300 hover:bg-gray-50',].join(' ')}> Apple&nbsp;Pay</button>) : (<div className="w-full rounded-xl px-4 py-3 border border-dashed border-gray-300 text-gray-400 text-center"> Apple&nbsp;Pay (USD only)</div>)}</div><p className="mt-2 text-xs text-gray-500">Using Visa? Select <span className="font-semibold">Paystack</span>. For GHS, Paystack (MoMo/Card) is required. Apple Pay is available for USD.</p>
                 </div>
 
                 {/* Recurring + Anonymous */}
-                <div className="flex items-center justify-between bg-gray-50 border rounded-xl p-3">
-                  <label htmlFor="recurring" className="text-sm text-gray-700">Make this a monthly donation</label>
-                  <input
-                    id="recurring"
-                    type="checkbox"
-                    checked={isRecurring}
-                    onChange={(e) => setIsRecurring(e.target.checked)}
-                    className="h-5 w-5 accent-[#FF6B00]"
-                  />
+                <div>
+                  {/* ... (Recurring/Anonymous unchanged) ... */}
+                   <div className="flex items-center justify-between bg-gray-50 border rounded-xl p-3"><label htmlFor="recurring" className="text-sm text-gray-700">Make this a monthly donation</label><input id="recurring" type="checkbox" checked={isRecurring} onChange={(e) => setIsRecurring(e.target.checked)} className="h-5 w-5 accent-[#FF6B00]" /></div><label className="flex items-center gap-2 text-xs text-gray-600"><input type="checkbox" checked={anonymous} onChange={(e) => setAnonymous(e.target.checked)} className="h-4 w-4 accent-[#FF6B00]" />Give anonymously</label>
                 </div>
-                <label className="flex items-center gap-2 text-xs text-gray-600">
-                  <input
-                    type="checkbox"
-                    checked={anonymous}
-                    onChange={(e) => setAnonymous(e.target.checked)}
-                    className="h-4 w-4 accent-[#FF6B00]"
-                  />
-                  Give anonymously
-                </label>
 
                 {/* Trust / Info */}
-                <div className="grid gap-3 md:gap-4">
-                  <div className="text-center text-xs text-gray-500">
-                    Secure payments via <span className="font-semibold">Paystack</span> &{' '}
-                    <span className="font-semibold">Apple Pay</span> supported.
-                  </div>
-                  <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
-                    <ul className="text-xs text-gray-600 space-y-2">
-                      <li className="flex items-center"><span className="inline-block h-2 w-2 rounded-full bg-[#FF6B00] mr-2" />SSL secured & privacy-first</li>
-                      <li className="flex items-center"><span className="inline-block h-2 w-2 rounded-full bg-[#FF6B00] mr-2" />Industry-standard processing</li>
-                      <li className="flex items-center"><span className="inline-block h-2 w-2 rounded-full bg-[#FF6B00] mr-2" />Funds support local initiatives</li>
-                    </ul>
-                  </div>
+                <div>
+                  {/* ... (Trust/Info unchanged) ... */}
+                   <div className="grid gap-3 md:gap-4"><div className="text-center text-xs text-gray-500">Secure payments via <span className="font-semibold">Paystack</span> & <span className="font-semibold">Apple Pay</span> supported.</div><div className="bg-gray-50 border border-gray-200 rounded-xl p-4"><ul className="text-xs text-gray-600 space-y-2"><li className="flex items-center"><span className="inline-block h-2 w-2 rounded-full bg-[#FF6B00] mr-2" />SSL secured & privacy-first</li><li className="flex items-center"><span className="inline-block h-2 w-2 rounded-full bg-[#FF6B00] mr-2" />Industry-standard processing</li><li className="flex items-center"><span className="inline-block h-2 w-2 rounded-full bg-[#FF6B00] mr-2" />Funds support local initiatives</li></ul></div></div>
                 </div>
 
                 {/* Feedback */}
                 <div aria-live="polite" className="min-h-[1.25rem]">
-                  {message && (
-                    <div
-                      className={`mt-1 p-3 rounded-lg text-sm ${
-                        message.toLowerCase().includes('thank') ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                      }`}
-                    >
-                      {message}
-                    </div>
-                  )}
+                  {/* ... (Feedback unchanged) ... */}
+                   {message && (<div className={`mt-1 p-3 rounded-lg text-sm ${message.toLowerCase().includes('thank') ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>{message}</div>)}
                 </div>
 
                 {/* Main Donate Button (Desktop/Tablet) */}
@@ -738,108 +491,21 @@ export function Volunteer() {
 
           {/* Recent Contributions Feed */}
           <AnimatedSection delay={140}>
-            <div className="mt-12 md:mt-16">
-              <div className="flex flex-col sm:flex-row justify-between items-center mb-4 md:mb-6 px-1">
-                <h3 className="text-xl md:text-2xl font-bold text-[#002B5B] mb-3 sm:mb-0">Recent Contributions</h3>
-                <div className="flex items-center space-x-2 bg-gray-100 p-1 rounded-lg">
-                  <Filter size={16} className="text-gray-500 ml-1" />
-                  {(['all','today','this_month','this_year'] as SortPeriod[]).map((value) => {
-                    const label = value === 'all' ? 'All Time' : value === 'today' ? 'Today' : value === 'this_month' ? 'This Month' : 'This Year';
-                    return (
-                      <button
-                        key={value}
-                        onClick={() => setSortPeriod(value)}
-                        className={`px-3 py-1 rounded-md text-xs font-medium transition-colors ${
-                          sortPeriod === value ? 'bg-white text-[#002B5B] shadow-sm' : 'text-gray-600 hover:text-[#002B5B]'
-                        }`}
-                        aria-pressed={sortPeriod === value}
-                      >
-                        {label}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {loadingDonations ? (
-                <div className="space-y-3 max-w-lg mx-auto">
-                  {[...Array(3)].map((_, i) => (
-                    <div key={i} className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm overflow-hidden relative">
-                      <div className="h-4 w-40 bg-gray-200 rounded mb-2" />
-                      <div className="h-3 w-56 bg-gray-100 rounded" />
-                      <div className="shimmer absolute inset-0" />
-                    </div>
-                  ))}
-                  <p className="text-center text-sm text-gray-500">Loading contributions...</p>
-                </div>
-              ) : filteredDonations.length === 0 ? (
-                <p className="text-center text-gray-500 py-8">No contributions found for this period. Be the first!</p>
-              ) : (
-                <div role="list" className="space-y-3 md:space-y-4 max-w-lg mx-auto">
-                  {filteredDonations.map((donation) => (
-                    <motion.div
-                      role="listitem"
-                      key={donation.id}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm flex justify-between items-center"
-                    >
-                      <div className="pr-3">
-                        <p className="font-semibold text-gray-800">{donation.name}</p>
-                        <p className="text-xs text-gray-500">
-                          Supported: {getPillarTitleFromSlug(donation.project_supported)}
-                        </p>
-                      </div>
-                      <div className="text-right whitespace-nowrap">
-                        {donation.display_amount_publicly !== false ? (
-                          <span className="text-sm font-bold text-[#002B5B] block">
-                            {new Intl.NumberFormat(userLocale, {
-                              style: 'currency',
-                              currency,
-                              maximumFractionDigits: 0,
-                            }).format(Math.round(donation.amount))}
-                          </span>
-                        ) : (
-                          <span className="text-sm font-semibold text-gray-500 block italic">Supported</span>
-                        )}
-                        <span className="text-xs text-gray-400 block mt-0.5">{formatRelativeTime(donation.created_at)}</span>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              )}
-              <p className="text-xs text-gray-500 text-center mt-4">Showing contributions. Your support makes a difference!</p>
-            </div>
+            {/* ... (Feed unchanged) ... */}
+             <div className="mt-12 md:mt-16"> <div className="flex flex-col sm:flex-row justify-between items-center mb-4 md:mb-6 px-1"> <h3 className="text-xl md:text-2xl font-bold text-[#002B5B] mb-3 sm:mb-0">Recent Contributions</h3> <div className="flex items-center space-x-2 bg-gray-100 p-1 rounded-lg"> <Filter size={16} className="text-gray-500 ml-1" /> {(['all','today','this_month','this_year'] as SortPeriod[]).map((value) => { const label = value === 'all' ? 'All Time' : value === 'today' ? 'Today' : value === 'this_month' ? 'This Month' : 'This Year'; return ( <button key={value} onClick={() => setSortPeriod(value)} className={`px-3 py-1 rounded-md text-xs font-medium transition-colors ${ sortPeriod === value ? 'bg-white text-[#002B5B] shadow-sm' : 'text-gray-600 hover:text-[#002B5B]' }`} aria-pressed={sortPeriod === value}>{label}</button> ); })} </div> </div> {loadingDonations ? ( <div className="space-y-3 max-w-lg mx-auto"> {[...Array(3)].map((_, i) => ( <div key={i} className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm overflow-hidden relative"><div className="h-4 w-40 bg-gray-200 rounded mb-2" /><div className="h-3 w-56 bg-gray-100 rounded" /><div className="shimmer absolute inset-0" /></div> ))} <p className="text-center text-sm text-gray-500">Loading contributions...</p> </div> ) : filteredDonations.length === 0 ? ( <p className="text-center text-gray-500 py-8">No contributions found for this period. Be the first!</p> ) : ( <div role="list" className="space-y-3 md:space-y-4 max-w-lg mx-auto"> {filteredDonations.map((donation) => ( <motion.div role="listitem" key={donation.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }} className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm flex justify-between items-center"> <div className="pr-3"> <p className="font-semibold text-gray-800">{donation.name}</p> <p className="text-xs text-gray-500"> Supported: {getPillarTitleFromSlug(donation.project_supported)} </p> </div> <div className="text-right whitespace-nowrap"> {donation.display_amount_publicly !== false ? ( <span className="text-sm font-bold text-[#002B5B] block"> {new Intl.NumberFormat(userLocale, { style: 'currency', currency, maximumFractionDigits: 0, }).format(Math.round(donation.amount))} </span> ) : ( <span className="text-sm font-semibold text-gray-500 block italic">Supported</span> )} <span className="text-xs text-gray-400 block mt-0.5">{formatRelativeTime(donation.created_at)}</span> </div> </motion.div> ))} </div> )} <p className="text-xs text-gray-500 text-center mt-4">Showing contributions. Your support makes a difference!</p> </div>
           </AnimatedSection>
         </div>
       </section>
 
       {/* Mobile Sticky Summary + Quick Donate Bar */}
       <div className="md:hidden fixed bottom-20 inset-x-4 z-40 text-center text-xs text-gray-700">
-        {hasValidAmount ? (
-          <div className="bg-white/90 backdrop-blur border border-gray-200 rounded-full px-3 py-2 shadow">
-            {fmt(donationForm.amount)} • {getPillarTitleFromSlug(donationForm.selectedPillar).split(' (')[0]}
-            {isRecurring ? ' • Monthly' : ''} • {paymentMethod === 'applePay' ? 'Apple Pay' : 'Paystack'}
-          </div>
-        ) : null}
+        {/* ... (Mobile summary unchanged) ... */}
+         {hasValidAmount ? ( <div className="bg-white/90 backdrop-blur border border-gray-200 rounded-full px-3 py-2 shadow"> {fmt(donationForm.amount)} • {getPillarTitleFromSlug(donationForm.selectedPillar).split(' (')[0]} {isRecurring ? ' • Monthly' : ''} • {paymentMethod === 'applePay' ? 'Apple Pay' : 'Paystack'} </div> ) : null}
       </div>
 
       <div className="md:hidden fixed bottom-4 inset-x-4 z-40">
-        <Button
-          type="button"
-          size="lg"
-          onClick={submitForm}
-          className={`w-full rounded-2xl shadow-xl bg-[#FF6B00] hover:bg-[#E66000] focus:ring-[#FF6B00] text-white flex items-center justify-center ${
-            hasValidAmount ? '' : 'opacity-60 cursor-not-allowed'
-          }`}
-          disabled={!hasValidAmount}
-          aria-disabled={!hasValidAmount}
-          aria-label={`Contribute ${fmt(donationForm.amount)} with ${paymentMethod === 'applePay' ? 'Apple Pay' : 'Paystack'}`}
-        >
-          <Gift className="w-5 h-5 mr-2" />
-          Contribute {fmt(donationForm.amount)}
-        </Button>
+        {/* ... (Mobile button unchanged) ... */}
+         <Button type="button" size="lg" onClick={submitForm} className={`w-full rounded-2xl shadow-xl bg-[#FF6B00] hover:bg-[#E66000] focus:ring-[#FF6B00] text-white flex items-center justify-center ${ hasValidAmount ? '' : 'opacity-60 cursor-not-allowed' }`} disabled={!hasValidAmount} aria-disabled={!hasValidAmount} aria-label={`Contribute ${fmt(donationForm.amount)} with ${paymentMethod === 'applePay' ? 'Apple Pay' : 'Paystack'}`}><Gift className="w-5 h-5 mr-2" /> Contribute {fmt(donationForm.amount)}</Button>
       </div>
 
       {/* Render the Modal */}

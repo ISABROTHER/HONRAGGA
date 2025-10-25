@@ -207,7 +207,7 @@ export function News() {
                   Close
                 </button>
               </div>
-            </div> 
+            </div>
           </div>
         </div>
       )}

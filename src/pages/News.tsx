@@ -13,7 +13,7 @@ export function News() {
 
   useEffect(() => {
     fetchPosts();
-  }, []);
+  , []);
 
   const fetchPosts = async () => {
     try {

@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Road, School, HeartPulse, Zap, Users, Building, ShieldCheck, // Category Icons
   MapPin, Camera, AlertTriangle, AlertCircle, CheckCircle, Upload, // Form/Status Icons
-  ArrowLeft, Send, ListChecks, ChevronDown, ChevronUp // UI Icons
+  ArrowLeft, Send, ListChecks, ChevronDown, ChevronUp, X, Mail, Phone, Hash // UI Icons
 } from 'lucide-react';
 
 // --- Data Structure for Categories & Subcategories ---
@@ -17,6 +17,7 @@ type Category = {
   subcategories: Subcategory[];
 };
 
+// Data based on user prompt
 const categories: Category[] = [
   { id: 'roads', label: 'Roads & Infrastructure', icon: Road, subcategories: [
     { value: 'potholes', label: 'Potholes / Damaged Road' },
@@ -85,6 +86,7 @@ type PriorityLevel = 'Normal' | 'Urgent' | 'Life-threatening';
 // Define the structure for a submitted report
 interface Report {
   id: string; // Unique ID (e.g., generated or from DB)
+  trackingId: string; // User-facing tracking ID
   submittedAt: Date;
   category: Category; // Store the whole category object
   subcategory: Subcategory; // Store the whole subcategory object
@@ -154,54 +156,36 @@ function formatRelativeTime(isoString: string): string {
     return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }); // e.g., 25 Oct
 }
 
+// Helper to generate mock tracking ID
+function generateTrackingId(): string {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = (now.getMonth() + 1).toString().padStart(2, '0');
+    const day = now.getDate().toString().padStart(2, '0');
+    const random = Math.random().toString(36).substring(2, 6).toUpperCase();
+    return `CCN-${year}${month}${day}-${random}`;
+}
 
 // --- Main Page Component ---
-export function News() { // Renaming to News as per file structure
+export function News() {
   const [reportData, setReportData] = useState(initialReportData);
   const [submittedReports, setSubmittedReports] = useState<Report[]>([]); // Local state for mock tracking
   const [loading, setLoading] = useState(false); // For form submission
-  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string; trackingId?: string } | null>(null);
   const [showContactInfo, setShowContactInfo] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
-  // Mock fetching existing reports on load (replace with Supabase call)
+  // Mock fetching existing reports on load
   useEffect(() => {
     // --- MOCK DATA ---
     const mockReports: Report[] = [
-        { id: 'rep-001', submittedAt: new Date(Date.now() - 86400000 * 2), category: categories[0], subcategory: categories[0].subcategories[1], description: 'Road near market needs urgent repair.', location: 'Market Junction', priority: 'Urgent', status: 'In Progress', photoPreview: 'https://via.placeholder.com/100x100.png?text=Mock+1'},
-        { id: 'rep-002', submittedAt: new Date(Date.now() - 86400000 * 5), category: categories[1], subcategory: categories[1].subcategories[0], description: 'Broken chairs in P6 classroom.', location: 'St. Peter\'s Basic School', priority: 'Normal', status: 'Resolved' },
-        { id: 'rep-003', submittedAt: new Date(Date.now() - 3600000 * 3), category: categories[3], subcategory: categories[3].subcategories[0], description: 'Transformer sparking dangerously.', location: 'Adisadel Estate, Blk 5', priority: 'Life-threatening', status: 'Submitted' },
+        { id: 'rep-001', trackingId: 'CCN-20251024-4J5B', submittedAt: new Date(Date.now() - 86400000 * 2), category: categories[0], subcategory: categories[0].subcategories[1], description: 'Road near market needs urgent repair.', location: 'Market Junction', priority: 'Urgent', status: 'In Progress', photoPreview: 'https://via.placeholder.com/100x100.png?text=Mock+1'},
+        { id: 'rep-002', trackingId: 'CCN-20251021-9FGA', submittedAt: new Date(Date.now() - 86400000 * 5), category: categories[1], subcategory: categories[1].subcategories[0], description: 'Broken chairs in P6 classroom.', location: 'St. Peter\'s Basic School', priority: 'Normal', status: 'Resolved' },
+        { id: 'rep-003', trackingId: 'CCN-20251026-T2D1', submittedAt: new Date(Date.now() - 3600000 * 3), category: categories[3], subcategory: categories[3].subcategories[0], description: 'Transformer sparking dangerously.', location: 'Adisadel Estate, Blk 5', priority: 'Life-threatening', status: 'Submitted' },
     ];
-    setSubmittedReports(mockReports.sort((a,b) => b.submittedAt.getTime() - a.submittedAt.getTime())); // Ensure sorted
+    setSubmittedReports(mockReports.sort((a,b) => b.submittedAt.getTime() - a.submittedAt.getTime()));
     // --- END MOCK DATA ---
-
-    /* --- SUPABASE FETCH (replace mock data) ---
-    const fetchReports = async () => {
-        // Assume reports are linked to a user ID or stored locally if anonymous
-        // const { data: { user } } = await supabase.auth.getUser();
-        // if (!user) return; // Or handle anonymous reports differently
-        setLoading(true); // You might want a different loading state for fetching vs submitting
-        try {
-            const { data, error } = await supabase
-                .from('constituent_reports')
-                .select('*')
-                // .eq('user_id', user.id) // Example: Fetch reports for logged-in user
-                .order('submitted_at', { ascending: false });
-
-            if (error) throw error;
-            // You'd need to map the fetched data (string category/subcategory IDs)
-            // back to the full Category/Subcategory objects if needed for display
-            setSubmittedReports(data || []);
-        } catch (err) {
-            console.error("Error fetching reports:", err);
-            setMessage({type: 'error', text: 'Could not load previous reports.'});
-        } finally {
-            setLoading(false);
-        }
-    }
-    fetchReports();
-    */
-
   }, []);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -210,11 +194,7 @@ export function News() { // Renaming to News as per file structure
   };
 
   const handleCategorySelect = (category: Category) => {
-    setReportData(prev => ({
-        ...initialReportData, 
-        category: category,
-        priority: prev.priority, 
-    }));
+    setReportData(prev => ({ ...initialReportData, category: category, priority: prev.priority }));
     setMessage(null); 
   };
   
@@ -225,10 +205,9 @@ export function News() { // Renaming to News as per file structure
   const handlePhotoChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      // Basic size check (e.g., 5MB)
       if (file.size > 5 * 1024 * 1024) {
           setMessage({type: 'error', text: 'Image size should not exceed 5MB.'});
-          if(fileInputRef.current) fileInputRef.current.value = ""; // Clear input
+          if(fileInputRef.current) fileInputRef.current.value = "";
           return;
       }
       setReportData(prev => ({ ...prev, photo: file, photoPreview: URL.createObjectURL(file) }));
@@ -239,9 +218,7 @@ export function News() { // Renaming to News as per file structure
 
   const removePhoto = () => {
       setReportData(prev => ({ ...prev, photo: null, photoPreview: '' }));
-      if(fileInputRef.current) {
-          fileInputRef.current.value = ""; // Reset file input
-      }
+      if(fileInputRef.current) fileInputRef.current.value = "";
   };
 
   const handleSubmit = async (e: FormEvent) => {
@@ -260,63 +237,66 @@ export function News() { // Renaming to News as per file structure
         return;
     }
 
+    const trackingId = generateTrackingId();
     const newReport: Report = {
       id: `rep-${Date.now()}`, 
+      trackingId: trackingId,
       submittedAt: new Date(),
       category: reportData.category,
       subcategory: subcategory, 
       description: reportData.description,
       location: reportData.location,
       priority: reportData.priority,
-      photo: reportData.photo, // Keep file ref for potential upload
-      photoPreview: reportData.photoPreview, // Keep preview URL
+      photo: reportData.photo,
+      photoPreview: reportData.photoPreview,
       contactName: reportData.contactName,
       contactPhone: reportData.contactPhone,
       contactEmail: reportData.contactEmail,
       status: 'Submitted',
     };
 
-    /* --- SUPABASE INSERT ---
+    /* --- SUPABASE INSERT (Placeholder) ---
     try {
-        // 1. Upload photo if exists (implement Supabase Storage upload)
-        let photoUrl = null;
+        // 1. Upload photo
+        let photoUrl: string | null = null;
         if (reportData.photo) {
-            // const filePath = `reports/${user?.id || 'anon'}/${Date.now()}_${reportData.photo.name}`;
-            // const { data: uploadData, error: uploadError } = await supabase.storage
-            //     .from('report-photos') // Ensure bucket exists and has policies
-            //     .upload(filePath, reportData.photo);
-            // if (uploadError) throw uploadError;
-            // // Get public URL or signed URL
-            // const { data: urlData } = supabase.storage.from('report-photos').getPublicUrl(filePath);
-            // photoUrl = urlData?.publicUrl;
-            console.warn("Photo upload needs implementation"); // Placeholder
+             const fileExt = reportData.photo.name.split('.').pop();
+             const fileName = `${Date.now()}.${fileExt}`;
+             const filePath = `issues/${fileName}`;
+             const { error: uploadError } = await supabase.storage
+                 .from('issues') // BUCKET NAME: 'issues'
+                 .upload(filePath, reportData.photo);
+             if (uploadError) throw new Error(`Photo upload failed: ${uploadError.message}`);
+             const { data: urlData } = supabase.storage.from('issues').getPublicUrl(filePath);
+             photoUrl = urlData.publicUrl;
         }
 
-        // 2. Insert report data into the table
+        // 2. Insert report
         const { error: insertError } = await supabase
-            .from('constituent_reports') // Ensure table exists with correct columns
+            .from('constituent_reports') // TABLE NAME: 'constituent_reports'
             .insert([{
-                // user_id: user?.id, // Optional: Link to user
-                category_id: reportData.category.id, // Store ID
-                subcategory_value: reportData.subcategoryValue, // Store value/slug
+                tracking_id: trackingId,
+                category_id: reportData.category.id,
+                subcategory_value: reportData.subcategoryValue,
                 description: reportData.description,
                 location: reportData.location,
                 priority: reportData.priority,
-                photo_url: photoUrl, // Store URL from storage
+                photo_url: photoUrl,
                 contact_name: reportData.contactName || null,
                 contact_phone: reportData.contactPhone || null,
                 contact_email: reportData.contactEmail || null,
-                status: 'Submitted', // Initial status
-                submitted_at: new Date().toISOString(),
+                status: 'Submitted',
+                submitted_at: newReport.submittedAt.toISOString(),
             }]);
+        
+        if (insertError) throw new Error(`Database insert failed: ${insertError.message}`);
 
-        if (insertError) throw insertError;
-
-        // Success: Add to local state, reset form, show message
-        setSubmittedReports(prev => [newReport, ...prev]); // Add mock locally even if using DB
-        setReportData(initialReportData);
+        // If successful:
+        setSubmittedReports(prev => [newReport, ...prev].sort((a,b) => b.submittedAt.getTime() - a.submittedAt.getTime()));
+        setMessage({ type: 'success', text: 'Report submitted successfully!', trackingId: trackingId });
+        setShowSuccessModal(true); // Show success modal
+        setReportData(initialReportData); // Reset form
         setShowContactInfo(false);
-        setMessage({ type: 'success', text: 'Report submitted successfully! Track its status below.' });
 
     } catch (err: any) {
         console.error("Error submitting report:", err);
@@ -331,9 +311,9 @@ export function News() { // Renaming to News as per file structure
     setSubmittedReports(prev => [newReport, ...prev].sort((a,b) => b.submittedAt.getTime() - a.submittedAt.getTime()));
     setReportData(initialReportData); // Reset form
     setShowContactInfo(false); // Hide optional fields
-    setMessage({ type: 'success', text: 'Report submitted successfully! Track its status below.' });
+    setMessage({ type: 'success', text: 'Report submitted successfully!', trackingId: trackingId });
+    setShowSuccessModal(true); // Show success modal
     setLoading(false);
-    window.scrollTo({ top: document.getElementById('submitted-reports')?.offsetTop || 0, behavior: 'smooth' }); // Scroll to submitted reports
     // --- END MOCK ---
   };
 
@@ -341,7 +321,7 @@ export function News() { // Renaming to News as per file structure
     <div className="min-h-screen bg-white" style={{ fontFamily: 'Inter, sans-serif' }}> 
       {/* Hero Section */}
        <section className="relative bg-green-900 text-white py-20 md:py-28">
-           <div className="absolute inset-0 pointer-events-none" aria-hidden="true" style={{ background: 'radial-gradient(1200px 600px at 50% -10%, rgba(255,107,0,0.12), transparent 60%), radial-gradient(800px 400px at 100% 20%, rgba(255,255,255,0.08), transparent 50%)', }} /> <div className="absolute inset-0 opacity-10 pointer-events-none bg-gradient-to-br from-white/5 via-transparent to-[#FF6B00]/10" /> <AnimatedSection> <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center"> <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-3 md:mb-4 text-[#FF6B00]"> Report an Issue </h1> <div className="flex justify-center"><span className="h-1 w-20 md:w-24 rounded-full bg-white/50" /></div> <p className="mt-5 md:mt-6 text-lg md:text-xl text-green-100/90 max-w-3xl mx-auto leading-relaxed">Your feedback helps improve our constituency. Report issues related to infrastructure, schools, health, and more.</p> </div> </AnimatedSection>
+           <div className="absolute inset-0 pointer-events-none" aria-hidden="true" style={{ background: 'radial-gradient(1200px 600px at 50% -10%, rgba(255,107,0,0.12), transparent 60%), radial-gradient(800px 400px at 100% 20%, rgba(255,255,255,0.08), transparent 50%)', }} /> <div className="absolute inset-0 opacity-10 pointer-events-none bg-gradient-to-br from-white/5 via-transparent to-[#FF6B00]/10" /> <AnimatedSection> <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center"> <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-3 md:mb-4 text-[#FF6B00]"> Report an Issue </h1> <div className="flex justify-center"><span className="h-1 w-20 md:w-24 rounded-full bg-white/50" /></div> <p className="mt-5 md:mt-6 text-lg md:text-xl text-green-100/90 max-w-3xl mx-auto leading-relaxed">Help us make Cape Coast North better—one report at a time.</p> </div> </AnimatedSection>
       </section>
 
       {/* Report Form Section */}
@@ -360,11 +340,11 @@ export function News() { // Renaming to News as per file structure
                                 <motion.button
                                     key={cat.id}
                                     onClick={() => handleCategorySelect(cat)}
-                                    className="flex flex-col items-center justify-center p-4 md:p-6 bg-white rounded-xl border-2 border-gray-200 hover:border-green-600 hover:bg-green-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FF6B00] transition-all text-center group" // Added group
-                                    whileHover={{ scale: 1.05, y: -2 }} // Enhanced hover
+                                    className="flex flex-col items-center justify-center p-4 md:p-6 bg-white rounded-xl border-2 border-gray-200 hover:border-green-600 hover:bg-green-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FF6B00] transition-all text-center group"
+                                    whileHover={{ scale: 1.05, y: -2 }}
                                     whileTap={{ scale: 0.98 }}
                                 >
-                                    <cat.icon size={32} className="text-green-800 mb-2 transition-colors group-hover:text-[#FF6B00]"/> {/* Icon changes color */}
+                                    <cat.icon size={32} className="text-green-800 mb-2 transition-colors group-hover:text-[#FF6B00]"/>
                                     <span className="text-sm font-semibold text-green-900">{cat.label}</span>
                                 </motion.button>
                             ))}
@@ -375,19 +355,18 @@ export function News() { // Renaming to News as per file structure
                  // --- Step 2: Details Form ---
                  <motion.div key="step2" initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }} transition={{ duration: 0.3 }}>
                      <AnimatedSection delay={50}>
-                        {/* Back button and category display */}
                         <div className="flex items-center justify-between mb-6">
-                            <Button variant="ghost" size="sm" onClick={() => setReportData(initialReportData)} className="text-gray-600 hover:text-green-800 px-2 py-1"> {/* Reduced padding */}
+                            <Button variant="ghost" size="sm" onClick={() => { setReportData(initialReportData); setMessage(null); }} className="text-gray-600 hover:text-green-800 px-2 py-1">
                                 <ArrowLeft size={16} className="mr-1"/> Back
                             </Button>
-                            <div className="flex items-center space-x-2 text-green-800 font-semibold text-sm border border-green-200 bg-green-50 px-3 py-1 rounded-full"> {/* Pill style */}
+                            <div className="flex items-center space-x-2 text-green-800 font-semibold text-sm border border-green-200 bg-green-50 px-3 py-1 rounded-full">
                                 <reportData.category.icon size={16}/>
                                 <span>{reportData.category.label}</span>
                             </div>
                         </div>
 
-                        {/* Form Starts */}
-                        <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 md:p-8 rounded-xl shadow-lg border border-gray-100">
+                        {/* "Frosted Glass" Form Card */}
+                        <form onSubmit={handleSubmit} className="space-y-6 bg-white/80 backdrop-blur-md p-6 md:p-8 rounded-2xl shadow-xl border border-gray-100">
                             {/* Subcategory */}
                             <div>
                                <label htmlFor="subcategoryValue" className="block text-sm font-medium text-gray-700 mb-1">Specific Issue *</label>
@@ -423,7 +402,12 @@ export function News() { // Renaming to News as per file structure
                                  className="w-full text-base px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent bg-white text-gray-900 pr-10" 
                                  placeholder="e.g., Near Adisadel Junction, Abura Road"
                                />
-                               <button type="button" className="absolute top-8 right-2 p-1.5 text-gray-400 hover:text-green-700" title="Use current location (Feature coming soon)">
+                               <button 
+                                  type="button" 
+                                  onClick={() => alert("Auto-location feature coming soon. Please enter manually.")} // Placeholder for geolocation
+                                  className="absolute top-8 right-2 p-1.5 text-gray-400 hover:text-green-700" 
+                                  title="Use current location"
+                                >
                                    <MapPin size={20}/>
                                </button>
                             </div>
@@ -431,9 +415,9 @@ export function News() { // Renaming to News as per file structure
                             {/* Priority */}
                             <div>
                                <label className="block text-sm font-medium text-gray-700 mb-2">Priority Level *</label>
-                               <div className="flex flex-wrap gap-x-4 gap-y-2"> {/* Adjusted gap */}
+                               <div className="flex flex-wrap gap-x-4 gap-y-2">
                                   {(['Normal', 'Urgent', 'Life-threatening'] as PriorityLevel[]).map(level => (
-                                      <label key={level} className={`flex items-center px-3 py-1.5 border rounded-full cursor-pointer transition-colors ${reportData.priority === level ? 'bg-green-100 border-green-600 ring-1 ring-green-600' : 'border-gray-300 hover:bg-gray-50'}`}> {/* Pill style */}
+                                      <label key={level} className={`flex items-center px-3 py-1.5 border rounded-full cursor-pointer transition-colors ${reportData.priority === level ? 'bg-green-100 border-green-600 ring-1 ring-green-600' : 'border-gray-300 hover:bg-gray-50'}`}>
                                           <input type="radio" name="priority" value={level} checked={reportData.priority === level} onChange={handlePriorityChange} className="h-4 w-4 mr-2 border-gray-300 text-[#FF6B00] focus:ring-[#FF6B00]/50"/>
                                            {level === 'Life-threatening' ? <AlertTriangle size={14} className="mr-1 text-red-600"/> : level === 'Urgent' ? <AlertCircle size={14} className="mr-1 text-yellow-600"/> : null}
                                           <span className={`text-xs font-medium ${reportData.priority === level ? 'text-green-900' : 'text-gray-700'}`}>{level}</span>
@@ -481,21 +465,25 @@ export function News() { // Renaming to News as per file structure
                                 </AnimatePresence>
                             </div>
 
-                            {/* Submission Feedback */}
+                            {/* Submission Feedback (non-modal) */}
                              <div aria-live="polite" className="min-h-[1rem]">
-                              {message && (
-                                <div className={`p-3 rounded-lg text-sm ${message.type === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                              {message && message.type === 'error' && ( // Only show errors here
+                                <div className="p-3 rounded-lg text-sm bg-red-100 text-red-800">
                                   {message.text}
                                 </div>
                               )}
                             </div>
 
                             {/* Submit Button */}
-                            <Button type="submit" size="lg" className="w-full bg-[#FF6B00] hover:bg-[#E66000] text-white" disabled={loading}>
+                            <Button 
+                                type="submit" 
+                                size="lg" 
+                                className="w-full bg-[#FF6B00] hover:bg-[#E66000] text-white shadow-lg shadow-amber-500/30 hover:shadow-xl hover:shadow-amber-500/40 transition-shadow animate-pulse hover:animate-none" // Glowing effect
+                                disabled={loading}
+                            >
                                {loading ? 'Submitting...' : 'Submit Report'}
                                {!loading && <Send size={18} className="ml-2"/>}
                             </Button>
-
                         </form>
                      </AnimatedSection>
                  </motion.div>
@@ -505,7 +493,7 @@ export function News() { // Renaming to News as per file structure
       </section>
 
       {/* Submitted Reports Section */}
-      <section id="submitted-reports" className="py-12 md:py-16 bg-green-50 border-t border-green-100"> {/* Light green background */}
+      <section id="submitted-reports" className="py-12 md:py-16 bg-green-50 border-t border-green-100">
          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <AnimatedSection delay={200}>
                 <h2 className="text-2xl md:text-3xl font-bold text-green-900 mb-6 text-center">My Reported Issues</h2>
@@ -519,25 +507,28 @@ export function News() { // Renaming to News as per file structure
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.3 }}
-                                className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm flex flex-col sm:flex-row sm:items-start sm:justify-between" // Align items start
+                                className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm flex flex-col sm:flex-row sm:items-start sm:justify-between"
                             >
                                 <div className="flex-1 mb-3 sm:mb-0 sm:pr-4">
-                                    <div className="flex items-center text-xs text-gray-500 mb-1.5"> {/* Increased margin */}
-                                        <report.category.icon size={14} className="mr-1.5 text-green-700 flex-shrink-0"/>
-                                        <span className="font-medium">{report.category.label} &rarr; {report.subcategory.label}</span>
+                                    <div className="flex items-center justify-between text-xs text-gray-500 mb-1.5">
+                                        <span className="flex items-center font-medium">
+                                            <report.category.icon size={14} className="mr-1.5 text-green-700 flex-shrink-0"/>
+                                            {report.category.label} &rarr; {report.subcategory.label}
+                                        </span>
+                                        <span className="font-bold text-gray-600 sm:hidden block"><Hash size={12} className="inline mr-0.5"/>{report.trackingId.split('-')[2]}</span> {/* Show short ID on mobile */}
                                     </div>
-                                    <p className="text-sm text-gray-800 mb-1.5 line-clamp-2 leading-snug">{report.description}</p> {/* Snug leading */}
+                                    <p className="text-sm text-gray-800 mb-1.5 line-clamp-2 leading-snug">{report.description}</p>
                                     <div className="flex items-center text-xs text-gray-500">
                                         <MapPin size={12} className="mr-1 flex-shrink-0"/> {report.location} 
                                     </div>
-                                    <div className="text-xs text-gray-400 mt-1 sm:hidden"> {/* Time below on mobile */}
+                                    <div className="text-xs text-gray-400 mt-1 sm:hidden">
                                          {formatRelativeTime(report.submittedAt.toISOString())}
                                     </div>
                                 </div>
-                                <div className="flex-shrink-0 flex sm:flex-col items-end sm:items-center space-x-3 sm:space-x-0 sm:space-y-2"> {/* Align end, vertical on sm */}
+                                <div className="flex-shrink-0 flex sm:flex-col items-end sm:items-center space-x-3 sm:space-x-0 sm:space-y-2">
                                      {report.photoPreview && <img src={report.photoPreview} alt="Report attachment" className="h-10 w-10 rounded object-cover"/>}
                                     <StatusBadge status={report.status} />
-                                    <span className="text-xs text-gray-400 hidden sm:block"> {/* Time on right for larger screens */}
+                                    <span className="text-xs text-gray-400 hidden sm:block">
                                          {formatRelativeTime(report.submittedAt.toISOString())}
                                     </span>
                                 </div>
@@ -548,6 +539,47 @@ export function News() { // Renaming to News as per file structure
             </AnimatedSection>
          </div>
       </section>
+
+      {/* --- Success Modal --- */}
+      <AnimatePresence>
+        {showSuccessModal && message && message.type === 'success' && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/70 backdrop-blur-md z-50 flex items-center justify-center p-4"
+              onClick={() => setShowSuccessModal(false)}
+            >
+              <motion.div
+                initial={{ scale: 0.9, y: 20 }}
+                animate={{ scale: 1, y: 0 }}
+                exit={{ scale: 0.9, y: 20, opacity: 0 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+                className="bg-white text-gray-900 rounded-2xl shadow-2xl max-w-md w-full overflow-hidden"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="p-8 text-center">
+                    <div className="w-16 h-16 bg-green-100 text-green-700 rounded-full flex items-center justify-center mx-auto">
+                        <CheckCircle size={32} />
+                    </div>
+                    <h2 className="text-2xl font-bold text-green-900 mt-4 mb-2">Report Submitted!</h2>
+                    <p className="text-gray-600 mb-4">Thank you for helping improve our community. Your report has been received.</p>
+                    <div className="bg-gray-100 border border-gray-200 rounded-lg p-3">
+                        <p className="text-sm text-gray-600">Your Tracking ID is:</p>
+                        <p className="text-lg font-bold text-green-800 tracking-wider">{message.trackingId}</p>
+                    </div>
+                     <Button 
+                        size="md" 
+                        className="w-full mt-6 bg-[#FF6B00] hover:bg-[#E66000] text-white"
+                        onClick={() => setShowSuccessModal(false)}
+                     >
+                        Done
+                     </Button>
+                </div>
+              </motion.div>
+            </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* CSS */}
       <style>{`
@@ -565,20 +597,28 @@ export function News() { // Renaming to News as per file structure
 
 /*
 --- Supabase Table Structure (constituent_reports) ---
+(You MUST create this table in your Supabase SQL editor)
 
 CREATE TABLE constituent_reports (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  tracking_id text UNIQUE NOT NULL, -- User-facing ID e.g., CCN-20251026-A1B2
   user_id uuid REFERENCES auth.users(id) ON DELETE SET NULL, -- Optional: Link to logged-in user
   submitted_at timestamptz DEFAULT now(),
+  
+  -- Report Details
   category_id text NOT NULL, -- e.g., 'roads', 'education'
   subcategory_value text NOT NULL, -- e.g., 'potholes', 'broken_furniture'
   description text NOT NULL CHECK (char_length(description) <= 1500),
   location text NOT NULL,
   priority text NOT NULL DEFAULT 'Normal', -- 'Normal', 'Urgent', 'Life-threatening'
   photo_url text, -- URL from Supabase Storage
+  
+  -- Optional Contact Info
   contact_name text,
   contact_phone text,
   contact_email text,
+  
+  -- Status Tracking
   status text NOT NULL DEFAULT 'Submitted', -- 'Submitted', 'In Progress', 'Resolved'
   resolved_at timestamptz, -- Optional: Track resolution time
   notes text -- Optional: For MP office internal notes
@@ -591,19 +631,30 @@ ALTER TABLE constituent_reports ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Allow authenticated users to insert reports"
   ON constituent_reports FOR INSERT TO authenticated WITH CHECK (true);
 
-CREATE POLICY "Allow users to view their own reports"
-  ON constituent_reports FOR SELECT TO authenticated USING (auth.uid() = user_id);
+-- This policy allows anonymous (non-logged-in) users to submit reports
+CREATE POLICY "Allow anonymous users to insert reports"
+  ON constituent_reports FOR INSERT TO anon WITH CHECK (true);
 
--- Optional: Allow anonymous inserts (if user_id is nullable)
--- CREATE POLICY "Allow anonymous users to insert reports"
---   ON constituent_reports FOR INSERT TO anon WITH CHECK (true);
+-- This policy allows users to see reports they submitted (if you implement user_id tracking)
+-- CREATE POLICY "Allow users to view their own reports"
+--   ON constituent_reports FOR SELECT TO authenticated USING (auth.uid() = user_id);
 
--- Optional: Allow admins (e.g., service_role or custom role) to view/update all
--- CREATE POLICY "Allow admin read access" ON constituent_reports FOR SELECT TO service_role USING (true);
--- CREATE POLICY "Allow admin update access" ON constituent_reports FOR UPDATE TO service_role USING (true) WITH CHECK (true);
+-- FOR THE MOCK TRACKER: You need a policy that lets *everyone* read *some* data
+-- THIS IS INSECURE for real user data, but OK for mock.
+-- A better way is to track anonymous reports via a local session/cookie.
+-- For now, let's just allow read access for the demo.
+CREATE POLICY "Allow public read access to submitted reports"
+  ON constituent_reports FOR SELECT TO anon, authenticated
+  USING (true);
+
 
 -- Storage Bucket (report-photos)
--- Create a bucket named 'report-photos'
--- Set appropriate policies (e.g., allow authenticated users to upload to their own folder, allow public read if needed)
+-- 1. Create a bucket named 'issues' in Supabase Storage.
+-- 2. Set policies, e.g., public insert (INSECURE, for demo only)
+--    OR, better, authenticated insert:
+--    CREATE POLICY "Allow authenticated users to upload issues"
+--    ON storage.objects FOR INSERT TO authenticated
+--    WITH CHECK ( bucket_id = 'issues' AND auth.uid() = (storage.foldername(name))[1] );
+--    (This policy assumes photos are stored in a folder matching the user's ID)
 
 */

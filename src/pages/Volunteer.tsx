@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { DollarSign, CreditCard, Gift, X, User, Phone, Filter, Mail } from 'lucide-react'; // Removed CheckCircle
+import { DollarSign, CreditCard, Gift, X, User, Phone, Filter, Mail, CheckCircle } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { Button } from '../components/Button';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -31,7 +31,17 @@ type SortPeriod = 'all' | 'today' | 'this_month' | 'this_year';
 type Currency = 'USD' | 'GHS';
 type PaymentMethod = 'paystack' | 'applePay';
 
-// REMOVED targets data as progress bar is removed
+// Static targets - Using these for visual progress on Pillar Cards ONLY
+const targets: Record<string, { goal: number; raised: number }> = {
+  cwi: { goal: 50000, raised: 32000 },
+  cia: { goal: 40000, raised: 21000 },
+  dcp: { goal: 60000, raised: 42000 },
+  hj360: { goal: 30000, raised: 18000 },
+  c2c: { goal: 50000, raised: 36000 },
+  ccnydf: { goal: 80000, raised: 54000 },
+  cid: { goal: 45000, raised: 12000 },
+  general: { goal: 100000, raised: 74000 }, // Target for general support
+};
 
 const AnimatedSection = ({
   children,
@@ -92,9 +102,9 @@ export function Volunteer() {
   const [showPublicly, setShowPublicly] = useState(true);
   const [showAmountPublicly, setShowAmountPublicly] = useState(true);
 
-  // Remember last pillar (now uses default value)
-  useEffect(() => { /* ... load only pillar ... */ try { const saved = localStorage.getItem('donation_pillar_pref'); if (saved) { setDonationForm((prev) => ({ ...prev, selectedPillar: saved, })); } } catch { /* ignore */ } }, []);
-  useEffect(() => { /* ... save only pillar ... */ try { if (donationForm.selectedPillar) { localStorage.setItem( 'donation_pillar_pref', donationForm.selectedPillar ); } } catch { /* ignore */ } }, [donationForm.selectedPillar]);
+  // Remember last pillar
+  useEffect(() => { /* ... unchanged ... */ try { const saved = localStorage.getItem('donation_pillar_pref'); if (saved) { setDonationForm((prev) => ({ ...prev, selectedPillar: saved, })); } } catch { /* ignore */ } }, []);
+  useEffect(() => { /* ... unchanged ... */ try { if (donationForm.selectedPillar) { localStorage.setItem( 'donation_pillar_pref', donationForm.selectedPillar ); } } catch { /* ignore */ } }, [donationForm.selectedPillar]);
 
   // Keep payment method valid
   useEffect(() => { /* ... unchanged ... */ if (currency === 'GHS' && paymentMethod === 'applePay') { setPaymentMethod('paystack'); } }, [currency, paymentMethod]);
@@ -107,7 +117,7 @@ export function Volunteer() {
   const handleCustomAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => { /* ... unchanged ... */ const value = e.target.value; if (value === '' || /^\d+$/.test(value)) { const numeric = value === '' ? 0 : parseInt(value, 10); setDonationForm((prev) => ({ ...prev, customAmount: value, amount: numeric })); } };
   const handlePillarChange = (e: React.ChangeEvent<HTMLSelectElement>) => { /* ... unchanged ... */ setDonationForm((prev) => ({ ...prev, selectedPillar: e.target.value })); };
   const primeModalPrivacyFromAnonymous = () => { /* ... unchanged ... */ if (anonymous) { setShowPublicly(false); setShowAmountPublicly(false); } else { setShowPublicly(true); setShowAmountPublicly(true); } };
-  const handleDonateSubmit = (e: React.FormEvent) => { /* ... REMOVED pillar check ... */ e.preventDefault(); /* REMOVED: if (!donationForm.selectedPillar) {setMessage... return;} */ if (donationForm.amount <= 0) { setMessage('Please select or enter a valid donation amount.'); window.setTimeout(() => setMessage(''), 5000); return; } if (currency === 'GHS' && paymentMethod !== 'paystack') { setPaymentMethod('paystack'); } setMessage(''); primeModalPrivacyFromAnonymous(); setIsConfirmModalOpen(true); };
+  const handleDonateSubmit = (e: React.FormEvent) => { /* ... unchanged ... */ e.preventDefault(); /* REMOVED: pillar check */ if (donationForm.amount <= 0) { setMessage('Please select or enter a valid donation amount.'); window.setTimeout(() => setMessage(''), 5000); return; } if (currency === 'GHS' && paymentMethod !== 'paystack') { setPaymentMethod('paystack'); } setMessage(''); primeModalPrivacyFromAnonymous(); setIsConfirmModalOpen(true); };
   const handleConfirmAndPay = () => { /* ... unchanged ... */ const finalAmount = donationForm.amount; const pillarTitle = getPillarTitleFromSlug(donationForm.selectedPillar || 'general'); setIsConfirmModalOpen(false); const methodLabel = paymentMethod === 'applePay' ? 'Apple Pay' : 'Paystack (Visa/Mastercard/MoMo)'; alert( `Initiating ${methodLabel} for ${fmt(finalAmount)} towards ${pillarTitle}${ isRecurring ? ' • Monthly' : '' }.\n(This is a demo placeholder.)` ); const newDonation: Donation = { id: `new-${Date.now()}`, created_at: new Date().toISOString(), name: anonymous ? 'Anonymous' : donorName || 'Supporter', amount: finalAmount, project_supported: donationForm.selectedPillar || 'general', display_publicly: !anonymous && showPublicly, display_amount_publicly: !anonymous && showAmountPublicly, }; const updatedDonations = [newDonation, ...allDonations].sort( (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime(), ); setAllDonations(updatedDonations); setMessage('Thank you for your generous contribution!'); setDonationForm({ amount: 0, selectedPillar: donationForm.selectedPillar, /* Keep selected pillar */ customAmount: '' }); setDonorName(''); setDonorPhone(''); setDonorEmail(''); setShowPublicly(true); setShowAmountPublicly(true); setAnonymous(false); setIsRecurring(false); window.setTimeout(() => setMessage(''), 5000); };
 
   const donationAmounts = [25, 50, 100, 250, 500, 1000];
@@ -123,7 +133,6 @@ export function Volunteer() {
     .slice(0, 10);
 
   return (
-    // Updated main background to white
     <div className="min-h-screen bg-white pb-24 md:pb-0" style={{ fontFamily: 'Inter, sans-serif' }}> 
       {/* Hero */}
       <section className="relative overflow-hidden bg-green-900 text-white py-16 md:py-24">
@@ -138,7 +147,7 @@ export function Volunteer() {
               <form ref={formRef} onSubmit={handleDonateSubmit} aria-labelledby="donate-form-heading">
                 <h2 id="donate-form-heading" className="sr-only">Donation Form</h2>
 
-                 {/* Reverted Pillar Selection Grid back to Dropdown */}
+                 {/* Pillar Selection Dropdown */}
                  <div className="mb-6"> 
                    <label htmlFor="pillarSelect" className="block text-xl md:text-2xl font-bold text-green-900 mb-3 text-center">
                      1. Choose an Initiative (Optional)
@@ -148,7 +157,7 @@ export function Volunteer() {
                       name="pillarSelect"
                       value={donationForm.selectedPillar}
                       onChange={handlePillarChange}
-                      className="w-full text-base px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent bg-white text-gray-900 appearance-none" // Added appearance-none for potential custom styling
+                      className="w-full text-base px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent bg-white text-gray-900 appearance-none" 
                     >
                       <option value="general">General CETRA2030 Support</option>
                       {pillars.map((pillar) => (
@@ -160,7 +169,7 @@ export function Volunteer() {
                  </div>
                  {/* End Pillar Selection */}
 
-                 {/* Amount/Payment Section Wrapper (Always visible now) */}
+                 {/* Amount/Payment Section Wrapper */}
                  <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-5 md:p-8 space-y-6">
                     {/* Section 2: Amount + Currency */}
                     <div>
@@ -192,11 +201,11 @@ export function Volunteer() {
                         <p className="text-base font-bold text-green-900 mb-2">4. Options</p><div className="flex items-center justify-between bg-green-50 border border-green-200 rounded-lg p-3"><label htmlFor="recurring" className="text-sm font-medium text-green-900">Make this a monthly donation</label><input id="recurring" type="checkbox" checked={isRecurring} onChange={(e) => setIsRecurring(e.target.checked)} className="h-5 w-5 accent-[#FF6B00] focus:ring-offset-1 focus:ring-[#FF6B00]/50 rounded"/></div><label className="flex items-center gap-2 text-sm text-gray-700 pl-1 cursor-pointer"><input type="checkbox" checked={anonymous} onChange={(e) => setAnonymous(e.target.checked)} className="h-4 w-4 accent-[#FF6B00] rounded border-gray-300 focus:ring-offset-1 focus:ring-[#FF6B00]/50"/>Give anonymously <span className="text-xs text-gray-500">(hide name & amount)</span></label>
                     </div>
 
-                    {/* Trust / Info - Removed list */}
+                    {/* Trust / Info - REMOVED list */}
                     <div>
                          <div className="grid gap-3 md:gap-4">
                             <div className="text-center text-xs text-gray-500">Secure payments via <span className="font-semibold">Paystack</span> & <span className="font-semibold">Apple Pay</span> supported. SSL secured & privacy-first.</div>
-                            {/* Removed the div containing the ul */}
+                            {/* REMOVED: <div className="bg-gray-50 border border-gray-200 rounded-xl p-4"> ... ul list ... </div> */}
                         </div>
                     </div>
 
@@ -210,9 +219,8 @@ export function Volunteer() {
                       <Gift className="w-5 h-5 mr-2" /> Contribute {fmt(donationForm.amount)}
                     </Button>
 
-                    <p className="text-xs text-gray-500 text-center">
-                      By contributing, you confirm you understand applicable campaign finance regulations.
-                    </p>
+                    {/* REMOVED: Disclaimer paragraph */}
+                    {/* <p className="text-xs text-gray-500 text-center"> ... </p> */}
                 </div>
               </form>
             </AnimatedSection>
@@ -257,12 +265,13 @@ export function Volunteer() {
         .shimmer::before { content: ""; position: absolute; inset: 0; transform: translateX(-100%); background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent); animation: shimmer 1.4s infinite; }
         @keyframes shimmer { 100% { transform: translateX(100%); } }
         /* Add custom arrow for select dropdown */
-        select { 
+        select {
           background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
           background-position: right 0.5rem center;
           background-repeat: no-repeat;
           background-size: 1.5em 1.5em;
           padding-right: 2.5rem; /* Ensure space for arrow */
+          appearance: none; /* Remove default arrow */
         }
       `}</style>
     </div>

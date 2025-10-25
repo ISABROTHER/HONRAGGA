@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { DollarSign, CreditCard, Gift, X, User, Phone, Filter, Mail, CheckCircle } from 'lucide-react'; // Added CheckCircle
+import { DollarSign, CreditCard, Gift, X, User, Phone, Filter, Mail, CheckCircle } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { Button } from '../components/Button';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -31,7 +31,7 @@ type SortPeriod = 'all' | 'today' | 'this_month' | 'this_year';
 type Currency = 'USD' | 'GHS';
 type PaymentMethod = 'paystack' | 'applePay';
 
-// Static targets - Using these for visual progress
+// Static targets - Using these for visual progress on Pillar Cards ONLY
 const targets: Record<string, { goal: number; raised: number }> = {
   cwi: { goal: 50000, raised: 32000 },
   cia: { goal: 40000, raised: 21000 },
@@ -43,7 +43,7 @@ const targets: Record<string, { goal: number; raised: number }> = {
   general: { goal: 100000, raised: 74000 }, // Target for general support
 };
 
-const AnimatedSection = ({ /* ... unchanged ... */
+const AnimatedSection = ({
   children,
   delay = 0,
 }: {
@@ -73,11 +73,11 @@ export function Volunteer() {
 
   const [donationForm, setDonationForm] = useState<{
     amount: number;
-    selectedPillar: string | null; // Allow null initially
+    selectedPillar: string | null;
     customAmount: string;
   }>({
     amount: 0,
-    selectedPillar: null, // Start with no pillar selected
+    selectedPillar: null,
     customAmount: '',
   });
 
@@ -102,7 +102,7 @@ export function Volunteer() {
   const [showPublicly, setShowPublicly] = useState(true);
   const [showAmountPublicly, setShowAmountPublicly] = useState(true);
 
-  // Remember last pillar (amount reset is fine)
+  // Remember last pillar
   useEffect(() => { /* ... load only pillar ... */ try { const saved = localStorage.getItem('donation_pillar_pref'); if (saved) { setDonationForm((prev) => ({ ...prev, selectedPillar: saved, })); } } catch { /* ignore */ } }, []);
   useEffect(() => { /* ... save only pillar ... */ try { if (donationForm.selectedPillar) { localStorage.setItem( 'donation_pillar_pref', donationForm.selectedPillar ); } } catch { /* ignore */ } }, [donationForm.selectedPillar]);
 
@@ -113,52 +113,11 @@ export function Volunteer() {
   useEffect(() => { /* ... unchanged ... */ setLoadingDonations(true); const mockData: Donation[] = []; const names = ['Ama P.', 'Kwesi Mensah', 'Yaw B.', 'Adwoa Ltd', 'Kofi Annan', 'Efua S.', 'Nana K.', 'Aisha Co.', 'Kwabena F.', 'Akosua']; const now = new Date(); for (let i = 0; i < 20; i++) { const date = new Date(now); if (i < 3) { date.setHours(now.getHours() - i * 3); } else if (i < 7) { date.setDate(now.getDate() - i); } else if (i < 12) { date.setMonth(now.getMonth() - Math.floor(i / 2)); date.setDate(Math.floor(Math.random() * 28) + 1); } else { date.setFullYear(now.getFullYear() - Math.floor((i - 10) / 3)); date.setMonth(Math.floor(Math.random() * 12)); date.setDate(Math.floor(Math.random() * 28) + 1); } mockData.push({ id: `mock-${i}`, created_at: date.toISOString(), name: names[i % names.length], amount: [25, 50, 100, 250, 50, 75, 500, 30][i % 8], project_supported: i % 4 === 0 ? 'general' : pillars[i % pillars.length].slug, display_publicly: true, display_amount_publicly: i % 3 !== 0, }); } mockData.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()); setAllDonations(mockData); setLoadingDonations(false); }, []);
   // --- END MOCK DATA ---
 
-  const handleAmountSelect = (amount: number) => {
-    setDonationForm((prev) => ({ ...prev, amount, customAmount: '' }));
-  };
-
-  const handleCustomAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    if (value === '' || /^\d+$/.test(value)) {
-      const numeric = value === '' ? 0 : parseInt(value, 10);
-      setDonationForm((prev) => ({ ...prev, customAmount: value, amount: numeric }));
-    }
-  };
-
-  // Pillar selection now happens via card click
-  const handlePillarSelect = (slug: string) => {
-      setDonationForm((prev) => ({ 
-          ...prev, 
-          selectedPillar: prev.selectedPillar === slug ? null : slug, // Toggle selection
-          amount: 0, // Reset amount when pillar changes
-          customAmount: '' 
-      })); 
-      setMessage(''); // Clear message when selection changes
-  };
-
+  const handleAmountSelect = (amount: number) => { /* ... unchanged ... */ setDonationForm((prev) => ({ ...prev, amount, customAmount: '' })); };
+  const handleCustomAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => { /* ... unchanged ... */ const value = e.target.value; if (value === '' || /^\d+$/.test(value)) { const numeric = value === '' ? 0 : parseInt(value, 10); setDonationForm((prev) => ({ ...prev, customAmount: value, amount: numeric })); } };
+  const handlePillarSelect = (slug: string) => { /* ... unchanged ... */ setDonationForm((prev) => ({ ...prev, selectedPillar: prev.selectedPillar === slug ? null : slug, amount: 0, customAmount: '' })); setMessage(''); };
   const primeModalPrivacyFromAnonymous = () => { /* ... unchanged ... */ if (anonymous) { setShowPublicly(false); setShowAmountPublicly(false); } else { setShowPublicly(true); setShowAmountPublicly(true); } };
-
-  // Triggered by buttons *after* pillar is selected
-  const handleDonateSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!donationForm.selectedPillar) { // Check if pillar is selected first
-        setMessage('Please select an initiative to support first.');
-        window.setTimeout(() => setMessage(''), 5000);
-        return;
-    }
-    if (donationForm.amount <= 0) {
-      setMessage('Please select or enter a valid donation amount.');
-      window.setTimeout(() => setMessage(''), 5000);
-      return;
-    }
-    if (currency === 'GHS' && paymentMethod !== 'paystack') {
-      setPaymentMethod('paystack');
-    }
-    setMessage('');
-    primeModalPrivacyFromAnonymous();
-    setIsConfirmModalOpen(true);
-  };
-
+  const handleDonateSubmit = (e: React.FormEvent) => { /* ... unchanged ... */ e.preventDefault(); if (!donationForm.selectedPillar) { setMessage('Please select an initiative to support first.'); window.setTimeout(() => setMessage(''), 5000); return; } if (donationForm.amount <= 0) { setMessage('Please select or enter a valid donation amount.'); window.setTimeout(() => setMessage(''), 5000); return; } if (currency === 'GHS' && paymentMethod !== 'paystack') { setPaymentMethod('paystack'); } setMessage(''); primeModalPrivacyFromAnonymous(); setIsConfirmModalOpen(true); };
   const handleConfirmAndPay = () => { /* ... unchanged ... */ const finalAmount = donationForm.amount; const pillarTitle = getPillarTitleFromSlug(donationForm.selectedPillar || 'general'); setIsConfirmModalOpen(false); const methodLabel = paymentMethod === 'applePay' ? 'Apple Pay' : 'Paystack (Visa/Mastercard/MoMo)'; alert( `Initiating ${methodLabel} for ${fmt(finalAmount)} towards ${pillarTitle}${ isRecurring ? ' • Monthly' : '' }.\n(This is a demo placeholder.)` ); const newDonation: Donation = { id: `new-${Date.now()}`, created_at: new Date().toISOString(), name: anonymous ? 'Anonymous' : donorName || 'Supporter', amount: finalAmount, project_supported: donationForm.selectedPillar || 'general', display_publicly: !anonymous && showPublicly, display_amount_publicly: !anonymous && showAmountPublicly, }; const updatedDonations = [newDonation, ...allDonations].sort( (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime(), ); setAllDonations(updatedDonations); setMessage('Thank you for your generous contribution!'); setDonationForm({ amount: 0, selectedPillar: donationForm.selectedPillar, /* Keep selected pillar */ customAmount: '' }); setDonorName(''); setDonorPhone(''); setDonorEmail(''); setShowPublicly(true); setShowAmountPublicly(true); setAnonymous(false); setIsRecurring(false); window.setTimeout(() => setMessage(''), 5000); };
 
   const donationAmounts = [25, 50, 100, 250, 500, 1000];
@@ -183,173 +142,95 @@ export function Volunteer() {
 
       {/* Donate Section */}
       <section id="donate" className="py-12 md:py-20 bg-white">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8"> {/* Increased max-width */}
-            {/* Form now includes pillar selection cards */}
-            <form ref={formRef} onSubmit={handleDonateSubmit} aria-labelledby="donate-form-heading">
-              <h2 id="donate-form-heading" className="sr-only">Donation Form</h2>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            {/* The main form AnimatedSection now correctly wraps the entire form */}
+            <AnimatedSection delay={80}> 
+              <form ref={formRef} onSubmit={handleDonateSubmit} aria-labelledby="donate-form-heading">
+                <h2 id="donate-form-heading" className="sr-only">Donation Form</h2>
 
-               {/* Pillar Selection Grid */}
-               <AnimatedSection delay={50}>
-                 <div className="mb-8 md:mb-12">
-                   <label className="block text-xl md:text-2xl font-bold text-green-900 mb-4 text-center">
-                     1. Choose an Initiative to Support
-                   </label>
-                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
-                     {/* General Support Card */}
-                     <motion.button
-                       type="button"
-                       onClick={() => handlePillarSelect('general')}
-                       className={`p-4 rounded-xl border-2 text-left transition-all duration-200 ${
-                         donationForm.selectedPillar === 'general'
-                           ? 'border-[#FF6B00] bg-amber-50 ring-2 ring-[#FF6B00]/50'
-                           : 'border-gray-200 bg-white hover:border-green-300 hover:bg-green-50'
-                       }`}
-                       whileHover={{ scale: 1.03 }}
-                       whileTap={{ scale: 0.98 }}
-                     >
-                       <Gift size={24} className={`mb-2 ${donationForm.selectedPillar === 'general' ? 'text-[#FF6B00]' : 'text-green-800'}`}/>
-                       <h3 className="font-semibold text-sm text-green-900">General Support</h3>
-                       <p className="text-xs text-gray-500 mt-1">Fund overall CETRA2030 goals.</p>
-                       {donationForm.selectedPillar === 'general' && <CheckCircle size={18} className="absolute top-2 right-2 text-[#FF6B00]" />}
-                     </motion.button>
-                     {/* Pillar Cards */}
-                     {pillars.map((pillar) => {
-                       const targetData = targets[pillar.slug] || { goal: 0, raised: 0 };
-                       const progress = targetData.goal > 0 ? Math.min(100, Math.round((targetData.raised / targetData.goal) * 100)) : 0;
-                       const isSelected = donationForm.selectedPillar === pillar.slug;
-                       return (
-                         <motion.button
-                           type="button"
-                           key={pillar.slug}
-                           onClick={() => handlePillarSelect(pillar.slug)}
-                           className={`relative p-4 rounded-xl border-2 text-left transition-all duration-200 overflow-hidden ${
-                             isSelected
-                               ? 'border-[#FF6B00] bg-amber-50 ring-2 ring-[#FF6B00]/50'
-                               : 'border-gray-200 bg-white hover:border-green-300 hover:bg-green-50'
-                           }`}
-                           whileHover={{ scale: 1.03 }}
-                           whileTap={{ scale: 0.98 }}
-                         >
-                           <pillar.icon size={24} className={`mb-2 ${isSelected ? 'text-[#FF6B00]' : 'text-green-800'}`} />
-                           <h3 className="font-semibold text-sm text-green-900">{pillar.title}</h3>
-                           <p className="text-xs text-gray-500 mt-1">{pillar.description}</p>
-                            {/* Progress Bar inside card */}
-                           <div className="mt-3">
-                               <div className="flex justify-between items-center text-xs text-gray-500 mb-1">
-                                   <span>{fmt(targetData.raised)}</span>
-                                   <span>{progress}%</span> 
-                               </div>
-                               <div className="h-1.5 bg-gray-200 rounded-full w-full">
-                                    <div className="h-1.5 bg-[#FF6B00] rounded-full" style={{ width: `${progress}%` }}/>
-                               </div>
-                           </div>
-                           {isSelected && <CheckCircle size={18} className="absolute top-2 right-2 text-[#FF6B00]" />}
-                         </motion.button>
-                       );
-                     })}
+                 {/* Pillar Selection Grid */}
+                 {/* This section doesn't need its own AnimatedSection anymore */}
+                   <div className="mb-8 md:mb-12">
+                     <label className="block text-xl md:text-2xl font-bold text-green-900 mb-4 text-center">
+                       1. Choose an Initiative to Support
+                     </label>
+                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
+                       {/* General Support Card */}
+                       <motion.button type="button" onClick={() => handlePillarSelect('general')} className={`p-4 rounded-xl border-2 text-left transition-all duration-200 ${ donationForm.selectedPillar === 'general' ? 'border-[#FF6B00] bg-amber-50 ring-2 ring-[#FF6B00]/50' : 'border-gray-200 bg-white hover:border-green-300 hover:bg-green-50' }`} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}><Gift size={24} className={`mb-2 ${donationForm.selectedPillar === 'general' ? 'text-[#FF6B00]' : 'text-green-800'}`}/><h3 className="font-semibold text-sm text-green-900">General Support</h3><p className="text-xs text-gray-500 mt-1">Fund overall CETRA2030 goals.</p>{donationForm.selectedPillar === 'general' && <CheckCircle size={18} className="absolute top-2 right-2 text-[#FF6B00]" />}</motion.button>
+                       {/* Pillar Cards */}
+                       {pillars.map((pillar) => { const targetData = targets[pillar.slug] || { goal: 0, raised: 0 }; const progress = targetData.goal > 0 ? Math.min(100, Math.round((targetData.raised / targetData.goal) * 100)) : 0; const isSelected = donationForm.selectedPillar === pillar.slug; return ( <motion.button type="button" key={pillar.slug} onClick={() => handlePillarSelect(pillar.slug)} className={`relative p-4 rounded-xl border-2 text-left transition-all duration-200 overflow-hidden ${ isSelected ? 'border-[#FF6B00] bg-amber-50 ring-2 ring-[#FF6B00]/50' : 'border-gray-200 bg-white hover:border-green-300 hover:bg-green-50' }`} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}><pillar.icon size={24} className={`mb-2 ${isSelected ? 'text-[#FF6B00]' : 'text-green-800'}`} /><h3 className="font-semibold text-sm text-green-900">{pillar.title}</h3><p className="text-xs text-gray-500 mt-1">{pillar.description}</p><div className="mt-3"><div className="flex justify-between items-center text-xs text-gray-500 mb-1"><span>{fmt(targetData.raised)}</span><span>{progress}%</span></div><div className="h-1.5 bg-gray-200 rounded-full w-full"><div className="h-1.5 bg-[#FF6B00] rounded-full" style={{ width: `${progress}%` }}/></div></div>{isSelected && <CheckCircle size={18} className="absolute top-2 right-2 text-[#FF6B00]" />}</motion.button> ); })}
+                     </div>
                    </div>
-                 </div>
-               </AnimatedSection>
 
+                 {/* Conditionally Render Amount/Payment Section */}
+                 <AnimatePresence>
+                  {donationForm.selectedPillar && (
+                      <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.3 }}
+                          className="overflow-hidden" // Important for smooth animation
+                      >
+                           {/* This container div holds the rest of the form */}
+                           <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-5 md:p-8 space-y-6 mt-8 md:mt-12"> 
+                              {/* Section 2: Amount + Currency */}
+                              <div>
+                                  {/* ... (Amount + Currency unchanged) ... */}
+                                  <div className="flex items-center justify-between mb-2"><label className="block text-base font-medium text-gray-800">2. Select Amount</label><div className="flex items-center gap-2"><label htmlFor="currency" className="text-xs text-gray-600">Currency</label><select id="currency" value={currency} onChange={(e) => setCurrency(e.target.value as Currency)} className="text-xs border border-gray-300 rounded px-2 py-1 focus:ring-1 focus:ring-[#FF6B00] focus:outline-none"><option value="USD">USD</option><option value="GHS">GHS</option></select></div></div><div role="group" aria-label="Quick amounts" className="grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-4 mb-4">{[25, 50, 100, 250, 500, 1000].map((amount) => { const isActive = donationForm.amount === amount && donationForm.customAmount === ''; return ( <button type="button" key={amount} onClick={() => handleAmountSelect(amount)} aria-pressed={isActive} className={['px-5 py-4 border rounded-lg font-semibold transition-all text-center outline-none text-base', isActive ? 'bg-green-800 text-white border-green-800 ring-2 ring-offset-2 ring-[#FF6B00]' : 'bg-gray-50 text-gray-800 border-gray-300 hover:border-green-700 hover:bg-green-50 focus:ring-2 focus:ring-offset-2 focus:ring-[#FF6B00]',].join(' ')}>{fmt(amount)}</button> ); })}</div><div className="relative"><DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" /><input inputMode="numeric" type="number" min={1} placeholder="Or enter custom amount" value={donationForm.customAmount} onChange={handleCustomAmountChange} className="w-full text-base pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent bg-white text-gray-900" aria-describedby="amountHelp" /></div><p id="amountHelp" className="mt-2 text-xs text-gray-500">Pick a preset or enter any whole number.</p>
+                              </div>
 
-               {/* Conditionally Render Amount/Payment Section */}
-               <AnimatePresence>
-                {donationForm.selectedPillar && (
-                    <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="overflow-hidden" // Important for smooth animation
-                    >
-                         <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-5 md:p-8 space-y-6 mt-8 md:mt-12">
-                            {/* Section 2: Amount + Currency */}
-                            <div>
-                                <div className="flex items-center justify-between mb-2">
-                                    <label className="block text-base font-bold text-green-900">2. Select Amount</label>
-                                    <div className="flex items-center gap-2">
-                                        <label htmlFor="currency" className="text-xs text-gray-600">Currency</label>
-                                        <select id="currency" value={currency} onChange={(e) => setCurrency(e.target.value as Currency)} className="text-xs border border-gray-300 rounded px-2 py-1 focus:ring-1 focus:ring-[#FF6B00] focus:outline-none">
-                                            <option value="USD">USD</option>
-                                            <option value="GHS">GHS</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                {/* Amount buttons */}
-                                <div role="group" aria-label="Quick amounts" className="grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-4 mb-4">
-                                    {[25, 50, 100, 250, 500, 1000].map((amount) => { /* ... amount buttons ... */ const isActive = donationForm.amount === amount && donationForm.customAmount === ''; return ( <button type="button" key={amount} onClick={() => handleAmountSelect(amount)} aria-pressed={isActive} className={['px-5 py-4 border rounded-lg font-semibold transition-all text-center outline-none text-base', isActive ? 'bg-green-800 text-white border-green-800 ring-2 ring-offset-2 ring-[#FF6B00]' : 'bg-gray-50 text-gray-800 border-gray-300 hover:border-green-700 hover:bg-green-50 focus:ring-2 focus:ring-offset-2 focus:ring-[#FF6B00]',].join(' ')}>{fmt(amount)}</button> ); })}
-                                </div>
-                                {/* Custom Amount */}
-                                <div className="relative">
-                                    <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                                    <input inputMode="numeric" type="number" min={1} placeholder="Or enter custom amount" value={donationForm.customAmount} onChange={handleCustomAmountChange} className="w-full text-base pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent bg-white text-gray-900" aria-describedby="amountHelp" />
-                                </div>
-                                <p id="amountHelp" className="mt-2 text-xs text-gray-500">Pick a preset or enter any whole number.</p>
-                            </div>
+                              {/* Section 3: Payment Method */}
+                               <div>
+                                  {/* ... (Payment Method unchanged) ... */}
+                                  <p className="text-base font-bold text-green-900 mb-2">3. Choose Payment Method</p><div className="grid grid-cols-2 gap-3"><button type="button" onClick={() => setPaymentMethod('paystack')} aria-pressed={paymentMethod === 'paystack'} className={['w-full rounded-lg px-4 py-3 border text-base font-medium transition', paymentMethod === 'paystack' ? 'bg-green-800 text-white border-green-800' : 'bg-white text-gray-800 border-gray-300 hover:bg-green-50 hover:border-green-700',].join(' ')}> <span className="inline-block w-4 h-4 bg-blue-500 rounded-sm mr-1 align-middle"></span> Paystack </button>{currency === 'USD' ? (<button type="button" onClick={() => setPaymentMethod('applePay')} aria-pressed={paymentMethod === 'applePay'} className={['w-full rounded-lg px-4 py-3 border text-base font-medium transition', paymentMethod === 'applePay' ? 'bg-black text-white border-black' : 'bg-white text-gray-800 border-gray-300 hover:bg-gray-100 hover:border-black',].join(' ')}>  Apple&nbsp;Pay </button>) : (<div className="w-full rounded-lg px-4 py-3 border border-dashed border-gray-300 text-gray-400 text-center text-sm"> Apple&nbsp;Pay (USD only)</div>)}</div><p className="mt-2 text-xs text-gray-500">Using Visa/Mastercard? Select Paystack. For GHS, Paystack (MoMo/Card) is required.</p>
+                              </div>
 
-                            {/* Section 3: Payment Method */}
-                             <div>
-                                <p className="text-base font-bold text-green-900 mb-2">3. Choose Payment Method</p>
-                                {/* ... Payment method buttons ... */}
-                                <div className="grid grid-cols-2 gap-3"><button type="button" onClick={() => setPaymentMethod('paystack')} aria-pressed={paymentMethod === 'paystack'} className={['w-full rounded-lg px-4 py-3 border text-base font-medium transition', paymentMethod === 'paystack' ? 'bg-green-800 text-white border-green-800' : 'bg-white text-gray-800 border-gray-300 hover:bg-green-50 hover:border-green-700',].join(' ')}> <span className="inline-block w-4 h-4 bg-blue-500 rounded-sm mr-1 align-middle"></span> Paystack </button>{currency === 'USD' ? (<button type="button" onClick={() => setPaymentMethod('applePay')} aria-pressed={paymentMethod === 'applePay'} className={['w-full rounded-lg px-4 py-3 border text-base font-medium transition', paymentMethod === 'applePay' ? 'bg-black text-white border-black' : 'bg-white text-gray-800 border-gray-300 hover:bg-gray-100 hover:border-black',].join(' ')}>  Apple&nbsp;Pay </button>) : (<div className="w-full rounded-lg px-4 py-3 border border-dashed border-gray-300 text-gray-400 text-center text-sm"> Apple&nbsp;Pay (USD only)</div>)}</div><p className="mt-2 text-xs text-gray-500">Using Visa/Mastercard? Select Paystack. For GHS, Paystack (MoMo/Card) is required.</p>
-                            </div>
+                              {/* Section 4: Options */}
+                              <div className="space-y-3 pt-2">
+                                  {/* ... (Options unchanged) ... */}
+                                  <p className="text-base font-bold text-green-900 mb-2">4. Options</p><div className="flex items-center justify-between bg-green-50 border border-green-200 rounded-lg p-3"><label htmlFor="recurring" className="text-sm font-medium text-green-900">Make this a monthly donation</label><input id="recurring" type="checkbox" checked={isRecurring} onChange={(e) => setIsRecurring(e.target.checked)} className="h-5 w-5 accent-[#FF6B00] focus:ring-offset-1 focus:ring-[#FF6B00]/50 rounded"/></div><label className="flex items-center gap-2 text-sm text-gray-700 pl-1 cursor-pointer"><input type="checkbox" checked={anonymous} onChange={(e) => setAnonymous(e.target.checked)} className="h-4 w-4 accent-[#FF6B00] rounded border-gray-300 focus:ring-offset-1 focus:ring-[#FF6B00]/50"/>Give anonymously <span className="text-xs text-gray-500">(hide name & amount)</span></label>
+                              </div>
 
-                            {/* Section 4: Options */}
-                            <div className="space-y-3 pt-2">
-                                <p className="text-base font-bold text-green-900 mb-2">4. Options</p>
-                                {/* Recurring */}
-                                <div className="flex items-center justify-between bg-green-50 border border-green-200 rounded-lg p-3">
-                                    <label htmlFor="recurring" className="text-sm font-medium text-green-900">Make this a monthly donation</label>
-                                    <input id="recurring" type="checkbox" checked={isRecurring} onChange={(e) => setIsRecurring(e.target.checked)} className="h-5 w-5 accent-[#FF6B00] focus:ring-offset-1 focus:ring-[#FF6B00]/50 rounded"/>
-                                </div>
-                                {/* Anonymous */}
-                                <label className="flex items-center gap-2 text-sm text-gray-700 pl-1 cursor-pointer">
-                                    <input type="checkbox" checked={anonymous} onChange={(e) => setAnonymous(e.target.checked)} className="h-4 w-4 accent-[#FF6B00] rounded border-gray-300 focus:ring-offset-1 focus:ring-[#FF6B00]/50"/>
-                                    Give anonymously <span className="text-xs text-gray-500">(hide name & amount)</span>
-                                </label>
-                            </div>
+                              {/* Trust / Info */}
+                              <div>
+                                  {/* ... (Trust/Info unchanged) ... */}
+                                 <div className="grid gap-3 md:gap-4"><div className="text-center text-xs text-gray-500">Secure payments via <span className="font-semibold">Paystack</span> & <span className="font-semibold">Apple Pay</span> supported.</div><div className="bg-gray-50 border border-gray-200 rounded-xl p-4"><ul className="text-xs text-gray-600 space-y-2"><li className="flex items-center"><span className="inline-block h-2 w-2 rounded-full bg-[#FF6B00] mr-2" />SSL secured & privacy-first</li><li className="flex items-center"><span className="inline-block h-2 w-2 rounded-full bg-[#FF6B00] mr-2" />Industry-standard processing</li><li className="flex items-center"><span className="inline-block h-2 w-2 rounded-full bg-[#FF6B00] mr-2" />Funds support local initiatives</li></ul></div></div>
+                              </div>
 
-                            {/* Trust / Info */}
-                            <div>
-                                {/* ... Trust badges / info ... */}
-                                <div className="grid gap-3 md:gap-4"><div className="text-center text-xs text-gray-500">Secure payments via <span className="font-semibold">Paystack</span> & <span className="font-semibold">Apple Pay</span> supported.</div><div className="bg-gray-50 border border-gray-200 rounded-xl p-4"><ul className="text-xs text-gray-600 space-y-2"><li className="flex items-center"><span className="inline-block h-2 w-2 rounded-full bg-[#FF6B00] mr-2" />SSL secured & privacy-first</li><li className="flex items-center"><span className="inline-block h-2 w-2 rounded-full bg-[#FF6B00] mr-2" />Industry-standard processing</li><li className="flex items-center"><span className="inline-block h-2 w-2 rounded-full bg-[#FF6B00] mr-2" />Funds support local initiatives</li></ul></div></div>
-                            </div>
+                              {/* Feedback */}
+                              <div aria-live="polite" className="min-h-[1.25rem]">
+                                  {/* ... (Feedback unchanged) ... */}
+                                 {message && (<div className={`mt-1 p-3 rounded-lg text-sm ${message.toLowerCase().includes('thank') ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>{message}</div>)}
+                              </div>
 
-                            {/* Feedback */}
-                            <div aria-live="polite" className="min-h-[1.25rem]">
-                                {/* ... Feedback message ... */}
-                                {message && (<div className={`mt-1 p-3 rounded-lg text-sm ${message.toLowerCase().includes('thank') ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>{message}</div>)}
-                            </div>
+                              {/* Main Donate Button (Desktop/Tablet) */}
+                              <Button
+                                type="submit"
+                                size="lg"
+                                className={`hidden md:flex w-full bg-[#FF6B00] hover:bg-[#E66000] focus:ring-[#FF6B00] text-white shadow-lg items-center justify-center ${ hasValidAmount ? '' : 'opacity-60 cursor-not-allowed' }`}
+                                disabled={!hasValidAmount}
+                                aria-disabled={!hasValidAmount}
+                                aria-label={`Contribute ${fmt(donationForm.amount)} with ${paymentMethod === 'applePay' ? 'Apple Pay' : 'Paystack'}`}
+                              >
+                                <Gift className="w-5 h-5 mr-2" />
+                                Contribute {fmt(donationForm.amount)}
+                              </Button>
 
-                            {/* Main Donate Button (Desktop/Tablet) */}
-                            <Button
-                              type="submit"
-                              size="lg"
-                              className={`hidden md:flex w-full bg-[#FF6B00] hover:bg-[#E66000] focus:ring-[#FF6B00] text-white shadow-lg items-center justify-center ${
-                                hasValidAmount ? '' : 'opacity-60 cursor-not-allowed'
-                              }`}
-                              disabled={!hasValidAmount}
-                              aria-disabled={!hasValidAmount}
-                              aria-label={`Contribute ${fmt(donationForm.amount)} with ${paymentMethod === 'applePay' ? 'Apple Pay' : 'Paystack'}`}
-                            >
-                              <Gift className="w-5 h-5 mr-2" />
-                              Contribute {fmt(donationForm.amount)}
-                            </Button>
-
-                            <p className="text-xs text-gray-500 text-center">
-                              By contributing, you confirm you understand applicable campaign finance regulations.
-                            </p>
-                        </div>
-                    </motion.div>
-                )}
-               </AnimatePresence>
-            </form>
-          </AnimatedSection>
+                              <p className="text-xs text-gray-500 text-center">
+                                By contributing, you confirm you understand applicable campaign finance regulations.
+                              </p>
+                          </div>
+                      </motion.div>
+                  )}
+                 </AnimatePresence>
+              </form>
+            </AnimatedSection> {/* This now correctly closes the form's AnimatedSection */}
 
           {/* Recent Contributions Feed */}
           <AnimatedSection delay={140}>
             {/* ... (Feed unchanged) ... */}
-            <div className="mt-12 md:mt-16"> <div className="flex flex-col sm:flex-row justify-between items-center mb-4 md:mb-6 px-1"> <h3 className="text-2xl md:text-3xl font-bold text-green-900 mb-3 sm:mb-0"> Recent Contributions </h3> <div className="flex items-center space-x-2 bg-gray-100 p-1 rounded-lg"> <Filter size={16} className="text-gray-500 ml-1" /> {(['all','today','this_month','this_year'] as SortPeriod[]).map((value) => { const label = value === 'all' ? 'All Time' : value === 'today' ? 'Today' : value === 'this_month' ? 'This Month' : 'This Year'; return ( <button key={value} onClick={() => setSortPeriod(value)} className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${ sortPeriod === value ? 'bg-white text-green-800 shadow-sm' : 'text-gray-600 hover:text-green-800' }`} aria-pressed={sortPeriod === value}>{label}</button> ); })} </div> </div> {loadingDonations ? ( <div className="space-y-3 max-w-lg mx-auto"> {[...Array(3)].map((_, i) => ( <div key={i} className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm overflow-hidden relative"><div className="h-4 w-40 bg-gray-200 rounded mb-2" /><div className="h-3 w-56 bg-gray-100 rounded" /><div className="shimmer absolute inset-0" /></div> ))} <p className="text-center text-sm text-gray-500">Loading contributions...</p> </div> ) : filteredDonations.length === 0 ? ( <p className="text-center text-gray-500 py-8">No contributions found for this period. Be the first!</p> ) : ( <div role="list" className="space-y-3 md:space-y-4 max-w-lg mx-auto"> {filteredDonations.map((donation) => (<motion.div role="listitem" key={donation.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }} className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm flex justify-between items-center hover:bg-green-50 transition-colors"> <div className="pr-3"> <p className="font-semibold text-base text-gray-800">{donation.name}</p> <p className="text-xs text-gray-500"> Supported: {getPillarTitleFromSlug(donation.project_supported)} </p> </div> <div className="text-right whitespace-nowrap"> {donation.display_amount_publicly !== false ? ( <span className="text-base font-bold text-green-800 block"> {fmt(donation.amount)} </span> ) : ( <span className="text-sm font-semibold text-gray-500 block italic">Supported</span> )} <span className="text-xs text-gray-400 block mt-0.5">{formatRelativeTime(donation.created_at)}</span> </div> </motion.div>))} </div> )} <p className="text-xs text-gray-500 text-center mt-4">Showing contributions. Your support makes a difference!</p> </div>
+             <div className="mt-12 md:mt-16"> <div className="flex flex-col sm:flex-row justify-between items-center mb-4 md:mb-6 px-1"> <h3 className="text-2xl md:text-3xl font-bold text-green-900 mb-3 sm:mb-0"> Recent Contributions </h3> <div className="flex items-center space-x-2 bg-gray-100 p-1 rounded-lg"> <Filter size={16} className="text-gray-500 ml-1" /> {(['all','today','this_month','this_year'] as SortPeriod[]).map((value) => { const label = value === 'all' ? 'All Time' : value === 'today' ? 'Today' : value === 'this_month' ? 'This Month' : 'This Year'; return ( <button key={value} onClick={() => setSortPeriod(value)} className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${ sortPeriod === value ? 'bg-white text-green-800 shadow-sm' : 'text-gray-600 hover:text-green-800' }`} aria-pressed={sortPeriod === value}>{label}</button> ); })} </div> </div> {loadingDonations ? ( <div className="space-y-3 max-w-lg mx-auto"> {[...Array(3)].map((_, i) => ( <div key={i} className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm overflow-hidden relative"><div className="h-4 w-40 bg-gray-200 rounded mb-2" /><div className="h-3 w-56 bg-gray-100 rounded" /><div className="shimmer absolute inset-0" /></div> ))} <p className="text-center text-sm text-gray-500">Loading contributions...</p> </div> ) : filteredDonations.length === 0 ? ( <p className="text-center text-gray-500 py-8">No contributions found for this period. Be the first!</p> ) : ( <div role="list" className="space-y-3 md:space-y-4 max-w-lg mx-auto"> {filteredDonations.map((donation) => (<motion.div role="listitem" key={donation.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }} className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm flex justify-between items-center hover:bg-green-50 transition-colors"> <div className="pr-3"> <p className="font-semibold text-base text-gray-800">{donation.name}</p> <p className="text-xs text-gray-500"> Supported: {getPillarTitleFromSlug(donation.project_supported)} </p> </div> <div className="text-right whitespace-nowrap"> {donation.display_amount_publicly !== false ? ( <span className="text-base font-bold text-green-800 block"> {fmt(donation.amount)} </span> ) : ( <span className="text-sm font-semibold text-gray-500 block italic">Supported</span> )} <span className="text-xs text-gray-400 block mt-0.5">{formatRelativeTime(donation.created_at)}</span> </div> </motion.div>))} </div> )} <p className="text-xs text-gray-500 text-center mt-4">Showing contributions. Your support makes a difference!</p> </div>
           </AnimatedSection>
         </div>
       </section>
@@ -363,7 +244,6 @@ export function Volunteer() {
         isOpen={isConfirmModalOpen}
         onClose={() => setIsConfirmModalOpen(false)}
         amount={donationForm.amount}
-        // Ensure pillarSlug is not null when modal opens; default to 'general' if somehow it is
         pillarSlug={donationForm.selectedPillar || 'general'} 
         donorName={donorName}
         setDonorName={setDonorName}
@@ -376,8 +256,8 @@ export function Volunteer() {
         showAmountPublicly={showAmountPublicly}
         setShowAmountPublicly={setShowAmountPublicly}
         onConfirmAndPay={handleConfirmAndPay}
-        currency={currency} // Pass currency to modal
-        userLocale={userLocale} // Pass locale to modal
+        currency={currency} 
+        userLocale={userLocale} 
       />
 
       {/* CSS */}

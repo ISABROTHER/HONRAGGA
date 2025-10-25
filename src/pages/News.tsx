@@ -576,7 +576,7 @@ CREATE POLICY "Allow users to view their own reports"
   ON constituent_reports FOR SELECT TO authenticated USING (auth.uid() = user_id);
 
 -- Optional: Allow anonymous inserts (if user_id is nullable)
--- CREATE POLICY "Allow anonymous users to insert reports"
+-- CREATE POLICY "A llow anonymous users to insert reports"
 --   ON constituent_reports FOR INSERT TO anon WITH CHECK (true);
 
 -- Optional: Allow admins (e.g., service_role or custom role) to view/update all

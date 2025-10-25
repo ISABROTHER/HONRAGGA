@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { DollarSign, CreditCard, Gift, X, User, Phone, Filter, Mail } from 'lucide-react'; // Added Mail
+import { DollarSign, CreditCard, Gift, X, User, Phone, Filter, Mail } from 'lucide-react';
 import { supabase } from '../lib/supabase'; // Keep supabase import for potential future use
 import { Button } from '../components/Button';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -107,7 +107,7 @@ function formatRelativeTime(isoString: string): string {
 }
 
 
-// --- MODAL COMPONENT (Updated with Email Input and Payment Placeholders) ---
+// --- MODAL COMPONENT (Unchanged from previous version) ---
 interface ContributionConfirmModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -117,8 +117,8 @@ interface ContributionConfirmModalProps {
   setDonorName: (name: string) => void;
   donorPhone: string;
   setDonorPhone: (phone: string) => void;
-  donorEmail: string; // New prop
-  setDonorEmail: (email: string) => void; // New prop setter
+  donorEmail: string;
+  setDonorEmail: (email: string) => void;
   showPublicly: boolean;
   setShowPublicly: (show: boolean) => void;
   showAmountPublicly: boolean;
@@ -126,116 +126,27 @@ interface ContributionConfirmModalProps {
   onConfirmAndPay: () => void;
 }
 
-function ContributionConfirmModal({
-  isOpen,
-  onClose,
-  amount,
-  pillarSlug,
-  donorName,
-  setDonorName,
-  donorPhone,
-  setDonorPhone,
-  donorEmail, // Destructure new prop
-  setDonorEmail, // Destructure new prop setter
-  showPublicly,
-  setShowPublicly,
-  showAmountPublicly,
-  setShowAmountPublicly,
-  onConfirmAndPay,
+function ContributionConfirmModal({ /* ...props... */
+  isOpen, onClose, amount, pillarSlug, donorName, setDonorName, donorPhone, setDonorPhone, donorEmail, setDonorEmail, showPublicly, setShowPublicly, showAmountPublicly, setShowAmountPublicly, onConfirmAndPay
 }: ContributionConfirmModalProps) {
   const pillarTitle = getPillarTitleFromSlug(pillarSlug);
 
   return (
     <AnimatePresence>
       {isOpen && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black/70 backdrop-blur-md z-50 flex items-center justify-center p-4"
-          onClick={onClose}
-        >
-          <motion.div
-            initial={{ scale: 0.9, y: 20 }}
-            animate={{ scale: 1, y: 0 }}
-            exit={{ scale: 0.9, y: 20, opacity: 0 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-            className="bg-white text-gray-900 rounded-2xl shadow-2xl max-w-md w-full overflow-hidden"
-            onClick={(e) => e.stopPropagation()}
-          >
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black/70 backdrop-blur-md z-50 flex items-center justify-center p-4" onClick={onClose}>
+          <motion.div initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.9, y: 20, opacity: 0 }} transition={{ type: 'spring', stiffness: 300, damping: 25 }} className="bg-white text-gray-900 rounded-2xl shadow-2xl max-w-md w-full overflow-hidden" onClick={(e) => e.stopPropagation()}>
             <div className="p-6 relative">
-              <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-gray-700" aria-label="Close modal">
-                <X size={24} />
-              </button>
+              <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-gray-700" aria-label="Close modal"><X size={24} /></button>
               <h2 className="text-2xl font-bold text-[#002B5B] mb-2 text-center">Confirm Contribution</h2>
-              
-              <div className="my-5 text-center bg-gray-50 p-4 rounded-lg border border-gray-200">
-                <p className="text-sm text-gray-600">You are contributing</p>
-                <p className="text-3xl font-bold text-[#002B5B] my-1">{formatCurrency(amount)}</p>
-                <p className="text-sm text-gray-600">towards</p>
-                <p className="font-semibold text-[#FF6B00]">{pillarTitle}</p>
-              </div>
-
-              {/* Form Fields Updated */}
+              <div className="my-5 text-center bg-gray-50 p-4 rounded-lg border border-gray-200"><p className="text-sm text-gray-600">You are contributing</p><p className="text-3xl font-bold text-[#002B5B] my-1">{formatCurrency(amount)}</p><p className="text-sm text-gray-600">towards</p><p className="font-semibold text-[#FF6B00]">{pillarTitle}</p></div>
               <form onSubmit={(e) => { e.preventDefault(); onConfirmAndPay(); }} className="space-y-4">
-                 <div className="relative">
-                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                    <input
-                      type="text"
-                      placeholder="First Name & Surname *" // Updated placeholder
-                      required
-                      value={donorName}
-                      onChange={(e) => setDonorName(e.target.value)}
-                      className="w-full pl-9 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent bg-white text-gray-900 text-sm"
-                      aria-label="First Name & Surname (required)"
-                    />
-                 </div>
-                  {/* New Email Input */}
-                 <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                    <input
-                      type="email"
-                      placeholder="Email Address *" // Added email
-                      required
-                      value={donorEmail}
-                      onChange={(e) => setDonorEmail(e.target.value)}
-                      className="w-full pl-9 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent bg-white text-gray-900 text-sm"
-                      aria-label="Email Address (required)"
-                    />
-                 </div>
-                 <div className="relative">
-                    <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                    <input
-                      type="tel"
-                      placeholder="Phone Number (Optional)"
-                      value={donorPhone}
-                      onChange={(e) => setDonorPhone(e.target.value)}
-                      className="w-full pl-9 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent bg-white text-gray-900 text-sm"
-                      aria-label="Phone Number (optional)"
-                    />
-                 </div>
-
-                 {/* Public Display Preferences */}
-                 <div className="space-y-2 pt-2">
-                   {/* ... (checkboxes remain the same) ... */}
-                   <div className="flex items-center space-x-2"><input type="checkbox" id="showPublicly" checked={showPublicly} onChange={(e) => setShowPublicly(e.target.checked)} className="h-4 w-4 rounded border-gray-300 text-[#FF6B00] focus:ring-[#FF6B00]/50" /><label htmlFor="showPublicly" className="text-xs text-gray-600 cursor-pointer select-none">Show my name in the 'Recent Contributions' feed as appreciation</label></div>
-                   <div className="flex items-center space-x-2"><input type="checkbox" id="showAmountPublicly" checked={showAmountPublicly} onChange={(e) => setShowAmountPublicly(e.target.checked)} className="h-4 w-4 rounded border-gray-300 text-[#FF6B00] focus:ring-[#FF6B00]/50" /><label htmlFor="showAmountPublicly" className="text-xs text-gray-600 cursor-pointer select-none">Show the contribution amount publicly</label></div>
-                 </div>
-
-                 <Button
-                    type="submit"
-                    size="lg"
-                    className="w-full bg-[#FF6B00] hover:bg-[#E66000] focus:ring-[#FF6B00] text-white shadow-lg flex items-center justify-center mt-4"
-                    disabled={!donorName || !donorEmail} // Require name and email
-                 >
-                    <Gift className="w-5 h-5 mr-2" />
-                    Confirm & Proceed to Payment
-                 </Button>
-
-                 {/* Payment Method Placeholders */}
-                 <p className="text-center text-xs text-gray-500 pt-2">
-                    You will be redirected to complete payment via Paystack or Apple Pay.
-                 </p>
+                 <div className="relative"><User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" /><input type="text" placeholder="First Name & Surname *" required value={donorName} onChange={(e) => setDonorName(e.target.value)} className="w-full pl-9 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent bg-white text-gray-900 text-sm" aria-label="First Name & Surname (required)" /></div>
+                 <div className="relative"><Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" /><input type="email" placeholder="Email Address *" required value={donorEmail} onChange={(e) => setDonorEmail(e.target.value)} className="w-full pl-9 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent bg-white text-gray-900 text-sm" aria-label="Email Address (required)" /></div>
+                 <div className="relative"><Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" /><input type="tel" placeholder="Phone Number (Optional)" value={donorPhone} onChange={(e) => setDonorPhone(e.target.value)} className="w-full pl-9 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent bg-white text-gray-900 text-sm" aria-label="Phone Number (optional)" /></div>
+                 <div className="space-y-2 pt-2"><div className="flex items-center space-x-2"><input type="checkbox" id="showPublicly" checked={showPublicly} onChange={(e) => setShowPublicly(e.target.checked)} className="h-4 w-4 rounded border-gray-300 text-[#FF6B00] focus:ring-[#FF6B00]/50" /><label htmlFor="showPublicly" className="text-xs text-gray-600 cursor-pointer select-none">Show my name in the 'Recent Contributions' feed as appreciation</label></div><div className="flex items-center space-x-2"><input type="checkbox" id="showAmountPublicly" checked={showAmountPublicly} onChange={(e) => setShowAmountPublicly(e.target.checked)} className="h-4 w-4 rounded border-gray-300 text-[#FF6B00] focus:ring-[#FF6B00]/50" /><label htmlFor="showAmountPublicly" className="text-xs text-gray-600 cursor-pointer select-none">Show the contribution amount publicly</label></div></div>
+                 <Button type="submit" size="lg" className="w-full bg-[#FF6B00] hover:bg-[#E66000] focus:ring-[#FF6B00] text-white shadow-lg flex items-center justify-center mt-4" disabled={!donorName || !donorEmail}><Gift className="w-5 h-5 mr-2" /> Confirm & Proceed to Payment </Button>
+                 <p className="text-center text-xs text-gray-500 pt-2">You will be redirected to complete payment via Paystack or Apple Pay.</p>
               </form>
             </div>
           </motion.div>
@@ -276,7 +187,7 @@ export function Volunteer() {
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [donorName, setDonorName] = useState('');
   const [donorPhone, setDonorPhone] = useState('');
-  const [donorEmail, setDonorEmail] = useState(''); // Added email state
+  const [donorEmail, setDonorEmail] = useState('');
   const [showPublicly, setShowPublicly] = useState(true);
   const [showAmountPublicly, setShowAmountPublicly] = useState(true);
 
@@ -286,25 +197,7 @@ export function Volunteer() {
   }, []);
 
   // --- MOCK DATA GENERATION (Unchanged) ---
-  const generateMockDonations = () => {
-    setLoadingDonations(true);
-    const mockData: Donation[] = [];
-    const names = ["Ama P.", "Kwesi Mensah", "Yaw B.", "Adwoa Ltd", "Kofi Annan", "Efua S.", "Nana K.", "Aisha Co.", "Kwabena F.", "Akosua"];
-    const now = new Date();
-    for (let i = 0; i < 20; i++) {
-        let date = new Date(now);
-        if (i < 3) { date.setHours(now.getHours() - i * 3); } 
-        else if (i < 7) { date.setDate(now.getDate() - i); } 
-        else if (i < 12) { date.setMonth(now.getMonth() - Math.floor(i / 2)); date.setDate(Math.random() * 28 + 1); } 
-        else { date.setFullYear(now.getFullYear() - Math.floor((i - 10) / 3)); date.setMonth(Math.floor(Math.random() * 12)); date.setDate(Math.random() * 28 + 1); }
-        mockData.push({
-            id: `mock-${i}`, created_at: date.toISOString(), name: names[i % names.length], amount: [25, 50, 100, 250, 50, 75, 500, 30][i % 8], project_supported: i % 4 === 0 ? 'general' : pillars[i % pillars.length].slug, display_publicly: true, display_amount_publicly: i % 3 !== 0,
-        });
-    }
-    mockData.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
-    setAllDonations(mockData);
-    setLoadingDonations(false);
-  };
+  const generateMockDonations = () => { /* ...mock data generation... */ setLoadingDonations(true); const mockData: Donation[] = []; const names = ["Ama P.", "Kwesi Mensah", "Yaw B.", "Adwoa Ltd", "Kofi Annan", "Efua S.", "Nana K.", "Aisha Co.", "Kwabena F.", "Akosua"]; const now = new Date(); for (let i = 0; i < 20; i++) { let date = new Date(now); if (i < 3) { date.setHours(now.getHours() - i * 3); } else if (i < 7) { date.setDate(now.getDate() - i); } else if (i < 12) { date.setMonth(now.getMonth() - Math.floor(i / 2)); date.setDate(Math.random() * 28 + 1); } else { date.setFullYear(now.getFullYear() - Math.floor((i - 10) / 3)); date.setMonth(Math.floor(Math.random() * 12)); date.setDate(Math.random() * 28 + 1); } mockData.push({ id: `mock-${i}`, created_at: date.toISOString(), name: names[i % names.length], amount: [25, 50, 100, 250, 50, 75, 500, 30][i % 8], project_supported: i % 4 === 0 ? 'general' : pillars[i % pillars.length].slug, display_publicly: true, display_amount_publicly: i % 3 !== 0, }); } mockData.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()); setAllDonations(mockData); setLoadingDonations(false); };
   // --- END MOCK DATA ---
 
 
@@ -335,45 +228,7 @@ export function Volunteer() {
     setIsConfirmModalOpen(true);
   };
 
-  // Updated to include email and reset it
-  const handleConfirmAndPay = () => {
-    const finalAmount = donationForm.amount;
-    const pillarTitle = getPillarTitleFromSlug(donationForm.selectedPillar);
-
-    setIsConfirmModalOpen(false);
-    alert(
-      `Initiating donation of ${formatCurrency(finalAmount)} for ${donorName} (Email: ${donorEmail}) towards ${pillarTitle}.\n(Proceeding to Paystack/Apple Pay... - This is a demo placeholder.)` // Updated alert
-    );
-
-    // --- MOCK: Add to list instantly (Updated) ---
-    const newDonation: Donation = {
-        id: `new-${Date.now()}`,
-        created_at: new Date().toISOString(),
-        name: donorName,
-        amount: finalAmount,
-        project_supported: donationForm.selectedPillar,
-        display_publicly: showPublicly,
-        display_amount_publicly: showAmountPublicly,
-        // email: donorEmail, // Include if storing
-    };
-    const updatedDonations = [newDonation, ...allDonations]
-        .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
-    setAllDonations(updatedDonations); 
-    // --- END MOCK ---
-
-    setMessage('Thank you for your generous contribution!');
-    // Reset form state including new states
-    setDonationForm({ amount: 0, selectedPillar: pillars[0].slug, customAmount: '' });
-    setDonorName('');
-    setDonorPhone('');
-    setDonorEmail(''); // Reset email
-    setShowPublicly(true);
-    setShowAmountPublicly(true);
-    window.setTimeout(() => setMessage(''), 5000); 
-    
-    // In real app, call Supabase insert *after* payment success
-    // saveDonationToSupabase(newDonation); // Pass newDonation data including email if needed
-  };
+  const handleConfirmAndPay = () => { /* ... unchanged ... */ const finalAmount = donationForm.amount; const pillarTitle = getPillarTitleFromSlug(donationForm.selectedPillar); setIsConfirmModalOpen(false); alert( `Initiating donation of ${formatCurrency(finalAmount)} for ${donorName} (Email: ${donorEmail}) towards ${pillarTitle}.\n(Proceeding to Paystack/Apple Pay... - This is a demo placeholder.)` ); const newDonation: Donation = { id: `new-${Date.now()}`, created_at: new Date().toISOString(), name: donorName, amount: finalAmount, project_supported: donationForm.selectedPillar, display_publicly: showPublicly, display_amount_publicly: showAmountPublicly, }; const updatedDonations = [newDonation, ...allDonations] .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()); setAllDonations(updatedDonations); setMessage('Thank you for your generous contribution!'); setDonationForm({ amount: 0, selectedPillar: pillars[0].slug, customAmount: '' }); setDonorName(''); setDonorPhone(''); setDonorEmail(''); setShowPublicly(true); setShowAmountPublicly(true); window.setTimeout(() => setMessage(''), 5000); };
 
 
   const donationAmounts = [25, 50, 100, 250, 500, 1000];
@@ -384,19 +239,9 @@ export function Volunteer() {
   };
 
   // Filtering logic remains the same
-  const filteredDonations = allDonations.filter(donation => {
-      const donationDate = new Date(donation.created_at); const now = new Date();
-      switch (sortPeriod) {
-          case 'today': return donationDate.toDateString() === now.toDateString();
-          case 'this_month': return donationDate.getFullYear() === now.getFullYear() && donationDate.getMonth() === now.getMonth();
-          case 'this_year': return donationDate.getFullYear() === now.getFullYear();
-          case 'all': default: return true;
-      }
-  }).slice(0, 10); 
+  const filteredDonations = allDonations.filter(donation => { /* ...unchanged... */ const donationDate = new Date(donation.created_at); const now = new Date(); switch (sortPeriod) { case 'today': return donationDate.toDateString() === now.toDateString(); case 'this_month': return donationDate.getFullYear() === now.getFullYear() && donationDate.getMonth() === now.getMonth(); case 'this_year': return donationDate.getFullYear() === now.getFullYear(); case 'all': default: return true; } }).slice(0, 10); 
 
-  const sortOptions: { label: string; value: SortPeriod }[] = [
-      { label: 'All Time', value: 'all' }, { label: 'Today', value: 'today' }, { label: 'This Month', value: 'this_month' }, { label: 'This Year', value: 'this_year' },
-  ];
+  const sortOptions: { label: string; value: SortPeriod }[] = [ { label: 'All Time', value: 'all' }, { label: 'Today', value: 'today' }, { label: 'This Month', value: 'this_month' }, { label: 'This Year', value: 'this_year' }, ];
 
 
   return (
@@ -411,40 +256,16 @@ export function Volunteer() {
       <section id="donate" className="py-12 md:py-20 bg-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Removed Title/Subtitle */}
-          {/* <AnimatedSection>
-            <div className="text-center mb-8 md:mb-12">
-              <h2 className="text-2xl md:text-4xl font-extrabold text-[#002B5B] mb-3 md:mb-4">
-                Fuel the Transformation: Support CETRA2030
-              </h2>
-              <p className="text-sm md:text-lg text-gray-600 max-w-2xl mx-auto">
-                Every contribution, big or small, directly empowers our youth and strengthens our community. Choose an initiative below or provide general support.
-              </p>
-            </div>
-          </AnimatedSection> 
-          */}
 
           <AnimatedSection delay={80}>
-            <form ref={formRef} onSubmit={handleDonateSubmit} aria-labelledby="donate-form-heading"> {/* Added aria-labelledby */}
-              {/* Added a visually hidden heading for screen readers */}
+            <form ref={formRef} onSubmit={handleDonateSubmit} aria-labelledby="donate-form-heading"> 
               <h2 id="donate-form-heading" className="sr-only">Donation Form</h2> 
               <div className="bg-white/80 backdrop-blur rounded-2xl shadow-xl border border-gray-100 p-5 md:p-8 space-y-6">
-                {/* Initiative Selection (ensured w-full) */}
+                {/* Initiative Selection */}
                 <div>
-                  <label htmlFor="pillarSelect" className="block text-sm font-medium text-gray-700 mb-2">
-                    Support a Specific Initiative (Optional)
-                  </label>
-                  <select
-                    id="pillarSelect"
-                    name="pillarSelect"
-                    value={donationForm.selectedPillar}
-                    onChange={handlePillarChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent bg-white text-gray-900" // w-full ensures it takes container width
-                  >
-                    {pillars.map((pillar) => (
-                      <option key={pillar.slug} value={pillar.slug}>
-                        {pillar.title}
-                      </option>
-                    ))}
+                  <label htmlFor="pillarSelect" className="block text-sm font-medium text-gray-700 mb-2">Support a Specific Initiative (Optional)</label>
+                  <select id="pillarSelect" name="pillarSelect" value={donationForm.selectedPillar} onChange={handlePillarChange} className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent bg-white text-gray-900">
+                    {pillars.map((pillar) => (<option key={pillar.slug} value={pillar.slug}>{pillar.title}</option>))}
                     <option value="general">General CETRA2030 Support</option>
                   </select>
                 </div>
@@ -455,9 +276,12 @@ export function Volunteer() {
                   <label className="block text-sm font-medium text-gray-700 mb-2">Choose Donation Amount (USD)</label><div role="group" aria-label="Quick amounts" className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 mb-4">{donationAmounts.map((amount) => { const isActive = donationForm.amount === amount && donationForm.customAmount === ''; return (<button type="button" key={amount} onClick={() => handleAmountSelect(amount)} aria-pressed={isActive} className={['px-5 py-4 border rounded-xl font-semibold transition-all text-center outline-none text-base', isActive ? 'bg-[#002B5B] text-white border-[#002B5B] ring-2 ring-offset-2 ring-[#FF6B00]' : 'bg-gray-50 text-gray-800 border-gray-300 hover:border-[#002B5B] hover:bg-gray-100 focus:ring-2 focus:ring-offset-2 focus:ring-[#FF6B00]',].join(' ')}>${amount}</button>); })}</div><div className="relative"><DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" /><input inputMode="numeric" type="number" min={1} placeholder="Or enter custom amount" value={donationForm.customAmount} onChange={handleCustomAmountChange} className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent bg-white text-gray-900" aria-describedby="amountHelp" /></div><p id="amountHelp" className="mt-2 text-xs text-gray-500">Pick a preset or enter any whole number.</p>
                 </div>
 
-                {/* Trust Badges (Stripe Notice Removed) */}
-                <div className="grid gap-3 md:gap-4"> {/* Removed md:grid-cols-2 */}
-                  {/* Removed Stripe Specific Div */}
+                {/* Trust Badges & Payment Info */}
+                <div className="grid gap-3 md:gap-4">
+                  {/* Added Payment Method Text */}
+                   <div className="text-center text-xs text-gray-500">
+                      Secure payments via <span className="font-semibold">Paystack</span> & <span className="font-semibold">Apple Pay</span> supported.
+                   </div>
                   <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
                     <ul className="text-xs text-gray-600 space-y-2">
                       <li className="flex items-center"><span className="inline-block h-2 w-2 rounded-full bg-[#FF6B00] mr-2" />SSL secured & privacy-first</li>
@@ -484,12 +308,12 @@ export function Volunteer() {
                   aria-disabled={!hasValidAmount}
                   aria-label={
                     hasValidAmount
-                      ? `Contribute ${formatCurrency(donationForm.amount)}` // Updated text
+                      ? `Contribute ${formatCurrency(donationForm.amount)}`
                       : 'Select an amount to continue'
                   }
                 >
                   <Gift className="w-5 h-5 mr-2" />
-                  Contribute {formatCurrency(donationForm.amount)} {/* Updated text */}
+                  Contribute {formatCurrency(donationForm.amount)}
                 </Button>
 
                 <p className="text-xs text-gray-500 text-center">
@@ -501,8 +325,8 @@ export function Volunteer() {
 
           {/* Recent Contributions Feed */}
           <AnimatedSection delay={140}>
-            {/* ... (Feed content remains the same, uses updated display logic) ... */}
-             <div className="mt-12 md:mt-16"> <div className="flex flex-col sm:flex-row justify-between items-center mb-4 md:mb-6 px-1"> <h3 className="text-xl md:text-2xl font-bold text-[#002B5B] mb-3 sm:mb-0"> Recent Contributions </h3> <div className="flex items-center space-x-2 bg-gray-100 p-1 rounded-lg"> <Filter size={16} className="text-gray-500 ml-1" /> {sortOptions.map(option => (<button key={option.value} onClick={() => setSortPeriod(option.value)} className={`px-3 py-1 rounded-md text-xs font-medium transition-colors ${ sortPeriod === option.value ? 'bg-white text-[#002B5B] shadow-sm' : 'text-gray-600 hover:text-[#002B5B]' }`} aria-pressed={sortPeriod === option.value}>{option.label}</button>))} </div> </div> {loadingDonations ? ( <div className="space-y-3 max-w-lg mx-auto"> {[...Array(3)].map((_, i) => (<div key={i} className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm overflow-hidden relative"><div className="h-4 w-40 bg-gray-200 rounded mb-2" /><div className="h-3 w-56 bg-gray-100 rounded" /><div className="shimmer absolute inset-0" /></div>))} <p className="text-center text-sm text-gray-500">Loading contributions...</p> </div> ) : filteredDonations.length === 0 ? ( <p className="text-center text-gray-500 py-8">No contributions found for this period. Be the first!</p> ) : ( <div role="list" className="space-y-3 md:space-y-4 max-w-lg mx-auto"> {filteredDonations.map((donation) => (<motion.div role="listitem" key={donation.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }} className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm flex justify-between items-center"> <div className="pr-3"> <p className="font-semibold text-gray-800">{donation.name}</p> <p className="text-xs text-gray-500"> Supported: {getPillarTitleFromSlug(donation.project_supported)} </p> </div> <div className="text-right whitespace-nowrap"> {donation.display_amount_publicly !== false ? ( <span className="text-sm font-bold text-[#002B5B] block"> {formatCurrency(donation.amount)} </span> ) : ( <span className="text-sm font-semibold text-gray-500 block italic"> Supported </span> )} <span className="text-xs text-gray-400 block mt-0.5"> {formatRelativeTime(donation.created_at)} </span> </div> </motion.div>))} </div> )} <p className="text-xs text-gray-500 text-center mt-4"> Showing contributions. Your support makes a difference! </p> </div>
+            {/* ... (Feed content remains the same) ... */}
+            <div className="mt-12 md:mt-16"> <div className="flex flex-col sm:flex-row justify-between items-center mb-4 md:mb-6 px-1"> <h3 className="text-xl md:text-2xl font-bold text-[#002B5B] mb-3 sm:mb-0"> Recent Contributions </h3> <div className="flex items-center space-x-2 bg-gray-100 p-1 rounded-lg"> <Filter size={16} className="text-gray-500 ml-1" /> {sortOptions.map(option => (<button key={option.value} onClick={() => setSortPeriod(option.value)} className={`px-3 py-1 rounded-md text-xs font-medium transition-colors ${ sortPeriod === option.value ? 'bg-white text-[#002B5B] shadow-sm' : 'text-gray-600 hover:text-[#002B5B]' }`} aria-pressed={sortPeriod === option.value}>{option.label}</button>))} </div> </div> {loadingDonations ? ( <div className="space-y-3 max-w-lg mx-auto"> {[...Array(3)].map((_, i) => (<div key={i} className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm overflow-hidden relative"><div className="h-4 w-40 bg-gray-200 rounded mb-2" /><div className="h-3 w-56 bg-gray-100 rounded" /><div className="shimmer absolute inset-0" /></div>))} <p className="text-center text-sm text-gray-500">Loading contributions...</p> </div> ) : filteredDonations.length === 0 ? ( <p className="text-center text-gray-500 py-8">No contributions found for this period. Be the first!</p> ) : ( <div role="list" className="space-y-3 md:space-y-4 max-w-lg mx-auto"> {filteredDonations.map((donation) => (<motion.div role="listitem" key={donation.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }} className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm flex justify-between items-center"> <div className="pr-3"> <p className="font-semibold text-gray-800">{donation.name}</p> <p className="text-xs text-gray-500"> Supported: {getPillarTitleFromSlug(donation.project_supported)} </p> </div> <div className="text-right whitespace-nowrap"> {donation.display_amount_publicly !== false ? ( <span className="text-sm font-bold text-[#002B5B] block"> {formatCurrency(donation.amount)} </span> ) : ( <span className="text-sm font-semibold text-gray-500 block italic"> Supported </span> )} <span className="text-xs text-gray-400 block mt-0.5"> {formatRelativeTime(donation.created_at)} </span> </div> </motion.div>))} </div> )} <p className="text-xs text-gray-500 text-center mt-4"> Showing contributions. Your support makes a difference! </p> </div>
           </AnimatedSection>
         </div>
       </section>
@@ -527,7 +351,7 @@ export function Volunteer() {
         </Button>
       </div>
       
-      {/* Render the Modal (updated props) */}
+      {/* Render the Modal */}
       <ContributionConfirmModal
           isOpen={isConfirmModalOpen}
           onClose={() => setIsConfirmModalOpen(false)}
@@ -537,8 +361,8 @@ export function Volunteer() {
           setDonorName={setDonorName}
           donorPhone={donorPhone}
           setDonorPhone={setDonorPhone}
-          donorEmail={donorEmail} // Pass email state
-          setDonorEmail={setDonorEmail} // Pass email setter
+          donorEmail={donorEmail}
+          setDonorEmail={setDonorEmail}
           showPublicly={showPublicly}
           setShowPublicly={setShowPublicly}
           showAmountPublicly={showAmountPublicly}

@@ -83,7 +83,7 @@ interface QuickAccessGridProps {
 export function QuickAccessGrid({ onNavigate }: QuickAccessGridProps) {
   return (
     <section
-      className="relative z-20 -mt-[4px] md:mt-0 pt-4 pb-10 md:py-16 bg-white"
+      className="relative z-20 -mt-12 md:-mt-20 pt-4 pb-10 md:py-16 bg-white"
       aria-labelledby="constituency-hub-heading"
     >
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
@@ -115,9 +115,7 @@ export function QuickAccessGrid({ onNavigate }: QuickAccessGridProps) {
             </span>
           </h2>
 
-          {/* ================================
-              FINAL TWO-LINE PARLIAMENTARY MESSAGE
-          ================================= */}
+          {/* Two-line Parliamentary Message */}
           <p className="text-sm text-slate-600 mt-4 max-w-2xl mx-auto leading-relaxed">
             This is your direct window into the work I am undertaking on behalf of our constituency.
           </p>
@@ -127,7 +125,7 @@ export function QuickAccessGrid({ onNavigate }: QuickAccessGridProps) {
         </div>
 
         {/* ================================
-            QUICK ACCESS GRID (MODERN STYLE)
+            QUICK ACCESS GRID
         ================================= */}
         <div className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-6">
           {quickLinks.map((link, idx) => (

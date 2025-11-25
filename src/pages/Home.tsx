@@ -71,8 +71,8 @@ export function Home({ onNavigate }: HomeProps) {
     <div className="min-h-screen bg-white font-sans text-slate-900">
       
       {/* === QUICK ACCESS GRID (Top Section) === */}
-      {/* Reduced pt-32 to pt-28 for tighter spacing on mobile */}
-      <section className="pt-28 md:pt-32 pb-10 md:pb-20 bg-white">
+      {/* Changed pt-28 to pt-4 to remove the large white gap */}
+      <section className="pt-4 pb-10 md:pt-12 md:pb-20 bg-white">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
           <div className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-6">
             {quickLinks.map((link, idx) => (

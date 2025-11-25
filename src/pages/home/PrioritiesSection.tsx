@@ -280,7 +280,7 @@ export function PrioritiesSection({ onNavigate }: PrioritiesSectionProps) {
                 p-4 rounded-full bg-white/95 backdrop-blur-sm shadow-xl border-2 
                 border-red-600 text-red-600
                 hover:border-green-600 hover:text-green-600 hover:bg-green-50 hover:scale-110
-                transition-all duration-300 animate-pulse
+                transition-all duration-300 animate-pulse hover:animate-none
               "
               aria-label="Scroll left"
             >
@@ -297,7 +297,7 @@ export function PrioritiesSection({ onNavigate }: PrioritiesSectionProps) {
                 p-4 rounded-full bg-white/95 backdrop-blur-sm shadow-xl border-2 
                 border-red-600 text-red-600
                 hover:border-green-600 hover:text-green-600 hover:bg-green-50 hover:scale-110
-                transition-all duration-300 animate-pulse
+                transition-all duration-300 animate-pulse hover:animate-none
               "
               aria-label="Scroll right"
             >

@@ -7,7 +7,7 @@ import {
   Construction,
   Sprout,
   ChevronRight,
-  ChevronLeft, // Import ChevronLeft
+  ChevronLeft,
   ArrowRight
 } from "lucide-react";
 
@@ -251,43 +251,41 @@ export function PrioritiesSection({ onNavigate }: PrioritiesSectionProps) {
         </div>
 
         {/* =========================
-            DESKTOP LAYOUT (Horizontal Scroll with Arrows)
+            DESKTOP LAYOUT (Horizontal Scroll with Top Arrows)
            ========================= */}
-        <div className="hidden md:block relative group/section">
+        <div className="hidden md:block">
           
-          {/* Left Arrow */}
-          <button
-            onClick={() => scroll('left')}
-            className="
-              absolute left-0 top-1/2 -translate-y-1/2 -ml-5 z-10 
-              p-4 rounded-full bg-white shadow-xl border border-slate-100 
-              text-slate-700 hover:text-emerald-700 hover:border-emerald-200 hover:scale-110
-              transition-all duration-300 opacity-0 group-hover/section:opacity-100 focus:opacity-100
-            "
-            aria-label="Scroll left"
-          >
-            <ChevronLeft className="w-6 h-6" />
-          </button>
-
-          {/* Right Arrow */}
-          <button
-            onClick={() => scroll('right')}
-            className="
-              absolute right-0 top-1/2 -translate-y-1/2 -mr-5 z-10 
-              p-4 rounded-full bg-white shadow-xl border border-slate-100 
-              text-slate-700 hover:text-emerald-700 hover:border-emerald-200 hover:scale-110
-              transition-all duration-300 opacity-0 group-hover/section:opacity-100 focus:opacity-100
-            "
-            aria-label="Scroll right"
-          >
-            <ChevronRight className="w-6 h-6" />
-          </button>
+          {/* Navigation Arrows - Positioned Top Right above cards */}
+          <div className="flex justify-end gap-3 mb-6 px-2">
+            <button
+              onClick={() => scroll('left')}
+              className="
+                p-3 rounded-full bg-white border border-slate-200 shadow-sm
+                text-slate-700 hover:text-emerald-700 hover:border-emerald-300 hover:shadow-md hover:bg-emerald-50
+                transition-all duration-300
+              "
+              aria-label="Scroll left"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+            <button
+              onClick={() => scroll('right')}
+              className="
+                p-3 rounded-full bg-white border border-slate-200 shadow-sm
+                text-slate-700 hover:text-emerald-700 hover:border-emerald-300 hover:shadow-md hover:bg-emerald-50
+                transition-all duration-300
+              "
+              aria-label="Scroll right"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
+          </div>
 
           {/* Scroll Container */}
           <div 
             ref={scrollRef}
             className="
-              flex gap-8 overflow-x-auto pb-12 pt-4 snap-x 
+              flex gap-8 overflow-x-auto pb-12 pt-2 snap-x 
               scrollbar-hide scroll-smooth
             "
             style={{ scrollPaddingLeft: '1rem', scrollPaddingRight: '1rem' }}

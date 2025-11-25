@@ -1,5 +1,5 @@
 // src/pages/home/PrioritiesSection.tsx
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
   BookOpen,
   HeartPulse,
@@ -98,6 +98,22 @@ const priorities: Priority[] = [
 
 export function PrioritiesSection({ onNavigate }: PrioritiesSectionProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const checkScroll = () => {
+    if (scrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+      setCanScrollLeft(scrollLeft > 0);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10); // -10 buffer
+    }
+  };
+
+  useEffect(() => {
+    checkScroll();
+    window.addEventListener("resize", checkScroll);
+    return () => window.removeEventListener("resize", checkScroll);
+  }, []);
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
@@ -251,42 +267,49 @@ export function PrioritiesSection({ onNavigate }: PrioritiesSectionProps) {
         </div>
 
         {/* =========================
-            DESKTOP LAYOUT (Horizontal Scroll with Top Arrows)
+            DESKTOP LAYOUT (Horizontal Scroll with Side Indicators)
            ========================= */}
-        <div className="hidden md:block">
+        <div className="hidden md:block relative group/section">
           
-          {/* Navigation Arrows - Positioned Top Right above cards */}
-          <div className="flex justify-end gap-3 mb-6 px-2">
+          {/* Left Indicator */}
+          {canScrollLeft && (
             <button
               onClick={() => scroll('left')}
               className="
-                p-3 rounded-full bg-white border border-slate-200 shadow-sm
-                text-slate-700 hover:text-emerald-700 hover:border-emerald-300 hover:shadow-md hover:bg-emerald-50
-                transition-all duration-300
+                absolute left-0 top-1/2 -translate-y-1/2 -ml-6 z-20 
+                p-4 rounded-full bg-white/90 backdrop-blur-sm shadow-xl border border-slate-100 
+                text-slate-800 hover:text-emerald-700 hover:border-emerald-200 hover:scale-110
+                transition-all duration-300 animate-pulse
               "
               aria-label="Scroll left"
             >
               <ChevronLeft className="w-6 h-6" />
             </button>
+          )}
+
+          {/* Right Indicator */}
+          {canScrollRight && (
             <button
               onClick={() => scroll('right')}
               className="
-                p-3 rounded-full bg-white border border-slate-200 shadow-sm
-                text-slate-700 hover:text-emerald-700 hover:border-emerald-300 hover:shadow-md hover:bg-emerald-50
-                transition-all duration-300
+                absolute right-0 top-1/2 -translate-y-1/2 -mr-6 z-20 
+                p-4 rounded-full bg-white/90 backdrop-blur-sm shadow-xl border border-slate-100 
+                text-slate-800 hover:text-emerald-700 hover:border-emerald-200 hover:scale-110
+                transition-all duration-300 animate-pulse
               "
               aria-label="Scroll right"
             >
               <ChevronRight className="w-6 h-6" />
             </button>
-          </div>
+          )}
 
           {/* Scroll Container */}
           <div 
             ref={scrollRef}
+            onScroll={checkScroll}
             className="
-              flex gap-8 overflow-x-auto pb-12 pt-2 snap-x 
-              scrollbar-hide scroll-smooth
+              flex gap-8 overflow-x-auto pb-12 pt-4 snap-x 
+              scrollbar-hide scroll-smooth relative z-10
             "
             style={{ scrollPaddingLeft: '1rem', scrollPaddingRight: '1rem' }}
           >

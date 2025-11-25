@@ -1,16 +1,6 @@
 import { 
-  TrendingUp, 
-  Heart, 
-  Users, 
-  Mail, 
-  ChevronRight, 
-  HardHat, 
-  MessageSquareWarning, 
-  ScrollText, 
-  Award, 
-  HandHeart, 
-  UserCircle,
-  ArrowRight
+  ArrowRight, Users, Heart, TrendingUp, Calendar, CheckCircle, Mail, ChevronRight,
+  MessageSquareWarning, HardHat, ScrollText, Award, HandHeart, UserCircle 
 } from 'lucide-react';
 import { Button } from '../components/Button';
 
@@ -19,8 +9,8 @@ interface HomeProps {
 }
 
 export function Home({ onNavigate }: HomeProps) {
-  // Candidate Image
-  const CANDIDATE_IMAGE_URL = "https://scontent-arn2-1.xx.fbcdn.net/v/t39.30808-6/515441812_10163003867507920_4808851483961703661_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFkXpxZfRZCiS6tUkMuNIwhz6Ix5oWf9IPPojHmhZ_0g3q-yrs_5MJM8xygdYYX5g4&_nc_ohc=O_SI0alOrEUQ7kNvwFE3BmL&_nc_oc=AdkQ-x4mJmZz5C-Peh1kc9yDFigPG46vldlmExHwi79lZshgP8YqbgstLrh_t8KoN4Y&_nc_zt=23&_nc_ht=scontent-arn2-1.xx&_nc_gid=ZVbXGcOeCipYDkVva7FcmA&oh=00_Afd9WY4XJWo_eBqDQdctSg_i9eSVJ3yuBWa15kvxQYC1Og&oe=68FCCF73";
+  // Banner Image
+  const HERO_IMAGE_URL = "https://i.imgur.com/XC8k4zQ.jpeg";
 
   // Data for the Quick Access Grid
   const quickLinks = [
@@ -83,34 +73,43 @@ export function Home({ onNavigate }: HomeProps) {
   return (
     <div className="min-h-screen bg-white font-sans text-slate-900">
       
-      {/* === 1. HERO SECTION === */}
-      <section className="relative bg-slate-50 pt-28 md:pt-32 lg:min-h-[85vh] flex flex-col lg:flex-row items-center overflow-hidden">
-        
-        {/* Text Content */}
-        <div className="w-full lg:w-1/2 px-6 py-12 lg:py-24 lg:pl-20 xl:pl-32 z-10">
-          <div className="max-w-xl mx-auto lg:mx-0 text-center lg:text-left">
-            <div className="inline-flex items-center space-x-2 bg-blue-100 text-blue-900 px-3 py-1 rounded-full text-sm font-bold mb-6 tracking-wide uppercase">
-              <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
+      {/* === HERO BANNER SECTION === */}
+      {/* Added mt-[90px] to account for fixed header height so content isn't hidden */}
+      <section className="relative w-full h-[500px] md:h-[600px] mt-[90px] overflow-hidden flex items-center">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <img 
+            src={HERO_IMAGE_URL} 
+            alt="Campaign Banner" 
+            className="w-full h-full object-cover object-center"
+          />
+          {/* Gradient Overlay for Text Readability */}
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-950/90 via-blue-900/60 to-transparent"></div>
+        </div>
+
+        {/* Hero Content */}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full text-white pt-10">
+          <div className="max-w-2xl">
+            <div className="inline-flex items-center space-x-2 bg-amber-500/20 border border-amber-500/30 text-amber-300 px-3 py-1 rounded-full text-xs font-bold mb-6 tracking-wide uppercase backdrop-blur-sm">
+              <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
               <span>MP for Cape Coast North</span>
             </div>
             
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 leading-[1.1] mb-6 tracking-tight">
-              Hon. Dr. Kwamena <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-900 to-blue-700">
-                Minta Nyarku
-              </span>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight mb-6 tracking-tight drop-shadow-md">
+              A Vision for <br/>
+              <span className="text-amber-400">Progress & Unity</span>
             </h1>
             
-            <p className="text-lg sm:text-xl text-slate-600 mb-8 leading-relaxed max-w-lg mx-auto lg:mx-0">
-              "Obiara Ka Ho." Championing the <strong>CETRA2030</strong> agenda to build a self-sustaining economy through education, innovation, and unity.
+            <p className="text-lg sm:text-xl text-blue-100 mb-8 leading-relaxed max-w-lg drop-shadow-sm">
+              "Obiara Ka Ho." Championing the <strong>CETRA2030</strong> agenda to build a self-sustaining economy through education and innovation.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+            <div className="flex flex-wrap gap-4">
               <Button 
                 onClick={() => onNavigate('volunteer')} 
-                variant="primary" 
+                variant="secondary" 
                 size="lg"
-                className="shadow-xl shadow-blue-900/10 hover:shadow-blue-900/20"
+                className="shadow-xl shadow-amber-900/20 border-none bg-amber-500 hover:bg-amber-600 text-white"
               >
                 Join the Movement
                 <ArrowRight className="ml-2 w-5 h-5" />
@@ -119,34 +118,17 @@ export function Home({ onNavigate }: HomeProps) {
                 onClick={() => onNavigate('about')} 
                 variant="outline" 
                 size="lg"
-                className="bg-white"
+                className="border-white text-white hover:bg-white hover:text-blue-900"
               >
                 Meet Ragga
               </Button>
             </div>
           </div>
         </div>
-
-        {/* Image Content */}
-        {/* CHANGED: h-[50vh] -> h-[75vh] on mobile to allow portrait mode visibility */}
-        <div className="w-full lg:w-1/2 h-[75vh] lg:h-auto lg:min-h-[85vh] relative">
-          <div className="absolute inset-0 bg-blue-900/5 lg:bg-transparent"></div>
-          <div className="hidden lg:block absolute -left-24 inset-y-0 w-48 bg-slate-50 transform -skew-x-6 z-10"></div>
-          
-          <img 
-            src={CANDIDATE_IMAGE_URL} 
-            alt="Hon. Dr. Kwamena Minta Nyarku" 
-            className="w-full h-full object-cover object-top"
-          />
-          
-          {/* Gradient Overlay on Mobile */}
-          <div className="lg:hidden absolute inset-0 bg-gradient-to-t from-slate-50 via-transparent to-transparent"></div>
-        </div>
       </section>
 
-      {/* === 2. QUICK ACCESS GRID === */}
-      {/* pt-4 ensures it sits right below the Hero image on mobile */}
-      <section className="pt-4 pb-10 md:pt-12 md:pb-20 bg-white relative z-20">
+      {/* === QUICK ACCESS GRID (3-per-line Mobile) === */}
+      <section className="py-10 md:py-16 bg-white relative z-20">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
           <div className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-6">
             {quickLinks.map((link, idx) => (
@@ -155,18 +137,22 @@ export function Home({ onNavigate }: HomeProps) {
                 onClick={() => onNavigate(link.route)}
                 className={`group relative overflow-hidden rounded-xl md:rounded-2xl border ${link.bgClass} bg-gradient-to-br p-2.5 md:p-8 flex flex-col items-center text-center cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 active:scale-95`}
               >
+                {/* Icon Container */}
                 <div className="w-10 h-10 md:w-16 md:h-16 bg-white rounded-lg md:rounded-2xl flex items-center justify-center shadow-sm mb-1.5 md:mb-5 group-hover:scale-110 transition-transform duration-300">
                   <link.icon className={`w-5 h-5 md:w-8 md:h-8 ${link.iconColor}`} />
                 </div>
                 
+                {/* Title */}
                 <h3 className="text-[10px] sm:text-xs md:text-xl font-bold text-slate-900 mb-0.5 md:mb-2 leading-tight tracking-tight truncate w-full">
                   {link.title}
                 </h3>
                 
+                {/* Mobile Description */}
                 <p className="block md:hidden text-slate-500 text-[9px] leading-none font-medium tracking-tight">
                   {link.mobileDesc}
                 </p>
 
+                {/* Desktop Description */}
                 <p className="hidden md:block text-slate-600 text-sm leading-relaxed max-w-xs mx-auto">
                   {link.desc}
                 </p>
@@ -176,48 +162,41 @@ export function Home({ onNavigate }: HomeProps) {
         </div>
       </section>
 
-      {/* === 3. STATS STRIP === */}
+      {/* === STATS / TRACK RECORD STRIP === */}
       <section className="bg-blue-950 text-white py-8 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '24px 24px' }}></div>
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-3 md:grid-cols-6 gap-y-6 gap-x-2 md:gap-8 text-center md:divide-x md:divide-blue-800/50">
-            
             <div className="p-1">
               <div className="text-xl sm:text-2xl md:text-3xl font-bold text-amber-400 mb-0.5">50K+</div>
               <div className="text-[10px] sm:text-xs text-blue-200 uppercase tracking-wider font-medium">Supporters</div>
             </div>
-
             <div className="p-1">
               <div className="text-xl sm:text-2xl md:text-3xl font-bold text-amber-400 mb-0.5">2,500+</div>
               <div className="text-[10px] sm:text-xs text-blue-200 uppercase tracking-wider font-medium">Streetlights</div>
             </div>
-
             <div className="p-1">
               <div className="text-xl sm:text-2xl md:text-3xl font-bold text-amber-400 mb-0.5">100+</div>
               <div className="text-[10px] sm:text-xs text-blue-200 uppercase tracking-wider font-medium">Scholarships</div>
             </div>
-
             <div className="p-1">
               <div className="text-xl sm:text-2xl md:text-3xl font-bold text-amber-400 mb-0.5">200+</div>
               <div className="text-[10px] sm:text-xs text-blue-200 uppercase tracking-wider font-medium">Events Held</div>
             </div>
-
             <div className="p-1">
               <div className="text-xl sm:text-2xl md:text-3xl font-bold text-amber-400 mb-0.5">15K+</div>
               <div className="text-[10px] sm:text-xs text-blue-200 uppercase tracking-wider font-medium">Volunteers</div>
             </div>
-
             <div className="p-1">
               <div className="text-xl sm:text-2xl md:text-3xl font-bold text-amber-400 mb-0.5">1 Goal</div>
               <div className="text-[10px] sm:text-xs text-blue-200 uppercase tracking-wider font-medium">Development</div>
             </div>
-
           </div>
         </div>
       </section>
 
-      {/* === 4. PRIORITIES PREVIEW === */}
+      {/* === PRIORITIES PREVIEW === */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
@@ -280,7 +259,7 @@ export function Home({ onNavigate }: HomeProps) {
         </div>
       </section>
 
-      {/* === 5. NEWSLETTER === */}
+      {/* === NEWSLETTER / STAY CONNECTED === */}
       <section className="py-20 bg-slate-100 border-y border-slate-200">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <Mail className="w-12 h-12 text-blue-900 mx-auto mb-6" />
@@ -304,7 +283,7 @@ export function Home({ onNavigate }: HomeProps) {
         </div>
       </section>
 
-      {/* === 6. BOTTOM CTA === */}
+      {/* === BOTTOM CTA === */}
       <section className="py-24 bg-gradient-to-br from-blue-950 to-blue-900 text-white text-center relative overflow-hidden">
         <div className="absolute top-0 left-0 w-64 h-64 bg-white opacity-5 rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl"></div>
         <div className="absolute bottom-0 right-0 w-96 h-96 bg-amber-500 opacity-10 rounded-full translate-x-1/3 translate-y-1/3 blur-3xl"></div>

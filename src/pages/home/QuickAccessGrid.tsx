@@ -128,8 +128,6 @@ export function QuickAccessGrid({ onNavigate }: QuickAccessGridProps) {
           {/* Two-line Parliamentary Message */}
           <p className="text-sm text-slate-600 mt-4 max-w-2xl mx-auto leading-relaxed">
             All the key information you need about the constituency is organised here for easy access.
-Stay informed and connected to the work being done on your behalf.
-            <span className="font-semibold text-slate-900"> Obiara ka ho</span>.
           </p>
         </div>
 

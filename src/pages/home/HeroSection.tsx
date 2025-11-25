@@ -34,7 +34,7 @@ export function HeroSection() {
 
   return (
     <section className="relative w-full">
-      {/* MOBILE HERO (text on image, no extra height) */}
+      {/* MOBILE HERO (text on image, compact overlay, no extra height) */}
       <div className="block md:hidden relative w-full bg-white overflow-hidden">
         {/* Spacer to maintain natural height */}
         <img src={HERO_IMAGES[0]} alt="" className="w-full h-auto invisible" />
@@ -53,18 +53,17 @@ export function HeroSection() {
           />
         ))}
 
-        {/* Compact text card OVER the hero (bottom), no stretch */}
-        <div className="absolute bottom-4 left-0 right-0 px-4">
-          <div className="bg-slate-950/80 backdrop-blur-sm rounded-2xl px-3.5 py-3.5 shadow-md">
-            <p className="text-[10px] font-semibold tracking-[0.2em] uppercase mb-1 text-amber-300">
+        {/* Compact text card OVER the hero (bottom), kept small to show more of the picture */}
+        <div className="absolute bottom-3 left-0 right-0 px-3">
+          <div className="bg-slate-950/80 backdrop-blur-sm rounded-2xl px-3 py-3 shadow-md">
+            <p className="text-[9px] font-semibold tracking-[0.22em] uppercase mb-1 text-amber-300">
               Your MP, Your Neighbour
             </p>
-            <h1 className="text-sm sm:text-base font-extrabold leading-snug mb-2 text-white">
+            <h1 className="text-sm font-extrabold leading-snug mb-1.5 text-white">
               Working with You for a Stronger Cape Coast North
             </h1>
-            <p className="text-[11px] text-slate-100 mb-3">
-              From “Operation 2000 Desks” to lighting our communities and
-              supporting our schools, every project begins with one question:{" "}
+            <p className="text-[10px] text-slate-100 mb-2.5">
+              Every project starts with one question:{" "}
               <span className="italic">how does this help our people?</span>
             </p>
 
@@ -72,14 +71,14 @@ export function HeroSection() {
               <Button
                 variant="primary"
                 size="sm"
-                className="px-3 py-2 text-[10px] font-semibold"
+                className="px-3 py-1.5 text-[9px] font-semibold"
               >
                 View Projects
               </Button>
               <Button
                 variant="outline"
                 size="sm"
-                className="px-3 py-2 text-[10px] font-semibold border-white text-white hover:bg-white hover:text-slate-900"
+                className="px-3 py-1.5 text-[9px] font-semibold border-white text-white hover:bg-white hover:text-slate-900"
               >
                 Share Concern
               </Button>

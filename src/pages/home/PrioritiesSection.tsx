@@ -267,18 +267,19 @@ export function PrioritiesSection({ onNavigate }: PrioritiesSectionProps) {
         </div>
 
         {/* =========================
-            DESKTOP LAYOUT (Horizontal Scroll with Red Animated Arrows)
+            DESKTOP LAYOUT (Horizontal Scroll with Red->Green Arrows)
            ========================= */}
         <div className="hidden md:block relative group/section">
           
-          {/* Left Indicator - Red & Animated */}
+          {/* Left Indicator - Red Default -> Green Hover */}
           {canScrollLeft && (
             <button
               onClick={() => scroll('left')}
               className="
                 absolute left-0 top-1/2 -translate-y-1/2 -ml-6 z-20 
-                p-4 rounded-full bg-white/95 backdrop-blur-sm shadow-[0_0_25px_rgba(220,38,38,0.4)] border-2 border-red-100
-                text-red-600 hover:text-white hover:bg-red-600 hover:border-red-600 hover:scale-110
+                p-4 rounded-full bg-white/95 backdrop-blur-sm shadow-xl border-2 
+                border-red-600 text-red-600
+                hover:border-green-600 hover:text-green-600 hover:bg-green-50 hover:scale-110
                 transition-all duration-300 animate-pulse
               "
               aria-label="Scroll left"
@@ -287,14 +288,15 @@ export function PrioritiesSection({ onNavigate }: PrioritiesSectionProps) {
             </button>
           )}
 
-          {/* Right Indicator - Red & Animated */}
+          {/* Right Indicator - Red Default -> Green Hover */}
           {canScrollRight && (
             <button
               onClick={() => scroll('right')}
               className="
                 absolute right-0 top-1/2 -translate-y-1/2 -mr-6 z-20 
-                p-4 rounded-full bg-white/95 backdrop-blur-sm shadow-[0_0_25px_rgba(220,38,38,0.4)] border-2 border-red-100
-                text-red-600 hover:text-white hover:bg-red-600 hover:border-red-600 hover:scale-110
+                p-4 rounded-full bg-white/95 backdrop-blur-sm shadow-xl border-2 
+                border-red-600 text-red-600
+                hover:border-green-600 hover:text-green-600 hover:bg-green-50 hover:scale-110
                 transition-all duration-300 animate-pulse
               "
               aria-label="Scroll right"

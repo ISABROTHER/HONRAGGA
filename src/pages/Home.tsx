@@ -70,9 +70,9 @@ export function Home({ onNavigate }: HomeProps) {
   return (
     <div className="min-h-screen bg-white font-sans text-slate-900">
       
-      {/* === QUICK ACCESS GRID (Now the top section) === */}
-      {/* pt-32 added to clear the fixed header */}
-      <section className="pt-32 pb-10 md:pb-20 bg-white">
+      {/* === QUICK ACCESS GRID (Top Section) === */}
+      {/* Reduced pt-32 to pt-28 for tighter spacing on mobile */}
+      <section className="pt-28 md:pt-32 pb-10 md:pb-20 bg-white">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
           <div className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-6">
             {quickLinks.map((link, idx) => (
@@ -91,12 +91,12 @@ export function Home({ onNavigate }: HomeProps) {
                   {link.title}
                 </h3>
                 
-                {/* Mobile Description */}
+                {/* Mobile Description: Short & Sweet */}
                 <p className="block md:hidden text-slate-500 text-[9px] leading-none font-medium tracking-tight">
                   {link.mobileDesc}
                 </p>
 
-                {/* Desktop Description */}
+                {/* Desktop Description: Full Detail */}
                 <p className="hidden md:block text-slate-600 text-sm leading-relaxed max-w-xs mx-auto">
                   {link.desc}
                 </p>

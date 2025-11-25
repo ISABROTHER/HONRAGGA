@@ -84,6 +84,23 @@ export function QuickAccessGrid({ onNavigate }: QuickAccessGridProps) {
   return (
     <section className="relative z-20 -mt-[4px] md:mt-0 pt-2 pb-8 md:py-16 bg-white">
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+        {/* Heading block */}
+        <div className="mb-4 md:mb-8">
+          <div className="inline-flex items-center gap-2 rounded-full bg-green-50 px-3 py-1 border border-green-100">
+            <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
+            <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-green-700">
+              Quick Actions
+            </span>
+          </div>
+          <h2 className="mt-3 text-lg sm:text-xl md:text-2xl font-extrabold text-slate-900">
+            Quick access to what matters most
+          </h2>
+          <p className="hidden md:block text-sm text-slate-500 mt-1">
+            Jump straight to projects, policies, support and more for Cape Coast North.
+          </p>
+        </div>
+
+        {/* Grid of quick links */}
         <div className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-6">
           {quickLinks.map((link, idx) => (
             <div

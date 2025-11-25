@@ -1,9 +1,17 @@
 import { 
-  ArrowRight, Users, Heart, TrendingUp, Calendar, CheckCircle, Mail, ChevronRight,
-  MessageSquareWarning, HardHat, ScrollText, Award, HandHeart, UserCircle 
+  TrendingUp, 
+  Heart, 
+  Users, 
+  Mail, 
+  ChevronRight, 
+  HardHat, 
+  MessageSquareWarning, 
+  ScrollText, 
+  Award, 
+  HandHeart, 
+  UserCircle 
 } from 'lucide-react';
 import { Button } from '../components/Button';
-// IMPORT THE HERO COMPONENT
 import { Hero } from '../components/Hero';
 
 interface HomeProps {
@@ -72,11 +80,10 @@ export function Home({ onNavigate }: HomeProps) {
   return (
     <div className="min-h-screen bg-white font-sans text-slate-900">
       
-      {/* === 1. HERO SECTION (Now imported) === */}
+      {/* === 1. HERO SECTION === */}
       <Hero onNavigate={onNavigate} />
 
       {/* === 2. QUICK ACCESS GRID === */}
-      {/* Removed pt-28 because Hero handles the top spacing now */}
       <section className="py-10 md:py-20 bg-white relative z-20">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
           <div className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-6">
@@ -86,22 +93,18 @@ export function Home({ onNavigate }: HomeProps) {
                 onClick={() => onNavigate(link.route)}
                 className={`group relative overflow-hidden rounded-xl md:rounded-2xl border ${link.bgClass} bg-gradient-to-br p-2.5 md:p-8 flex flex-col items-center text-center cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 active:scale-95`}
               >
-                {/* Icon Container */}
                 <div className="w-10 h-10 md:w-16 md:h-16 bg-white rounded-lg md:rounded-2xl flex items-center justify-center shadow-sm mb-1.5 md:mb-5 group-hover:scale-110 transition-transform duration-300">
                   <link.icon className={`w-5 h-5 md:w-8 md:h-8 ${link.iconColor}`} />
                 </div>
                 
-                {/* Title */}
                 <h3 className="text-[10px] sm:text-xs md:text-xl font-bold text-slate-900 mb-0.5 md:mb-2 leading-tight tracking-tight truncate w-full">
                   {link.title}
                 </h3>
                 
-                {/* Mobile Description */}
                 <p className="block md:hidden text-slate-500 text-[9px] leading-none font-medium tracking-tight">
                   {link.mobileDesc}
                 </p>
 
-                {/* Desktop Description */}
                 <p className="hidden md:block text-slate-600 text-sm leading-relaxed max-w-xs mx-auto">
                   {link.desc}
                 </p>
@@ -218,3 +221,60 @@ export function Home({ onNavigate }: HomeProps) {
       {/* === 5. NEWSLETTER === */}
       <section className="py-20 bg-slate-100 border-y border-slate-200">
         <div className="max-w-4xl mx-auto px-4 text-center">
+          <Mail className="w-12 h-12 text-blue-900 mx-auto mb-6" />
+          <h2 className="text-3xl font-bold text-slate-900 mb-4">Stay Connected with Ragga</h2>
+          <p className="text-slate-600 mb-8 max-w-xl mx-auto">
+            Join our mailing list to receive updates on parliamentary activities, community projects, and upcoming town hall meetings.
+          </p>
+          
+          <form className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto" onSubmit={(e) => e.preventDefault()}>
+            <input 
+              type="email" 
+              placeholder="Email Address" 
+              className="flex-1 px-5 py-4 rounded-xl border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none shadow-sm"
+              required
+            />
+            <Button variant="primary" size="md" className="sm:w-auto w-full py-4">
+              Subscribe
+            </Button>
+          </form>
+          <p className="text-xs text-slate-500 mt-4">We respect your privacy. Unsubscribe at any time.</p>
+        </div>
+      </section>
+
+      {/* === 6. BOTTOM CTA === */}
+      <section className="py-24 bg-gradient-to-br from-blue-950 to-blue-900 text-white text-center relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-64 h-64 bg-white opacity-5 rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl"></div>
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-amber-500 opacity-10 rounded-full translate-x-1/3 translate-y-1/3 blur-3xl"></div>
+
+        <div className="relative z-10 max-w-4xl mx-auto px-6">
+          <h2 className="text-4xl md:text-6xl font-extrabold mb-6 tracking-tight">
+            Ready to Make a Difference?
+          </h2>
+          <p className="text-xl md:text-2xl text-blue-100 mb-10 font-light">
+            "Together, we can build a Cape Coast North that works for everyone."
+          </p>
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+            <Button 
+              onClick={() => onNavigate('volunteer')} 
+              variant="secondary" 
+              size="lg"
+              className="w-full sm:w-auto px-10 py-4 text-lg font-bold shadow-2xl shadow-amber-900/20"
+            >
+              Volunteer Today
+            </Button>
+            <Button 
+              onClick={() => onNavigate('events')} 
+              variant="outline" 
+              size="lg"
+              className="w-full sm:w-auto px-10 py-4 text-lg border-white text-white hover:bg-white hover:text-blue-900"
+            >
+              Upcoming Events
+            </Button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  );
+}

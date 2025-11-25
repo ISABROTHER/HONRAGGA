@@ -41,7 +41,7 @@ const priorities: Priority[] = [
     accentBorder: "border-indigo-200",
     image:
       "https://images.pexels.com/photos/1462935/pexels-photo-1462935.jpeg?auto=compress&cs=tinysrgb&w=800"
-  }
+  },
   {
     id: "education",
     title: "Educational Support",

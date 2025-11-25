@@ -6,8 +6,6 @@ import {
   Briefcase,
   Construction,
   Sprout,
-  Users,
-  Megaphone,
   ChevronRight
 } from "lucide-react";
 
@@ -100,24 +98,33 @@ export function PrioritiesSection({ onNavigate }: PrioritiesSectionProps) {
   return (
     <section className="py-16 md:py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Heading block */}
-        <div className="text-center max-w-3xl mx-auto mb-12 md:mb-16">
-          <h2 className="text-xs sm:text-sm font-bold text-blue-600 uppercase tracking-[0.2em] mb-2">
-            My Vision
-          </h2>
+        
+        {/* ================================
+            PREMIUM CENTERED HEADING BLOCK
+        ================================= */}
+        <div className="text-center mb-12 md:mb-16">
+          
+          {/* Eyebrow */}
+          <p className="inline-flex items-center gap-2 rounded-full bg-green-50 px-3 py-1 border border-green-100">
+            <span className="h-1.5 w-1.5 rounded-full bg-green-500 motion-safe:animate-pulse" />
+            <span className="text-[10px] sm:text-xs font-semibold tracking-[0.22em] uppercase text-green-700">
+              My Vision
+            </span>
+          </p>
 
-          {/* Gradient + animated underline heading */}
-          <div className="flex flex-col items-center justify-center group">
-            <h3
+          {/* Main heading with gradient hue + animation */}
+          <div className="mt-3 flex flex-col items-center justify-center group">
+            <h2
               className="
-                text-2xl sm:text-3xl md:text-4xl 
+                text-xl sm:text-2xl md:text-3xl 
                 font-extrabold tracking-tight text-center
                 bg-gradient-to-r from-slate-900 via-green-700 to-slate-900
                 bg-clip-text text-transparent
+                motion-safe:transition-transform motion-safe:duration-500
               "
             >
               Priorities for Cape Coast North
-            </h3>
+            </h2>
             <span
               className="
                 mt-2 h-[3px] w-12 rounded-full
@@ -128,14 +135,15 @@ export function PrioritiesSection({ onNavigate }: PrioritiesSectionProps) {
             />
           </div>
 
-          <p className="mt-4 text-base md:text-lg text-slate-600 leading-relaxed">
+          {/* Description */}
+          <p className="text-sm text-slate-600 mt-4 max-w-2xl mx-auto leading-relaxed">
             We are building a community where opportunity is shared, education is
             accessible, and healthcare is a right, not a privilege.
           </p>
         </div>
 
         {/* =========================
-            MOBILE LAYOUT (NEWS-STYLE WITH PICTURES)
+            MOBILE LAYOUT (NEWS-STYLE)
            ========================= */}
         <div className="md:hidden space-y-4">
           {priorities.map((priority, index) => {

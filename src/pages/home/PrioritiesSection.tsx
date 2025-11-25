@@ -14,6 +14,7 @@ type Priority = {
   accentBg: string;
   accentText: string;
   accentBorder: string;
+  image: string;
 };
 
 const priorities: Priority[] = [
@@ -25,7 +26,8 @@ const priorities: Priority[] = [
     icon: TrendingUp,
     accentBg: "bg-blue-100",
     accentText: "text-blue-700",
-    accentBorder: "border-blue-200"
+    accentBorder: "border-blue-200",
+    image: "https://images.pexels.com/photos/3943722/pexels-photo-3943722.jpeg?auto=compress&cs=tinysrgb&w=800"
   },
   {
     id: "healthcare",
@@ -35,7 +37,8 @@ const priorities: Priority[] = [
     icon: Heart,
     accentBg: "bg-green-100",
     accentText: "text-green-700",
-    accentBorder: "border-green-200"
+    accentBorder: "border-green-200",
+    image: "https://images.pexels.com/photos/6129680/pexels-photo-6129680.jpeg?auto=compress&cs=tinysrgb&w=800"
   },
   {
     id: "community",
@@ -45,7 +48,8 @@ const priorities: Priority[] = [
     icon: Users,
     accentBg: "bg-amber-100",
     accentText: "text-amber-600",
-    accentBorder: "border-amber-200"
+    accentBorder: "border-amber-200",
+    image: "https://images.pexels.com/photos/3059748/pexels-photo-3059748.jpeg?auto=compress&cs=tinysrgb&w=800"
   }
 ];
 
@@ -88,46 +92,51 @@ export function PrioritiesSection({ onNavigate }: PrioritiesSectionProps) {
         </div>
 
         {/* =========================
-            MOBILE LAYOUT (NEWS-STYLE)
+            MOBILE LAYOUT (NEWS-STYLE, WITH PICTURES)
            ========================= */}
         <div className="md:hidden space-y-4">
           {priorities.map((priority, index) => {
             const Icon = priority.icon;
 
-            // First item = featured (bigger, like the top news card)
+            // First item = featured (big image on top)
             if (index === 0) {
               return (
                 <div
                   key={priority.id}
                   className="
-                    rounded-2xl overflow-hidden border border-slate-200 bg-slate-900
-                    text-white shadow-md
+                    rounded-2xl overflow-hidden border border-slate-200 bg-white
+                    shadow-md
                   "
                 >
-                  {/* “Hero image” style header area (we use a coloured block instead of a photo) */}
-                  <div className="relative h-32 w-full bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 flex items-end p-4">
-                    <div
-                      className="
-                        inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1
-                        text-[11px] uppercase tracking-[0.18em] font-semibold
-                      "
-                    >
-                      <Icon className="w-3.5 h-3.5" />
-                      <span>Key Priority</span>
+                  {/* Featured image */}
+                  <div className="relative h-40 w-full overflow-hidden">
+                    <img
+                      src={priority.image}
+                      alt={priority.title}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+                    <div className="absolute bottom-3 left-3">
+                      <div className="inline-flex items-center gap-2 rounded-full bg-white/90 px-3 py-1">
+                        <Icon className="w-3.5 h-3.5 text-slate-800" />
+                        <span className="text-[11px] uppercase tracking-[0.16em] font-semibold text-slate-800">
+                          Key Priority
+                        </span>
+                      </div>
                     </div>
                   </div>
 
                   {/* Text content */}
                   <div className="p-4">
-                    <h4 className="text-lg font-extrabold mb-2 leading-snug">
+                    <h4 className="text-lg font-extrabold mb-2 leading-snug text-slate-900">
                       {priority.title}
                     </h4>
-                    <p className="text-xs text-slate-100/90 leading-relaxed mb-3">
+                    <p className="text-xs text-slate-700 leading-relaxed mb-3">
                       {priority.desc}
                     </p>
                     <button
                       onClick={() => onNavigate("policies")}
-                      className="inline-flex items-center text-xs font-semibold text-emerald-300"
+                      className="inline-flex items-center text-xs font-semibold text-emerald-700"
                     >
                       Learn more
                       <ChevronRight className="w-4 h-4 ml-1" />
@@ -137,7 +146,7 @@ export function PrioritiesSection({ onNavigate }: PrioritiesSectionProps) {
               );
             }
 
-            // Remaining items = list style (thumbnail + text, like news list)
+            // Remaining items = list style with thumbnail picture on the left
             return (
               <button
                 key={priority.id}
@@ -150,14 +159,13 @@ export function PrioritiesSection({ onNavigate }: PrioritiesSectionProps) {
                   active:scale-[0.98]
                 `}
               >
-                {/* Thumbnail / icon block on the left */}
-                <div
-                  className={`
-                    ${priority.accentBg} flex items-center justify-center
-                    w-20 min-w-[5rem]
-                  `}
-                >
-                  <Icon className={`w-7 h-7 ${priority.accentText}`} />
+                {/* Thumbnail picture on the left */}
+                <div className="relative w-24 min-w-[6rem] h-24 overflow-hidden">
+                  <img
+                    src={priority.image}
+                    alt={priority.title}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
 
                 {/* Text on the right */}
@@ -175,7 +183,7 @@ export function PrioritiesSection({ onNavigate }: PrioritiesSectionProps) {
         </div>
 
         {/* =========================
-            DESKTOP / TABLET LAYOUT
+            DESKTOP / TABLET LAYOUT (CARDS)
            ========================= */}
         <div className="hidden md:grid md:grid-cols-3 gap-8">
           {priorities.map((priority) => {
@@ -191,16 +199,21 @@ export function PrioritiesSection({ onNavigate }: PrioritiesSectionProps) {
                   hover:-translate-y-1.5 hover:scale-[1.01]
                 `}
               >
-                <div
-                  className={`
-                    w-14 h-14 ${priority.accentBg} ${priority.accentText}
-                    rounded-xl flex items-center justify-center mb-6
-                    motion-safe:transition-transform motion-safe:duration-300
-                    group-hover:scale-110
-                  `}
-                >
-                  <Icon className="w-7 h-7" />
+                <div className="mb-6 rounded-xl overflow-hidden h-32 w-full relative">
+                  <img
+                    src={priority.image}
+                    alt={priority.title}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/0 to-transparent" />
+                  <div className="absolute top-3 left-3 inline-flex items-center gap-2 rounded-full bg-white/90 px-3 py-1">
+                    <Icon className={`w-4 h-4 ${priority.accentText}`} />
+                    <span className="text-[11px] font-semibold text-slate-800">
+                      Priority Area
+                    </span>
+                  </div>
                 </div>
+
                 <h4 className="text-xl font-bold text-slate-900 mb-3">
                   {priority.title}
                 </h4>

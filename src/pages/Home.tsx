@@ -3,6 +3,8 @@ import {
   MessageSquareWarning, HardHat, ScrollText, Award, HandHeart, UserCircle 
 } from 'lucide-react';
 import { Button } from '../components/Button';
+// IMPORT THE HERO COMPONENT
+import { Hero } from '../components/Hero';
 
 interface HomeProps {
   onNavigate: (page: string) => void;
@@ -70,9 +72,12 @@ export function Home({ onNavigate }: HomeProps) {
   return (
     <div className="min-h-screen bg-white font-sans text-slate-900">
       
-      {/* === QUICK ACCESS GRID (Top Section) === */}
-      {/* Changed pt-28 to pt-4 to remove the large white gap */}
-      <section className="pt-4 pb-10 md:pt-12 md:pb-20 bg-white">
+      {/* === 1. HERO SECTION (Now imported) === */}
+      <Hero onNavigate={onNavigate} />
+
+      {/* === 2. QUICK ACCESS GRID === */}
+      {/* Removed pt-28 because Hero handles the top spacing now */}
+      <section className="py-10 md:py-20 bg-white relative z-20">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
           <div className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-6">
             {quickLinks.map((link, idx) => (
@@ -91,12 +96,12 @@ export function Home({ onNavigate }: HomeProps) {
                   {link.title}
                 </h3>
                 
-                {/* Mobile Description: Short & Sweet */}
+                {/* Mobile Description */}
                 <p className="block md:hidden text-slate-500 text-[9px] leading-none font-medium tracking-tight">
                   {link.mobileDesc}
                 </p>
 
-                {/* Desktop Description: Full Detail */}
+                {/* Desktop Description */}
                 <p className="hidden md:block text-slate-600 text-sm leading-relaxed max-w-xs mx-auto">
                   {link.desc}
                 </p>
@@ -106,13 +111,11 @@ export function Home({ onNavigate }: HomeProps) {
         </div>
       </section>
 
-      {/* === STATS / TRACK RECORD STRIP === */}
+      {/* === 3. STATS STRIP === */}
       <section className="bg-blue-950 text-white py-8 relative overflow-hidden">
-        {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '24px 24px' }}></div>
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          {/* Grid: 3 columns on mobile, 6 columns on desktop */}
           <div className="grid grid-cols-3 md:grid-cols-6 gap-y-6 gap-x-2 md:gap-8 text-center md:divide-x md:divide-blue-800/50">
             
             <div className="p-1">
@@ -149,7 +152,7 @@ export function Home({ onNavigate }: HomeProps) {
         </div>
       </section>
 
-      {/* === PRIORITIES PREVIEW === */}
+      {/* === 4. PRIORITIES PREVIEW === */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
@@ -161,7 +164,6 @@ export function Home({ onNavigate }: HomeProps) {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {/* Card 1 */}
             <div className="group bg-slate-50 rounded-2xl p-8 border border-slate-100 hover:border-blue-100 hover:shadow-2xl hover:shadow-blue-900/5 transition-all duration-300">
               <div className="w-14 h-14 bg-blue-100 text-blue-700 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <TrendingUp className="w-7 h-7" />
@@ -178,7 +180,6 @@ export function Home({ onNavigate }: HomeProps) {
               </button>
             </div>
 
-            {/* Card 2 */}
             <div className="group bg-slate-50 rounded-2xl p-8 border border-slate-100 hover:border-green-100 hover:shadow-2xl hover:shadow-green-900/5 transition-all duration-300">
               <div className="w-14 h-14 bg-green-100 text-green-700 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <Heart className="w-7 h-7" />
@@ -195,7 +196,6 @@ export function Home({ onNavigate }: HomeProps) {
               </button>
             </div>
 
-            {/* Card 3 */}
             <div className="group bg-slate-50 rounded-2xl p-8 border border-slate-100 hover:border-amber-100 hover:shadow-2xl hover:shadow-amber-900/5 transition-all duration-300">
               <div className="w-14 h-14 bg-amber-100 text-amber-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <Users className="w-7 h-7" />
@@ -215,64 +215,6 @@ export function Home({ onNavigate }: HomeProps) {
         </div>
       </section>
 
-      {/* === NEWSLETTER / STAY CONNECTED === */}
+      {/* === 5. NEWSLETTER === */}
       <section className="py-20 bg-slate-100 border-y border-slate-200">
         <div className="max-w-4xl mx-auto px-4 text-center">
-          <Mail className="w-12 h-12 text-blue-900 mx-auto mb-6" />
-          <h2 className="text-3xl font-bold text-slate-900 mb-4">Stay Connected with Ragga</h2>
-          <p className="text-slate-600 mb-8 max-w-xl mx-auto">
-            Join our mailing list to receive updates on parliamentary activities, community projects, and upcoming town hall meetings.
-          </p>
-          
-          <form className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto" onSubmit={(e) => e.preventDefault()}>
-            <input 
-              type="email" 
-              placeholder="Email Address" 
-              className="flex-1 px-5 py-4 rounded-xl border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none shadow-sm"
-              required
-            />
-            <Button variant="primary" size="md" className="sm:w-auto w-full py-4">
-              Subscribe
-            </Button>
-          </form>
-          <p className="text-xs text-slate-500 mt-4">We respect your privacy. Unsubscribe at any time.</p>
-        </div>
-      </section>
-
-      {/* === BOTTOM CTA === */}
-      <section className="py-24 bg-gradient-to-br from-blue-950 to-blue-900 text-white text-center relative overflow-hidden">
-        {/* Decorative Circles */}
-        <div className="absolute top-0 left-0 w-64 h-64 bg-white opacity-5 rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl"></div>
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-amber-500 opacity-10 rounded-full translate-x-1/3 translate-y-1/3 blur-3xl"></div>
-
-        <div className="relative z-10 max-w-4xl mx-auto px-6">
-          <h2 className="text-4xl md:text-6xl font-extrabold mb-6 tracking-tight">
-            Ready to Make a Difference?
-          </h2>
-          <p className="text-xl md:text-2xl text-blue-100 mb-10 font-light">
-            "Together, we can build a Cape Coast North that works for everyone."
-          </p>
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <Button 
-              onClick={() => onNavigate('volunteer')} 
-              variant="secondary" 
-              size="lg"
-              className="w-full sm:w-auto px-10 py-4 text-lg font-bold shadow-2xl shadow-amber-900/20"
-            >
-              Volunteer Today
-            </Button>
-            <Button 
-              onClick={() => onNavigate('events')} 
-              variant="outline" 
-              size="lg"
-              className="w-full sm:w-auto px-10 py-4 text-lg border-white text-white hover:bg-white hover:text-blue-900"
-            >
-              Upcoming Events
-            </Button>
-          </div>
-        </div>
-      </section>
-
-    </div>
-  );
-}

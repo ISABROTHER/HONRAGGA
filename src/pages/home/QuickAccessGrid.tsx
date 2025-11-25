@@ -101,26 +101,37 @@ export function QuickAccessGrid({ onNavigate }: QuickAccessGridProps) {
             </span>
           </p>
 
-          {/* Main heading */}
-          <h2
-            id="constituency-hub-heading"
-            className="
-              mt-3
-              text-xl sm:text-2xl md:text-3xl 
-              font-extrabold tracking-tight text-slate-900
-            "
-          >
-            <span className="inline-block pb-1 border-b-2 border-green-600">
+          {/* Main heading with gradient hue + animation */}
+          <div className="mt-3 flex flex-col items-center justify-center group">
+            <h2
+              id="constituency-hub-heading"
+              className="
+                text-xl sm:text-2xl md:text-3xl 
+                font-extrabold tracking-tight text-center
+                bg-gradient-to-r from-slate-900 via-green-700 to-slate-900
+                bg-clip-text text-transparent
+                motion-safe:transition-transform motion-safe:duration-500
+              "
+            >
               Information, Services &amp; Support
-            </span>
-          </h2>
+            </h2>
+            <span
+              className="
+                mt-2 h-[3px] w-12 rounded-full
+                bg-gradient-to-r from-green-500 via-emerald-500 to-green-600
+                motion-safe:transition-all motion-safe:duration-500
+                group-hover:w-24
+              "
+            />
+          </div>
 
           {/* Two-line Parliamentary Message */}
           <p className="text-sm text-slate-600 mt-4 max-w-2xl mx-auto leading-relaxed">
             This is your direct window into the work I am undertaking on behalf of our constituency.
           </p>
           <p className="text-sm text-slate-600 mt-1 max-w-2xl mx-auto leading-relaxed">
-            I remain committed to serving you, being accountable, and keeping you informed at all times, because <span className="font-semibold text-slate-900">obiara ka ho</span>.
+            I remain committed to serving you, being accountable, and keeping you informed at all times, because{" "}
+            <span className="font-semibold text-slate-900">obiara ka ho</span>.
           </p>
         </div>
 

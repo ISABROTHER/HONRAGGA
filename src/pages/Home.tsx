@@ -73,16 +73,16 @@ export function Home({ onNavigate }: HomeProps) {
   return (
     <div className="min-h-screen bg-white font-sans text-slate-900">
 
-      {/* === 1. HERO BANNER (FIXED) === */}
-      <section className="relative w-full">
-        <div className="w-full h-[400px] md:h-[80vh] overflow-hidden flex items-center justify-center bg-white">
-          <img 
-            src={HERO_IMAGE_URL} 
-            alt="Hon. Dr. Kwamena Minta Nyarku" 
-            className="w-full h-full object-cover md:object-contain"
-          />
-        </div>
-      </section>
+  {/* === 1. HERO BANNER (FINAL FIX) === */}
+<section className="relative w-full">
+  <div className="w-full h-[420px] md:h-[90vh] overflow-hidden">
+    <img 
+      src={HERO_IMAGE_URL}
+      alt="Hon. Dr. Kwamena Minta Nyarku"
+      className="w-full h-full object-cover object-top"
+    />
+  </div>
+</section>
 
       {/* === 2. QUICK ACCESS GRID === */}
       <section className="py-8 md:py-16 bg-white relative z-20">

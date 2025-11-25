@@ -1,5 +1,3 @@
-// src/pages/home/BottomCTASection.tsx
-import React from "react";
 import { Button } from "../../components/Button";
 
 interface BottomCTASectionProps {

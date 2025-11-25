@@ -1,5 +1,3 @@
-// src/pages/Home.tsx
-import React from "react";
 import { HeroSection } from "./home/HeroSection";
 import { QuickAccessGrid } from "./home/QuickAccessGrid";
 import { StatsStrip } from "./home/StatsStrip";

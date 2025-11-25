@@ -7,7 +7,7 @@ interface BottomCTASectionProps {
 
 export function BottomCTASection({ onNavigate }: BottomCTASectionProps) {
   return (
-    <section className="py-20 md:py-28 bg-gradient-to-br from-blue-950 to-blue-900 text-white text-center relative overflow-hidden">
+    <section className="py-12 md:py-20 bg-gradient-to-br from-blue-950 to-blue-900 text-white text-center relative overflow-hidden">
       
       {/* Decorative glows */}
       <div className="absolute top-0 left-0 w-64 h-64 bg-white opacity-5 rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl"></div>
@@ -15,31 +15,31 @@ export function BottomCTASection({ onNavigate }: BottomCTASectionProps) {
 
       <div className="relative z-10 max-w-4xl mx-auto px-6">
         
-        {/* Heading */}
+        {/* Heading (Matches styles but in white) */}
         <h2 className="
-          text-3xl sm:text-4xl md:text-6xl 
-          font-extrabold leading-tight tracking-tight mb-6
+          text-2xl sm:text-3xl md:text-5xl 
+          font-extrabold leading-tight tracking-tight mb-4
         ">
           Ready to Make a Difference?
         </h2>
 
         {/* Subtext */}
         <p className="
-          text-lg sm:text-xl md:text-2xl 
-          text-blue-100 font-light mb-10
+          text-base sm:text-lg md:text-xl 
+          text-blue-100 font-light mb-8
         ">
           “Together, we can build a Cape Coast North that works for everyone.”
         </p>
 
         {/* Buttons */}
-        <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           
           <Button
             onClick={() => onNavigate("volunteer")}
             variant="secondary"
             size="lg"
             className="
-              w-full sm:w-auto px-10 py-4 text-lg font-bold 
+              w-full sm:w-auto px-8 py-3 text-base font-bold 
               shadow-2xl shadow-amber-900/20
             "
           >
@@ -51,7 +51,7 @@ export function BottomCTASection({ onNavigate }: BottomCTASectionProps) {
             variant="outline"
             size="lg"
             className="
-              w-full sm:w-auto px-10 py-4 text-lg 
+              w-full sm:w-auto px-8 py-3 text-base 
               border-white text-white hover:bg-white hover:text-blue-900
             "
           >

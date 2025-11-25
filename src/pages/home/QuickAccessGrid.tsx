@@ -129,9 +129,6 @@ export function QuickAccessGrid({ onNavigate }: QuickAccessGridProps) {
           <p className="text-sm text-slate-600 mt-4 max-w-2xl mx-auto leading-relaxed">
             All the key information you need about the constituency is organised here for easy access.
 Stay informed and connected to the work being done on your behalf.
-          </p>
-          <p className="text-sm text-slate-600 mt-1 max-w-2xl mx-auto leading-relaxed">
-            I remain committed to serving you, being accountable, and keeping you informed at all times, because{" "}
             <span className="font-semibold text-slate-900">obiara ka ho</span>.
           </p>
         </div>

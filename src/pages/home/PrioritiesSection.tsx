@@ -110,7 +110,7 @@ export function PrioritiesSection({ onNavigate }: PrioritiesSectionProps) {
             </span>
           </p>
 
-          {/* Main Heading */}
+          {/* Main Heading - Small on Mobile, Huge on Desktop */}
           <div className="mt-4 flex flex-col items-center justify-center group">
             <h3
               className="
@@ -140,7 +140,7 @@ export function PrioritiesSection({ onNavigate }: PrioritiesSectionProps) {
         </div>
 
         {/* =========================
-            MOBILE LAYOUT
+            MOBILE LAYOUT (Vertical Stack)
            ========================= */}
         <div className="md:hidden space-y-4">
           {priorities.map((priority, index) => {
@@ -235,9 +235,15 @@ export function PrioritiesSection({ onNavigate }: PrioritiesSectionProps) {
         </div>
 
         {/* =========================
-            DESKTOP / TABLET LAYOUT
+            DESKTOP LAYOUT (Horizontal Scroll)
            ========================= */}
-        <div className="hidden md:grid md:grid-cols-3 xl:grid-cols-4 gap-8 xl:gap-10">
+        <div 
+          className="
+            hidden md:flex gap-8 overflow-x-auto pb-8 snap-x 
+            scrollbar-hide
+          "
+          style={{ scrollPaddingLeft: '1rem', scrollPaddingRight: '1rem' }}
+        >
           {priorities.map((priority) => {
             const Icon = priority.icon;
 
@@ -245,14 +251,16 @@ export function PrioritiesSection({ onNavigate }: PrioritiesSectionProps) {
               <div
                 key={priority.id}
                 className={`
+                  snap-center flex-shrink-0
+                  w-[350px] lg:w-[400px] xl:w-[450px]
                   group bg-slate-50 rounded-3xl p-6 xl:p-8 border border-slate-100
                   hover:shadow-2xl hover:shadow-slate-900/5
                   motion-safe:transition-all motion-safe:duration-300
-                  hover:-translate-y-2 hover:scale-[1.01]
+                  hover:-translate-y-2
                   flex flex-col
                 `}
               >
-                <div className="mb-6 rounded-2xl overflow-hidden h-40 xl:h-48 w-full relative shadow-inner">
+                <div className="mb-6 rounded-2xl overflow-hidden h-48 xl:h-56 w-full relative shadow-inner">
                   <img
                     src={priority.image}
                     alt={priority.title}
@@ -267,7 +275,7 @@ export function PrioritiesSection({ onNavigate }: PrioritiesSectionProps) {
                   </div>
                 </div>
 
-                <h4 className="text-xl xl:text-2xl font-extrabold text-slate-900 mb-2">
+                <h4 className="text-2xl font-extrabold text-slate-900 mb-2">
                   {priority.title}
                 </h4>
                 <p className="text-sm font-bold text-emerald-700 mb-3 uppercase tracking-wide">

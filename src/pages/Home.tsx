@@ -80,7 +80,8 @@ export function Home({ onNavigate }: HomeProps) {
 
       {/* === 1. HERO BANNER (WITH CUSTOM POSITION) === */}
       <section className="relative w-full">
-        <div className="w-full h-[420px] md:h-[90vh] overflow-hidden">
+        {/* On mobile use aspect ratio instead of tall fixed height to remove big white space */}
+        <div className="w-full aspect-[3/4] sm:aspect-[16/9] md:h-[90vh] overflow-hidden bg-white">
           <img 
             src={HERO_IMAGE_URL}
             alt="Hon. Dr. Kwamena Minta Nyarku"
@@ -91,7 +92,8 @@ export function Home({ onNavigate }: HomeProps) {
       </section>
 
       {/* === 2. QUICK ACCESS GRID === */}
-      <section className="py-8 md:py-16 bg-white relative z-20">
+      {/* Pull cards slightly up on mobile to reduce gap; reset on md+ */}
+      <section className="relative z-20 -mt-6 md:mt-0 pt-4 pb-8 md:py-16 bg-white">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
           <div className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-6">
             {quickLinks.map((link, idx) => (
@@ -120,7 +122,14 @@ export function Home({ onNavigate }: HomeProps) {
 
       {/* === 3. STATS STRIP === */}
       <section className="bg-blue-950 text-white py-8 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '24px 24px' }}></div>
+        <div
+          className="absolute inset-0 opacity-10"
+          style={{
+            backgroundImage:
+              'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
+            backgroundSize: '24px 24px',
+          }}
+        ></div>
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-3 md:grid-cols-6 gap-y-6 gap-x-2 md:gap-8 text-center md:divide-x md:divide-blue-800/50">

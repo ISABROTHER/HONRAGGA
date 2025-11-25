@@ -106,7 +106,7 @@ export function QuickAccessGrid({ onNavigate }: QuickAccessGridProps) {
             <h2
               id="constituency-hub-heading"
               className="
-                text-3xl sm:text-4xl md:text-5xl 
+                text-xl sm:text-2xl md:text-5xl 
                 font-extrabold tracking-tight text-center
                 bg-gradient-to-r from-slate-900 via-green-700 to-slate-900
                 bg-clip-text text-transparent

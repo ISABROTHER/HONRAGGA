@@ -1,12 +1,14 @@
 // src/pages/home/PrioritiesSection.tsx
-import React from "react";
+import React, { useRef } from "react";
 import {
   BookOpen,
   HeartPulse,
   Briefcase,
   Construction,
   Sprout,
-  ChevronRight
+  ChevronRight,
+  ChevronLeft, // Import ChevronLeft
+  ArrowRight
 } from "lucide-react";
 
 interface PrioritiesSectionProps {
@@ -95,6 +97,20 @@ const priorities: Priority[] = [
 ];
 
 export function PrioritiesSection({ onNavigate }: PrioritiesSectionProps) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollRef.current) {
+      const { current } = scrollRef;
+      const scrollAmount = 420; // Approximate card width + gap
+      if (direction === 'left') {
+        current.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+      } else {
+        current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      }
+    }
+  };
+
   return (
     <section className="py-12 md:py-24 bg-white">
       <div className="max-w-[95%] 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -110,7 +126,7 @@ export function PrioritiesSection({ onNavigate }: PrioritiesSectionProps) {
             </span>
           </p>
 
-          {/* Main Heading - Small on Mobile, Huge on Desktop */}
+          {/* Main Heading */}
           <div className="mt-4 flex flex-col items-center justify-center group">
             <h3
               className="
@@ -235,67 +251,100 @@ export function PrioritiesSection({ onNavigate }: PrioritiesSectionProps) {
         </div>
 
         {/* =========================
-            DESKTOP LAYOUT (Horizontal Scroll)
+            DESKTOP LAYOUT (Horizontal Scroll with Arrows)
            ========================= */}
-        <div 
-          className="
-            hidden md:flex gap-8 overflow-x-auto pb-8 snap-x 
-            scrollbar-hide
-          "
-          style={{ scrollPaddingLeft: '1rem', scrollPaddingRight: '1rem' }}
-        >
-          {priorities.map((priority) => {
-            const Icon = priority.icon;
+        <div className="hidden md:block relative group/section">
+          
+          {/* Left Arrow */}
+          <button
+            onClick={() => scroll('left')}
+            className="
+              absolute left-0 top-1/2 -translate-y-1/2 -ml-5 z-10 
+              p-4 rounded-full bg-white shadow-xl border border-slate-100 
+              text-slate-700 hover:text-emerald-700 hover:border-emerald-200 hover:scale-110
+              transition-all duration-300 opacity-0 group-hover/section:opacity-100 focus:opacity-100
+            "
+            aria-label="Scroll left"
+          >
+            <ChevronLeft className="w-6 h-6" />
+          </button>
 
-            return (
-              <div
-                key={priority.id}
-                className={`
-                  snap-center flex-shrink-0
-                  w-[350px] lg:w-[400px] xl:w-[450px]
-                  group bg-slate-50 rounded-3xl p-6 xl:p-8 border border-slate-100
-                  hover:shadow-2xl hover:shadow-slate-900/5
-                  motion-safe:transition-all motion-safe:duration-300
-                  hover:-translate-y-2
-                  flex flex-col
-                `}
-              >
-                <div className="mb-6 rounded-2xl overflow-hidden h-48 xl:h-56 w-full relative shadow-inner">
-                  <img
-                    src={priority.image}
-                    alt={priority.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/0 to-transparent" />
-                  <div className="absolute top-4 left-4 inline-flex items-center gap-2 rounded-full bg-white/95 px-3 py-1.5 shadow-sm">
-                    <Icon className={`w-4 h-4 ${priority.accentText}`} />
-                    <span className="text-xs font-bold text-slate-800">
-                      {priority.subtitle}
-                    </span>
-                  </div>
-                </div>
+          {/* Right Arrow */}
+          <button
+            onClick={() => scroll('right')}
+            className="
+              absolute right-0 top-1/2 -translate-y-1/2 -mr-5 z-10 
+              p-4 rounded-full bg-white shadow-xl border border-slate-100 
+              text-slate-700 hover:text-emerald-700 hover:border-emerald-200 hover:scale-110
+              transition-all duration-300 opacity-0 group-hover/section:opacity-100 focus:opacity-100
+            "
+            aria-label="Scroll right"
+          >
+            <ChevronRight className="w-6 h-6" />
+          </button>
 
-                <h4 className="text-2xl font-extrabold text-slate-900 mb-2">
-                  {priority.title}
-                </h4>
-                <p className="text-sm font-bold text-emerald-700 mb-3 uppercase tracking-wide">
-                  {priority.initiativesCount}
-                </p>
-                <p className="text-slate-600 mb-6 leading-relaxed text-base flex-1">
-                  {priority.desc}
-                </p>
-                <button
-                  onClick={() => onNavigate("policies")}
+          {/* Scroll Container */}
+          <div 
+            ref={scrollRef}
+            className="
+              flex gap-8 overflow-x-auto pb-12 pt-4 snap-x 
+              scrollbar-hide scroll-smooth
+            "
+            style={{ scrollPaddingLeft: '1rem', scrollPaddingRight: '1rem' }}
+          >
+            {priorities.map((priority) => {
+              const Icon = priority.icon;
+
+              return (
+                <div
+                  key={priority.id}
                   className={`
-                    font-bold inline-flex items-center text-base
-                    text-emerald-700 group-hover:underline decoration-2 underline-offset-4
+                    snap-center flex-shrink-0
+                    w-[350px] lg:w-[400px] xl:w-[450px]
+                    group bg-slate-50 rounded-3xl p-6 xl:p-8 border border-slate-100
+                    hover:shadow-2xl hover:shadow-slate-900/5
+                    motion-safe:transition-all motion-safe:duration-300
+                    hover:-translate-y-2
+                    flex flex-col
                   `}
                 >
-                  View Details <ChevronRight className="w-5 h-5 ml-1" />
-                </button>
-              </div>
-            );
-          })}
+                  <div className="mb-6 rounded-2xl overflow-hidden h-48 xl:h-56 w-full relative shadow-inner">
+                    <img
+                      src={priority.image}
+                      alt={priority.title}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/0 to-transparent" />
+                    <div className="absolute top-4 left-4 inline-flex items-center gap-2 rounded-full bg-white/95 px-3 py-1.5 shadow-sm">
+                      <Icon className={`w-4 h-4 ${priority.accentText}`} />
+                      <span className="text-xs font-bold text-slate-800">
+                        {priority.subtitle}
+                      </span>
+                    </div>
+                  </div>
+
+                  <h4 className="text-2xl font-extrabold text-slate-900 mb-2">
+                    {priority.title}
+                  </h4>
+                  <p className="text-sm font-bold text-emerald-700 mb-3 uppercase tracking-wide">
+                    {priority.initiativesCount}
+                  </p>
+                  <p className="text-slate-600 mb-6 leading-relaxed text-base flex-1">
+                    {priority.desc}
+                  </p>
+                  <button
+                    onClick={() => onNavigate("policies")}
+                    className={`
+                      font-bold inline-flex items-center text-base
+                      text-emerald-700 group-hover:underline decoration-2 underline-offset-4
+                    `}
+                  >
+                    View Details <ArrowRight className="w-5 h-5 ml-1" />
+                  </button>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>

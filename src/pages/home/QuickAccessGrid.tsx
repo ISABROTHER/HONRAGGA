@@ -86,12 +86,24 @@ export function QuickAccessGrid({ onNavigate }: QuickAccessGridProps) {
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
 
         {/* ================================
-            PREMIUM UNDERLINED HEADING
+            PREMIUM HEADING BLOCK
         ================================= */}
         <div className="mb-4 md:mb-10">
-          <h2 className="text-lg sm:text-xl md:text-2xl font-extrabold text-slate-900 underline decoration-2 underline-offset-4">
-            Constituency Services
+          {/* Eyebrow label */}
+          <p className="text-[11px] sm:text-xs font-semibold tracking-[0.18em] uppercase text-green-700 mb-1">
+            The Constituency Hub
+          </p>
+
+          {/* Main underlined heading */}
+          <h2 className="inline-block text-lg sm:text-xl md:text-2xl font-extrabold text-slate-900 underline decoration-2 underline-offset-4 decoration-green-600">
+            Information, Services &amp; Support
           </h2>
+
+          {/* Subtext (desktop only) */}
+          <p className="hidden md:block text-sm text-slate-500 mt-2 max-w-2xl">
+            Quickly access projects, policies, issue reporting, achievements, support channels
+            and details about your MP — all in one place for Cape Coast North.
+          </p>
         </div>
 
         {/* ================================

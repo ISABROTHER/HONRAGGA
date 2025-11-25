@@ -13,8 +13,11 @@ export function Home({ onNavigate }: HomeProps) {
   const HERO_IMAGE_URL = "https://i.imgur.com/XC8k4zQ.jpeg";
 
   // DESKTOP HERO POSITION (EDIT THIS ONLY)
-  // You can still tweak this if you want to move the picture up/down on web.
   const HERO_POSITION = "center -200px";
+
+  // MOBILE SCALE (EDIT THIS TO SCALE IMAGE UP/DOWN ON PHONE)
+  // 1 = original, 0.9 = slightly zoomed out, 1.1 = slightly zoomed in
+  const MOBILE_SCALE = 1;
 
   // Data for the Quick Access Grid
   const quickLinks = [
@@ -79,17 +82,17 @@ export function Home({ onNavigate }: HomeProps) {
 
       {/* === 1. HERO BANNER (MOBILE + DESKTOP) === */}
       <section className="relative w-full">
-        {/* Mobile: fixed height you liked, ONLY image scaled slightly inside */}
-        <div className="block md:hidden w-full h-[360px] overflow-hidden bg-white">
+        {/* Mobile: image uses its natural height – no extra white inside, no magic numbers */}
+        <div className="block md:hidden w-full bg-white">
           <img
             src={HERO_IMAGE_URL}
             alt="Hon. Dr. Kwamena Minta Nyarku"
-            className="w-full h-full object-cover"
-            style={{ transform: "scale(0.9)", transformOrigin: "center top" }}
+            className="w-full h-auto"
+            style={{ transform: `scale(${MOBILE_SCALE})`, transformOrigin: "center top" }}
           />
         </div>
 
-        {/* Desktop: keep current web placement exactly */}
+        {/* Desktop: large hero with controlled crop */}
         <div className="hidden md:block w-full h-[90vh] overflow-hidden bg-white">
           <img
             src={HERO_IMAGE_URL}
@@ -101,8 +104,8 @@ export function Home({ onNavigate }: HomeProps) {
       </section>
 
       {/* === 2. QUICK ACCESS GRID === */}
-      {/* Slight negative margin + small top padding to reduce the gap under the hero on mobile */}
-      <section className="relative z-20 -mt-3 md:mt-0 pt-3 pb-8 md:py-16 bg-white">
+      {/* Pull cards tight under hero on mobile – no long white gap */}
+      <section className="relative z-20 -mt-[4px] md:mt-0 pt-2 pb-8 md:py-16 bg-white">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
           <div className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-6">
             {quickLinks.map((link, idx) => (

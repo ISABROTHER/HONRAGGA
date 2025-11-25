@@ -88,11 +88,12 @@ export function QuickAccessGrid({ onNavigate }: QuickAccessGridProps) {
     >
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
 
-        {/* ======================================
+        {/* ================================
             PREMIUM CENTERED HEADING BLOCK
-        ======================================= */}
+        ================================= */}
         <div className="text-center mb-6 md:mb-12">
-          {/* Eyebrow / label */}
+
+          {/* Eyebrow */}
           <p className="inline-flex items-center gap-2 rounded-full bg-green-50 px-3 py-1 border border-green-100">
             <span className="h-1.5 w-1.5 rounded-full bg-green-500 motion-safe:animate-pulse" />
             <span className="text-[10px] sm:text-xs font-semibold tracking-[0.22em] uppercase text-green-700">
@@ -114,16 +115,20 @@ export function QuickAccessGrid({ onNavigate }: QuickAccessGridProps) {
             </span>
           </h2>
 
-          {/* Subtext */}
-          <p className="hidden md:block text-sm text-slate-500 mt-3 max-w-xl mx-auto leading-relaxed">
-            Quickly access projects, policies, issue reporting, achievements, support channels
-            and details about your MP — all in one place for Cape Coast North.
+          {/* ================================
+              FINAL TWO-LINE PARLIAMENTARY MESSAGE
+          ================================= */}
+          <p className="text-sm text-slate-600 mt-4 max-w-2xl mx-auto leading-relaxed">
+            This is your direct window into the work I am undertaking on behalf of our constituency.
+          </p>
+          <p className="text-sm text-slate-600 mt-1 max-w-2xl mx-auto leading-relaxed">
+            I remain committed to serving you, being accountable, and keeping you informed at all times, because <span className="font-semibold text-slate-900">obiara ka ho</span>.
           </p>
         </div>
 
-        {/* ======================================
-            QUICK ACCESS GRID (MODERN INTERACTION)
-        ======================================= */}
+        {/* ================================
+            QUICK ACCESS GRID (MODERN STYLE)
+        ================================= */}
         <div className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-6">
           {quickLinks.map((link, idx) => (
             <button
@@ -139,7 +144,6 @@ export function QuickAccessGrid({ onNavigate }: QuickAccessGridProps) {
                 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white
               `}
             >
-              {/* Icon wrapper with depth */}
               <div
                 className="
                   w-10 h-10 md:w-16 md:h-16 bg-white rounded-lg md:rounded-2xl
@@ -151,7 +155,6 @@ export function QuickAccessGrid({ onNavigate }: QuickAccessGridProps) {
                 <link.icon className={`w-5 h-5 md:w-8 md:h-8 ${link.iconColor}`} />
               </div>
 
-              {/* Title */}
               <h3
                 className="
                   text-[10px] sm:text-xs md:text-xl font-bold text-slate-900
@@ -161,17 +164,14 @@ export function QuickAccessGrid({ onNavigate }: QuickAccessGridProps) {
                 {link.title}
               </h3>
 
-              {/* Mobile micro-description */}
               <p className="block md:hidden text-slate-500 text-[9px] leading-none font-medium tracking-tight">
                 {link.mobileDesc}
               </p>
 
-              {/* Desktop description */}
               <p className="hidden md:block text-slate-600 text-sm leading-relaxed max-w-xs mx-auto">
                 {link.desc}
               </p>
 
-              {/* Subtle bottom accent line on hover */}
               <span
                 className="
                   pointer-events-none
@@ -184,6 +184,7 @@ export function QuickAccessGrid({ onNavigate }: QuickAccessGridProps) {
             </button>
           ))}
         </div>
+
       </div>
     </section>
   );

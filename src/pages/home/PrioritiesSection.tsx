@@ -1,106 +1,371 @@
-// src/pages/home/BottomCTASection.tsx
-import { Button } from "../../components/Button";
-import { HandHeart, BookOpen, TrendingUp } from "lucide-react";
+// src/pages/home/PrioritiesSection.tsx
+import React, { useRef, useState, useEffect } from "react";
+import {
+  BookOpen,
+  HeartPulse,
+  Briefcase,
+  Construction,
+  Sprout,
+  ChevronRight,
+  ChevronLeft,
+  ArrowRight
+} from "lucide-react";
 
-interface BottomCTASectionProps {
+interface PrioritiesSectionProps {
   onNavigate: (page: string) => void;
 }
 
-export function BottomCTASection({ onNavigate }: BottomCTASectionProps) {
+type Priority = {
+  id: string;
+  title: string;
+  subtitle: string;
+  desc: string;
+  initiativesCount: string;
+  icon: React.ElementType;
+  accentBg: string;
+  accentText: string;
+  accentBorder: string;
+  image: string;
+};
+
+const priorities: Priority[] = [
+  {
+    id: "education",
+    title: "Educational Support",
+    subtitle: "Educational Support",
+    desc: "Supporting quality education, digital literacy, and youth skills training.",
+    initiativesCount: "3 initiatives listed",
+    icon: BookOpen,
+    accentBg: "bg-blue-100",
+    accentText: "text-blue-700",
+    accentBorder: "border-blue-200",
+    image:
+      "https://images.pexels.com/photos/3059748/pexels-photo-3059748.jpeg?auto=compress&cs=tinysrgb&w=800"
+  },
+  {
+    id: "health",
+    title: "Health & Sanitation",
+    subtitle: "Health & Sanitation",
+    desc: "Expanding access to healthcare and clean water for all.",
+    initiativesCount: "2 initiatives listed",
+    icon: HeartPulse,
+    accentBg: "bg-green-100",
+    accentText: "text-green-700",
+    accentBorder: "border-green-200",
+    image:
+      "https://images.pexels.com/photos/6129680/pexels-photo-6129680.jpeg?auto=compress&cs=tinysrgb&w=800"
+  },
+  {
+    id: "employment",
+    title: "Employment & Entrepreneurship",
+    subtitle: "Employment & Entrepreneurship",
+    desc: "Creating jobs and empowering local businesses.",
+    initiativesCount: "2 initiatives listed",
+    icon: Briefcase,
+    accentBg: "bg-amber-100",
+    accentText: "text-amber-700",
+    accentBorder: "border-amber-200",
+    image:
+      "https://images.pexels.com/photos/3943722/pexels-photo-3943722.jpeg?auto=compress&cs=tinysrgb&w=800"
+  },
+  {
+    id: "infrastructure",
+    title: "Infrastructure Development",
+    subtitle: "Infrastructure Development",
+    desc: "Improving roads, electrification, and connectivity.",
+    initiativesCount: "3 initiatives listed",
+    icon: Construction,
+    accentBg: "bg-slate-100",
+    accentText: "text-slate-800",
+    accentBorder: "border-slate-300",
+    image:
+      "https://images.pexels.com/photos/6000061/pexels-photo-6000061.jpeg?auto=compress&cs=tinysrgb&w=800"
+  },
+  {
+    id: "agriculture",
+    title: "Agricultural Support",
+    subtitle: "Agricultural Support",
+    desc: "Supporting farmers with tools, training, and market access.",
+    initiativesCount: "1 initiative listed",
+    icon: Sprout,
+    accentBg: "bg-emerald-100",
+    accentText: "text-emerald-700",
+    accentBorder: "border-emerald-200",
+    image:
+      "https://images.pexels.com/photos/3189873/pexels-photo-3189873.jpeg?auto=compress&cs=tinysrgb&w=800"
+  }
+];
+
+export function PrioritiesSection({ onNavigate }: PrioritiesSectionProps) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const checkScroll = () => {
+    if (scrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+      setCanScrollLeft(scrollLeft > 0);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10); // -10 buffer
+    }
+  };
+
+  useEffect(() => {
+    checkScroll();
+    window.addEventListener("resize", checkScroll);
+    return () => window.removeEventListener("resize", checkScroll);
+  }, []);
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollRef.current) {
+      const { current } = scrollRef;
+      const scrollAmount = 420; // Approximate card width + gap
+      if (direction === 'left') {
+        current.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+      } else {
+        current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      }
+    }
+  };
+
   return (
-    <section className="py-16 md:py-24 bg-slate-50 border-t border-slate-200 relative overflow-hidden">
-      
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <section className="py-12 md:py-24 bg-white">
+      <div className="max-w-[95%] 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* HEADER BLOCK */}
-        <div className="flex flex-col items-center mb-12 md:mb-16 text-center">
+        {/* Heading block */}
+        <div className="text-center mb-10 md:mb-16">
           
-          {/* Eyebrow Pill - Improved Contrast */}
-          <div className="inline-flex items-center gap-2 rounded-full bg-blue-100 px-3 py-1 border border-blue-200 mb-4">
-            <HandHeart className="w-3.5 h-3.5 text-blue-800" />
-            <span className="text-[10px] sm:text-xs font-bold tracking-[0.22em] uppercase text-blue-900">
-              Support The Agenda
+          {/* Eyebrow Pill */}
+          <p className="inline-flex items-center gap-2 rounded-full bg-green-50 px-4 py-1.5 border border-green-100">
+            <span className="h-2 w-2 rounded-full bg-green-500 motion-safe:animate-pulse" />
+            <span className="text-xs md:text-sm font-bold tracking-[0.2em] uppercase text-green-700">
+              My Vision
             </span>
+          </p>
+
+          {/* Main Heading */}
+          <div className="mt-4 flex flex-col items-center justify-center group">
+            <h3
+              className="
+                text-xl sm:text-2xl md:text-5xl 
+                font-extrabold tracking-tight text-center
+                bg-gradient-to-r from-slate-900 via-green-700 to-slate-900
+                bg-clip-text text-transparent
+                motion-safe:transition-transform motion-safe:duration-500
+              "
+            >
+              Priorities for Cape Coast North
+            </h3>
+            <span
+              className="
+                mt-3 h-1 w-16 rounded-full
+                bg-gradient-to-r from-green-500 via-emerald-500 to-green-600
+                motion-safe:transition-all motion-safe:duration-500
+                group-hover:w-32
+              "
+            />
           </div>
 
-          {/* Main heading - Solid High Contrast Color */}
-          <div className="flex flex-col items-center justify-center group">
-            <h2 className="
-              text-3xl sm:text-4xl md:text-5xl 
-              font-extrabold leading-tight tracking-tight mb-2
-              text-blue-950
-            ">
-              Powering Our Future Together
-            </h2>
-            <span className="
-              mt-4 h-1.5 w-20 rounded-full
-              bg-amber-500
-              group-hover:w-32 transition-all duration-500
-            " />
-          </div>
-          
-          <p className="mt-6 text-slate-800 max-w-2xl mx-auto text-base md:text-lg font-medium leading-relaxed">
-            Real change requires collective action. Contributing to specific projects helps build Cape Coast North directly.
+          <p className="mt-6 text-base md:text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed">
+            We are building a community where opportunity is shared, education is
+            accessible, and healthcare is a right, not a privilege.
           </p>
         </div>
 
-        {/* ACTION CARD */}
-        <div className="max-w-4xl mx-auto">
+        {/* =========================
+            MOBILE LAYOUT (Vertical Stack)
+           ========================= */}
+        <div className="md:hidden space-y-4">
+          {priorities.map((priority, index) => {
+            const Icon = priority.icon;
 
-          {/* FEATURED PROJECT CARD */}
-          <div className="bg-white text-slate-900 rounded-3xl overflow-hidden shadow-xl border border-slate-200 flex flex-col md:flex-row group hover:shadow-2xl transition-shadow duration-300">
-            
-            {/* Image Side */}
-            <div className="md:w-1/2 relative h-64 md:h-auto overflow-hidden">
-              <img 
-                src="https://images.pexels.com/photos/159866/books-book-pages-read-literature-159866.jpeg?auto=compress&cs=tinysrgb&w=800" 
-                alt="Books" 
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent md:bg-gradient-to-r"></div>
-              
-              <div className="absolute bottom-6 left-6">
-                <div className="inline-flex items-center gap-1.5 bg-amber-500 text-blue-950 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider shadow-sm">
-                  <TrendingUp className="w-3.5 h-3.5" /> Featured Project
-                </div>
-              </div>
-            </div>
+            if (index === 0) {
+              return (
+                <div
+                  key={priority.id}
+                  className="
+                    rounded-2xl overflow-hidden border border-slate-200 bg-white
+                    shadow-md
+                  "
+                >
+                  <div className="relative h-48 w-full overflow-hidden">
+                    <img
+                      src={priority.image}
+                      alt={priority.title}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                    <div className="absolute bottom-4 left-4">
+                      <div className="inline-flex items-center gap-2 rounded-full bg-white/90 px-3 py-1">
+                        <Icon className="w-3.5 h-3.5 text-slate-800" />
+                        <span className="text-[11px] uppercase tracking-[0.16em] font-semibold text-slate-800">
+                          Key Priority
+                        </span>
+                      </div>
+                    </div>
+                  </div>
 
-            {/* Content Side */}
-            <div className="flex-1 p-8 md:p-10 flex flex-col justify-center">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="p-2.5 bg-blue-100 rounded-xl text-blue-800">
-                  <BookOpen className="w-6 h-6" />
+                  <div className="p-5">
+                    <h4 className="text-xl font-extrabold mb-2 leading-snug text-slate-900">
+                      {priority.title}
+                    </h4>
+                    <p className="text-xs font-semibold text-emerald-700 mb-1">
+                      {priority.initiativesCount}
+                    </p>
+                    <p className="text-sm text-slate-700 leading-relaxed mb-4">
+                      {priority.desc}
+                    </p>
+                    <button
+                      onClick={() => onNavigate("policies")}
+                      className="inline-flex items-center text-sm font-semibold text-emerald-700"
+                    >
+                      View Details
+                      <ChevronRight className="w-4 h-4 ml-1" />
+                    </button>
+                  </div>
                 </div>
-                <h3 className="text-2xl font-bold text-blue-950">Operation 500,000</h3>
-              </div>
-              
-              <p className="text-slate-700 mb-8 leading-relaxed font-medium">
-                Our goal is to distribute <strong>500,000 exercise books</strong> to students across the constituency to support basic education and reduce the burden on families.
-              </p>
+              );
+            }
 
-              {/* Progress Bar Section */}
-              <div className="mb-8 p-5 bg-slate-50 rounded-2xl border border-slate-200">
-                <div className="flex justify-between items-baseline mb-2">
-                  <span className="text-2xl font-bold text-blue-900">325,000 <span className="text-sm font-bold text-slate-600">books raised</span></span>
-                  <span className="text-sm font-bold text-green-700 bg-green-100 px-2 py-1 rounded-lg">65%</span>
-                </div>
-                <div className="w-full bg-slate-200 rounded-full h-4 overflow-hidden">
-                  <div className="bg-green-600 h-4 rounded-full w-[65%] shadow-sm"></div>
-                </div>
-                <div className="mt-2 text-xs font-bold text-slate-500 text-right">Target: 500,000 books</div>
-              </div>
-
-              <Button 
-                onClick={() => onNavigate('volunteer')}
-                size="lg"
-                className="w-full justify-center bg-blue-900 hover:bg-blue-800 text-white py-4 text-lg font-bold shadow-lg"
+            return (
+              <button
+                key={priority.id}
+                type="button"
+                onClick={() => onNavigate("policies")}
+                className={`
+                  w-full flex items-stretch gap-4 rounded-2xl border ${priority.accentBorder}
+                  bg-white overflow-hidden shadow-sm
+                  motion-safe:transition-all motion-safe:duration-200
+                  active:scale-[0.98]
+                `}
               >
-                Support This Project
-              </Button>
-            </div>
-          </div>
+                <div className="relative w-28 min-w-[7rem] h-28 overflow-hidden">
+                  <img
+                    src={priority.image}
+                    alt={priority.title}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
 
+                <div className="flex-1 py-4 pr-4 text-left">
+                  <h4 className="text-base font-bold text-slate-900 leading-snug line-clamp-2">
+                    {priority.title}
+                  </h4>
+                  <p className="text-[10px] font-semibold text-emerald-700 mt-1">
+                    {priority.initiativesCount}
+                  </p>
+                  <p className="text-xs text-slate-600 leading-snug mt-1 line-clamp-2">
+                    {priority.desc}
+                  </p>
+                  <span className="mt-2 inline-flex items-center text-xs font-semibold text-emerald-700">
+                    View Details
+                    <ChevronRight className="w-3 h-3 ml-1" />
+                  </span>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* =========================
+            DESKTOP LAYOUT (Horizontal Scroll with Side Indicators)
+           ========================= */}
+        <div className="hidden md:block relative group/section">
+          
+          {/* Left Indicator */}
+          {canScrollLeft && (
+            <button
+              onClick={() => scroll('left')}
+              className="
+                absolute left-0 top-1/2 -translate-y-1/2 -ml-6 z-20 
+                p-4 rounded-full bg-white shadow-[0_0_20px_rgba(0,0,0,0.15)] border-2 border-gray-200 
+                text-slate-900 hover:text-green-700 hover:border-green-500 hover:bg-green-50 hover:scale-110
+                transition-all duration-300 animate-pulse
+              "
+              aria-label="Scroll left"
+            >
+              <ChevronLeft className="w-6 h-6" strokeWidth={3} />
+            </button>
+          )}
+
+          {/* Right Indicator */}
+          {canScrollRight && (
+            <button
+              onClick={() => scroll('right')}
+              className="
+                absolute right-0 top-1/2 -translate-y-1/2 -mr-6 z-20 
+                p-4 rounded-full bg-white shadow-[0_0_20px_rgba(0,0,0,0.15)] border-2 border-gray-200 
+                text-slate-900 hover:text-green-700 hover:border-green-500 hover:bg-green-50 hover:scale-110
+                transition-all duration-300 animate-pulse
+              "
+              aria-label="Scroll right"
+            >
+              <ChevronRight className="w-6 h-6" strokeWidth={3} />
+            </button>
+          )}
+
+          {/* Scroll Container */}
+          <div 
+            ref={scrollRef}
+            onScroll={checkScroll}
+            className="
+              flex gap-8 overflow-x-auto pb-12 pt-4 snap-x 
+              scrollbar-hide scroll-smooth relative z-10
+            "
+            style={{ scrollPaddingLeft: '1rem', scrollPaddingRight: '1rem' }}
+          >
+            {priorities.map((priority) => {
+              const Icon = priority.icon;
+
+              return (
+                <div
+                  key={priority.id}
+                  className={`
+                    snap-center flex-shrink-0
+                    w-[350px] lg:w-[400px] xl:w-[450px]
+                    group bg-slate-50 rounded-3xl p-6 xl:p-8 border border-slate-100
+                    hover:shadow-2xl hover:shadow-slate-900/5
+                    motion-safe:transition-all motion-safe:duration-300
+                    hover:-translate-y-2
+                    flex flex-col
+                  `}
+                >
+                  <div className="mb-6 rounded-2xl overflow-hidden h-48 xl:h-56 w-full relative shadow-inner">
+                    <img
+                      src={priority.image}
+                      alt={priority.title}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/0 to-transparent" />
+                    <div className="absolute top-4 left-4 inline-flex items-center gap-2 rounded-full bg-white/95 px-3 py-1.5 shadow-sm">
+                      <Icon className={`w-4 h-4 ${priority.accentText}`} />
+                      <span className="text-xs font-bold text-slate-800">
+                        {priority.subtitle}
+                      </span>
+                    </div>
+                  </div>
+
+                  <h4 className="text-2xl font-extrabold text-slate-900 mb-2">
+                    {priority.title}
+                  </h4>
+                  <p className="text-sm font-bold text-emerald-700 mb-3 uppercase tracking-wide">
+                    {priority.initiativesCount}
+                  </p>
+                  <p className="text-slate-600 mb-6 leading-relaxed text-base flex-1">
+                    {priority.desc}
+                  </p>
+                  <button
+                    onClick={() => onNavigate("policies")}
+                    className={`
+                      font-bold inline-flex items-center text-base
+                      text-emerald-700 group-hover:underline decoration-2 underline-offset-4
+                    `}
+                  >
+                    View Details <ArrowRight className="w-5 h-5 ml-1" />
+                  </button>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>

@@ -17,7 +17,7 @@ export function Home({ onNavigate }: HomeProps) {
 
   // MOBILE SCALE (EDIT THIS TO SCALE IMAGE UP/DOWN ON PHONE)
   // 1 = original, 1
-  6.9 = slightly zoomed out, 1.1 = slightly zoomed in
+  1.9 = slightly zoomed out, 1.1 = slightly zoomed in
   const MOBILE_SCALE = 1;
 
   // Data for the Quick Access Grid

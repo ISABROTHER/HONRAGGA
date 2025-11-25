@@ -20,7 +20,7 @@ const SCRIM_BOTTOM_OFFSET_CLASS = "bottom-0";
 
 // Scrim colour profile (Tailwind classes)
 const SCRIM_FROM_CLASS = "from-slate-950/100"; // strongest colour at bottom
-const SCRIM_VIA_CLASS = "via-slate-950/90";   // middle fade
+const SCRIM_VIA_CLASS = "via-slate-950/60";   // middle fade
 const SCRIM_TO_CLASS = "to-transparent";      // where it ends at top
 
 // Slider indicators position

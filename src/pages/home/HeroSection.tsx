@@ -27,7 +27,8 @@ export function HeroSection() {
   }, []);
 
   return (
-    <section className="relative w-full">
+    // On desktop, section has fixed height equal to hero (90vh)
+    <section className="relative w-full md:h-[90vh]">
       {/* === HERO IMAGE SLIDESHOW (MOBILE + DESKTOP) === */}
       <div className="relative w-full bg-white overflow-hidden">
         {/* Spacer for natural image height on mobile */}
@@ -51,8 +52,8 @@ export function HeroSection() {
           />
         ))}
 
-        {/* Desktop slideshow */}
-        <div className="hidden md:block w-full h-[90vh] relative overflow-hidden">
+        {/* Desktop slideshow fills the full height of the section */}
+        <div className="hidden md:block w-full h-full relative overflow-hidden">
           {HERO_IMAGES.map((url, idx) => (
             <img
               key={idx}
@@ -68,13 +69,13 @@ export function HeroSection() {
         </div>
       </div>
 
-      {/* === BLACK CONTAINER (EMPTY FOR NOW, OVERLAY ON HERO) === */}
-      <div className="absolute bottom-5 left-0 right-0 flex justify-center z-20 px-4">
-        <div className="bg-slate-950/70 backdrop-blur-sm rounded-xl px-4 py-3 shadow-lg min-w-[160px] min-h-[32px] flex items-center justify-center" />
+      {/* === LONG BLACK CONTAINER — ON TOP OF HERO (MOBILE + DESKTOP) === */}
+      <div className="absolute inset-x-0 bottom-6 flex justify-center z-20 px-4">
+        <div className="w-full max-w-3xl h-11 sm:h-12 bg-slate-950/75 backdrop-blur-sm rounded-full shadow-lg" />
       </div>
 
-      {/* === SLIDER INDICATORS === */}
-      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5 md:gap-2 z-10">
+      {/* === SLIDER INDICATORS (STILL ON HERO) === */}
+      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 md:gap-2 z-20">
         {HERO_IMAGES.map((_, idx) => (
           <span
             key={idx}

@@ -12,7 +12,7 @@ export function Home({ onNavigate }: HomeProps) {
   // Banner Image
   const HERO_IMAGE_URL = "https://i.imgur.com/XC8k4zQ.jpeg";
 
-  // CUSTOM HERO POSITION (EDIT THIS ONLY)
+  // DESKTOP HERO POSITION (EDIT THIS ONLY)
   // Example values:
   // "center -40px", "center -80px", "center -120px", "center 40px"
   const HERO_POSITION = "center -200px";
@@ -78,11 +78,20 @@ export function Home({ onNavigate }: HomeProps) {
   return (
     <div className="min-h-screen bg-white font-sans text-slate-900">
 
-      {/* === 1. HERO BANNER (WITH CUSTOM POSITION) === */}
+      {/* === 1. HERO BANNER (MOBILE + DESKTOP) === */}
       <section className="relative w-full">
-        {/* On mobile use aspect ratio instead of tall fixed height to remove big white space */}
-        <div className="w-full aspect-[3/4] sm:aspect-[16/9] md:h-[90vh] overflow-hidden bg-white">
-          <img 
+        {/* Mobile: show full image, no cropping */}
+        <div className="block md:hidden w-full bg-white">
+          <img
+            src={HERO_IMAGE_URL}
+            alt="Hon. Dr. Kwamena Minta Nyarku"
+            className="w-full h-auto object-contain"
+          />
+        </div>
+
+        {/* Desktop: large hero with controlled crop */}
+        <div className="hidden md:block w-full h-[90vh] overflow-hidden bg-white">
+          <img
             src={HERO_IMAGE_URL}
             alt="Hon. Dr. Kwamena Minta Nyarku"
             className="w-full h-full object-cover"
@@ -92,8 +101,8 @@ export function Home({ onNavigate }: HomeProps) {
       </section>
 
       {/* === 2. QUICK ACCESS GRID === */}
-      {/* Pull cards slightly up on mobile to reduce gap; reset on md+ */}
-      <section className="relative z-20 -mt-6 md:mt-0 pt-4 pb-8 md:py-16 bg-white">
+      {/* Slight negative margin to tuck cards closer to hero on mobile */}
+      <section className="relative z-20 -mt-2 md:mt-0 pt-3 pb-8 md:py-16 bg-white">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
           <div className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-6">
             {quickLinks.map((link, idx) => (

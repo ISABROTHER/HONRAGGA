@@ -1,4 +1,4 @@
-import { ArrowRight, Users, Heart, TrendingUp, Calendar, DollarSign } from 'lucide-react';
+import { ArrowRight, Users, Heart, TrendingUp, Calendar, CheckCircle, Mail, ChevronRight } from 'lucide-react';
 import { Button } from '../components/Button';
 
 interface HomeProps {
@@ -6,182 +6,224 @@ interface HomeProps {
 }
 
 export function Home({ onNavigate }: HomeProps) {
-  const stats = [
-    { icon: Users, value: '50K+', label: 'Supporters' },
-    { icon: Calendar, value: '200+', label: 'Events Held' },
-    { icon: Heart, value: '15K+', label: 'Volunteers' },
-    { icon: TrendingUp, value: '$2M+', label: 'Raised' },
-  ];
-
-  const values = [
-    {
-      title: 'Economic Opportunity',
-      description: 'Creating jobs and supporting small businesses',
-      icon: TrendingUp
-    },
-    {
-      title: 'Healthcare for All',
-      description: 'Affordable, accessible healthcare for every family',
-      icon: Heart
-    },
-    {
-      title: 'Community First',
-      description: 'Putting people over politics, always',
-      icon: Users
-    }
-  ];
-
-  // NOTE: This URL is non-portable. In a production site, replace this with a hosted image.
+  // Candidate Image from your previous file
   const CANDIDATE_IMAGE_URL = "https://scontent-arn2-1.xx.fbcdn.net/v/t39.30808-6/515441812_10163003867507920_4808851483961703661_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFkXpxZfRZCiS6tUkMuNIwhz6Ix5oWf9IPPojHmhZ_0g3q-yrs_5MJM8xygdYYX5g4&_nc_ohc=O_SI0alOrEUQ7kNvwFE3BmL&_nc_oc=AdkQ-x4mJmZz5C-Peh1kc9yDFigPG46vldlmExHwi79lZshgP8YqbgstLrh_t8KoN4Y&_nc_zt=23&_nc_ht=scontent-arn2-1.xx&_nc_gid=ZVbXGcOeCipYDkVva7FcmA&oh=00_Afd9WY4XJWo_eBqDQdctSg_i9eSVJ3yuBWa15kvxQYC1Og&oe=68FCCF73";
 
   return (
-    <div className="min-h-screen">
-      {/* HERO SECTION with Image, Black Bottom Fade (60% opacity), and Content Layering */}
-      <section className="relative w-full aspect-video min-h-[300px] max-h-[900px] flex items-center justify-center text-white overflow-hidden">
+    <div className="min-h-screen bg-white font-sans text-slate-900">
+      
+      {/* === HERO SECTION: Modern Split Layout === */}
+      <section className="relative bg-slate-50 lg:min-h-[85vh] flex flex-col lg:flex-row items-center overflow-hidden">
         
-        {/* 1. Background Image Container - Scales proportionally to the parent aspect ratio */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${CANDIDATE_IMAGE_URL})` }}
-          role="img"
-          aria-label="Campaign Hero Image"
-        >
-          {/* Top of the image remains clear */}
-        </div>
-
-        {/* 2. Cinematic Black Overlay - Bottom-up 60% fade */}
-        <div className="absolute inset-0">
-            {/* from-black/60 for 60% opacity, via-black/30 for smooth fade */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent"></div>
-        </div>
-
-        {/* 3. Layered Content - Text Centered and Scaling Fluidly */}
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-16">
-          <div className="text-center space-y-4 md:space-y-6 animate-fade-in flex flex-col items-center justify-center">
-
-            {/* Main Title - Proportional Scaling & No Wrap */}
-            <h1 className="text-4xl sm:text-6xl lg:text-8xl font-extrabold leading-none drop-shadow-lg [text-shadow:_0_4px_4px_rgb(0_0_0_/_60%)]">
-              {/* Added whitespace-nowrap to prevent line wrapping as requested */}
-              <span className="bg-gradient-to-r from-amber-400 to-amber-600 bg-clip-text text-transparent whitespace-nowrap">
-                A NEW VOICE FOR OUR FUTURE
+        {/* Text Content (Left on Desktop, Top on Mobile) */}
+        <div className="w-full lg:w-1/2 px-6 py-16 lg:py-24 lg:pl-20 xl:pl-32 z-10">
+          <div className="max-w-xl mx-auto lg:mx-0 text-center lg:text-left">
+            <div className="inline-flex items-center space-x-2 bg-blue-100 text-blue-900 px-3 py-1 rounded-full text-sm font-bold mb-6 tracking-wide uppercase">
+              <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
+              <span>MP for Cape Coast North</span>
+            </div>
+            
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 leading-[1.1] mb-6 tracking-tight">
+              Hon. Dr. Kwamena <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-900 to-blue-700">
+                Minta Nyarku
               </span>
             </h1>
-
-            {/* Sub-text - Proportional Scaling */}
-            <p className="text-lg sm:text-xl md:text-2xl text-white max-w-4xl mx-auto leading-tight drop-shadow-lg [text-shadow:_0_2px_2px_rgb(0_0_0_/_50%)]">
-              Together, we can build a future where economic opportunity, quality healthcare,
-              and excellent education are rights, not privileges.
+            
+            <p className="text-lg sm:text-xl text-slate-600 mb-8 leading-relaxed max-w-lg mx-auto lg:mx-0">
+              "Obiara Ka Ho." Championing the <strong>CETRA2030</strong> agenda to build a self-sustaining economy through education, innovation, and unity.
             </p>
-
-            {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
-              <Button
+            
+            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+              <Button 
+                onClick={() => onNavigate('volunteer')} 
+                variant="primary" 
                 size="lg"
-                variant="secondary"
-                onClick={() => onNavigate('volunteer')}
-                className="group shadow-lg shadow-amber-500/50"
+                className="shadow-xl shadow-blue-900/10 hover:shadow-blue-900/20"
               >
                 Join the Movement
-                <ArrowRight className="inline-block ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
-              <Button
+              <Button 
+                onClick={() => onNavigate('about')} 
+                variant="outline" 
                 size="lg"
-                variant="outline"
-                onClick={() => onNavigate('about')}
-                className="border-white text-white hover:bg-white hover:text-blue-900"
+                className="bg-white"
               >
-                Learn More About Jane
+                Meet Ragga
               </Button>
+            </div>
+          </div>
+        </div>
+
+        {/* Image Content (Right on Desktop, Bottom on Mobile) */}
+        <div className="w-full lg:w-1/2 h-[50vh] lg:h-auto lg:min-h-[85vh] relative">
+          <div className="absolute inset-0 bg-blue-900/5 lg:bg-transparent"></div>
+          {/* Decorative Shape */}
+          <div className="hidden lg:block absolute -left-24 inset-y-0 w-48 bg-slate-50 transform -skew-x-6 z-10"></div>
+          
+          <img 
+            src={CANDIDATE_IMAGE_URL} 
+            alt="Hon. Dr. Kwamena Minta Nyarku" 
+            className="w-full h-full object-cover object-top"
+          />
+          
+          {/* Gradient Overlay for Text Readability on Mobile */}
+          <div className="lg:hidden absolute inset-0 bg-gradient-to-t from-slate-50 via-transparent to-transparent"></div>
+        </div>
+      </section>
+
+      {/* === STATS / TRACK RECORD STRIP === */}
+      <section className="bg-blue-950 text-white py-12 relative overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '24px 24px' }}></div>
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x divide-blue-800/50">
+            <div className="p-2">
+              <div className="text-3xl md:text-5xl font-bold text-amber-400 mb-1">50K+</div>
+              <div className="text-sm md:text-base text-blue-200 uppercase tracking-wider font-medium">Supporters</div>
+            </div>
+            <div className="p-2">
+              <div className="text-3xl md:text-5xl font-bold text-amber-400 mb-1">2,500+</div>
+              <div className="text-sm md:text-base text-blue-200 uppercase tracking-wider font-medium">Streetlights</div>
+            </div>
+            <div className="p-2">
+              <div className="text-3xl md:text-5xl font-bold text-amber-400 mb-1">100+</div>
+              <div className="text-sm md:text-base text-blue-200 uppercase tracking-wider font-medium">Scholarships</div>
+            </div>
+            <div className="p-2">
+              <div className="text-3xl md:text-5xl font-bold text-amber-400 mb-1">1 Goal</div>
+              <div className="text-sm md:text-base text-blue-200 uppercase tracking-wider font-medium">Development</div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* STATS SECTION (Original) */}
-      <section className="py-16 bg-white border-b border-gray-200">
+      {/* === PRIORITIES PREVIEW === */}
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {stats.map(({ icon: Icon, value, label }) => (
-              <div key={label} className="text-center group">
-                <div className="inline-flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-blue-100 text-blue-900 group-hover:scale-110 transition-transform">
-                  <Icon className="w-8 h-8" />
-                </div>
-                <div className="text-3xl md:text-4xl font-bold text-gray-900 mb-1">{value}</div>
-                <div className="text-sm text-gray-600">{label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CORE VALUES SECTION (Original) */}
-      <section className="py-20 bg-gradient-to-b from-white to-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Our Core Values
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              A campaign built on principles that matter to real people
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <h2 className="text-sm font-bold text-blue-600 uppercase tracking-widest mb-2">My Vision</h2>
+            <h3 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4">Priorities for Cape Coast North</h3>
+            <p className="text-lg text-slate-600">
+              We are building a community where opportunity is shared, education is accessible, and healthcare is a right, not a privilege.
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {values.map(({ title, description, icon: Icon }) => (
-              <div
-                key={title}
-                className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 group hover:-translate-y-2"
-              >
-                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-900 to-blue-700 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                  <Icon className="w-7 h-7 text-white" />
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">
-                  {title}
-                </h3>
-                <p className="text-gray-600 leading-relaxed">
-                  {description}
-                </p>
+            {/* Card 1 */}
+            <div className="group bg-slate-50 rounded-2xl p-8 border border-slate-100 hover:border-blue-100 hover:shadow-2xl hover:shadow-blue-900/5 transition-all duration-300">
+              <div className="w-14 h-14 bg-blue-100 text-blue-700 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <TrendingUp className="w-7 h-7" />
               </div>
-            ))}
+              <h4 className="text-xl font-bold text-slate-900 mb-3">Economic Empowerment</h4>
+              <p className="text-slate-600 mb-6 leading-relaxed">
+                Revitalizing local markets, supporting small businesses, and driving the CETRA2030 agenda for youth employment.
+              </p>
+              <button 
+                onClick={() => onNavigate('policies')} 
+                className="text-blue-700 font-semibold inline-flex items-center group-hover:underline"
+              >
+                Learn more <ChevronRight className="w-4 h-4 ml-1" />
+              </button>
+            </div>
+
+            {/* Card 2 */}
+            <div className="group bg-slate-50 rounded-2xl p-8 border border-slate-100 hover:border-green-100 hover:shadow-2xl hover:shadow-green-900/5 transition-all duration-300">
+              <div className="w-14 h-14 bg-green-100 text-green-700 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <Heart className="w-7 h-7" />
+              </div>
+              <h4 className="text-xl font-bold text-slate-900 mb-3">Healthcare Access</h4>
+              <p className="text-slate-600 mb-6 leading-relaxed">
+                Improving clinic facilities in Kwaprow and Dankwakrom and ensuring maternal health support for all families.
+              </p>
+              <button 
+                 onClick={() => onNavigate('policies')}
+                 className="text-green-700 font-semibold inline-flex items-center group-hover:underline"
+              >
+                Learn more <ChevronRight className="w-4 h-4 ml-1" />
+              </button>
+            </div>
+
+            {/* Card 3 */}
+            <div className="group bg-slate-50 rounded-2xl p-8 border border-slate-100 hover:border-amber-100 hover:shadow-2xl hover:shadow-amber-900/5 transition-all duration-300">
+              <div className="w-14 h-14 bg-amber-100 text-amber-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <Users className="w-7 h-7" />
+              </div>
+              <h4 className="text-xl font-bold text-slate-900 mb-3">Community & Education</h4>
+              <p className="text-slate-600 mb-6 leading-relaxed">
+                From "Operation Light Up" to scholarships and school renovations, we are investing in our future leaders.
+              </p>
+              <button 
+                onClick={() => onNavigate('policies')}
+                className="text-amber-600 font-semibold inline-flex items-center group-hover:underline"
+              >
+                Learn more <ChevronRight className="w-4 h-4 ml-1" />
+              </button>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* --- MINI FOOTER SECTION (30% of Header Height) --- */}
-      {/* h-7/h-8 (28px/32px) as proportional fit; red, with no content */}
-      <section className="bg-campaign-red h-7 md:h-8 flex items-center justify-center overflow-hidden"></section>
+      {/* === NEWSLETTER / STAY CONNECTED === */}
+      <section className="py-20 bg-slate-100 border-y border-slate-200">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <Mail className="w-12 h-12 text-blue-900 mx-auto mb-6" />
+          <h2 className="text-3xl font-bold text-slate-900 mb-4">Stay Connected with Ragga</h2>
+          <p className="text-slate-600 mb-8 max-w-xl mx-auto">
+            Join our mailing list to receive updates on parliamentary activities, community projects, and upcoming town hall meetings.
+          </p>
+          
+          <form className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto" onSubmit={(e) => e.preventDefault()}>
+            <input 
+              type="email" 
+              placeholder="Email Address" 
+              className="flex-1 px-5 py-4 rounded-xl border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none shadow-sm"
+              required
+            />
+            <Button variant="primary" size="md" className="sm:w-auto w-full py-4">
+              Subscribe
+            </Button>
+          </form>
+          <p className="text-xs text-slate-500 mt-4">We respect your privacy. Unsubscribe at any time.</p>
+        </div>
+      </section>
 
-      {/* FOOTER CTA SECTION (Original) */}
-      <section className="py-20 bg-gradient-to-br from-blue-900 to-blue-800 text-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+      {/* === BOTTOM CTA === */}
+      <section className="py-24 bg-gradient-to-br from-blue-950 to-blue-900 text-white text-center relative overflow-hidden">
+        {/* Decorative Circles */}
+        <div className="absolute top-0 left-0 w-64 h-64 bg-white opacity-5 rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl"></div>
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-amber-500 opacity-10 rounded-full translate-x-1/3 translate-y-1/3 blur-3xl"></div>
+
+        <div className="relative z-10 max-w-4xl mx-auto px-6">
+          <h2 className="text-4xl md:text-6xl font-extrabold mb-6 tracking-tight">
             Ready to Make a Difference?
           </h2>
-          <p className="text-xl text-blue-100 mb-8 leading-relaxed">
-            Your voice matters. Your support makes this campaign possible.
-            Together, we can create the change our community deserves.
+          <p className="text-xl md:text-2xl text-blue-100 mb-10 font-light">
+            "Together, we can build a Cape Coast North that works for everyone."
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+            <Button 
+              onClick={() => onNavigate('volunteer')} 
+              variant="secondary" 
               size="lg"
-              variant="secondary"
-              onClick={() => onNavigate('volunteer')}
-              className="group"
+              className="w-full sm:w-auto px-10 py-4 text-lg font-bold shadow-2xl shadow-amber-900/20"
             >
               Volunteer Today
-              <ArrowRight className="inline-block ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Button>
-            <Button
+            <Button 
+              onClick={() => onNavigate('events')} 
+              variant="outline" 
               size="lg"
-              variant="outline"
-              onClick={() => onNavigate('events')}
-              className="border-white text-white hover:bg-white hover:text-blue-900"
+              className="w-full sm:w-auto px-10 py-4 text-lg border-white text-white hover:bg-white hover:text-blue-900"
             >
-              View Upcoming Events
+              Upcoming Events
             </Button>
           </div>
         </div>
       </section>
+
     </div>
   );
 }

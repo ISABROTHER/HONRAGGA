@@ -12,6 +12,11 @@ export function Home({ onNavigate }: HomeProps) {
   // Banner Image
   const HERO_IMAGE_URL = "https://i.imgur.com/XC8k4zQ.jpeg";
 
+  // CUSTOM HERO POSITION (EDIT THIS ONLY)
+  // Example values:
+  // "center -40px", "center -80px", "center -120px", "center 40px"
+  const HERO_POSITION = "center -80px";
+
   // Data for the Quick Access Grid
   const quickLinks = [
     {
@@ -73,16 +78,17 @@ export function Home({ onNavigate }: HomeProps) {
   return (
     <div className="min-h-screen bg-white font-sans text-slate-900">
 
-  {/* === 1. HERO BANNER (FINAL FIX) === */}
-<section className="relative w-full">
-  <div className="w-full h-[420px] md:h-[90vh] overflow-hidden">
-    <img 
-      src={HERO_IMAGE_URL}
-      alt="Hon. Dr. Kwamena Minta Nyarku"
-      className="w-full h-full object-cover object-top"
-        />
-         </div>
-         </section>
+      {/* === 1. HERO BANNER (WITH CUSTOM POSITION) === */}
+      <section className="relative w-full">
+        <div className="w-full h-[420px] md:h-[90vh] overflow-hidden">
+          <img 
+            src={HERO_IMAGE_URL}
+            alt="Hon. Dr. Kwamena Minta Nyarku"
+            className="w-full h-full object-cover"
+            style={{ objectPosition: HERO_POSITION }}
+          />
+        </div>
+      </section>
 
       {/* === 2. QUICK ACCESS GRID === */}
       <section className="py-8 md:py-16 bg-white relative z-20">
@@ -97,15 +103,12 @@ export function Home({ onNavigate }: HomeProps) {
                 <div className="w-10 h-10 md:w-16 md:h-16 bg-white rounded-lg md:rounded-2xl flex items-center justify-center shadow-sm mb-1.5 md:mb-5 group-hover:scale-110 transition-transform duration-300">
                   <link.icon className={`w-5 h-5 md:w-8 md:h-8 ${link.iconColor}`} />
                 </div>
-
                 <h3 className="text-[10px] sm:text-xs md:text-xl font-bold text-slate-900 mb-0.5 md:mb-2 leading-tight tracking-tight truncate w-full">
                   {link.title}
                 </h3>
-
                 <p className="block md:hidden text-slate-500 text-[9px] leading-none font-medium tracking-tight">
                   {link.mobileDesc}
                 </p>
-
                 <p className="hidden md:block text-slate-600 text-sm leading-relaxed max-w-xs mx-auto">
                   {link.desc}
                 </p>

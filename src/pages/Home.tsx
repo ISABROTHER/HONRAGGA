@@ -12,14 +12,12 @@ export function Home({ onNavigate }: HomeProps) {
   // Banner Image
   const HERO_IMAGE_URL = "https://i.imgur.com/XC8k4zQ.jpeg";
 
-  // DESKTOP HERO POSITION (EDIT THIS ONLY)
+  // DESKTOP HERO POSITION (EDIT THIS ONLY FOR WEB CROP)
   const HERO_POSITION = "center -200px";
 
-  // === MOBILE SCALE OPTIONS ===
-  // Uncomment ONLY ONE:
-  // const MOBILE_SCALE = "scale(1.06)";   // Slight enlarge
-  // const MOBILE_SCALE = "scale(1.12)";   // Medium enlarge (recommended)
-  const MOBILE_SCALE = "scale(1.41)";      // Strong enlarge
+  // MOBILE IMAGE SCALE (EDIT THIS ONLY TO ZOOM IN/OUT ON PHONE)
+  // 1.0 = original, 1.06 = slight, 1.12 = medium, 1.2 = strong
+  const MOBILE_SCALE = 1.12;
 
   // Data for the Quick Access Grid
   const quickLinks = [
@@ -84,21 +82,20 @@ export function Home({ onNavigate }: HomeProps) {
 
       {/* === 1. HERO BANNER (MOBILE + DESKTOP) === */}
       <section className="relative w-full">
-
-        {/* MOBILE HERO: SAME HEIGHT, ONLY IMAGE SCALED */}
+        {/* Mobile: same layout, only image slightly enlarged inside */}
         <div className="block md:hidden w-full bg-white overflow-hidden">
           <img
             src={HERO_IMAGE_URL}
             alt="Hon. Dr. Kwamena Minta Nyarku"
             className="w-full h-auto"
-            style={{ 
-              transform: MOBILE_SCALE,
+            style={{
+              transform: `scale(${MOBILE_SCALE})`,
               transformOrigin: "center top"
             }}
           />
         </div>
 
-        {/* DESKTOP HERO (UNCHANGED) */}
+        {/* Desktop: large hero with controlled crop (unchanged) */}
         <div className="hidden md:block w-full h-[90vh] overflow-hidden bg-white">
           <img
             src={HERO_IMAGE_URL}
@@ -107,10 +104,10 @@ export function Home({ onNavigate }: HomeProps) {
             style={{ objectPosition: HERO_POSITION }}
           />
         </div>
-
       </section>
 
       {/* === 2. QUICK ACCESS GRID === */}
+      {/* Pull cards tight under hero on mobile – no long white gap */}
       <section className="relative z-20 -mt-[4px] md:mt-0 pt-2 pb-8 md:py-16 bg-white">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
           <div className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-6">
@@ -123,15 +120,12 @@ export function Home({ onNavigate }: HomeProps) {
                 <div className="w-10 h-10 md:w-16 md:h-16 bg-white rounded-lg md:rounded-2xl flex items-center justify-center shadow-sm mb-1.5 md:mb-5 group-hover:scale-110 transition-transform duration-300">
                   <link.icon className={`w-5 h-5 md:w-8 md:h-8 ${link.iconColor}`} />
                 </div>
-
                 <h3 className="text-[10px] sm:text-xs md:text-xl font-bold text-slate-900 mb-0.5 md:mb-2 leading-tight tracking-tight truncate w-full">
                   {link.title}
                 </h3>
-
                 <p className="block md:hidden text-slate-500 text-[9px] leading-none font-medium tracking-tight">
                   {link.mobileDesc}
                 </p>
-
                 <p className="hidden md:block text-slate-600 text-sm leading-relaxed max-w-xs mx-auto">
                   {link.desc}
                 </p>
@@ -154,37 +148,30 @@ export function Home({ onNavigate }: HomeProps) {
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-3 md:grid-cols-6 gap-y-6 gap-x-2 md:gap-8 text-center md:divide-x md:divide-blue-800/50">
-            
             <div className="p-1">
               <div className="text-xl sm:text-2xl md:text-3xl font-bold text-amber-400 mb-0.5">50K+</div>
               <div className="text-[10px] sm:text-xs text-blue-200 uppercase tracking-wider font-medium">Supporters</div>
             </div>
-
             <div className="p-1">
               <div className="text-xl sm:text-2xl md:text-3xl font-bold text-amber-400 mb-0.5">2,500+</div>
               <div className="text-[10px] sm:text-xs text-blue-200 uppercase tracking-wider font-medium">Streetlights</div>
             </div>
-
             <div className="p-1">
               <div className="text-xl sm:text-2xl md:text-3xl font-bold text-amber-400 mb-0.5">100+</div>
               <div className="text-[10px] sm:text-xs text-blue-200 uppercase tracking-wider font-medium">Scholarships</div>
             </div>
-
             <div className="p-1">
               <div className="text-xl sm:text-2xl md:text-3xl font-bold text-amber-400 mb-0.5">200+</div>
               <div className="text-[10px] sm:text-xs text-blue-200 uppercase tracking-wider font-medium">Events Held</div>
             </div>
-
             <div className="p-1">
               <div className="text-xl sm:text-2xl md:text-3xl font-bold text-amber-400 mb-0.5">15K+</div>
               <div className="text-[10px] sm:text-xs text-blue-200 uppercase tracking-wider font-medium">Volunteers</div>
             </div>
-
             <div className="p-1">
               <div className="text-xl sm:text-2xl md:text-3xl font-bold text-amber-400 mb-0.5">1 Goal</div>
               <div className="text-[10px] sm:text-xs text-blue-200 uppercase tracking-wider font-medium">Development</div>
             </div>
-
           </div>
         </div>
       </section>
@@ -201,7 +188,6 @@ export function Home({ onNavigate }: HomeProps) {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-
             <div className="group bg-slate-50 rounded-2xl p-8 border border-slate-100 hover:border-blue-100 hover:shadow-2xl hover:shadow-blue-900/5 transition-all duration-300">
               <div className="w-14 h-14 bg-blue-100 text-blue-700 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <TrendingUp className="w-7 h-7" />
@@ -249,7 +235,6 @@ export function Home({ onNavigate }: HomeProps) {
                 Learn more <ChevronRight className="w-4 h-4 ml-1" />
               </button>
             </div>
-
           </div>
         </div>
       </section>
@@ -258,59 +243,4 @@ export function Home({ onNavigate }: HomeProps) {
       <section className="py-20 bg-slate-100 border-y border-slate-200">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <Mail className="w-12 h-12 text-blue-900 mx-auto mb-6" />
-          <h2 className="text-3xl font-bold text-slate-900 mb-4">Stay Connected with Ragga</h2>
-          <p className="text-slate-600 mb-8 max-w-xl mx-auto">
-            Join our mailing list to receive updates on parliamentary activities, community projects, and upcoming town hall meetings.
-          </p>
-          
-          <form className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto" onSubmit={(e) => e.preventDefault()}>
-            <input 
-              type="email" 
-              placeholder="Email Address" 
-              className="flex-1 px-5 py-4 rounded-xl border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none shadow-sm"
-              required
-            />
-            <Button variant="primary" size="md" className="sm:w-auto w-full py-4">
-              Subscribe
-            </Button>
-          </form>
-          <p className="text-xs text-slate-500 mt-4">We respect your privacy. Unsubscribe at any time.</p>
-        </div>
-      </section>
-
-      {/* === 6. BOTTOM CTA === */}
-      <section className="py-24 bg-gradient-to-br from-blue-950 to-blue-900 text-white text-center relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-64 h-64 bg-white opacity-5 rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl"></div>
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-amber-500 opacity-10 rounded-full translate-x-1/3 translate-y-1/3 blur-3xl"></div>
-
-        <div className="relative z-10 max-w-4xl mx-auto px-6">
-          <h2 className="text-4xl md:text-6xl font-extrabold mb-6 tracking-tight">
-            Ready to Make a Difference?
-          </h2>
-          <p className="text-xl md:text-2xl text-blue-100 mb-10 font-light">
-            "Together, we can build a Cape Coast North that works for everyone."
-          </p>
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <Button 
-              onClick={() => onNavigate('volunteer')} 
-              variant="secondary" 
-              size="lg"
-              className="w-full sm:w-auto px-10 py-4 text-lg font-bold shadow-2xl shadow-amber-900/20"
-            >
-              Volunteer Today
-            </Button>
-            <Button 
-              onClick={() => onNavigate('events')} 
-              variant="outline" 
-              size="lg"
-              className="w-full sm:w-auto px-10 py-4 text-lg border-white text-white hover:bg-white hover:text-blue-900"
-            >
-              Upcoming Events
-            </Button>
-          </div>
-        </div>
-      </section>
-
-    </div>
-  );
-}
+          <h2 className="text-3

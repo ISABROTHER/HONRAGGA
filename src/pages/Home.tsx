@@ -72,19 +72,14 @@ export function Home({ onNavigate }: HomeProps) {
 
   return (
     <div className="min-h-screen bg-white font-sans text-slate-900">
-      
-      {/* === 1. HERO BANNER === */}
-      {/* Removed mt-[112px] to fix the gap. The Header component handles the spacing. */}
+
+      {/* === 1. HERO BANNER (FIXED) === */}
       <section className="relative w-full">
-        {/* Mobile: h-[400px] (Keeps your requested mobile layout)
-           Desktop: md:h-[80vh] (Increases height significantly on web to show more people)
-           object-top: Ensures heads/faces are never cut off
-        */}
-        <div className="w-full h-[400px] md:h-[80vh] overflow-hidden">
+        <div className="w-full h-[400px] md:h-[80vh] overflow-hidden flex items-center justify-center bg-white">
           <img 
             src={HERO_IMAGE_URL} 
             alt="Hon. Dr. Kwamena Minta Nyarku" 
-            className="w-full h-full object-cover object-top"
+            className="w-full h-full object-cover md:object-contain"
           />
         </div>
       </section>
@@ -99,22 +94,18 @@ export function Home({ onNavigate }: HomeProps) {
                 onClick={() => onNavigate(link.route)}
                 className={`group relative overflow-hidden rounded-xl md:rounded-2xl border ${link.bgClass} bg-gradient-to-br p-2.5 md:p-8 flex flex-col items-center text-center cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 active:scale-95`}
               >
-                {/* Icon Container */}
                 <div className="w-10 h-10 md:w-16 md:h-16 bg-white rounded-lg md:rounded-2xl flex items-center justify-center shadow-sm mb-1.5 md:mb-5 group-hover:scale-110 transition-transform duration-300">
                   <link.icon className={`w-5 h-5 md:w-8 md:h-8 ${link.iconColor}`} />
                 </div>
-                
-                {/* Title */}
+
                 <h3 className="text-[10px] sm:text-xs md:text-xl font-bold text-slate-900 mb-0.5 md:mb-2 leading-tight tracking-tight truncate w-full">
                   {link.title}
                 </h3>
-                
-                {/* Mobile Description */}
+
                 <p className="block md:hidden text-slate-500 text-[9px] leading-none font-medium tracking-tight">
                   {link.mobileDesc}
                 </p>
 
-                {/* Desktop Description */}
                 <p className="hidden md:block text-slate-600 text-sm leading-relaxed max-w-xs mx-auto">
                   {link.desc}
                 </p>

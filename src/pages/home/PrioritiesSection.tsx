@@ -95,19 +95,6 @@ const priorities: Priority[] = [
       "https://images.pexels.com/photos/3189873/pexels-photo-3189873.jpeg?auto=compress&cs=tinysrgb&w=800"
   },
   {
-    id: "social",
-    title: "Social Welfare",
-    subtitle: "Social Welfare",
-    desc: "Empowering women, youth, and vulnerable groups.",
-    initiativesCount: "3 initiatives listed",
-    icon: Users,
-    accentBg: "bg-rose-100",
-    accentText: "text-rose-700",
-    accentBorder: "border-rose-200",
-    image:
-      "https://images.pexels.com/photos/936018/pexels-photo-936018.jpeg?auto=compress&cs=tinysrgb&w=800"
-  },
-  {
     id: "civic",
     title: "Civic Engagement",
     subtitle: "Civic Engagement",

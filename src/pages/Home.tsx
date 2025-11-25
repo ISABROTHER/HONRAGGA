@@ -73,10 +73,14 @@ export function Home({ onNavigate }: HomeProps) {
   return (
     <div className="min-h-screen bg-white font-sans text-slate-900">
       
-      {/* === 1. HERO BANNER (Clean Image Only) === */}
-      {/* mt-[112px] ensures it starts exactly below the fixed header + marquee */}
-      <section className="relative w-full mt-[112px] md:mt-[128px]">
-        <div className="w-full h-[400px] md:h-[600px] overflow-hidden">
+      {/* === 1. HERO BANNER === */}
+      {/* Removed mt-[112px] to fix the gap. The Header component handles the spacing. */}
+      <section className="relative w-full">
+        {/* Mobile: h-[400px] (Keeps your requested mobile layout)
+           Desktop: md:h-[80vh] (Increases height significantly on web to show more people)
+           object-top: Ensures heads/faces are never cut off
+        */}
+        <div className="w-full h-[400px] md:h-[80vh] overflow-hidden">
           <img 
             src={HERO_IMAGE_URL} 
             alt="Hon. Dr. Kwamena Minta Nyarku" 
@@ -270,7 +274,7 @@ export function Home({ onNavigate }: HomeProps) {
             >
               Upcoming Events
             </Button>
-          </div> 
+          </div>
         </div>
       </section>
 

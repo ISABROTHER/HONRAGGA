@@ -1,4 +1,7 @@
-import { ArrowRight, Users, Heart, TrendingUp, Calendar, CheckCircle, Mail, ChevronRight } from 'lucide-react';
+import { 
+  ArrowRight, Users, Heart, TrendingUp, Calendar, CheckCircle, Mail, ChevronRight,
+  MessageSquareWarning, HardHat, ScrollText, Award, HandHeart, UserCircle 
+} from 'lucide-react';
 import { Button } from '../components/Button';
 
 interface HomeProps {
@@ -8,6 +11,52 @@ interface HomeProps {
 export function Home({ onNavigate }: HomeProps) {
   // Candidate Image
   const CANDIDATE_IMAGE_URL = "https://scontent-arn2-1.xx.fbcdn.net/v/t39.30808-6/515441812_10163003867507920_4808851483961703661_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFkXpxZfRZCiS6tUkMuNIwhz6Ix5oWf9IPPojHmhZ_0g3q-yrs_5MJM8xygdYYX5g4&_nc_ohc=O_SI0alOrEUQ7kNvwFE3BmL&_nc_oc=AdkQ-x4mJmZz5C-Peh1kc9yDFigPG46vldlmExHwi79lZshgP8YqbgstLrh_t8KoN4Y&_nc_zt=23&_nc_ht=scontent-arn2-1.xx&_nc_gid=ZVbXGcOeCipYDkVva7FcmA&oh=00_Afd9WY4XJWo_eBqDQdctSg_i9eSVJ3yuBWa15kvxQYC1Og&oe=68FCCF73";
+
+  // Data for the new Quick Access Grid
+  const quickLinks = [
+    {
+      title: "Assembly Projects",
+      desc: "Track ongoing infrastructure developments, school renovations, and community builds.",
+      icon: HardHat,
+      color: "bg-amber-100/60", // Soft Yellow/Amber
+      route: "policies" // Mapping to policies/projects
+    },
+    {
+      title: "Report an Issue",
+      desc: "Spot a problem in your community? Report potholes, streetlights, or sanitation issues directly.",
+      icon: MessageSquareWarning,
+      color: "bg-emerald-100/60", // Soft Mint
+      route: "news" // Mapping to News page where the Report form is
+    },
+    {
+      title: "Policies & Vision",
+      desc: "Explore the CETRA2030 agenda and our blueprint for economic and social growth.",
+      icon: ScrollText,
+      color: "bg-blue-100/60", // Soft Blue
+      route: "policies"
+    },
+    {
+      title: "Achievements",
+      desc: "A record of promises kept: scholarships awarded, bills passed, and lives touched.",
+      icon: Award,
+      color: "bg-amber-100/60",
+      route: "about"
+    },
+    {
+      title: "Support the Cause",
+      desc: "Volunteer your time, donate to the campaign, or join a local action group.",
+      icon: HandHeart,
+      color: "bg-emerald-100/60",
+      route: "volunteer"
+    },
+    {
+      title: "About the MP",
+      desc: "Get to know Hon. Dr. Kwamena Minta Nyarku—his background, values, and story.",
+      icon: UserCircle,
+      color: "bg-blue-100/60",
+      route: "about"
+    }
+  ];
 
   return (
     <div className="min-h-screen bg-white font-sans text-slate-900">
@@ -72,7 +121,32 @@ export function Home({ onNavigate }: HomeProps) {
         </div>
       </section>
 
-      {/* === STATS / TRACK RECORD STRIP (UPDATED) === */}
+      {/* === QUICK ACCESS GRID (NEW SECTION) === */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {quickLinks.map((link, idx) => (
+              <div 
+                key={idx}
+                onClick={() => onNavigate(link.route)}
+                className={`${link.color} rounded-[2rem] p-8 flex flex-col items-center text-center cursor-pointer transition-all duration-300 hover:scale-[1.03] hover:shadow-lg`}
+              >
+                {/* Circle Icon Container */}
+                <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center border-2 border-slate-900 mb-6 shadow-sm">
+                  <link.icon className="w-8 h-8 text-slate-900 stroke-[1.5]" />
+                </div>
+                
+                <h3 className="text-xl font-bold text-slate-900 mb-3">{link.title}</h3>
+                <p className="text-slate-600 text-sm leading-relaxed max-w-xs mx-auto">
+                  {link.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* === STATS / TRACK RECORD STRIP === */}
       <section className="bg-blue-950 text-white py-8 relative overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '24px 24px' }}></div>

@@ -96,25 +96,25 @@ const priorities: Priority[] = [
 
 export function PrioritiesSection({ onNavigate }: PrioritiesSectionProps) {
   return (
-    <section className="py-10 md:py-14 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-12 md:py-24 bg-white">
+      <div className="max-w-[95%] 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Heading block */}
-        <div className="text-center mb-8 md:mb-12">
+        <div className="text-center mb-10 md:mb-16">
           
           {/* Eyebrow Pill */}
-          <p className="inline-flex items-center gap-2 rounded-full bg-green-50 px-3 py-1 border border-green-100">
-            <span className="h-1.5 w-1.5 rounded-full bg-green-500 motion-safe:animate-pulse" />
-            <span className="text-[10px] sm:text-xs font-semibold tracking-[0.22em] uppercase text-green-700">
+          <p className="inline-flex items-center gap-2 rounded-full bg-green-50 px-4 py-1.5 border border-green-100">
+            <span className="h-2 w-2 rounded-full bg-green-500 motion-safe:animate-pulse" />
+            <span className="text-xs md:text-sm font-bold tracking-[0.2em] uppercase text-green-700">
               My Vision
             </span>
           </p>
 
-          {/* Main Heading with Gradient & Underline */}
-          <div className="mt-3 flex flex-col items-center justify-center group">
+          {/* Main Heading */}
+          <div className="mt-4 flex flex-col items-center justify-center group">
             <h3
               className="
-                text-xl sm:text-2xl md:text-3xl
+                text-3xl sm:text-4xl md:text-5xl 
                 font-extrabold tracking-tight text-center
                 bg-gradient-to-r from-slate-900 via-green-700 to-slate-900
                 bg-clip-text text-transparent
@@ -125,28 +125,27 @@ export function PrioritiesSection({ onNavigate }: PrioritiesSectionProps) {
             </h3>
             <span
               className="
-                mt-2 h-[3px] w-12 rounded-full
+                mt-3 h-1 w-16 rounded-full
                 bg-gradient-to-r from-green-500 via-emerald-500 to-green-600
                 motion-safe:transition-all motion-safe:duration-500
-                group-hover:w-24
+                group-hover:w-32
               "
             />
           </div>
 
-          <p className="mt-4 text-sm text-slate-600 max-w-2xl mx-auto leading-relaxed">
+          <p className="mt-6 text-base md:text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed">
             We are building a community where opportunity is shared, education is
             accessible, and healthcare is a right, not a privilege.
           </p>
         </div>
 
         {/* =========================
-            MOBILE LAYOUT (NEWS-STYLE)
+            MOBILE LAYOUT
            ========================= */}
         <div className="md:hidden space-y-4">
           {priorities.map((priority, index) => {
             const Icon = priority.icon;
 
-            // First item = featured
             if (index === 0) {
               return (
                 <div
@@ -156,14 +155,14 @@ export function PrioritiesSection({ onNavigate }: PrioritiesSectionProps) {
                     shadow-md
                   "
                 >
-                  <div className="relative h-40 w-full overflow-hidden">
+                  <div className="relative h-48 w-full overflow-hidden">
                     <img
                       src={priority.image}
                       alt={priority.title}
                       className="w-full h-full object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-                    <div className="absolute bottom-3 left-3">
+                    <div className="absolute bottom-4 left-4">
                       <div className="inline-flex items-center gap-2 rounded-full bg-white/90 px-3 py-1">
                         <Icon className="w-3.5 h-3.5 text-slate-800" />
                         <span className="text-[11px] uppercase tracking-[0.16em] font-semibold text-slate-800">
@@ -173,19 +172,19 @@ export function PrioritiesSection({ onNavigate }: PrioritiesSectionProps) {
                     </div>
                   </div>
 
-                  <div className="p-4">
-                    <h4 className="text-lg font-extrabold mb-1 leading-snug text-slate-900">
+                  <div className="p-5">
+                    <h4 className="text-xl font-extrabold mb-2 leading-snug text-slate-900">
                       {priority.title}
                     </h4>
-                    <p className="text-[11px] font-semibold text-emerald-700 mb-1">
+                    <p className="text-xs font-semibold text-emerald-700 mb-1">
                       {priority.initiativesCount}
                     </p>
-                    <p className="text-xs text-slate-700 leading-relaxed mb-3">
+                    <p className="text-sm text-slate-700 leading-relaxed mb-4">
                       {priority.desc}
                     </p>
                     <button
                       onClick={() => onNavigate("policies")}
-                      className="inline-flex items-center text-xs font-semibold text-emerald-700"
+                      className="inline-flex items-center text-sm font-semibold text-emerald-700"
                     >
                       View Details
                       <ChevronRight className="w-4 h-4 ml-1" />
@@ -195,20 +194,19 @@ export function PrioritiesSection({ onNavigate }: PrioritiesSectionProps) {
               );
             }
 
-            // Remaining items
             return (
               <button
                 key={priority.id}
                 type="button"
                 onClick={() => onNavigate("policies")}
                 className={`
-                  w-full flex items-stretch gap-3 rounded-xl border ${priority.accentBorder}
+                  w-full flex items-stretch gap-4 rounded-2xl border ${priority.accentBorder}
                   bg-white overflow-hidden shadow-sm
                   motion-safe:transition-all motion-safe:duration-200
                   active:scale-[0.98]
                 `}
               >
-                <div className="relative w-24 min-w-[6rem] h-24 overflow-hidden">
+                <div className="relative w-28 min-w-[7rem] h-28 overflow-hidden">
                   <img
                     src={priority.image}
                     alt={priority.title}
@@ -216,17 +214,17 @@ export function PrioritiesSection({ onNavigate }: PrioritiesSectionProps) {
                   />
                 </div>
 
-                <div className="flex-1 py-3 pr-3 text-left">
-                  <h4 className="text-sm font-bold text-slate-900 leading-snug line-clamp-2">
+                <div className="flex-1 py-4 pr-4 text-left">
+                  <h4 className="text-base font-bold text-slate-900 leading-snug line-clamp-2">
                     {priority.title}
                   </h4>
-                  <p className="text-[11px] font-semibold text-emerald-700 mt-0.5">
+                  <p className="text-[10px] font-semibold text-emerald-700 mt-1">
                     {priority.initiativesCount}
                   </p>
-                  <p className="text-[11px] text-slate-600 leading-snug mt-0.5 line-clamp-3">
+                  <p className="text-xs text-slate-600 leading-snug mt-1 line-clamp-2">
                     {priority.desc}
                   </p>
-                  <span className="mt-1 inline-flex items-center text-[11px] font-semibold text-emerald-700">
+                  <span className="mt-2 inline-flex items-center text-xs font-semibold text-emerald-700">
                     View Details
                     <ChevronRight className="w-3 h-3 ml-1" />
                   </span>
@@ -239,7 +237,7 @@ export function PrioritiesSection({ onNavigate }: PrioritiesSectionProps) {
         {/* =========================
             DESKTOP / TABLET LAYOUT
            ========================= */}
-        <div className="hidden md:grid md:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
+        <div className="hidden md:grid md:grid-cols-3 xl:grid-cols-4 gap-8 xl:gap-10">
           {priorities.map((priority) => {
             const Icon = priority.icon;
 
@@ -247,45 +245,45 @@ export function PrioritiesSection({ onNavigate }: PrioritiesSectionProps) {
               <div
                 key={priority.id}
                 className={`
-                  group bg-slate-50 rounded-2xl p-5 md:p-6 border border-slate-100
+                  group bg-slate-50 rounded-3xl p-6 xl:p-8 border border-slate-100
                   hover:shadow-2xl hover:shadow-slate-900/5
                   motion-safe:transition-all motion-safe:duration-300
-                  hover:-translate-y-1.5 hover:scale-[1.01]
+                  hover:-translate-y-2 hover:scale-[1.01]
                   flex flex-col
                 `}
               >
-                <div className="mb-4 rounded-xl overflow-hidden h-28 w-full relative">
+                <div className="mb-6 rounded-2xl overflow-hidden h-40 xl:h-48 w-full relative shadow-inner">
                   <img
                     src={priority.image}
                     alt={priority.title}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/0 to-transparent" />
-                  <div className="absolute top-3 left-3 inline-flex items-center gap-2 rounded-full bg-white/90 px-3 py-1">
+                  <div className="absolute top-4 left-4 inline-flex items-center gap-2 rounded-full bg-white/95 px-3 py-1.5 shadow-sm">
                     <Icon className={`w-4 h-4 ${priority.accentText}`} />
-                    <span className="text-[11px] font-semibold text-slate-800">
+                    <span className="text-xs font-bold text-slate-800">
                       {priority.subtitle}
                     </span>
                   </div>
                 </div>
 
-                <h4 className="text-base md:text-lg font-bold text-slate-900 mb-1">
+                <h4 className="text-xl xl:text-2xl font-extrabold text-slate-900 mb-2">
                   {priority.title}
                 </h4>
-                <p className="text-xs font-semibold text-emerald-700 mb-1">
+                <p className="text-sm font-bold text-emerald-700 mb-3 uppercase tracking-wide">
                   {priority.initiativesCount}
                 </p>
-                <p className="text-slate-600 mb-4 leading-relaxed text-sm flex-1">
+                <p className="text-slate-600 mb-6 leading-relaxed text-base flex-1">
                   {priority.desc}
                 </p>
                 <button
                   onClick={() => onNavigate("policies")}
                   className={`
-                    font-semibold inline-flex items-center text-sm
-                    text-emerald-700 group-hover:underline
+                    font-bold inline-flex items-center text-base
+                    text-emerald-700 group-hover:underline decoration-2 underline-offset-4
                   `}
                 >
-                  View Details <ChevronRight className="w-4 h-4 ml-1" />
+                  View Details <ChevronRight className="w-5 h-5 ml-1" />
                 </button>
               </div>
             );

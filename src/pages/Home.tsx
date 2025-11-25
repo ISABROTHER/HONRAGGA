@@ -15,21 +15,21 @@ export function Home({ onNavigate }: HomeProps) {
   // Data for the new Quick Access Grid
   const quickLinks = [
     {
-      title: "Assembly Projects",
+      title: "Projects",
       desc: "Track ongoing infrastructure developments, school renovations, and community builds.",
       icon: HardHat,
       color: "bg-amber-100/60", // Soft Yellow/Amber
-      route: "policies" // Mapping to policies/projects
+      route: "policies"
     },
     {
-      title: "Report an Issue",
+      title: "Report Issue",
       desc: "Spot a problem in your community? Report potholes, streetlights, or sanitation issues directly.",
       icon: MessageSquareWarning,
       color: "bg-emerald-100/60", // Soft Mint
-      route: "news" // Mapping to News page where the Report form is
+      route: "news"
     },
     {
-      title: "Policies & Vision",
+      title: "Policies",
       desc: "Explore the CETRA2030 agenda and our blueprint for economic and social growth.",
       icon: ScrollText,
       color: "bg-blue-100/60", // Soft Blue
@@ -43,14 +43,14 @@ export function Home({ onNavigate }: HomeProps) {
       route: "about"
     },
     {
-      title: "Support the Cause",
+      title: "Support",
       desc: "Volunteer your time, donate to the campaign, or join a local action group.",
       icon: HandHeart,
       color: "bg-emerald-100/60",
       route: "volunteer"
     },
     {
-      title: "About the MP",
+      title: "About",
       desc: "Get to know Hon. Dr. Kwamena Minta Nyarku—his background, values, and story.",
       icon: UserCircle,
       color: "bg-blue-100/60",
@@ -121,23 +121,29 @@ export function Home({ onNavigate }: HomeProps) {
         </div>
       </section>
 
-      {/* === QUICK ACCESS GRID (NEW SECTION) === */}
-      <section className="py-20 bg-white">
+      {/* === QUICK ACCESS GRID (UPDATED: 3 PER LINE ON MOBILE) === */}
+      <section className="py-12 md:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* 3 cols on mobile (grid-cols-3), 2 on tablet, 3 on desktop */}
+          <div className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
             {quickLinks.map((link, idx) => (
               <div 
                 key={idx}
                 onClick={() => onNavigate(link.route)}
-                className={`${link.color} rounded-[2rem] p-8 flex flex-col items-center text-center cursor-pointer transition-all duration-300 hover:scale-[1.03] hover:shadow-lg`}
+                className={`${link.color} rounded-2xl md:rounded-[2rem] p-3 md:p-8 flex flex-col items-center text-center cursor-pointer transition-all duration-300 hover:scale-[1.03] hover:shadow-lg active:scale-95`}
               >
-                {/* Circle Icon Container */}
-                <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center border-2 border-slate-900 mb-6 shadow-sm">
-                  <link.icon className="w-8 h-8 text-slate-900 stroke-[1.5]" />
+                {/* Circle Icon Container: Smaller on mobile */}
+                <div className="w-12 h-12 md:w-20 md:h-20 bg-white rounded-full flex items-center justify-center border border-slate-900 mb-2 md:mb-6 shadow-sm">
+                  <link.icon className="w-6 h-6 md:w-8 md:h-8 text-slate-900 stroke-[1.5]" />
                 </div>
                 
-                <h3 className="text-xl font-bold text-slate-900 mb-3">{link.title}</h3>
-                <p className="text-slate-600 text-sm leading-relaxed max-w-xs mx-auto">
+                {/* Title: Smaller text on mobile */}
+                <h3 className="text-xs md:text-xl font-bold text-slate-900 mb-0 md:mb-3 leading-tight">
+                  {link.title}
+                </h3>
+                
+                {/* Description: Hidden on Mobile to fit 3 per line, Visible on Desktop */}
+                <p className="hidden md:block text-slate-600 text-sm leading-relaxed max-w-xs mx-auto">
                   {link.desc}
                 </p>
               </div>

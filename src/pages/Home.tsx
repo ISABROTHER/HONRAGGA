@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import { 
   ArrowRight, Users, Heart, TrendingUp, Calendar, CheckCircle, Mail, ChevronRight,
   MessageSquareWarning, HardHat, ScrollText, Award, HandHeart, UserCircle 
@@ -10,36 +9,8 @@ interface HomeProps {
 }
 
 export function Home({ onNavigate }: HomeProps) {
-  // Hero Images (Slideshow pool)
-  const HERO_IMAGES = [
-    "https://i.imgur.com/XC8k4zQ.jpeg",
-    "https://i.imgur.com/NSWtjdU.jpeg",
-    "https://i.imgur.com/EqnSMPU.jpeg",
-    "https://i.imgur.com/1P4hgqC.jpeg",
-    "https://i.imgur.com/lUPM6jK.jpeg",
-    "https://i.imgur.com/hmaoKHa.jpeg"
-  ];
-
-  // Start from a random image
-  const [currentIndex, setCurrentIndex] = useState(
-    () => Math.floor(Math.random() * HERO_IMAGES.length)
-  );
-
-  // DESKTOP HERO POSITION (EDIT THIS ONLY FOR WEB)
-  const HERO_POSITION = "center -200px";
-
-  // MOBILE VERTICAL OFFSET (EDIT THIS ONLY FOR PHONE)
-  // 0 = current, negative = pull image UP, positive = push image DOWN
-  const MOBILE_Y_OFFSET = 0;
-
-  // Change image every 3 seconds with smooth cross-fade
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % HERO_IMAGES.length);
-    }, 3000); // 3 seconds
-
-    return () => clearInterval(interval);
-  }, [HERO_IMAGES.length]);
+  // Banner Image
+  const HERO_IMAGE_URL = "https://i.imgur.com/XC8k4zQ.jpeg";
 
   // Data for the Quick Access Grid
   const quickLinks = [
@@ -101,65 +72,23 @@ export function Home({ onNavigate }: HomeProps) {
 
   return (
     <div className="min-h-screen bg-white font-sans text-slate-900">
-
-      {/* === 1. HERO BANNER (MOBILE + DESKTOP) === */}
-      <section className="relative w-full">
-        {/* Mobile: maintain natural height using an invisible spacer image */}
-        <div className="block md:hidden w-full bg-white overflow-hidden relative">
-          {/* Spacer to keep the original height */}
-          <img
-            src={HERO_IMAGES[0]}
-            alt=""
-            className="w-full h-auto invisible"
+      
+      {/* === 1. HERO BANNER (Clean Image Only) === */}
+      {/* Adjusted mt-20 md:mt-24 to reduce gap between header and image */}
+      <section className="relative w-full mt-20 md:mt-24">
+        {/* Increased height to h-[550px] on mobile and 85vh on desktop to show full figures */}
+        {/* Changed object-top to object-center to show legs/feet */}
+        <div className="w-full h-[550px] md:h-[85vh] overflow-hidden">
+          <img 
+            src={HERO_IMAGE_URL} 
+            alt="Hon. Dr. Kwamena Minta Nyarku" 
+            className="w-full h-full object-cover object-center"
           />
-
-          {/* Cross-fade stack */}
-          {HERO_IMAGES.map((url, idx) => (
-            <img
-              key={idx}
-              src={url}
-              alt="Hon. Dr. Kwamena Minta Nyarku"
-              className="absolute top-0 left-0 w-full h-auto transition-opacity duration-800 ease-in-out"
-              style={{
-                opacity: idx === currentIndex ? 1 : 0,
-                transform: `translateY(${MOBILE_Y_OFFSET}px)`
-              }}
-            />
-          ))}
-        </div>
-
-        {/* Desktop: large hero with controlled crop, cross-fade */}
-        <div className="hidden md:block w-full h-[90vh] overflow-hidden bg-white relative">
-          {HERO_IMAGES.map((url, idx) => (
-            <img
-              key={idx}
-              src={url}
-              alt="Hon. Dr. Kwamena Minta Nyarku"
-              className="absolute inset-0 w-full h-full object-cover transition-opacity duration-800 ease-in-out"
-              style={{
-                opacity: idx === currentIndex ? 1 : 0,
-                objectPosition: HERO_POSITION
-              }}
-            />
-          ))}
-        </div>
-
-        {/* Slider indicators (6 dots) */}
-        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 md:gap-2">
-          {HERO_IMAGES.map((_, idx) => (
-            <span
-              key={idx}
-              className={`h-1.5 w-1.5 md:h-2 md:w-2 rounded-full border border-white/60 ${
-                idx === currentIndex ? "bg-white" : "bg-white/10"
-              }`}
-            />
-          ))}
         </div>
       </section>
 
       {/* === 2. QUICK ACCESS GRID === */}
-      {/* Pull cards tight under hero on mobile – no long white gap */}
-      <section className="relative z-20 -mt-[4px] md:mt-0 pt-2 pb-8 md:py-16 bg-white">
+      <section className="py-8 md:py-16 bg-white relative z-20">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
           <div className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-6">
             {quickLinks.map((link, idx) => (
@@ -168,15 +97,22 @@ export function Home({ onNavigate }: HomeProps) {
                 onClick={() => onNavigate(link.route)}
                 className={`group relative overflow-hidden rounded-xl md:rounded-2xl border ${link.bgClass} bg-gradient-to-br p-2.5 md:p-8 flex flex-col items-center text-center cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 active:scale-95`}
               >
+                {/* Icon Container */}
                 <div className="w-10 h-10 md:w-16 md:h-16 bg-white rounded-lg md:rounded-2xl flex items-center justify-center shadow-sm mb-1.5 md:mb-5 group-hover:scale-110 transition-transform duration-300">
                   <link.icon className={`w-5 h-5 md:w-8 md:h-8 ${link.iconColor}`} />
                 </div>
+                
+                {/* Title */}
                 <h3 className="text-[10px] sm:text-xs md:text-xl font-bold text-slate-900 mb-0.5 md:mb-2 leading-tight tracking-tight truncate w-full">
                   {link.title}
                 </h3>
+                
+                {/* Mobile Description */}
                 <p className="block md:hidden text-slate-500 text-[9px] leading-none font-medium tracking-tight">
                   {link.mobileDesc}
                 </p>
+
+                {/* Desktop Description */}
                 <p className="hidden md:block text-slate-600 text-sm leading-relaxed max-w-xs mx-auto">
                   {link.desc}
                 </p>
@@ -188,14 +124,7 @@ export function Home({ onNavigate }: HomeProps) {
 
       {/* === 3. STATS STRIP === */}
       <section className="bg-blue-950 text-white py-8 relative overflow-hidden">
-        <div
-          className="absolute inset-0 opacity-10"
-          style={{
-            backgroundImage:
-              'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
-            backgroundSize: '24px 24px',
-          }}
-        ></div>
+        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '24px 24px' }}></div>
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-3 md:grid-cols-6 gap-y-6 gap-x-2 md:gap-8 text-center md:divide-x md:divide-blue-800/50">
@@ -227,7 +156,7 @@ export function Home({ onNavigate }: HomeProps) {
         </div>
       </section>
 
-      {/* === 4. PRIORITIES PREVIEW === */} 
+      {/* === 4. PRIORITIES PREVIEW === */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">

@@ -11,7 +11,11 @@ const HERO_IMAGES = [
   "https://i.imgur.com/hmaoKHa.jpeg"
 ];
 
+// DESKTOP HERO POSITION (EDIT THIS ONLY FOR WEB)
 const HERO_POSITION = "center -200px";
+
+// MOBILE VERTICAL OFFSET (EDIT THIS ONLY FOR PHONE)
+// 0 = current, negative = pull image UP, positive = push image DOWN
 const MOBILE_Y_OFFSET = 0;
 
 export function HeroSection() {
@@ -19,6 +23,7 @@ export function HeroSection() {
     () => Math.floor(Math.random() * HERO_IMAGES.length)
   );
 
+  // Change image every 3 seconds with smooth cross-fade
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % HERO_IMAGES.length);
@@ -29,18 +34,18 @@ export function HeroSection() {
 
   return (
     <section className="relative w-full">
-      {/* MOBILE HERO (keeps same height, text overlays) */}
+      {/* MOBILE HERO (text on image, no extra height) */}
       <div className="block md:hidden relative w-full bg-white overflow-hidden">
-        {/* Spacer to maintain original image height */}
+        {/* Spacer to maintain natural height */}
         <img src={HERO_IMAGES[0]} alt="" className="w-full h-auto invisible" />
 
-        {/* Slideshow */}
+        {/* Cross-fade slideshow */}
         {HERO_IMAGES.map((url, idx) => (
           <img
             key={idx}
             src={url}
             alt="Hon. Dr. Kwamena Minta Nyarku"
-            className="absolute inset-0 w-full h-auto transition-opacity duration-800 ease-in-out"
+            className="absolute top-0 left-0 w-full h-auto transition-opacity duration-800 ease-in-out"
             style={{
               opacity: idx === currentIndex ? 1 : 0,
               transform: `translateY(${MOBILE_Y_OFFSET}px)`
@@ -48,46 +53,43 @@ export function HeroSection() {
           />
         ))}
 
-        {/* DARK GRADIENT OVERLAY FOR READABILITY */}
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/50 to-transparent" />
+        {/* Compact text card OVER the hero (bottom), no stretch */}
+        <div className="absolute bottom-4 left-0 right-0 px-4">
+          <div className="bg-slate-950/80 backdrop-blur-sm rounded-2xl px-3.5 py-3.5 shadow-md">
+            <p className="text-[10px] font-semibold tracking-[0.2em] uppercase mb-1 text-amber-300">
+              Your MP, Your Neighbour
+            </p>
+            <h1 className="text-sm sm:text-base font-extrabold leading-snug mb-2 text-white">
+              Working with You for a Stronger Cape Coast North
+            </h1>
+            <p className="text-[11px] text-slate-100 mb-3">
+              From “Operation 2000 Desks” to lighting our communities and
+              supporting our schools, every project begins with one question:{" "}
+              <span className="italic">how does this help our people?</span>
+            </p>
 
-        {/* MOBILE OVERLAY TEXT — inside hero */}
-        <div className="absolute bottom-4 left-0 right-0 px-4 text-white relative z-10">
-          <p className="text-[10px] font-semibold tracking-[0.2em] uppercase mb-1 text-amber-300">
-            Your MP, Your Neighbour
-          </p>
-          <h1 className="text-xl font-extrabold leading-snug mb-2">
-            Working with You for a Stronger Cape Coast North
-          </h1>
-          <p className="text-xs font-medium mb-3 text-slate-100">
-            From “Operation 2000 Desks” to lighting our communities and
-            supporting our schools, every project begins with one
-            question:{" "}
-            <span className="italic">how does this help our people?</span>
-          </p>
-
-          <div className="flex gap-2">
-            <Button
-              variant="primary"
-              size="sm"
-              className="px-3 py-2 text-[10px] font-semibold"
-            >
-              View Projects
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              className="px-3 py-2 text-[10px] font-semibold border-white text-white hover:bg-white hover:text-slate-900"
-            >
-              Share Concern
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                variant="primary"
+                size="sm"
+                className="px-3 py-2 text-[10px] font-semibold"
+              >
+                View Projects
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="px-3 py-2 text-[10px] font-semibold border-white text-white hover:bg-white hover:text-slate-900"
+              >
+                Share Concern
+              </Button>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* DESKTOP HERO */}
+      {/* DESKTOP HERO (same 90vh, text inside image) */}
       <div className="hidden md:block w-full h-[90vh] overflow-hidden bg-white relative">
-        {/* Slideshow */}
         {HERO_IMAGES.map((url, idx) => (
           <img
             key={idx}
@@ -101,23 +103,23 @@ export function HeroSection() {
           />
         ))}
 
-        {/* DESKTOP TEXT OVERLAY — stays inside hero height */}
+        {/* Desktop text overlay – small card, no stretching */}
         <div className="absolute inset-0 flex items-center">
           <div className="max-w-7xl mx-auto px-12">
-            <div className="max-w-xl bg-slate-900/60 backdrop-blur-md border border-white/10 rounded-3xl px-8 py-10 shadow-2xl shadow-slate-900/50">
+            <div className="max-w-xl bg-slate-950/75 backdrop-blur-sm border border-white/10 rounded-3xl px-8 py-9 shadow-2xl shadow-slate-900/60">
               <p className="text-xs font-semibold tracking-[0.2em] uppercase text-amber-300 mb-3">
                 Your MP, Your Neighbour
               </p>
               <h1 className="text-4xl lg:text-5xl font-extrabold text-white leading-tight mb-4">
                 Working with You for a Stronger Cape Coast North
               </h1>
-              <p className="text-base lg:text-lg text-slate-100/90 mb-8 leading-relaxed">
+              <p className="text-base lg:text-lg text-slate-100/90 mb-7 leading-relaxed">
                 From “Operation 2000 Desks” to lighting our communities and
                 supporting our schools, every project begins with one question:{" "}
                 <span className="italic">how does this help our people?</span>
               </p>
 
-              <div className="flex gap-4">
+              <div className="flex flex-wrap gap-4">
                 <Button
                   variant="primary"
                   size="md"
@@ -138,7 +140,7 @@ export function HeroSection() {
         </div>
       </div>
 
-      {/* Slider Indicators */}
+      {/* Slider indicators (same as before, inside hero) */}
       <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 md:gap-2 z-20">
         {HERO_IMAGES.map((_, idx) => (
           <span

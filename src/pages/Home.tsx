@@ -13,8 +13,6 @@ export function Home({ onNavigate }: HomeProps) {
   const HERO_IMAGE_URL = "https://i.imgur.com/XC8k4zQ.jpeg";
 
   // DESKTOP HERO POSITION (EDIT THIS ONLY)
-  // Example values:
-  // "center -40px", "center -80px", "center -120px", "center 40px"
   const HERO_POSITION = "center -200px";
 
   // Data for the Quick Access Grid
@@ -80,13 +78,12 @@ export function Home({ onNavigate }: HomeProps) {
 
       {/* === 1. HERO BANNER (MOBILE + DESKTOP) === */}
       <section className="relative w-full">
-        {/* Mobile: old style height, reduced by ~10% (360px) */}
-        <div className="block md:hidden w-full h-[360px] overflow-hidden bg-white">
+        {/* Mobile: image uses its natural height – no extra white inside, no magic numbers */}
+        <div className="block md:hidden w-full bg-white">
           <img
             src={HERO_IMAGE_URL}
             alt="Hon. Dr. Kwamena Minta Nyarku"
-            className="w-full h-full object-cover"
-            style={{ objectPosition: HERO_POSITION }}
+            className="w-full h-auto"
           />
         </div>
 
@@ -102,8 +99,8 @@ export function Home({ onNavigate }: HomeProps) {
       </section>
 
       {/* === 2. QUICK ACCESS GRID === */}
-      {/* Slight negative margin to tuck cards closer to hero on mobile */}
-      <section className="relative z-20 -mt-2 md:mt-0 pt-3 pb-8 md:py-16 bg-white">
+      {/* Pull cards tight under hero on mobile – no long white gap */}
+      <section className="relative z-20 -mt-[4px] md:mt-0 pt-2 pb-8 md:py-16 bg-white">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
           <div className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-6">
             {quickLinks.map((link, idx) => (

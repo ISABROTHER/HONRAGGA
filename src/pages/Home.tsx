@@ -74,14 +74,17 @@ export function Home({ onNavigate }: HomeProps) {
     <div className="min-h-screen bg-white font-sans text-slate-900">
       
       {/* === 1. HERO BANNER === */}
-      {/* pt-20/24 pushes it down just enough to clear the header, removing the large gap */}
-      <section className="relative w-full pt-20 md:pt-24">
-        {/* Increased mobile height to h-[500px] and used object-center to show legs */}
-        <div className="w-full h-[500px] md:h-[80vh] overflow-hidden">
+      {/* Removed mt-[112px] to fix the gap. The Header component handles the spacing. */}
+      <section className="relative w-full">
+        {/* Mobile: h-[400px] (Keeps your requested mobile layout)
+           Desktop: md:h-[80vh] (Increases height significantly on web to show more people)
+           object-top: Ensures heads/faces are never cut off
+        */}
+        <div className="w-full h-[400px] md:h-[80vh] overflow-hidden">
           <img 
             src={HERO_IMAGE_URL} 
             alt="Hon. Dr. Kwamena Minta Nyarku" 
-            className="w-full h-full object-cover object-center"
+            className="w-full h-full object-cover object-top"
           />
         </div>
       </section>

@@ -80,12 +80,13 @@ export function Home({ onNavigate }: HomeProps) {
 
       {/* === 1. HERO BANNER (MOBILE + DESKTOP) === */}
       <section className="relative w-full">
-        {/* Mobile: show full image, no cropping */}
-        <div className="block md:hidden w-full bg-white">
+        {/* Mobile: old style height, reduced by ~10% (360px) */}
+        <div className="block md:hidden w-full h-[360px] overflow-hidden bg-white">
           <img
             src={HERO_IMAGE_URL}
             alt="Hon. Dr. Kwamena Minta Nyarku"
-            className="w-full h-auto object-contain"
+            className="w-full h-full object-cover"
+            style={{ objectPosition: HERO_POSITION }}
           />
         </div>
 

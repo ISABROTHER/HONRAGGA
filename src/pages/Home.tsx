@@ -71,7 +71,7 @@ export function Home({ onNavigate }: HomeProps) {
     <div className="min-h-screen bg-white font-sans text-slate-900">
       
       {/* === QUICK ACCESS GRID (Top Section) === */}
-      {/* Changed pt-28 to pt-4 to remove the large white gap */}
+      {/* pt-4 allows it to sit tight against the header */}
       <section className="pt-4 pb-10 md:pt-12 md:pb-20 bg-white">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
           <div className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-6">
@@ -161,7 +161,6 @@ export function Home({ onNavigate }: HomeProps) {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {/* Card 1 */}
             <div className="group bg-slate-50 rounded-2xl p-8 border border-slate-100 hover:border-blue-100 hover:shadow-2xl hover:shadow-blue-900/5 transition-all duration-300">
               <div className="w-14 h-14 bg-blue-100 text-blue-700 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <TrendingUp className="w-7 h-7" />
@@ -178,7 +177,6 @@ export function Home({ onNavigate }: HomeProps) {
               </button>
             </div>
 
-            {/* Card 2 */}
             <div className="group bg-slate-50 rounded-2xl p-8 border border-slate-100 hover:border-green-100 hover:shadow-2xl hover:shadow-green-900/5 transition-all duration-300">
               <div className="w-14 h-14 bg-green-100 text-green-700 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <Heart className="w-7 h-7" />
@@ -195,7 +193,6 @@ export function Home({ onNavigate }: HomeProps) {
               </button>
             </div>
 
-            {/* Card 3 */}
             <div className="group bg-slate-50 rounded-2xl p-8 border border-slate-100 hover:border-amber-100 hover:shadow-2xl hover:shadow-amber-900/5 transition-all duration-300">
               <div className="w-14 h-14 bg-amber-100 text-amber-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <Users className="w-7 h-7" />

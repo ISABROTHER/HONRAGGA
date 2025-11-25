@@ -15,6 +15,12 @@ export function Home({ onNavigate }: HomeProps) {
   // DESKTOP HERO POSITION (EDIT THIS ONLY)
   const HERO_POSITION = "center -200px";
 
+  // === MOBILE SCALE OPTIONS ===
+  // Uncomment ONLY ONE:
+  // const MOBILE_SCALE = "scale(1.06)";   // Slight enlarge
+  // const MOBILE_SCALE = "scale(1.12)";   // Medium enlarge (recommended)
+  const MOBILE_SCALE = "scale(1.20)";      // Strong enlarge
+
   // Data for the Quick Access Grid
   const quickLinks = [
     {
@@ -78,16 +84,21 @@ export function Home({ onNavigate }: HomeProps) {
 
       {/* === 1. HERO BANNER (MOBILE + DESKTOP) === */}
       <section className="relative w-full">
-        {/* Mobile: image uses its natural height – no extra white inside, no magic numbers */}
-        <div className="block md:hidden w-full bg-white">
+
+        {/* MOBILE HERO: SAME HEIGHT, ONLY IMAGE SCALED */}
+        <div className="block md:hidden w-full bg-white overflow-hidden">
           <img
             src={HERO_IMAGE_URL}
             alt="Hon. Dr. Kwamena Minta Nyarku"
             className="w-full h-auto"
+            style={{ 
+              transform: MOBILE_SCALE,
+              transformOrigin: "center top"
+            }}
           />
         </div>
 
-        {/* Desktop: large hero with controlled crop */}
+        {/* DESKTOP HERO (UNCHANGED) */}
         <div className="hidden md:block w-full h-[90vh] overflow-hidden bg-white">
           <img
             src={HERO_IMAGE_URL}
@@ -96,10 +107,10 @@ export function Home({ onNavigate }: HomeProps) {
             style={{ objectPosition: HERO_POSITION }}
           />
         </div>
+
       </section>
 
       {/* === 2. QUICK ACCESS GRID === */}
-      {/* Pull cards tight under hero on mobile – no long white gap */}
       <section className="relative z-20 -mt-[4px] md:mt-0 pt-2 pb-8 md:py-16 bg-white">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
           <div className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-6">
@@ -112,12 +123,15 @@ export function Home({ onNavigate }: HomeProps) {
                 <div className="w-10 h-10 md:w-16 md:h-16 bg-white rounded-lg md:rounded-2xl flex items-center justify-center shadow-sm mb-1.5 md:mb-5 group-hover:scale-110 transition-transform duration-300">
                   <link.icon className={`w-5 h-5 md:w-8 md:h-8 ${link.iconColor}`} />
                 </div>
+
                 <h3 className="text-[10px] sm:text-xs md:text-xl font-bold text-slate-900 mb-0.5 md:mb-2 leading-tight tracking-tight truncate w-full">
                   {link.title}
                 </h3>
+
                 <p className="block md:hidden text-slate-500 text-[9px] leading-none font-medium tracking-tight">
                   {link.mobileDesc}
                 </p>
+
                 <p className="hidden md:block text-slate-600 text-sm leading-relaxed max-w-xs mx-auto">
                   {link.desc}
                 </p>
@@ -140,30 +154,37 @@ export function Home({ onNavigate }: HomeProps) {
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-3 md:grid-cols-6 gap-y-6 gap-x-2 md:gap-8 text-center md:divide-x md:divide-blue-800/50">
+            
             <div className="p-1">
               <div className="text-xl sm:text-2xl md:text-3xl font-bold text-amber-400 mb-0.5">50K+</div>
               <div className="text-[10px] sm:text-xs text-blue-200 uppercase tracking-wider font-medium">Supporters</div>
             </div>
+
             <div className="p-1">
               <div className="text-xl sm:text-2xl md:text-3xl font-bold text-amber-400 mb-0.5">2,500+</div>
               <div className="text-[10px] sm:text-xs text-blue-200 uppercase tracking-wider font-medium">Streetlights</div>
             </div>
+
             <div className="p-1">
               <div className="text-xl sm:text-2xl md:text-3xl font-bold text-amber-400 mb-0.5">100+</div>
               <div className="text-[10px] sm:text-xs text-blue-200 uppercase tracking-wider font-medium">Scholarships</div>
             </div>
+
             <div className="p-1">
               <div className="text-xl sm:text-2xl md:text-3xl font-bold text-amber-400 mb-0.5">200+</div>
               <div className="text-[10px] sm:text-xs text-blue-200 uppercase tracking-wider font-medium">Events Held</div>
             </div>
+
             <div className="p-1">
               <div className="text-xl sm:text-2xl md:text-3xl font-bold text-amber-400 mb-0.5">15K+</div>
               <div className="text-[10px] sm:text-xs text-blue-200 uppercase tracking-wider font-medium">Volunteers</div>
             </div>
+
             <div className="p-1">
               <div className="text-xl sm:text-2xl md:text-3xl font-bold text-amber-400 mb-0.5">1 Goal</div>
               <div className="text-[10px] sm:text-xs text-blue-200 uppercase tracking-wider font-medium">Development</div>
             </div>
+
           </div>
         </div>
       </section>
@@ -180,6 +201,7 @@ export function Home({ onNavigate }: HomeProps) {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
+
             <div className="group bg-slate-50 rounded-2xl p-8 border border-slate-100 hover:border-blue-100 hover:shadow-2xl hover:shadow-blue-900/5 transition-all duration-300">
               <div className="w-14 h-14 bg-blue-100 text-blue-700 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <TrendingUp className="w-7 h-7" />
@@ -227,6 +249,7 @@ export function Home({ onNavigate }: HomeProps) {
                 Learn more <ChevronRight className="w-4 h-4 ml-1" />
               </button>
             </div>
+
           </div>
         </div>
       </section>

@@ -97,7 +97,7 @@ export function QuickAccessGrid({ onNavigate }: QuickAccessGridProps) {
           <p className="inline-flex items-center gap-2 rounded-full bg-green-50 px-3 py-1 border border-green-100">
             <span className="h-1.5 w-1.5 rounded-full bg-green-500 motion-safe:animate-pulse" />
             <span className="text-[10px] sm:text-xs font-semibold tracking-[0.22em] uppercase text-green-700">
-              The Constituency Hub
+              Constituency Services
             </span>
           </p>
 

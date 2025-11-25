@@ -19,7 +19,7 @@ const SCRIM_BOTTOM_OFFSET_CLASS = "bottom-0";
 // examples: "bottom-0" (touches bottom), "bottom-2" (a bit above), "bottom-4"
 
 // Scrim colour profile (Tailwind classes)
-const SCRIM_FROM_CLASS = "from-slate-950/90"; // strongest colour at bottom
+const SCRIM_FROM_CLASS = "from-slate-950/130"; // strongest colour at bottom
 const SCRIM_VIA_CLASS = "via-slate-950/90";   // middle fade
 const SCRIM_TO_CLASS = "to-transparent";      // where it ends at top
 

@@ -13,6 +13,7 @@ export function Home({ onNavigate }: HomeProps) {
   const HERO_IMAGE_URL = "https://i.imgur.com/XC8k4zQ.jpeg";
 
   // DESKTOP HERO POSITION (EDIT THIS ONLY)
+  // You can still tweak this if you want to move the picture up/down on web.
   const HERO_POSITION = "center -200px";
 
   // Data for the Quick Access Grid
@@ -78,16 +79,17 @@ export function Home({ onNavigate }: HomeProps) {
 
       {/* === 1. HERO BANNER (MOBILE + DESKTOP) === */}
       <section className="relative w-full">
-        {/* Mobile: image uses its natural height – no extra white inside, no magic numbers */}
-        <div className="block md:hidden w-full bg-white">
+        {/* Mobile: fixed height you liked, ONLY image scaled slightly inside */}
+        <div className="block md:hidden w-full h-[360px] overflow-hidden bg-white">
           <img
             src={HERO_IMAGE_URL}
             alt="Hon. Dr. Kwamena Minta Nyarku"
-            className="w-full h-auto"
+            className="w-full h-full object-cover"
+            style={{ transform: "scale(0.9)", transformOrigin: "center top" }}
           />
         </div>
 
-        {/* Desktop: large hero with controlled crop */}
+        {/* Desktop: keep current web placement exactly */}
         <div className="hidden md:block w-full h-[90vh] overflow-hidden bg-white">
           <img
             src={HERO_IMAGE_URL}
@@ -99,8 +101,8 @@ export function Home({ onNavigate }: HomeProps) {
       </section>
 
       {/* === 2. QUICK ACCESS GRID === */}
-      {/* Pull cards tight under hero on mobile – no long white gap */}
-      <section className="relative z-20 -mt-[4px] md:mt-0 pt-2 pb-8 md:py-16 bg-white">
+      {/* Slight negative margin + small top padding to reduce the gap under the hero on mobile */}
+      <section className="relative z-20 -mt-3 md:mt-0 pt-3 pb-8 md:py-16 bg-white">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
           <div className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-6">
             {quickLinks.map((link, idx) => (
@@ -286,7 +288,7 @@ export function Home({ onNavigate }: HomeProps) {
             </Button>
           </div>
         </div>
-      </section> 
+      </section>
 
     </div>
   );

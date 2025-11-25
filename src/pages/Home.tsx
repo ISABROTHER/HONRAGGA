@@ -92,7 +92,7 @@ export function Home({ onNavigate }: HomeProps) {
 
       {/* === 1. HERO BANNER (MOBILE + DESKTOP) === */}
       <section className="relative w-full">
-        {/* Mobile: same layout, but you can pull the picture up/down with MOBILE_Y_OFFSET */}
+        {/* Mobile: image uses its natural height; you can pull it up/down with MOBILE_Y_OFFSET */}
         <div className="block md:hidden w-full bg-white overflow-hidden">
           <img
             src={HERO_IMAGE_URL}
@@ -102,7 +102,7 @@ export function Home({ onNavigate }: HomeProps) {
           />
         </div>
 
-        {/* Desktop: large hero with controlled crop – unchanged */}
+        {/* Desktop: large hero with controlled crop */}
         <div className="hidden md:block w-full h-[90vh] overflow-hidden bg-white">
           <img
             src={HERO_IMAGE_URL}
@@ -250,4 +250,59 @@ export function Home({ onNavigate }: HomeProps) {
       <section className="py-20 bg-slate-100 border-y border-slate-200">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <Mail className="w-12 h-12 text-blue-900 mx-auto mb-6" />
-          <h2 className="text-3
+          <h2 className="text-3xl font-bold text-slate-900 mb-4">Stay Connected with Ragga</h2>
+          <p className="text-slate-600 mb-8 max-w-xl mx-auto">
+            Join our mailing list to receive updates on parliamentary activities, community projects, and upcoming town hall meetings.
+          </p>
+          
+          <form className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto" onSubmit={(e) => e.preventDefault()}>
+            <input 
+              type="email" 
+              placeholder="Email Address" 
+              className="flex-1 px-5 py-4 rounded-xl border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none shadow-sm"
+              required
+            />
+            <Button variant="primary" size="md" className="sm:w-auto w-full py-4">
+              Subscribe
+            </Button>
+          </form>
+          <p className="text-xs text-slate-500 mt-4">We respect your privacy. Unsubscribe at any time.</p>
+        </div>
+      </section>
+
+      {/* === 6. BOTTOM CTA === */}
+      <section className="py-24 bg-gradient-to-br from-blue-950 to-blue-900 text-white text-center relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-64 h-64 bg-white opacity-5 rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl"></div>
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-amber-500 opacity-10 rounded-full translate-x-1/3 translate-y-1/3 blur-3xl"></div>
+
+        <div className="relative z-10 max-w-4xl mx-auto px-6">
+          <h2 className="text-4xl md:text-6xl font-extrabold mb-6 tracking-tight">
+            Ready to Make a Difference?
+          </h2>
+          <p className="text-xl md:text-2xl text-blue-100 mb-10 font-light">
+            "Together, we can build a Cape Coast North that works for everyone."
+          </p>
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+            <Button 
+              onClick={() => onNavigate('volunteer')} 
+              variant="secondary" 
+              size="lg"
+              className="w-full sm:w-auto px-10 py-4 text-lg font-bold shadow-2xl shadow-amber-900/20"
+            >
+              Volunteer Today
+            </Button>
+            <Button 
+              onClick={() => onNavigate('events')} 
+              variant="outline" 
+              size="lg"
+              className="w-full sm:w-auto px-10 py-4 text-lg border-white text-white hover:bg-white hover:text-blue-900"
+            >
+              Upcoming Events
+            </Button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  );
+}

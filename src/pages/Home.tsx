@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import { 
   ArrowRight, Users, Heart, TrendingUp, Calendar, CheckCircle, Mail, ChevronRight,
   MessageSquareWarning, HardHat, ScrollText, Award, HandHeart, UserCircle 
@@ -9,7 +10,7 @@ interface HomeProps {
 }
 
 export function Home({ onNavigate }: HomeProps) {
-  // Hero Images (Slideshow pool – one is picked on each refresh)
+  // Hero Images (Slideshow pool)
   const HERO_IMAGES = [
     "https://i.imgur.com/XC8k4zQ.jpeg",
     "https://i.imgur.com/NSWtjdU.jpeg",
@@ -19,8 +20,13 @@ export function Home({ onNavigate }: HomeProps) {
     "https://i.imgur.com/hmaoKHa.jpeg"
   ];
 
-  const randomHeroIndex = Math.floor(Math.random() * HERO_IMAGES.length);
-  const HERO_IMAGE_URL = HERO_IMAGES[randomHeroIndex];
+  // Start from a random image
+  const [currentIndex, setCurrentIndex] = useState(
+    () => Math.floor(Math.random() * HERO_IMAGES.length)
+  );
+  const [isFading, setIsFading] = useState(false);
+
+  const HERO_IMAGE_URL = HERO_IMAGES[currentIndex];
 
   // DESKTOP HERO POSITION (EDIT THIS ONLY FOR WEB)
   const HERO_POSITION = "center -200px";
@@ -28,6 +34,24 @@ export function Home({ onNavigate }: HomeProps) {
   // MOBILE VERTICAL OFFSET (EDIT THIS ONLY FOR PHONE)
   // 0 = current, negative = pull image UP, positive = push image DOWN
   const MOBILE_Y_OFFSET = 0;
+
+  // Fade slideshow: change image every 3s with smooth fade
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // start fade out
+      setIsFading(true);
+
+      // after fade-out, switch image & fade back in
+      const timeout = setTimeout(() => {
+        setCurrentIndex((prev) => (prev + 1) % HERO_IMAGES.length);
+        setIsFading(false);
+      }, 700); // match fade duration
+
+      return () => clearTimeout(timeout);
+    }, 3000); // every 3 seconds
+
+    return () => clearInterval(interval);
+  }, [HERO_IMAGES.length]);
 
   // Data for the Quick Access Grid
   const quickLinks = [
@@ -98,7 +122,11 @@ export function Home({ onNavigate }: HomeProps) {
             src={HERO_IMAGE_URL}
             alt="Hon. Dr. Kwamena Minta Nyarku"
             className="w-full h-auto"
-            style={{ transform: `translateY(${MOBILE_Y_OFFSET}px)` }}
+            style={{ 
+              transform: `translateY(${MOBILE_Y_OFFSET}px)`,
+              opacity: isFading ? 0 : 1,
+              transition: "opacity 0.7s ease-in-out, transform 0.3s ease-out"
+            }}
           />
         </div>
 
@@ -108,7 +136,11 @@ export function Home({ onNavigate }: HomeProps) {
             src={HERO_IMAGE_URL}
             alt="Hon. Dr. Kwamena Minta Nyarku"
             className="w-full h-full object-cover"
-            style={{ objectPosition: HERO_POSITION }}
+            style={{ 
+              objectPosition: HERO_POSITION,
+              opacity: isFading ? 0 : 1,
+              transition: "opacity 0.7s ease-in-out"
+            }}
           />
         </div>
       </section>

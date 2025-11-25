@@ -80,9 +80,9 @@ export function Home({ onNavigate }: HomeProps) {
       src={HERO_IMAGE_URL}
       alt="Hon. Dr. Kwamena Minta Nyarku"
       className="w-full h-full object-cover object-top"
-    />
-  </div>
-</section>
+        />
+         </div>
+         </section>
 
       {/* === 2. QUICK ACCESS GRID === */}
       <section className="py-8 md:py-16 bg-white relative z-20">

@@ -30,6 +30,19 @@ type Priority = {
 
 const priorities: Priority[] = [
   {
+    id: "civic",
+    title: "Civic Engagement",
+    subtitle: "Civic Engagement",
+    desc: "Promoting transparency, accountability, and participation.",
+    initiativesCount: "1 initiative listed",
+    icon: Megaphone,
+    accentBg: "bg-indigo-100",
+    accentText: "text-indigo-700",
+    accentBorder: "border-indigo-200",
+    image:
+      "https://images.pexels.com/photos/1462935/pexels-photo-1462935.jpeg?auto=compress&cs=tinysrgb&w=800"
+  }
+  {
     id: "education",
     title: "Educational Support",
     subtitle: "Educational Support",
@@ -94,7 +107,19 @@ const priorities: Priority[] = [
     image:
       "https://images.pexels.com/photos/3189873/pexels-photo-3189873.jpeg?auto=compress&cs=tinysrgb&w=800"
   },
-  }
+  {
+    id: "social",
+    title: "Social Welfare",
+    subtitle: "Social Welfare",
+    desc: "Empowering women, youth, and vulnerable groups.",
+    initiativesCount: "3 initiatives listed",
+    icon: Users,
+    accentBg: "bg-rose-100",
+    accentText: "text-rose-700",
+    accentBorder: "border-rose-200",
+    image:
+      "https://images.pexels.com/photos/936018/pexels-photo-936018.jpeg?auto=compress&cs=tinysrgb&w=800"
+  },
 ];
 
 export function PrioritiesSection({ onNavigate }: PrioritiesSectionProps) {

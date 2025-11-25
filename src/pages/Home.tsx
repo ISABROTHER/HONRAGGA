@@ -12,18 +12,20 @@ export function Home({ onNavigate }: HomeProps) {
   // Candidate Image
   const CANDIDATE_IMAGE_URL = "https://scontent-arn2-1.xx.fbcdn.net/v/t39.30808-6/515441812_10163003867507920_4808851483961703661_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFkXpxZfRZCiS6tUkMuNIwhz6Ix5oWf9IPPojHmhZ_0g3q-yrs_5MJM8xygdYYX5g4&_nc_ohc=O_SI0alOrEUQ7kNvwFE3BmL&_nc_oc=AdkQ-x4mJmZz5C-Peh1kc9yDFigPG46vldlmExHwi79lZshgP8YqbgstLrh_t8KoN4Y&_nc_zt=23&_nc_ht=scontent-arn2-1.xx&_nc_gid=ZVbXGcOeCipYDkVva7FcmA&oh=00_Afd9WY4XJWo_eBqDQdctSg_i9eSVJ3yuBWa15kvxQYC1Og&oe=68FCCF73";
 
-  // Data for the new Quick Access Grid with Updated Styling Props
+  // Data for the new Quick Access Grid with Mobile-Specific Short Descriptions
   const quickLinks = [
     {
       title: "Projects",
+      mobileDesc: "Infrastructure", // Very short for mobile
       desc: "Track ongoing infrastructure developments and renovations.",
       icon: HardHat,
-      bgClass: "from-amber-50 to-orange-50/50 border-orange-100", // Gradient & Border
+      bgClass: "from-amber-50 to-orange-50/50 border-orange-100",
       iconColor: "text-amber-600",
       route: "policies"
     },
     {
       title: "Report Issue",
+      mobileDesc: "Fix problems",
       desc: "Spot a problem? Report potholes or streetlights directly.",
       icon: MessageSquareWarning,
       bgClass: "from-emerald-50 to-teal-50/50 border-emerald-100",
@@ -32,6 +34,7 @@ export function Home({ onNavigate }: HomeProps) {
     },
     {
       title: "Policies",
+      mobileDesc: "The Agenda",
       desc: "Explore the CETRA2030 agenda for economic growth.",
       icon: ScrollText,
       bgClass: "from-blue-50 to-indigo-50/50 border-blue-100",
@@ -40,6 +43,7 @@ export function Home({ onNavigate }: HomeProps) {
     },
     {
       title: "Achievements",
+      mobileDesc: "Track record",
       desc: "A record of promises kept: scholarships and bills passed.",
       icon: Award,
       bgClass: "from-purple-50 to-fuchsia-50/50 border-purple-100",
@@ -48,6 +52,7 @@ export function Home({ onNavigate }: HomeProps) {
     },
     {
       title: "Support",
+      mobileDesc: "Join us",
       desc: "Volunteer your time or donate to the campaign.",
       icon: HandHeart,
       bgClass: "from-rose-50 to-pink-50/50 border-rose-100",
@@ -56,6 +61,7 @@ export function Home({ onNavigate }: HomeProps) {
     },
     {
       title: "About",
+      mobileDesc: "The MP",
       desc: "Get to know Hon. Dr. Kwamena Minta Nyarku.",
       icon: UserCircle,
       bgClass: "from-slate-50 to-gray-50/50 border-slate-200",
@@ -127,27 +133,32 @@ export function Home({ onNavigate }: HomeProps) {
         </div>
       </section>
 
-      {/* === QUICK ACCESS GRID (REDESIGNED) === */}
+      {/* === QUICK ACCESS GRID (Mobile Optimized: 3 per line) === */}
       <section className="py-10 md:py-20 bg-white relative z-20 -mt-6 lg:-mt-0">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-6">
             {quickLinks.map((link, idx) => (
               <div 
                 key={idx}
                 onClick={() => onNavigate(link.route)}
-                className={`group relative overflow-hidden rounded-2xl border ${link.bgClass} bg-gradient-to-br p-3 md:p-8 flex flex-col items-center text-center cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 active:scale-95`}
+                className={`group relative overflow-hidden rounded-xl md:rounded-2xl border ${link.bgClass} bg-gradient-to-br p-2.5 md:p-8 flex flex-col items-center text-center cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 active:scale-95`}
               >
-                {/* Icon Container: Squircle, White, Shadow (No heavy border) */}
-                <div className="w-10 h-10 md:w-16 md:h-16 bg-white rounded-xl md:rounded-2xl flex items-center justify-center shadow-sm mb-2 md:mb-5 group-hover:scale-110 transition-transform duration-300">
+                {/* Icon Container: Compact on mobile */}
+                <div className="w-10 h-10 md:w-16 md:h-16 bg-white rounded-lg md:rounded-2xl flex items-center justify-center shadow-sm mb-1.5 md:mb-5 group-hover:scale-110 transition-transform duration-300">
                   <link.icon className={`w-5 h-5 md:w-8 md:h-8 ${link.iconColor}`} />
                 </div>
                 
-                {/* Title: Smaller on mobile to ensure 1 line mostly */}
-                <h3 className="text-[11px] sm:text-xs md:text-xl font-bold text-slate-800 mb-0 md:mb-2 leading-tight tracking-tight">
+                {/* Title: Scaled for 3-column layout */}
+                <h3 className="text-[10px] sm:text-xs md:text-xl font-bold text-slate-900 mb-0.5 md:mb-2 leading-tight tracking-tight truncate w-full">
                   {link.title}
                 </h3>
                 
-                {/* Description: Hidden on Mobile */}
+                {/* Mobile Description: Very short, 1-2 words */}
+                <p className="block md:hidden text-slate-500 text-[9px] leading-none font-medium tracking-tight">
+                  {link.mobileDesc}
+                </p>
+
+                {/* Desktop Description: Full text */}
                 <p className="hidden md:block text-slate-600 text-sm leading-relaxed max-w-xs mx-auto">
                   {link.desc}
                 </p>

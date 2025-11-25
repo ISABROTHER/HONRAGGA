@@ -14,8 +14,8 @@ export function Home({ onNavigate }: HomeProps) {
 
   // CUSTOM HERO POSITION (EDIT THIS ONLY)
   // Example values:
-  // "center -120px", "center -120px", "center -120px", "center 40px"
-  const HERO_POSITION = "center -12px";
+  // "center -40px", "center -80px", "center -120px", "center 40px"
+  const HERO_POSITION = "center -80px";
 
   // Data for the Quick Access Grid
   const quickLinks = [

@@ -267,39 +267,39 @@ export function PrioritiesSection({ onNavigate }: PrioritiesSectionProps) {
         </div>
 
         {/* =========================
-            DESKTOP LAYOUT (Horizontal Scroll with Side Indicators)
+            DESKTOP LAYOUT (Horizontal Scroll with Red Animated Arrows)
            ========================= */}
         <div className="hidden md:block relative group/section">
           
-          {/* Left Indicator */}
+          {/* Left Indicator - Red & Animated */}
           {canScrollLeft && (
             <button
               onClick={() => scroll('left')}
               className="
                 absolute left-0 top-1/2 -translate-y-1/2 -ml-6 z-20 
-                p-4 rounded-full bg-white shadow-[0_0_20px_rgba(0,0,0,0.15)] border-2 border-gray-200 
-                text-slate-900 hover:text-green-700 hover:border-green-500 hover:bg-green-50 hover:scale-110
+                p-4 rounded-full bg-white/95 backdrop-blur-sm shadow-[0_0_25px_rgba(220,38,38,0.4)] border-2 border-red-100
+                text-red-600 hover:text-white hover:bg-red-600 hover:border-red-600 hover:scale-110
                 transition-all duration-300 animate-pulse
               "
               aria-label="Scroll left"
             >
-              <ChevronLeft className="w-6 h-6" strokeWidth={3} />
+              <ChevronLeft className="w-7 h-7" strokeWidth={3} />
             </button>
           )}
 
-          {/* Right Indicator */}
+          {/* Right Indicator - Red & Animated */}
           {canScrollRight && (
             <button
               onClick={() => scroll('right')}
               className="
                 absolute right-0 top-1/2 -translate-y-1/2 -mr-6 z-20 
-                p-4 rounded-full bg-white shadow-[0_0_20px_rgba(0,0,0,0.15)] border-2 border-gray-200 
-                text-slate-900 hover:text-green-700 hover:border-green-500 hover:bg-green-50 hover:scale-110
+                p-4 rounded-full bg-white/95 backdrop-blur-sm shadow-[0_0_25px_rgba(220,38,38,0.4)] border-2 border-red-100
+                text-red-600 hover:text-white hover:bg-red-600 hover:border-red-600 hover:scale-110
                 transition-all duration-300 animate-pulse
               "
               aria-label="Scroll right"
             >
-              <ChevronRight className="w-6 h-6" strokeWidth={3} />
+              <ChevronRight className="w-7 h-7" strokeWidth={3} />
             </button>
           )}
 

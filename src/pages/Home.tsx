@@ -19,7 +19,7 @@ export function Home({ onNavigate }: HomeProps) {
   // Uncomment ONLY ONE:
   // const MOBILE_SCALE = "scale(1.06)";   // Slight enlarge
   // const MOBILE_SCALE = "scale(1.12)";   // Medium enlarge (recommended)
-  const MOBILE_SCALE = "scale(1.3)";      // Strong enlarge
+  const MOBILE_SCALE = "scale(1.39)";      // Strong enlarge
 
   // Data for the Quick Access Grid
   const quickLinks = [

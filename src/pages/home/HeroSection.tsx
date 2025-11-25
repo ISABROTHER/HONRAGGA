@@ -1,32 +1,6 @@
 // src/pages/home/HeroSection.tsx
 import React, { useEffect, useState } from "react";
 
-/* ============================================
-   TUNING KEYS – YOU CAN EDIT THESE SAFELY
-   ============================================ */
-
-// Hero behaviour
-const HERO_DESKTOP_HEIGHT = "md:h-[90vh]";
-const SLIDE_INTERVAL_MS = 3000;
-const MOBILE_Y_OFFSET_PX = 0;
-
-// Green scrim config
-const SCRIM_ENABLED = true;
-const SCRIM_HEIGHT_CLASS = "h-32";          // thickness of fade
-const SCRIM_BOTTOM_OFFSET_CLASS = "bottom-0";
-
-// GREEN scrim colour profile
-const SCRIM_FROM_CLASS = "from-green-900/85";  // strong at bottom
-const SCRIM_VIA_CLASS = "via-green-900/40";    // mid fade
-const SCRIM_TO_CLASS = "to-transparent";       // top is transparent
-
-// Slider indicators position
-const INDICATORS_BOTTOM_OFFSET_CLASS = "bottom-3";
-
-/* ============================================
-   IMAGES + COMPONENT
-   ============================================ */
-
 const HERO_IMAGES = [
   "https://i.imgur.com/XC8k4zQ.jpeg",
   "https://i.imgur.com/NSWtjdU.jpeg",
@@ -36,85 +10,71 @@ const HERO_IMAGES = [
   "https://i.imgur.com/hmaoKHa.jpeg"
 ];
 
-// DESKTOP HERO CROPPING
+// DESKTOP HERO POSITION (EDIT THIS ONLY FOR WEB)
 const HERO_POSITION = "center -200px";
+
+// MOBILE VERTICAL OFFSET (EDIT THIS ONLY FOR PHONE)
+// 0 = current, negative = pull image UP, positive = push image DOWN
+const MOBILE_Y_OFFSET = 0;
 
 export function HeroSection() {
   const [currentIndex, setCurrentIndex] = useState(
     () => Math.floor(Math.random() * HERO_IMAGES.length)
   );
 
+  // Change image every 3 seconds with smooth cross-fade
   useEffect(() => {
-    const interval = setInterval(
-      () => setCurrentIndex((prev) => (prev + 1) % HERO_IMAGES.length),
-      SLIDE_INTERVAL_MS
-    );
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % HERO_IMAGES.length);
+    }, 3000); // 3 seconds
+
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <section className={`relative w-full ${HERO_DESKTOP_HEIGHT}`}>
-      {/* === HERO IMAGE SLIDESHOW === */}
-      <div className="relative w-full overflow-hidden bg-white">
+    <section className="relative w-full">
+      {/* Mobile: maintain natural height using an invisible spacer image */}
+      <div className="block md:hidden w-full bg-white overflow-hidden relative">
+        {/* Spacer to keep the original height */}
         <img
           src={HERO_IMAGES[0]}
           alt=""
-          className="block md:hidden w-full h-auto invisible"
+          className="w-full h-auto invisible"
         />
 
-        {/* MOBILE IMAGES */}
+        {/* Cross-fade stack */}
         {HERO_IMAGES.map((url, idx) => (
           <img
             key={idx}
             src={url}
             alt="Hon. Dr. Kwamena Minta Nyarku"
-            className="absolute md:hidden top-0 left-0 w-full h-auto transition-opacity duration-800 ease-in-out"
+            className="absolute top-0 left-0 w-full h-auto transition-opacity duration-800 ease-in-out"
             style={{
               opacity: idx === currentIndex ? 1 : 0,
-              transform: `translateY(${MOBILE_Y_OFFSET_PX}px)`
+              transform: `translateY(${MOBILE_Y_OFFSET}px)`
             }}
           />
         ))}
-
-        {/* DESKTOP IMAGES */}
-        <div className="hidden md:block w-full h-full relative overflow-hidden">
-          {HERO_IMAGES.map((url, idx) => (
-            <img
-              key={idx}
-              src={url}
-              alt="Hon. Dr. Kwamena Minta Nyarku"
-              className="absolute inset-0 w-full h-full object-cover transition-opacity duration-800 ease-in-out"
-              style={{
-                opacity: idx === currentIndex ? 1 : 0,
-                objectPosition: HERO_POSITION
-              }}
-            />
-          ))}
-        </div>
       </div>
 
-      {/* === GREEN BOTTOM SCRIM === */}
-      {SCRIM_ENABLED && (
-        <div
-          className={`
-            absolute inset-x-0 ${SCRIM_BOTTOM_OFFSET_CLASS}
-            ${SCRIM_HEIGHT_CLASS}
-            bg-gradient-to-t
-            ${SCRIM_FROM_CLASS} ${SCRIM_VIA_CLASS} ${SCRIM_TO_CLASS}
-            pointer-events-none z-10
-          `}
-        />
-      )}
+      {/* Desktop: large hero with controlled crop, cross-fade */}
+      <div className="hidden md:block w-full h-[90vh] overflow-hidden bg-white relative">
+        {HERO_IMAGES.map((url, idx) => (
+          <img
+            key={idx}
+            src={url}
+            alt="Hon. Dr. Kwamena Minta Nyarku"
+            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-800 ease-in-out"
+            style={{
+              opacity: idx === currentIndex ? 1 : 0,
+              objectPosition: HERO_POSITION
+            }}
+          />
+        ))}
+      </div>
 
-      {/* === SLIDER INDICATORS === */}
-      <div
-        className={`
-          absolute ${INDICATORS_BOTTOM_OFFSET_CLASS}
-          left-1/2 -translate-x-1/2
-          flex gap-1.5 md:gap-2
-          z-20
-        `}
-      >
+      {/* Slider indicators (6 dots) */}
+      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 md:gap-2">
         {HERO_IMAGES.map((_, idx) => (
           <span
             key={idx}

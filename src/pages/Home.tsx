@@ -1,15 +1,6 @@
 import { 
-  ArrowRight, 
-  Users, 
-  Heart, 
-  TrendingUp, 
-  Calendar, 
-  HardHat, 
-  MessageSquareWarning, 
-  FileText, 
-  Award, 
-  User, 
-  HandHeart 
+  ArrowRight, Users, Heart, TrendingUp, Calendar, CheckCircle, Mail, ChevronRight,
+  MessageSquareWarning, HardHat, ScrollText, Award, HandHeart, UserCircle 
 } from 'lucide-react';
 import { Button } from '../components/Button';
 
@@ -18,200 +9,112 @@ interface HomeProps {
 }
 
 export function Home({ onNavigate }: HomeProps) {
-  const stats = [
-    { icon: Users, value: '50K+', label: 'Supporters' },
-    { icon: Calendar, value: '200+', label: 'Events Held' },
-    { icon: Heart, value: '15K+', label: 'Volunteers' },
-    { icon: TrendingUp, value: '$2M+', label: 'Raised' },
-  ];
+  // Banner Image
+  const HERO_IMAGE_URL = "https://i.imgur.com/XC8k4zQ.jpeg";
 
-  const values = [
+  // Data for the Quick Access Grid
+  const quickLinks = [
     {
-      title: 'Economic Opportunity',
-      description: 'Creating jobs and supporting small businesses',
-      icon: TrendingUp
+      title: "Projects",
+      mobileDesc: "Infrastructure",
+      desc: "Track ongoing infrastructure developments and renovations.",
+      icon: HardHat,
+      bgClass: "from-amber-50 to-orange-50/50 border-orange-100",
+      iconColor: "text-amber-600",
+      route: "policies"
     },
     {
-      title: 'Healthcare for All',
-      description: 'Affordable, accessible healthcare for every family',
-      icon: Heart
+      title: "Report Issue",
+      mobileDesc: "Fix problems",
+      desc: "Spot a problem? Report potholes or streetlights directly.",
+      icon: MessageSquareWarning,
+      bgClass: "from-emerald-50 to-teal-50/50 border-emerald-100",
+      iconColor: "text-emerald-600",
+      route: "news"
     },
     {
-      title: 'Community First',
-      description: 'Putting people over politics, always',
-      icon: Users
+      title: "Policies",
+      mobileDesc: "The Agenda",
+      desc: "Explore the CETRA2030 agenda for economic growth.",
+      icon: ScrollText,
+      bgClass: "from-blue-50 to-indigo-50/50 border-blue-100",
+      iconColor: "text-blue-600",
+      route: "policies"
+    },
+    {
+      title: "Achievements",
+      mobileDesc: "Track record",
+      desc: "A record of promises kept: scholarships and bills passed.",
+      icon: Award,
+      bgClass: "from-purple-50 to-fuchsia-50/50 border-purple-100",
+      iconColor: "text-purple-600",
+      route: "about"
+    },
+    {
+      title: "Support",
+      mobileDesc: "Join us",
+      desc: "Volunteer your time or donate to the campaign.",
+      icon: HandHeart,
+      bgClass: "from-rose-50 to-pink-50/50 border-rose-100",
+      iconColor: "text-rose-600",
+      route: "volunteer"
+    },
+    {
+      title: "About",
+      mobileDesc: "The MP",
+      desc: "Get to know Hon. Dr. Kwamena Minta Nyarku.",
+      icon: UserCircle,
+      bgClass: "from-slate-50 to-gray-50/50 border-slate-200",
+      iconColor: "text-slate-600",
+      route: "about"
     }
   ];
 
-  // Quick Links Data based on your request
-  const quickLinks = [
-    {
-      title: 'Assembly Projects',
-      description: 'Track ongoing developments, infrastructure, and community projects.',
-      icon: HardHat,
-      bgColor: 'bg-amber-50', // Light yellow/cream
-      navTarget: 'policies' // Using policies as a proxy for projects
-    },
-    {
-      title: 'Report an Issue',
-      description: 'Directly report potholes, sanitation issues, or other concerns.',
-      icon: MessageSquareWarning,
-      bgColor: 'bg-emerald-50', // Mint green
-      navTarget: 'news' // Issue reporting is on News page
-    },
-    {
-      title: 'Policies',
-      description: 'Explore our legislative agenda and plans for the future.',
-      icon: FileText,
-      bgColor: 'bg-blue-50', // Light blue
-      navTarget: 'policies'
-    },
-    {
-      title: 'Achievements',
-      description: 'See the milestones and promises we have delivered so far.',
-      icon: Award,
-      bgColor: 'bg-amber-50',
-      navTarget: 'about'
-    },
-    {
-      title: 'About the MP',
-      description: 'Get to know Hon. Dr. Kwamena Minta Nyarku and his vision.',
-      icon: User,
-      bgColor: 'bg-emerald-50',
-      navTarget: 'about'
-    },
-    {
-      title: 'Support & Volunteer',
-      description: 'Join the movement, volunteer your time, or make a donation.',
-      icon: HandHeart,
-      bgColor: 'bg-blue-50',
-      navTarget: 'volunteer'
-    },
-  ];
-
-  // NOTE: This URL is non-portable. In a production site, replace this with a hosted image.
-  const CANDIDATE_IMAGE_URL = "https://scontent-arn2-1.xx.fbcdn.net/v/t39.30808-6/515441812_10163003867507920_4808851483961703661_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFkXpxZfRZCiS6tUkMuNIwhz6Ix5oWf9IPPojHmhZ_0g3q-yrs_5MJM8xygdYYX5g4&_nc_ohc=O_SI0alOrEUQ7kNvwFE3BmL&_nc_oc=AdkQ-x4mJmZz5C-Peh1kc9yDFigPG46vldlmExHwi79lZshgP8YqbgstLrh_t8KoN4Y&_nc_zt=23&_nc_ht=scontent-arn2-1.xx&_nc_gid=ZVbXGcOeCipYDkVva7FcmA&oh=00_Afd9WY4XJWo_eBqDQdctSg_i9eSVJ3yuBWa15kvxQYC1Og&oe=68FCCF73";
-
   return (
-    <div className="min-h-screen">
-      {/* HERO SECTION */}
-      <section className="relative w-full aspect-video min-h-[300px] max-h-[900px] flex items-center justify-center text-white overflow-hidden">
-        
-        {/* Background Image */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${CANDIDATE_IMAGE_URL})` }}
-          role="img"
-          aria-label="Campaign Hero Image"
-        ></div>
-
-        {/* Overlay */}
-        <div className="absolute inset-0">
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent"></div>
-        </div>
-
-        {/* Content */}
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-16">
-          <div className="text-center space-y-4 md:space-y-6 animate-fade-in flex flex-col items-center justify-center">
-
-            <h1 className="text-4xl sm:text-6xl lg:text-8xl font-extrabold leading-none drop-shadow-lg [text-shadow:_0_4px_4px_rgb(0_0_0_/_60%)]">
-              <span className="bg-gradient-to-r from-amber-400 to-amber-600 bg-clip-text text-transparent whitespace-nowrap">
-                A NEW VOICE FOR OUR FUTURE
-              </span>
-            </h1>
-
-            <p className="text-lg sm:text-xl md:text-2xl text-white max-w-4xl mx-auto leading-tight drop-shadow-lg [text-shadow:_0_2px_2px_rgb(0_0_0_/_50%)]">
-              Together, we can build a future where economic opportunity, quality healthcare,
-              and excellent education are rights, not privileges.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
-              <Button
-                size="lg"
-                variant="secondary"
-                onClick={() => onNavigate('volunteer')}
-                className="group shadow-lg shadow-amber-500/50"
-              >
-                Join the Movement
-                <ArrowRight className="inline-block ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                onClick={() => onNavigate('about')}
-                className="border-white text-white hover:bg-white hover:text-blue-900"
-              >
-                Learn More About Jane
-              </Button>
-            </div>
-          </div>
+    <div className="min-h-screen bg-white font-sans text-slate-900">
+      
+      {/* === 1. HERO BANNER (Clean Image Only) === */}
+      {/* Adjusted mt-20 md:mt-24 to reduce gap between header and image */}
+      <section className="relative w-full mt-20 md:mt-24">
+        {/* Increased height to h-[550px] on mobile and 85vh on desktop to show full figures */}
+        {/* Changed object-top to object-center to show legs/feet */}
+        <div className="w-full h-[550px] md:h-[85vh] overflow-hidden">
+          <img 
+            src={HERO_IMAGE_URL} 
+            alt="Hon. Dr. Kwamena Minta Nyarku" 
+            className="w-full h-full object-cover object-center"
+          />
         </div>
       </section>
 
-      {/* QUICK ACCESS GRID (New Section) */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {quickLinks.map((link, index) => (
+      {/* === 2. QUICK ACCESS GRID === */}
+      <section className="py-8 md:py-16 bg-white relative z-20">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-6">
+            {quickLinks.map((link, idx) => (
               <div 
-                key={index}
-                onClick={() => onNavigate(link.navTarget)}
-                className={`${link.bgColor} rounded-[2rem] p-8 text-center cursor-pointer transition-transform hover:scale-105 hover:shadow-md flex flex-col items-center justify-center h-full`}
+                key={idx}
+                onClick={() => onNavigate(link.route)}
+                className={`group relative overflow-hidden rounded-xl md:rounded-2xl border ${link.bgClass} bg-gradient-to-br p-2.5 md:p-8 flex flex-col items-center text-center cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 active:scale-95`}
               >
-                <div className="w-20 h-20 rounded-full border-2 border-gray-900 flex items-center justify-center bg-white mb-6">
-                  <link.icon className="w-8 h-8 text-gray-900 stroke-[1.5]" />
+                {/* Icon Container */}
+                <div className="w-10 h-10 md:w-16 md:h-16 bg-white rounded-lg md:rounded-2xl flex items-center justify-center shadow-sm mb-1.5 md:mb-5 group-hover:scale-110 transition-transform duration-300">
+                  <link.icon className={`w-5 h-5 md:w-8 md:h-8 ${link.iconColor}`} />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">{link.title}</h3>
-                <p className="text-gray-600 text-sm leading-relaxed">{link.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* STATS SECTION */}
-      <section className="py-16 bg-white border-t border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {stats.map(({ icon: Icon, value, label }) => (
-              <div key={label} className="text-center group">
-                <div className="inline-flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-blue-100 text-blue-900 group-hover:scale-110 transition-transform">
-                  <Icon className="w-8 h-8" />
-                </div>
-                <div className="text-3xl md:text-4xl font-bold text-gray-900 mb-1">{value}</div>
-                <div className="text-sm text-gray-600">{label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CORE VALUES SECTION */}
-      <section className="py-20 bg-gradient-to-b from-white to-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Our Core Values
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              A campaign built on principles that matter to real people
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {values.map(({ title, description, icon: Icon }) => (
-              <div
-                key={title}
-                className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 group hover:-translate-y-2"
-              >
-                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-900 to-blue-700 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                  <Icon className="w-7 h-7 text-white" />
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">
-                  {title}
+                
+                {/* Title */}
+                <h3 className="text-[10px] sm:text-xs md:text-xl font-bold text-slate-900 mb-0.5 md:mb-2 leading-tight tracking-tight truncate w-full">
+                  {link.title}
                 </h3>
-                <p className="text-gray-600 leading-relaxed">
-                  {description}
+                
+                {/* Mobile Description */}
+                <p className="block md:hidden text-slate-500 text-[9px] leading-none font-medium tracking-tight">
+                  {link.mobileDesc}
+                </p>
+
+                {/* Desktop Description */}
+                <p className="hidden md:block text-slate-600 text-sm leading-relaxed max-w-xs mx-auto">
+                  {link.desc}
                 </p>
               </div>
             ))}
@@ -219,40 +122,160 @@ export function Home({ onNavigate }: HomeProps) {
         </div>
       </section>
 
-      {/* MINI FOOTER SECTION */}
-      <section className="bg-red-600 h-7 md:h-8 flex items-center justify-center overflow-hidden"></section>
+      {/* === 3. STATS STRIP === */}
+      <section className="bg-blue-950 text-white py-8 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '24px 24px' }}></div>
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="grid grid-cols-3 md:grid-cols-6 gap-y-6 gap-x-2 md:gap-8 text-center md:divide-x md:divide-blue-800/50">
+            <div className="p-1">
+              <div className="text-xl sm:text-2xl md:text-3xl font-bold text-amber-400 mb-0.5">50K+</div>
+              <div className="text-[10px] sm:text-xs text-blue-200 uppercase tracking-wider font-medium">Supporters</div>
+            </div>
+            <div className="p-1">
+              <div className="text-xl sm:text-2xl md:text-3xl font-bold text-amber-400 mb-0.5">2,500+</div>
+              <div className="text-[10px] sm:text-xs text-blue-200 uppercase tracking-wider font-medium">Streetlights</div>
+            </div>
+            <div className="p-1">
+              <div className="text-xl sm:text-2xl md:text-3xl font-bold text-amber-400 mb-0.5">100+</div>
+              <div className="text-[10px] sm:text-xs text-blue-200 uppercase tracking-wider font-medium">Scholarships</div>
+            </div>
+            <div className="p-1">
+              <div className="text-xl sm:text-2xl md:text-3xl font-bold text-amber-400 mb-0.5">200+</div>
+              <div className="text-[10px] sm:text-xs text-blue-200 uppercase tracking-wider font-medium">Events Held</div>
+            </div>
+            <div className="p-1">
+              <div className="text-xl sm:text-2xl md:text-3xl font-bold text-amber-400 mb-0.5">15K+</div>
+              <div className="text-[10px] sm:text-xs text-blue-200 uppercase tracking-wider font-medium">Volunteers</div>
+            </div>
+            <div className="p-1">
+              <div className="text-xl sm:text-2xl md:text-3xl font-bold text-amber-400 mb-0.5">1 Goal</div>
+              <div className="text-[10px] sm:text-xs text-blue-200 uppercase tracking-wider font-medium">Development</div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-      {/* FOOTER CTA SECTION */}
-      <section className="py-20 bg-gradient-to-br from-blue-900 to-blue-800 text-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+      {/* === 4. PRIORITIES PREVIEW === */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <h2 className="text-sm font-bold text-blue-600 uppercase tracking-widest mb-2">My Vision</h2>
+            <h3 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4">Priorities for Cape Coast North</h3>
+            <p className="text-lg text-slate-600">
+              We are building a community where opportunity is shared, education is accessible, and healthcare is a right, not a privilege.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="group bg-slate-50 rounded-2xl p-8 border border-slate-100 hover:border-blue-100 hover:shadow-2xl hover:shadow-blue-900/5 transition-all duration-300">
+              <div className="w-14 h-14 bg-blue-100 text-blue-700 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <TrendingUp className="w-7 h-7" />
+              </div>
+              <h4 className="text-xl font-bold text-slate-900 mb-3">Economic Empowerment</h4>
+              <p className="text-slate-600 mb-6 leading-relaxed">
+                Revitalizing local markets, supporting small businesses, and driving the CETRA2030 agenda for youth employment.
+              </p>
+              <button 
+                onClick={() => onNavigate('policies')} 
+                className="text-blue-700 font-semibold inline-flex items-center group-hover:underline"
+              >
+                Learn more <ChevronRight className="w-4 h-4 ml-1" />
+              </button>
+            </div>
+
+            <div className="group bg-slate-50 rounded-2xl p-8 border border-slate-100 hover:border-green-100 hover:shadow-2xl hover:shadow-green-900/5 transition-all duration-300">
+              <div className="w-14 h-14 bg-green-100 text-green-700 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <Heart className="w-7 h-7" />
+              </div>
+              <h4 className="text-xl font-bold text-slate-900 mb-3">Healthcare Access</h4>
+              <p className="text-slate-600 mb-6 leading-relaxed">
+                Improving clinic facilities in Kwaprow and Dankwakrom and ensuring maternal health support for all families.
+              </p>
+              <button 
+                 onClick={() => onNavigate('policies')}
+                 className="text-green-700 font-semibold inline-flex items-center group-hover:underline"
+              >
+                Learn more <ChevronRight className="w-4 h-4 ml-1" />
+              </button>
+            </div>
+
+            <div className="group bg-slate-50 rounded-2xl p-8 border border-slate-100 hover:border-amber-100 hover:shadow-2xl hover:shadow-amber-900/5 transition-all duration-300">
+              <div className="w-14 h-14 bg-amber-100 text-amber-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <Users className="w-7 h-7" />
+              </div>
+              <h4 className="text-xl font-bold text-slate-900 mb-3">Community & Education</h4>
+              <p className="text-slate-600 mb-6 leading-relaxed">
+                From "Operation Light Up" to scholarships and school renovations, we are investing in our future leaders.
+              </p>
+              <button 
+                onClick={() => onNavigate('policies')}
+                className="text-amber-600 font-semibold inline-flex items-center group-hover:underline"
+              >
+                Learn more <ChevronRight className="w-4 h-4 ml-1" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* === 5. NEWSLETTER === */}
+      <section className="py-20 bg-slate-100 border-y border-slate-200">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <Mail className="w-12 h-12 text-blue-900 mx-auto mb-6" />
+          <h2 className="text-3xl font-bold text-slate-900 mb-4">Stay Connected with Ragga</h2>
+          <p className="text-slate-600 mb-8 max-w-xl mx-auto">
+            Join our mailing list to receive updates on parliamentary activities, community projects, and upcoming town hall meetings.
+          </p>
+          
+          <form className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto" onSubmit={(e) => e.preventDefault()}>
+            <input 
+              type="email" 
+              placeholder="Email Address" 
+              className="flex-1 px-5 py-4 rounded-xl border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none shadow-sm"
+              required
+            />
+            <Button variant="primary" size="md" className="sm:w-auto w-full py-4">
+              Subscribe
+            </Button>
+          </form>
+          <p className="text-xs text-slate-500 mt-4">We respect your privacy. Unsubscribe at any time.</p>
+        </div>
+      </section>
+
+      {/* === 6. BOTTOM CTA === */}
+      <section className="py-24 bg-gradient-to-br from-blue-950 to-blue-900 text-white text-center relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-64 h-64 bg-white opacity-5 rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl"></div>
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-amber-500 opacity-10 rounded-full translate-x-1/3 translate-y-1/3 blur-3xl"></div>
+
+        <div className="relative z-10 max-w-4xl mx-auto px-6">
+          <h2 className="text-4xl md:text-6xl font-extrabold mb-6 tracking-tight">
             Ready to Make a Difference?
           </h2>
-          <p className="text-xl text-blue-100 mb-8 leading-relaxed">
-            Your voice matters. Your support makes this campaign possible.
-            Together, we can create the change our community deserves.
+          <p className="text-xl md:text-2xl text-blue-100 mb-10 font-light">
+            "Together, we can build a Cape Coast North that works for everyone."
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+            <Button 
+              onClick={() => onNavigate('volunteer')} 
+              variant="secondary" 
               size="lg"
-              variant="secondary"
-              onClick={() => onNavigate('volunteer')}
-              className="group"
+              className="w-full sm:w-auto px-10 py-4 text-lg font-bold shadow-2xl shadow-amber-900/20"
             >
               Volunteer Today
-              <ArrowRight className="inline-block ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Button>
-            <Button
+            <Button 
+              onClick={() => onNavigate('events')} 
+              variant="outline" 
               size="lg"
-              variant="outline"
-              onClick={() => onNavigate('events')}
-              className="border-white text-white hover:bg-white hover:text-blue-900"
+              className="w-full sm:w-auto px-10 py-4 text-lg border-white text-white hover:bg-white hover:text-blue-900"
             >
-              View Upcoming Events
+              Upcoming Events
             </Button>
           </div>
         </div>
       </section>
+
     </div>
-  );
+  ); 
 }

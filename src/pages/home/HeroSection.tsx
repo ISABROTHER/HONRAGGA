@@ -1,6 +1,5 @@
 // src/pages/home/HeroSection.tsx
 import React, { useEffect, useState } from "react";
-import { Button } from "../../components/Button";
 
 const HERO_IMAGES = [
   "https://i.imgur.com/XC8k4zQ.jpeg",
@@ -32,7 +31,11 @@ export function HeroSection() {
       {/* === HERO IMAGE SLIDESHOW (MOBILE + DESKTOP) === */}
       <div className="relative w-full bg-white overflow-hidden">
         {/* Spacer for natural image height on mobile */}
-        <img src={HERO_IMAGES[0]} alt="" className="block md:hidden w-full h-auto invisible" />
+        <img
+          src={HERO_IMAGES[0]}
+          alt=""
+          className="block md:hidden w-full h-auto invisible"
+        />
 
         {/* Mobile slideshow */}
         {HERO_IMAGES.map((url, idx) => (
@@ -65,25 +68,9 @@ export function HeroSection() {
         </div>
       </div>
 
-      {/* === BUTTON CONTAINER — ALWAYS VISIBLE (MOBILE & DESKTOP) === */}
+      {/* === BLACK CONTAINER (EMPTY FOR NOW, OVERLAY ON HERO) === */}
       <div className="absolute bottom-5 left-0 right-0 flex justify-center z-20 px-4">
-        <div className="bg-slate-950/70 backdrop-blur-sm rounded-xl px-4 py-3 shadow-lg flex gap-4">
-          <Button
-            variant="primary"
-            size="sm"
-            className="px-4 py-2 text-[11px] font-semibold"
-          >
-            View Projects
-          </Button>
-
-          <Button
-            variant="outline"
-            size="sm"
-            className="px-4 py-2 text-[11px] font-semibold border-white text-white hover:bg-white hover:text-slate-900"
-          >
-            Share Concern
-          </Button>
-        </div>
+        <div className="bg-slate-950/70 backdrop-blur-sm rounded-xl px-4 py-3 shadow-lg min-w-[160px] min-h-[32px] flex items-center justify-center" />
       </div>
 
       {/* === SLIDER INDICATORS === */}

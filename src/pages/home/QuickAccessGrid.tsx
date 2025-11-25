@@ -82,52 +82,68 @@ interface QuickAccessGridProps {
 
 export function QuickAccessGrid({ onNavigate }: QuickAccessGridProps) {
   return (
-    <section className="relative z-20 -mt-[4px] md:mt-0 pt-2 pb-8 md:py-16 bg-white">
+    <section className="relative z-20 -mt-[4px] md:mt-0 pt-4 pb-10 md:py-16 bg-white">
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
 
         {/* ================================
-            PREMIUM HEADING BLOCK
+            PREMIUM CENTERED HEADING
         ================================= */}
-        <div className="mb-4 md:mb-10">
+        <div className="text-center mb-6 md:mb-12 animate-fadeIn opacity-0 animate-[fadeIn_0.8s_ease-out_forwards]">
+          
           {/* Eyebrow label */}
-          <p className="text-[11px] sm:text-xs font-semibold tracking-[0.18em] uppercase text-green-700 mb-1">
+          <p className="text-[10px] sm:text-xs font-semibold tracking-[0.22em] uppercase text-green-700 mb-2">
             The Constituency Hub
           </p>
 
-          {/* Main underlined heading */}
-          <h2 className="inline-block text-lg sm:text-xl md:text-2xl font-extrabold text-slate-900 underline decoration-2 underline-offset-4 decoration-green-600">
-            Information, Services &amp; Support
+          {/* Main heading */}
+          <h2 className="
+            text-xl sm:text-2xl md:text-3xl 
+            font-extrabold tracking-tight text-slate-900 
+            underline decoration-2 decoration-green-600 underline-offset-8
+          ">
+            Information, Services & Support
           </h2>
 
-          {/* Subtext (desktop only) */}
-          <p className="hidden md:block text-sm text-slate-500 mt-2 max-w-2xl">
-            Quickly access projects, policies, issue reporting, achievements, support channels
-            and details about your MP — all in one place for Cape Coast North.
+          {/* Subtext */}
+          <p className="hidden md:block text-sm text-slate-500 mt-3 max-w-xl mx-auto leading-relaxed">
+            Everything you need to stay informed and engaged — from projects and policies 
+            to reporting issues, reviewing achievements, supporting initiatives and learning 
+            more about your MP.
           </p>
         </div>
 
         {/* ================================
             QUICK ACCESS GRID
         ================================= */}
+
         <div className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-6">
           {quickLinks.map((link, idx) => (
             <div
               key={idx}
               onClick={() => onNavigate(link.route)}
-              className={`group relative overflow-hidden rounded-xl md:rounded-2xl border ${link.bgClass} bg-gradient-to-br p-2.5 md:p-8 flex flex-col items-center text-center cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 active:scale-95`}
+              className={`group relative overflow-hidden rounded-xl md:rounded-2xl border ${link.bgClass} 
+                bg-gradient-to-br p-2.5 md:p-8 flex flex-col items-center text-center cursor-pointer 
+                transition-all duration-300 hover:shadow-lg hover:-translate-y-1 active:scale-95`}
             >
-              <div className="w-10 h-10 md:w-16 md:h-16 bg-white rounded-lg md:rounded-2xl flex items-center justify-center shadow-sm mb-1.5 md:mb-5 group-hover:scale-110 transition-transform duration-300">
+              <div className="w-10 h-10 md:w-16 md:h-16 bg-white rounded-lg md:rounded-2xl 
+                flex items-center justify-center shadow-sm mb-1.5 md:mb-5 
+                group-hover:scale-110 transition-transform duration-300">
                 <link.icon className={`w-5 h-5 md:w-8 md:h-8 ${link.iconColor}`} />
               </div>
-              <h3 className="text-[10px] sm:text-xs md:text-xl font-bold text-slate-900 mb-0.5 md:mb-2 leading-tight tracking-tight truncate w-full">
+
+              <h3 className="text-[10px] sm:text-xs md:text-xl font-bold text-slate-900 mb-0.5 md:mb-2 
+                leading-tight tracking-tight truncate w-full">
                 {link.title}
               </h3>
+
               <p className="block md:hidden text-slate-500 text-[9px] leading-none font-medium tracking-tight">
                 {link.mobileDesc}
               </p>
+
               <p className="hidden md:block text-slate-600 text-sm leading-relaxed max-w-xs mx-auto">
                 {link.desc}
               </p>
+
             </div>
           ))}
         </div>

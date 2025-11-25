@@ -48,18 +48,22 @@ export function HeroSection() {
           />
         ))}
 
+        {/* DARK GRADIENT OVERLAY FOR READABILITY */}
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/50 to-transparent" />
+
         {/* MOBILE OVERLAY TEXT — inside hero */}
-        <div className="absolute bottom-4 left-0 right-0 px-4 text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]">
+        <div className="absolute bottom-4 left-0 right-0 px-4 text-white relative z-10">
           <p className="text-[10px] font-semibold tracking-[0.2em] uppercase mb-1 text-amber-300">
             Your MP, Your Neighbour
           </p>
           <h1 className="text-xl font-extrabold leading-snug mb-2">
             Working with You for a Stronger Cape Coast North
           </h1>
-          <p className="text-xs font-medium mb-3">
+          <p className="text-xs font-medium mb-3 text-slate-100">
             From “Operation 2000 Desks” to lighting our communities and
             supporting our schools, every project begins with one
-            question: <span className="italic">how does this help our people?</span>
+            question:{" "}
+            <span className="italic">how does this help our people?</span>
           </p>
 
           <div className="flex gap-2">

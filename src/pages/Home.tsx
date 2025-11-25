@@ -276,4 +276,4 @@ export function Home({ onNavigate }: HomeProps) {
 
     </div>
   );
-}
+} 

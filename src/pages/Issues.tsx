@@ -147,16 +147,14 @@ const LOCATIONS = {
 };
 
 export function Issues() {
-  // ---------- ISSUE REPORTING STATE ----------
   const [cat, setCat] = useState<CategoryKey>('roads-infrastructure');
   const [subcat, setSubcat] = useState<string>(CATEGORIES['roads-infrastructure'].subs[0]);
   const [description, setDescription] = useState('');
   const [priority, setPriority] = useState<Priority>('Normal');
   
-  // Location State
   const [selectedZone, setSelectedZone] = useState<string>('');
   const [selectedCommunity, setSelectedCommunity] = useState<string>('');
-  const [locationDetail, setLocationDetail] = useState(''); // Specific landmark
+  const [locationDetail, setLocationDetail] = useState('');
   
   const [coords, setCoords] = useState<{ lat: number | null; lng: number | null }>({ lat: null, lng: null });
   const [locGetting, setLocGetting] = useState(false);
@@ -172,7 +170,6 @@ export function Issues() {
   const [successOpen, setSuccessOpen] = useState(false);
   const [trackingCode, setTrackingCode] = useState<string>('');
 
-  // auto set subcat list when category changes
   useEffect(() => {
     const first = CATEGORIES[cat].subs[0];
     setSubcat(first);
@@ -259,7 +256,6 @@ export function Issues() {
         photo_url = await uploadPhoto();
       }
 
-      // Compose a location string
       const fullLocation = `${selectedZone} > ${selectedCommunity}${locationDetail ? ` (${locationDetail})` : ''}`;
       const locCombined = coords.lat && coords.lng
           ? `${fullLocation} • ${coords.lat.toFixed(5)}, ${coords.lng.toFixed(5)}`
@@ -340,7 +336,6 @@ export function Issues() {
               onSubmit={onSubmitIssue}
               className="relative rounded-3xl bg-white/80 backdrop-blur-xl border border-white/40 shadow-2xl p-5 md:p-8 space-y-6"
             >
-              {/* Grid */}
               <div className="grid md:grid-cols-2 gap-6">
                 
                 {/* LOCATION SECTION */}
@@ -348,14 +343,13 @@ export function Issues() {
                    <h3 className="text-lg font-bold text-slate-900 border-b pb-2">Location Details</h3>
                    
                    <div className="grid md:grid-cols-2 gap-4">
-                      {/* Zone Selector */}
                       <div>
                         <label className="block text-sm font-medium text-gray-800 mb-1">Sub-Metro / Zone *</label>
                         <select
                           value={selectedZone}
                           onChange={(e) => {
                             setSelectedZone(e.target.value);
-                            setSelectedCommunity(''); // Reset community when zone changes
+                            setSelectedCommunity(''); 
                           }}
                           className="w-full px-3 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#FF6B00]"
                         >
@@ -366,7 +360,6 @@ export function Issues() {
                         </select>
                       </div>
 
-                      {/* Community Selector */}
                       <div>
                         <label className="block text-sm font-medium text-gray-800 mb-1">Community *</label>
                         <select
@@ -417,7 +410,6 @@ export function Issues() {
                 <div className="md:col-span-2 space-y-4">
                    <h3 className="text-lg font-bold text-slate-900 border-b pb-2">Issue Details</h3>
                    <div className="grid md:grid-cols-2 gap-4">
-                      {/* Category */}
                       <div>
                         <label className="block text-sm font-medium text-gray-800 mb-1">Category</label>
                         <select
@@ -433,7 +425,6 @@ export function Issues() {
                         </select>
                       </div>
 
-                      {/* Sub-category */}
                       <div>
                         <label className="block text-sm font-medium text-gray-800 mb-1">Sub-category</label>
                         <select
@@ -450,7 +441,6 @@ export function Issues() {
                       </div>
                    </div>
 
-                   {/* Description */}
                    <div>
                       <label className="block text-sm font-medium text-gray-800 mb-1">Description *</label>
                       <textarea
@@ -462,7 +452,6 @@ export function Issues() {
                       />
                    </div>
 
-                   {/* Priority & Photo */}
                    <div className="grid md:grid-cols-2 gap-4">
                       <div>
                         <label className="block text-sm font-medium text-gray-800 mb-1">Priority</label>
@@ -542,7 +531,6 @@ export function Issues() {
                 </div>
               </div>
 
-              {/* Error */}
               {errorMsg ? (
                 <div className="flex items-start gap-2 p-3 rounded-xl bg-red-50 text-red-800 border border-red-100">
                   <AlertCircle className="w-4 h-4 mt-0.5" />
@@ -550,7 +538,6 @@ export function Issues() {
                 </div>
               ) : null}
 
-              {/* Submit */}
               <div className="relative pt-4">
                 <button
                   type="submit"
@@ -577,7 +564,6 @@ export function Issues() {
         </div>
       </section>
 
-      {/* SUCCESS MODAL FOR ISSUE SUBMISSION */}
       {successOpen && (
         <div className="fixed inset-0 z-50">
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setSuccessOpen(false)} />

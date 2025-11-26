@@ -16,7 +16,7 @@ const stats: StatItem[] = [
   },
   {
     label: "Streetlights",
-    target: 2500,
+    target: 1000,
     format: (v) => `${v.toLocaleString()}+`
   },
   {
@@ -26,12 +26,12 @@ const stats: StatItem[] = [
   },
   {
     label: "Bulbs Donated",
-    target: 500,
+    target: 2000,
     format: (v) => `${v}+`
   },
   {
     label: "Desks Provided",
-    target: 100,
+    target: 2000,
     format: (v) => `${v}+`
   },
   {

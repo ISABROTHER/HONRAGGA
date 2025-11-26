@@ -1,6 +1,6 @@
 // src/components/Header.tsx
 import { useState } from 'react';
-import { Menu, X, Home, User, BookOpen, Calendar, Newspaper, HandHeart, LogOut, Settings, HelpCircle, Share2 } from 'lucide-react';
+import { Menu, X, Home, User, BookOpen, Calendar, Newspaper, HandHeart, LogOut, Settings, Share2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface HeaderProps {
@@ -37,7 +37,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
     { id: 'volunteer', label: 'Get Involved' },
   ];
 
-  // Mobile Menu Items (More items added to show compactness)
+  // Mobile Menu Items
   const mobileNavItems = [
     { id: 'home', label: 'Home', icon: Home },
     { id: 'about', label: 'About Profile', icon: User },
@@ -45,7 +45,6 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
     { id: 'events', label: 'Events', icon: Calendar },
     { id: 'news', label: 'News & Media', icon: Newspaper },
     { id: 'volunteer', label: 'Get Involved', icon: HandHeart },
-    // Extra items can be added here easily now
     { id: 'settings', label: 'Settings', icon: Settings },
     { id: 'share', label: 'Share App', icon: Share2 },
   ];
@@ -155,7 +154,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                 className={`
                   w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg border-2 border-white/30 backdrop-blur-md
                   ${mobileMenuOpen 
-                    ? 'bg-white text-[#006B3F] rotate-90' 
+                    ? 'bg-white text-[#CE1126] rotate-90' 
                     : 'bg-[#006B3F] text-white'
                   }
                 `}
@@ -170,7 +169,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
             </div>
           </div>
 
-          {/* === CUSTOM DROPPING MOBILE MENU === */}
+          {/* === CUSTOM DROPPING MOBILE MENU (RED GRADIENT) === */}
           <AnimatePresence>
             {mobileMenuOpen && (
               <motion.div 
@@ -182,14 +181,13 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                 style={{
                   top: '12px', 
                   right: '12px',
-                  // Smaller border radius for a tighter look
                   borderRadius: '30px 30px 30px 30px', 
                   borderTopRightRadius: '50px' 
                 }}
               >
-                {/* THE BACKGROUND SHAPE (Rich Green Gradient + Texture) */}
+                {/* THE BACKGROUND SHAPE (Red Gradient + Texture) */}
                 <div className="
-                  relative bg-gradient-to-b from-[#006B3F] via-[#00502F] to-black
+                  relative bg-gradient-to-b from-[#CE1126] via-[#900000] to-black
                   text-white p-5 pt-20 pb-6
                   shadow-2xl shadow-black/60
                   h-full w-full
@@ -197,7 +195,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                   border border-white/10
                 ">
                   
-                  {/* Decorative texture overlay (The "Overlay Design") */}
+                  {/* Decorative texture overlay */}
                   <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-15 pointer-events-none mix-blend-overlay"></div>
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none"></div>
 
@@ -211,9 +209,9 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                     <span className="text-white font-black text-xs tracking-widest">NDC</span>
                   </motion.div>
 
-                  {/* Welcome Text (Smaller) */}
+                  {/* Welcome Text */}
                   <motion.div variants={itemVariants} className="mb-4 pl-1 relative z-10">
-                    <h3 className="text-[10px] font-bold text-green-200 uppercase tracking-wider mb-0.5">Current User</h3>
+                    <h3 className="text-[10px] font-bold text-red-200 uppercase tracking-wider mb-0.5">Current User</h3>
                     <p className="text-xl font-black text-white tracking-tight drop-shadow-md">@Ragga</p>
                   </motion.div>
 
@@ -231,14 +229,14 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                           className={`
                             flex items-center space-x-3 px-4 py-2.5 rounded-xl w-full text-left transition-all duration-200 group
                             ${isActive 
-                              ? 'bg-white text-[#006B3F] shadow-md font-bold scale-[1.02]' 
+                              ? 'bg-white text-[#CE1126] shadow-md font-bold scale-[1.02]' 
                               : 'bg-white/5 hover:bg-white/10 text-white backdrop-blur-sm border border-white/5'
                             }
                           `}
                         >
                           <div className={`
                             p-1.5 rounded-full 
-                            ${isActive ? 'bg-[#006B3F]/10 text-[#CE1126]' : 'bg-white/5 text-white group-hover:scale-110 transition-transform'}
+                            ${isActive ? 'bg-[#CE1126]/10 text-[#CE1126]' : 'bg-white/5 text-white group-hover:scale-110 transition-transform'}
                           `}>
                             <Icon className="w-4 h-4" />
                           </div>
@@ -326,4 +324,4 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
       </div>
     </div>
   );
-} 
+}

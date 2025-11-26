@@ -1,4 +1,3 @@
-// src/pages/News.tsx
 import { useState, useEffect } from 'react';
 import {
   MapPin,
@@ -131,6 +130,13 @@ export function News() {
   const [successOpen, setSuccessOpen] = useState(false);
   const [trackingCode, setTrackingCode] = useState<string>('');
 
+  // NEW: Additional data to enrich the report (no DB schema changes)
+  const [pollingArea, setPollingArea] = useState('');
+  const [impact, setImpact] = useState('');
+  const [duration, setDuration] = useState('');
+  const [peopleAffected, setPeopleAffected] = useState('');
+  const [deadline, setDeadline] = useState('');
+
   // auto set subcat list when category changes
   useEffect(() => {
     const first = CATEGORIES[cat].subs[0];
@@ -162,6 +168,13 @@ export function News() {
 
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0] || null;
+
+    // Optional: basic size guard to avoid huge uploads
+    if (f && f.size > 5 * 1024 * 1024) {
+      setErrorMsg('Image is too large. Please upload a file under 5MB.');
+      return;
+    }
+
     setPhotoFile(f || null);
     setPhotoPreview(f ? URL.createObjectURL(f) : null);
   };
@@ -197,6 +210,11 @@ export function News() {
     setPhone('');
     setPhotoFile(null);
     setPhotoPreview(null);
+    setPollingArea('');
+    setImpact('');
+    setDuration('');
+    setPeopleAffected('');
+    setDeadline('');
   };
 
   const onSubmitIssue = async (e: React.FormEvent) => {
@@ -207,7 +225,7 @@ export function News() {
       setErrorMsg('Please enter a short description.');
       return;
     }
-    if (!locationText.trim() && (!coords.lat || !coords.lng)) {
+    if (!locationText.trim() && (coords.lat === null || coords.lng === null)) {
       setErrorMsg('Please provide a location or use GPS.');
       return;
     }
@@ -221,14 +239,38 @@ export function News() {
 
       // Compose a location string with coords if available
       const locCombined =
-        coords.lat && coords.lng
+        coords.lat !== null && coords.lng !== null
           ? `${locationText ? locationText + ' • ' : ''}${coords.lat.toFixed(5)}, ${coords.lng.toFixed(5)}`
           : locationText;
+
+      // Enrich description with extra structured details WITHOUT changing DB schema
+      const descriptionLines: string[] = [];
+
+      if (description.trim()) {
+        descriptionLines.push(description.trim());
+      }
+      if (impact.trim()) {
+        descriptionLines.push(`Impact: ${impact.trim()}`);
+      }
+      if (duration.trim()) {
+        descriptionLines.push(`How long: ${duration.trim()}`);
+      }
+      if (peopleAffected.trim()) {
+        descriptionLines.push(`People affected: ${peopleAffected.trim()}`);
+      }
+      if (pollingArea.trim()) {
+        descriptionLines.push(`Town / Electoral area / Polling station: ${pollingArea.trim()}`);
+      }
+      if (deadline.trim()) {
+        descriptionLines.push(`Time sensitivity / deadline: ${deadline.trim()}`);
+      }
+
+      const finalDescription = descriptionLines.join('\n\n');
 
       const insertPayload = {
         category: CATEGORIES[cat].label,
         subcategory: subcat,
-        description: description.trim(),
+        description: finalDescription,
         location: locCombined.trim(),
         priority,
         photo_url,
@@ -265,7 +307,8 @@ export function News() {
           <div className="mb-8 text-center">
             <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-2">Report an Issue</h2>
             <p className="text-gray-600">
-              Help improve the community — share problems like broken streetlights, potholes, clinic or school issues.
+              Help improve the community — report issues like broken streetlights, bad roads, or problems at clinics and
+              schools.
             </p>
           </div>
 
@@ -275,7 +318,34 @@ export function News() {
               onSubmit={onSubmitIssue}
               className="relative rounded-3xl bg-white/80 backdrop-blur-xl border border-white/40 shadow-2xl p-5 md:p-8 space-y-6"
             >
-              {/* Grid */}
+              {/* Guidance & expectations */}
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="p-4 rounded-2xl bg-blue-50 border border-blue-100 text-xs text-left">
+                  <p className="font-semibold text-blue-900 mb-1">What this form is for</p>
+                  <p className="text-blue-800">
+                    Use this form to report issues in Cape Coast North that need the MP&apos;s office to follow up with
+                    schools, clinics, agencies and local authorities.
+                  </p>
+                  <p className="text-blue-800 mt-2">
+                    The MP&apos;s office can: help escalate problems with public services and community projects.
+                    <br />
+                    The MP&apos;s office cannot: act as police or court in private disputes, but we may guide you on
+                    where to seek help.
+                  </p>
+                </div>
+                <div className="p-4 rounded-2xl bg-gray-50 border border-gray-200 text-xs">
+                  <p className="font-semibold text-gray-900 mb-1">Constituency & language</p>
+                  <p className="text-gray-700">
+                    Please state your town or electoral area below. You may describe the issue in English or in simple
+                    Fante/Twi. You can also choose to remain anonymous.
+                  </p>
+                  <p className="text-gray-600 mt-2">
+                    After submission, you&apos;ll receive a tracking code so you can follow the status of your issue.
+                  </p>
+                </div>
+              </div>
+
+              {/* Grid fields */}
               <div className="grid md:grid-cols-2 gap-4">
                 {/* Category */}
                 <div>
@@ -309,6 +379,41 @@ export function News() {
                   </select>
                 </div>
 
+                {/* Town / Electoral area */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-800 mb-1">
+                    Town / Electoral area / Polling station
+                  </label>
+                  <input
+                    value={pollingArea}
+                    onChange={(e) => setPollingArea(e.target.value)}
+                    placeholder="e.g., Abura, Pedu, UCC North, specific polling station name"
+                    className="w-full px-3 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#FF6B00]"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    This helps us confirm the issue is within Cape Coast North.
+                  </p>
+                </div>
+
+                {/* Priority */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-800 mb-1">Priority</label>
+                  <select
+                    value={priority}
+                    onChange={(e) => setPriority(e.target.value as Priority)}
+                    className="w-full px-3 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#FF6B00]"
+                  >
+                    {(['Normal', 'Urgent', 'Life-threatening'] as Priority[]).map((p) => (
+                      <option key={p} value={p}>
+                        {p}
+                      </option>
+                    ))}
+                  </select>
+                  <p className="mt-1 text-xs text-gray-500">
+                    Normal – general issue; Urgent – time-sensitive; Life-threatening – immediate danger to people.
+                  </p>
+                </div>
+
                 {/* Description */}
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-gray-800 mb-1">Short description</label>
@@ -319,6 +424,52 @@ export function News() {
                     placeholder="e.g., Streetlight near the new market junction has been off for two weeks."
                     className="w-full px-3 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#FF6B00]"
                   />
+                </div>
+
+                {/* Impact */}
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-800 mb-1">
+                    How is this affecting you or others? (optional)
+                  </label>
+                  <textarea
+                    value={impact}
+                    onChange={(e) => setImpact(e.target.value)}
+                    rows={3}
+                    placeholder="e.g., Children walk in darkness to school, and there have been near accidents at night."
+                    className="w-full px-3 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#FF6B00]"
+                  />
+                </div>
+
+                {/* Duration */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-800 mb-1">
+                    How long has this been happening? (optional)
+                  </label>
+                  <input
+                    value={duration}
+                    onChange={(e) => setDuration(e.target.value)}
+                    placeholder="e.g., 2 weeks, 6 months, since 2021"
+                    className="w-full px-3 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#FF6B00]"
+                  />
+                </div>
+
+                {/* People affected */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-800 mb-1">
+                    About how many people are affected? (optional)
+                  </label>
+                  <select
+                    value={peopleAffected}
+                    onChange={(e) => setPeopleAffected(e.target.value)}
+                    className="w-full px-3 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#FF6B00]"
+                  >
+                    <option value="">Select</option>
+                    <option value="1-10">1–10 people</option>
+                    <option value="11-50">11–50 people</option>
+                    <option value="51-200">51–200 people</option>
+                    <option value="200+">More than 200 people</option>
+                    <option value="unknown">Not sure</option>
+                  </select>
                 </div>
 
                 {/* Location */}
@@ -341,30 +492,42 @@ export function News() {
                       <span className="text-sm">GPS</span>
                     </button>
                   </div>
-                  {coords.lat && coords.lng ? (
-                    <div className="text-xs text-gray-700 mt-1 flex items-center gap-1">
-                      <MapPin className="w-3 h-3" />
-                      <span>
-                        {coords.lat.toFixed(5)}, {coords.lng.toFixed(5)}
-                      </span>
-                    </div>
+                  {coords.lat !== null && coords.lng !== null ? (
+                    <>
+                      <div className="text-xs text-gray-700 mt-1 flex items-center gap-1">
+                        <MapPin className="w-3 h-3" />
+                        <span>
+                          {coords.lat.toFixed(5)}, {coords.lng.toFixed(5)}
+                        </span>
+                      </div>
+                      {/* Simple map preview using Google Maps embed – no extra dependencies */}
+                      <div className="mt-3 rounded-xl overflow-hidden border border-gray-200 h-40">
+                        <iframe
+                          title="Location preview"
+                          src={`https://www.google.com/maps?q=${coords.lat},${coords.lng}&z=16&output=embed`}
+                          className="w-full h-full border-0"
+                          loading="lazy"
+                          referrerPolicy="no-referrer-when-downgrade"
+                        />
+                      </div>
+                    </>
                   ) : null}
                 </div>
 
-                {/* Priority */}
+                {/* Time sensitivity / deadline */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-800 mb-1">Priority</label>
-                  <select
-                    value={priority}
-                    onChange={(e) => setPriority(e.target.value as Priority)}
+                  <label className="block text-sm font-medium text-gray-800 mb-1">
+                    Time sensitivity (optional)
+                  </label>
+                  <input
+                    type="date"
+                    value={deadline}
+                    onChange={(e) => setDeadline(e.target.value)}
                     className="w-full px-3 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#FF6B00]"
-                  >
-                    {(['Normal', 'Urgent', 'Life-threatening'] as Priority[]).map((p) => (
-                      <option key={p} value={p}>
-                        {p}
-                      </option>
-                    ))}
-                  </select>
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    If there is a key date (e.g., exams, project deadline, risk period), add it here.
+                  </p>
                 </div>
 
                 {/* Name */}
@@ -376,6 +539,9 @@ export function News() {
                     placeholder="Name"
                     className="w-full px-3 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#FF6B00]"
                   />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Leave this blank if you prefer to remain anonymous.
+                  </p>
                 </div>
 
                 {/* Phone */}
@@ -387,6 +553,9 @@ export function News() {
                     placeholder="e.g., 024XXXXXXX"
                     className="w-full px-3 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#FF6B00]"
                   />
+                  <p className="text-xs text-gray-500 mt-1">
+                    If provided, your number may be used by the MP&apos;s office to clarify details or update you.
+                  </p>
                 </div>
 
                 {/* Photo Upload */}
@@ -421,7 +590,7 @@ export function News() {
                     ) : (
                       <div className="text-xs text-gray-500 flex items-center gap-2">
                         <ImageIcon className="w-4 h-4" />
-                        <span>Attach a clear photo if possible.</span>
+                        <span>Attach a clear photo if possible. For videos or voice notes, you may share later with your tracking code.</span>
                       </div>
                     )}
                   </div>
@@ -458,7 +627,8 @@ export function News() {
               </div>
 
               <p className="text-xs text-gray-500">
-                You’ll receive a tracking code on success. Your details remain private unless you choose otherwise.
+                You&apos;ll receive a tracking code on success. Your details remain private unless you choose otherwise.
+                In future, you&apos;ll be able to use this code to check the status of your issue online.
               </p>
             </form>
           </div>
@@ -474,18 +644,18 @@ export function News() {
               <div className="h-1.5 bg-gradient-to-r from-[#FF6B00] via-amber-300 to-[#FF6B00]" />
               <div className="p-8 text-white text-center">
                 <div className="mx-auto w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mb-4">
-                    <CheckCircle className="w-8 h-8 text-green-400" />
+                  <CheckCircle className="w-8 h-8 text-green-400" />
                 </div>
                 <h3 className="text-2xl font-extrabold mb-2">Issue Submitted!</h3>
                 <p className="text-blue-100 text-sm mb-6">
                   Thank you for reporting. Your tracking code is:
                 </p>
-                
+
                 <div className="bg-white/10 rounded-xl p-4 mb-6 border border-white/10 backdrop-blur-sm">
-                    <div className="text-3xl font-black tracking-wider text-[#FF6B00] font-mono">{trackingCode}</div>
-                    <p className="text-xs text-blue-200 mt-2">
+                  <div className="text-3xl font-black tracking-wider text-[#FF6B00] font-mono">{trackingCode}</div>
+                  <p className="text-xs text-blue-200 mt-2">
                     Save this code to check status later.
-                    </p>
+                  </p>
                 </div>
 
                 <button
@@ -496,7 +666,7 @@ export function News() {
                 </button>
               </div>
               <button
-                onClick={() =>  setSuccessOpen(false)}
+                onClick={() => setSuccessOpen(false)}
                 className="absolute top-4 right-4 text-blue-200 hover:text-white p-1"
                 aria-label="Close"
               >

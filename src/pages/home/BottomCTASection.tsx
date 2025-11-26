@@ -1,250 +1,371 @@
-// src/pages/home/BottomCTASection.tsx
-import { Share, Heart, ShieldCheck, Star, TrendingUp } from "lucide-react";
+// src/pages/home/PrioritiesSection.tsx
+import React, { useRef, useState, useEffect } from "react";
+import {
+  BookOpen,
+  HeartPulse,
+  Briefcase,
+  Construction,
+  Sprout,
+  ChevronRight,
+  ChevronLeft,
+  ArrowRight
+} from "lucide-react";
 
-interface BottomCTASectionProps {
+interface PrioritiesSectionProps {
   onNavigate: (page: string) => void;
 }
 
-export function BottomCTASection({ onNavigate }: BottomCTASectionProps) {
+type Priority = {
+  id: string;
+  title: string;
+  subtitle: string;
+  desc: string;
+  initiativesCount: string;
+  icon: React.ElementType;
+  accentBg: string;
+  accentText: string;
+  accentBorder: string;
+  image: string;
+};
+
+const priorities: Priority[] = [
+  {
+    id: "education",
+    title: "Educational Support",
+    subtitle: "Educational Support",
+    desc: "Supporting quality education, digital literacy, and youth skills training.",
+    initiativesCount: "3 initiatives listed",
+    icon: BookOpen,
+    accentBg: "bg-blue-100",
+    accentText: "text-blue-700",
+    accentBorder: "border-blue-200",
+    image:
+      "https://images.pexels.com/photos/3059748/pexels-photo-3059748.jpeg?auto=compress&cs=tinysrgb&w=800"
+  },
+  {
+    id: "health",
+    title: "Health & Sanitation",
+    subtitle: "Health & Sanitation",
+    desc: "Expanding access to healthcare and clean water for all.",
+    initiativesCount: "2 initiatives listed",
+    icon: HeartPulse,
+    accentBg: "bg-green-100",
+    accentText: "text-green-700",
+    accentBorder: "border-green-200",
+    image:
+      "https://images.pexels.com/photos/6129680/pexels-photo-6129680.jpeg?auto=compress&cs=tinysrgb&w=800"
+  },
+  {
+    id: "employment",
+    title: "Employment & Entrepreneurship",
+    subtitle: "Employment & Entrepreneurship",
+    desc: "Creating jobs and empowering local businesses.",
+    initiativesCount: "2 initiatives listed",
+    icon: Briefcase,
+    accentBg: "bg-amber-100",
+    accentText: "text-amber-700",
+    accentBorder: "border-amber-200",
+    image:
+      "https://images.pexels.com/photos/3943722/pexels-photo-3943722.jpeg?auto=compress&cs=tinysrgb&w=800"
+  },
+  {
+    id: "infrastructure",
+    title: "Infrastructure Development",
+    subtitle: "Infrastructure Development",
+    desc: "Improving roads, electrification, and connectivity.",
+    initiativesCount: "3 initiatives listed",
+    icon: Construction,
+    accentBg: "bg-slate-100",
+    accentText: "text-slate-800",
+    accentBorder: "border-slate-300",
+    image:
+      "https://images.pexels.com/photos/6000061/pexels-photo-6000061.jpeg?auto=compress&cs=tinysrgb&w=800"
+  },
+  {
+    id: "agriculture",
+    title: "Agricultural Support",
+    subtitle: "Agricultural Support",
+    desc: "Supporting farmers with tools, training, and market access.",
+    initiativesCount: "1 initiative listed",
+    icon: Sprout,
+    accentBg: "bg-emerald-100",
+    accentText: "text-emerald-700",
+    accentBorder: "border-emerald-200",
+    image:
+      "https://images.pexels.com/photos/3189873/pexels-photo-3189873.jpeg?auto=compress&cs=tinysrgb&w=800"
+  }
+];
+
+export function PrioritiesSection({ onNavigate }: PrioritiesSectionProps) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const checkScroll = () => {
+    if (scrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+      setCanScrollLeft(scrollLeft > 0);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10); // -10 buffer
+    }
+  };
+
+  useEffect(() => {
+    checkScroll();
+    window.addEventListener("resize", checkScroll);
+    return () => window.removeEventListener("resize", checkScroll);
+  }, []);
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollRef.current) {
+      const { current } = scrollRef;
+      const scrollAmount = 420; // Approximate card width + gap
+      if (direction === 'left') {
+        current.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+      } else {
+        current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      }
+    }
+  };
+
   return (
-    <section className="py-8 md:py-16 bg-white font-sans text-slate-900">
-      <div className="max-w-[1100px] mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-12 md:py-24 bg-white">
+      <div className="max-w-[95%] 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* 1. TITLE SECTION */}
-        <h2 className="text-2xl md:text-4xl font-bold text-slate-900 mb-6 leading-tight font-heading">
-          Operation 500,000 Exercise Books
-          <span className="hidden md:inline text-slate-500 font-normal"> (Education Support)</span>
-        </h2>
-
-        {/* 2. MAIN CONTENT GRID */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-8">
+        {/* Heading block */}
+        <div className="text-center mb-10 md:mb-16">
           
-          {/* LEFT COLUMN (Image & Story) */}
-          <div className="flex flex-col gap-6">
-            
-            {/* FEATURED IMAGE */}
-            <div className="relative w-full rounded-2xl overflow-hidden bg-black aspect-video shadow-sm">
-              <img 
-                src="https://images.pexels.com/photos/159866/books-book-pages-read-literature-159866.jpeg?auto=compress&cs=tinysrgb&w=1200" 
-                alt="Students with books" 
-                className="absolute inset-0 w-full h-full object-cover opacity-90"
-              />
-              {/* Simulated carousel dots */}
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-                <div className="w-2 h-2 rounded-full bg-white shadow-sm"></div>
-                <div className="w-2 h-2 rounded-full bg-white/50 shadow-sm"></div>
-                <div className="w-2 h-2 rounded-full bg-white/50 shadow-sm"></div>
-              </div>
-            </div>
+          {/* Eyebrow Pill */}
+          <p className="inline-flex items-center gap-2 rounded-full bg-green-50 px-4 py-1.5 border border-green-100">
+            <span className="h-2 w-2 rounded-full bg-green-500 motion-safe:animate-pulse" />
+            <span className="text-xs md:text-sm font-bold tracking-[0.2em] uppercase text-green-700">
+              My Vision
+            </span>
+          </p>
 
-            {/* ORGANIZER & STORY (Mobile: Appears AFTER Image, Desktop: Stays in Left Col) */}
-            <div className="flex flex-col gap-6 order-3 lg:order-2">
-              
-              {/* Organizer Row */}
-              <div className="flex items-center gap-3 pb-6 border-b border-gray-100">
-                <div className="w-12 h-12 rounded-full bg-slate-100 overflow-hidden border border-gray-200 flex-shrink-0">
-                   {/* Placeholder Avatar */}
-                   <div className="w-full h-full flex items-center justify-center bg-[#002B5B] text-white font-bold text-lg">
-                     R
-                   </div>
-                </div>
-                <div>
-                  <p className="text-base font-semibold text-slate-900">Hon. Dr. Kwamena Minta Nyarku</p>
-                  <p className="text-sm text-slate-500">Organizer</p>
-                </div>
-              </div>
-
-              {/* Trust Badge */}
-              <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-[#E8F7F0] text-[#0D5F35] text-xs font-bold tracking-wide uppercase mb-2">
-                  <ShieldCheck className="w-4 h-4" /> Donation protected
-                </div>
-              </div>
-
-              {/* Story Content */}
-              <div className="prose prose-slate max-w-none text-[16px] leading-7 text-slate-700">
-                <p>
-                  Hello, my name is <strong>Ragga</strong>, and I am launching <strong>Operation 500,000</strong> to support the basic education needs of students in Cape Coast North.
-                </p>
-                <p>
-                  In many of our schools, brilliant young minds are held back simply because they lack basic learning materials like exercise books. This project aims to bridge that gap directly.
-                </p>
-                <p>
-                  We have already made significant progress, distributing thousands of books to schools in the constituency. However, to reach our goal of <strong>500,000 books</strong>, we need the support of the entire community.
-                </p>
-                <p>
-                  Your contribution—whether big or small—goes directly to purchasing these essential supplies. Together, we can ensure that no child goes to class empty-handed.
-                </p>
-                <button 
-                  onClick={() => onNavigate('policies')} 
-                  className="font-bold underline mt-2 text-slate-900 hover:text-slate-700"
-                >
-                  Read more
-                </button>
-              </div>
-            </div>
-
+          {/* Main Heading */}
+          <div className="mt-4 flex flex-col items-center justify-center group">
+            <h3
+              className="
+                text-xl sm:text-2xl md:text-5xl 
+                font-extrabold tracking-tight text-center
+                bg-gradient-to-r from-slate-900 via-green-700 to-slate-900
+                bg-clip-text text-transparent
+                motion-safe:transition-transform motion-safe:duration-500
+              "
+            >
+              Priorities for Cape Coast North
+            </h3>
+            <span
+              className="
+                mt-3 h-1 w-16 rounded-full
+                bg-gradient-to-r from-green-500 via-emerald-500 to-green-600
+                motion-safe:transition-all motion-safe:duration-500
+                group-hover:w-32
+              "
+            />
           </div>
 
-          {/* RIGHT COLUMN (Donation Card) */}
-          {/* On Mobile: This is Order 2 (between Image and Story). On Desktop: Right Column */}
-          <div className="order-2 lg:order-2">
-            <div className="lg:sticky lg:top-24 bg-white rounded-3xl border border-gray-200 shadow-[0_8px_30px_rgba(0,0,0,0.08)] p-6">
-              
-              {/* Progress Header */}
-              <div className="flex items-start gap-5 mb-6">
-                {/* Circular Progress Ring */}
-                <div className="relative w-16 h-16 flex-shrink-0">
-                   <svg className="w-full h-full -rotate-90 transform" viewBox="0 0 36 36">
-                     {/* Background Ring */}
-                     <path 
-                        className="text-gray-100" 
-                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" 
-                        fill="none" 
-                        stroke="currentColor" 
-                        strokeWidth="3.5" 
-                     />
-                     {/* Progress Ring (Green) */}
-                     <path 
-                        className="text-[#4ADE80]" 
-                        strokeDasharray="56, 100" 
-                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" 
-                        fill="none" 
-                        stroke="currentColor" 
-                        strokeWidth="3.5" 
-                        strokeLinecap="round"
-                     />
-                   </svg>
-                   <div className="absolute inset-0 flex items-center justify-center pt-1">
-                      <span className="text-xs font-extrabold text-slate-900">56%</span>
-                   </div>
-                </div>
-                
-                <div className="pt-1">
-                  <div className="text-2xl font-bold text-slate-900 tracking-tight">
-                    £27,682 <span className="text-base font-normal text-slate-600">raised</span>
-                  </div>
-                  <div className="text-xs text-slate-500 mt-1 font-medium">
-                    £50K target • 1.9K donations
-                  </div>
-                </div>
-              </div>
+          <p className="mt-6 text-base md:text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed">
+            We are building a community where opportunity is shared, education is
+            accessible, and healthcare is a right, not a privilege.
+          </p>
+        </div>
 
-              {/* Buttons */}
-              <div className="space-y-3 mb-6">
-                <button 
-                  onClick={() => onNavigate('volunteer')}
-                  className="w-full py-3.5 px-4 bg-[#1a5c41] hover:bg-[#144833] text-white font-bold text-lg rounded-xl shadow-md transition-all active:scale-[0.98] flex items-center justify-center"
+        {/* =========================
+            MOBILE LAYOUT (Vertical Stack)
+           ========================= */}
+        <div className="md:hidden space-y-4">
+          {priorities.map((priority, index) => {
+            const Icon = priority.icon;
+
+            if (index === 0) {
+              return (
+                <div
+                  key={priority.id}
+                  className="
+                    rounded-2xl overflow-hidden border border-slate-200 bg-white
+                    shadow-md
+                  "
                 >
-                  Donate
-                </button>
-                
-                <button 
-                  className="w-full py-3.5 px-4 bg-white border border-slate-300 text-slate-900 font-bold text-lg rounded-xl hover:bg-slate-50 transition-all flex items-center justify-center gap-2"
+                  <div className="relative h-48 w-full overflow-hidden">
+                    <img
+                      src={priority.image}
+                      alt={priority.title}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                    <div className="absolute bottom-4 left-4">
+                      <div className="inline-flex items-center gap-2 rounded-full bg-white/90 px-3 py-1">
+                        <Icon className="w-3.5 h-3.5 text-slate-800" />
+                        <span className="text-[11px] uppercase tracking-[0.16em] font-semibold text-slate-800">
+                          Key Priority
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-5">
+                    <h4 className="text-xl font-extrabold mb-2 leading-snug text-slate-900">
+                      {priority.title}
+                    </h4>
+                    <p className="text-xs font-semibold text-emerald-700 mb-1">
+                      {priority.initiativesCount}
+                    </p>
+                    <p className="text-sm text-slate-700 leading-relaxed mb-4">
+                      {priority.desc}
+                    </p>
+                    <button
+                      onClick={() => onNavigate("policies")}
+                      className="inline-flex items-center text-sm font-semibold text-emerald-700"
+                    >
+                      View Details
+                      <ChevronRight className="w-4 h-4 ml-1" />
+                    </button>
+                  </div>
+                </div>
+              );
+            }
+
+            return (
+              <button
+                key={priority.id}
+                type="button"
+                onClick={() => onNavigate("policies")}
+                className={`
+                  w-full flex items-stretch gap-4 rounded-2xl border ${priority.accentBorder}
+                  bg-white overflow-hidden shadow-sm
+                  motion-safe:transition-all motion-safe:duration-200
+                  active:scale-[0.98]
+                `}
+              >
+                <div className="relative w-28 min-w-[7rem] h-28 overflow-hidden">
+                  <img
+                    src={priority.image}
+                    alt={priority.title}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+
+                <div className="flex-1 py-4 pr-4 text-left">
+                  <h4 className="text-base font-bold text-slate-900 leading-snug line-clamp-2">
+                    {priority.title}
+                  </h4>
+                  <p className="text-[10px] font-semibold text-emerald-700 mt-1">
+                    {priority.initiativesCount}
+                  </p>
+                  <p className="text-xs text-slate-600 leading-snug mt-1 line-clamp-2">
+                    {priority.desc}
+                  </p>
+                  <span className="mt-2 inline-flex items-center text-xs font-semibold text-emerald-700">
+                    View Details
+                    <ChevronRight className="w-3 h-3 ml-1" />
+                  </span>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* =========================
+            DESKTOP LAYOUT (Horizontal Scroll with Red Animated Arrows)
+           ========================= */}
+        <div className="hidden md:block relative group/section">
+          
+          {/* Left Indicator - Red & Animated */}
+          {canScrollLeft && (
+            <button
+              onClick={() => scroll('left')}
+              className="
+                absolute left-0 top-1/2 -translate-y-1/2 -ml-6 z-20 
+                p-4 rounded-full bg-white/95 backdrop-blur-sm shadow-[0_0_25px_rgba(220,38,38,0.4)] border-2 border-red-100
+                text-red-600 hover:text-white hover:bg-red-600 hover:border-red-600 hover:scale-110
+                transition-all duration-300 animate-pulse
+              "
+              aria-label="Scroll left"
+            >
+              <ChevronLeft className="w-7 h-7" strokeWidth={3} />
+            </button>
+          )}
+
+          {/* Right Indicator - Red & Animated */}
+          {canScrollRight && (
+            <button
+              onClick={() => scroll('right')}
+              className="
+                absolute right-0 top-1/2 -translate-y-1/2 -mr-6 z-20 
+                p-4 rounded-full bg-white/95 backdrop-blur-sm shadow-[0_0_25px_rgba(220,38,38,0.4)] border-2 border-red-100
+                text-red-600 hover:text-white hover:bg-red-600 hover:border-red-600 hover:scale-110
+                transition-all duration-300 animate-pulse
+              "
+              aria-label="Scroll right"
+            >
+              <ChevronRight className="w-7 h-7" strokeWidth={3} />
+            </button>
+          )}
+
+          {/* Scroll Container */}
+          <div 
+            ref={scrollRef}
+            onScroll={checkScroll}
+            className="
+              flex gap-8 overflow-x-auto pb-12 pt-4 snap-x 
+              scrollbar-hide scroll-smooth relative z-10
+            "
+            style={{ scrollPaddingLeft: '1rem', scrollPaddingRight: '1rem' }}
+          >
+            {priorities.map((priority) => {
+              const Icon = priority.icon;
+
+              return (
+                <div
+                  key={priority.id}
+                  className={`
+                    snap-center flex-shrink-0
+                    w-[350px] lg:w-[400px] xl:w-[450px]
+                    group bg-slate-50 rounded-3xl p-6 xl:p-8 border border-slate-100
+                    hover:shadow-2xl hover:shadow-slate-900/5
+                    motion-safe:transition-all motion-safe:duration-300
+                    hover:-translate-y-2
+                    flex flex-col
+                  `}
                 >
-                  Share <Share className="w-4 h-4" />
-                </button>
-              </div>
-
-              {/* Recent Activity Notification */}
-              <div className="flex items-center gap-3 mb-6 text-[#7B2CBF] bg-purple-50/80 p-3 rounded-lg text-sm font-bold">
-                <TrendingUp className="w-5 h-5" />
-                <span>219 people have just made a donation</span>
-              </div>
-
-              {/* Donor List */}
-              <div className="space-y-5">
-                
-                {/* Item 1 */}
-                <div className="flex gap-3 items-start">
-                  <div className="w-9 h-9 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-400 flex-shrink-0">
-                    <Heart className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-bold text-slate-900">Anonymous</p>
-                    <div className="flex items-center gap-1.5 text-xs text-slate-500 mt-0.5 font-medium">
-                      <span className="text-slate-900">£10</span>
-                      <span className="w-0.5 h-0.5 rounded-full bg-slate-400"></span>
-                      <span>Recent donation</span>
+                  <div className="mb-6 rounded-2xl overflow-hidden h-48 xl:h-56 w-full relative shadow-inner">
+                    <img
+                      src={priority.image}
+                      alt={priority.title}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/0 to-transparent" />
+                    <div className="absolute top-4 left-4 inline-flex items-center gap-2 rounded-full bg-white/95 px-3 py-1.5 shadow-sm">
+                      <Icon className={`w-4 h-4 ${priority.accentText}`} />
+                      <span className="text-xs font-bold text-slate-800">
+                        {priority.subtitle}
+                      </span>
                     </div>
                   </div>
+
+                  <h4 className="text-2xl font-extrabold text-slate-900 mb-2">
+                    {priority.title}
+                  </h4>
+                  <p className="text-sm font-bold text-emerald-700 mb-3 uppercase tracking-wide">
+                    {priority.initiativesCount}
+                  </p>
+                  <p className="text-slate-600 mb-6 leading-relaxed text-base flex-1">
+                    {priority.desc}
+                  </p>
+                  <button
+                    onClick={() => onNavigate("policies")}
+                    className={`
+                      font-bold inline-flex items-center text-base
+                      text-emerald-700 group-hover:underline decoration-2 underline-offset-4
+                    `}
+                  >
+                    View Details <ArrowRight className="w-5 h-5 ml-1" />
+                  </button>
                 </div>
-
-                {/* Item 2 */}
-                <div className="flex gap-3 items-start">
-                  <div className="w-9 h-9 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-400 flex-shrink-0">
-                    <Heart className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-bold text-slate-900">Grace Keeling</p>
-                    <div className="flex items-center gap-1.5 text-xs text-slate-500 mt-0.5 font-medium">
-                      <span className="text-slate-900">£500</span>
-                      <span className="w-0.5 h-0.5 rounded-full bg-slate-400"></span>
-                      <span className="text-slate-600">Top donation</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Item 3 */}
-                <div className="flex gap-3 items-start">
-                  <div className="w-9 h-9 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-400 flex-shrink-0">
-                    <Heart className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-bold text-slate-900">Peter Castro</p>
-                    <div className="flex items-center gap-1.5 text-xs text-slate-500 mt-0.5 font-medium">
-                      <span className="text-slate-900">£76</span>
-                      <span className="w-0.5 h-0.5 rounded-full bg-slate-400"></span>
-                      <span>1 hr</span>
-                    </div>
-                  </div>
-                </div>
-
-                 {/* Item 4 */}
-                 <div className="flex gap-3 items-start">
-                  <div className="w-9 h-9 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-400 flex-shrink-0">
-                    <Heart className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-bold text-slate-900">Anonymous</p>
-                    <div className="flex items-center gap-1.5 text-xs text-slate-500 mt-0.5 font-medium">
-                      <span className="text-slate-900">£25</span>
-                      <span className="w-0.5 h-0.5 rounded-full bg-slate-400"></span>
-                      <span>4 hrs</span>
-                    </div>
-                  </div>
-                </div>
-
-                 {/* Item 5 */}
-                 <div className="flex gap-3 items-start">
-                  <div className="w-9 h-9 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-400 flex-shrink-0">
-                    <Heart className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-bold text-slate-900">Kelsada Taylor</p>
-                    <div className="flex items-center gap-1.5 text-xs text-slate-500 mt-0.5 font-medium">
-                      <span className="text-slate-900">£10</span>
-                      <span className="w-0.5 h-0.5 rounded-full bg-slate-400"></span>
-                      <span>31 mins</span>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-
-              {/* Footer Buttons */}
-              <div className="flex gap-3 mt-8 pt-2">
-                <button className="flex-1 py-2.5 border border-slate-300 rounded-full text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors">
-                  See all
-                </button>
-                <button className="flex-1 py-2.5 border border-slate-300 rounded-full text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors flex items-center justify-center gap-1.5">
-                  <Star className="w-4 h-4" /> See top
-                </button>
-              </div>
-
-            </div>
+              );
+            })}
           </div>
-
         </div>
       </div>
     </section>

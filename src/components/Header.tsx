@@ -1,6 +1,6 @@
 // src/components/Header.tsx
 import { useState } from 'react';
-import { Menu, X, Home, User, BookOpen, Calendar, Newspaper, HandHeart, LogOut, Settings, Share2, LayoutDashboard } from 'lucide-react';
+import { Menu, X, Home, User, BookOpen, Calendar, Newspaper, HandHeart, LogOut, Settings, Share2, LayoutDashboard, LogIn } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface HeaderProps {
@@ -35,7 +35,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
     { id: 'events', label: 'Events' },
     { id: 'news', label: 'News' },
     { id: 'volunteer', label: 'Get Involved' },
-    { id: 'admin', label: 'My Page' }, // Added to desktop for consistency
+    { id: 'admin', label: 'My Page' }, 
   ];
 
   // Mobile Menu Items
@@ -193,31 +193,25 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                   border-2 border-white/10
                 ">
                   
-                  {/* LOGOUT BUTTON (Replaces previous Circle) */}
-                  <motion.button 
-                    initial={{ scale: 0, rotate: -90 }}
-                    animate={{ scale: 1, rotate: 0 }}
-                    transition={{ delay: 0.2 }}
-                    className="absolute top-6 right-20 w-10 h-10 rounded-full bg-white/20 border border-white/30 flex items-center justify-center shadow-md hover:bg-white/30 active:scale-95 transition-all"
-                    onClick={() => setMobileMenuOpen(false)} // Logout action
-                    aria-label="Sign Out"
-                  >
-                    <LogOut className="w-5 h-5 text-white" />
-                  </motion.button>
-
-                  {/* MY PAGE LINK (Replaces @Ragga) */}
-                  <motion.div 
-                    variants={itemVariants} 
-                    className="mb-6 pl-1 relative z-10 cursor-pointer group"
-                    onClick={() => handleNavClick('admin')}
-                  >
-                    <h3 className="text-[10px] font-bold text-red-100 uppercase tracking-wider mb-0.5 opacity-90 group-hover:text-white transition-colors">
-                      Go to Dashboard
-                    </h3>
-                    <div className="flex items-center gap-2">
-                      <p className="text-2xl font-black text-white tracking-tight drop-shadow-sm">My Page</p>
-                      <LayoutDashboard className="w-5 h-5 text-white/80 group-hover:text-white group-hover:scale-110 transition-all" />
-                    </div>
+                  {/* LOGIN / MY PAGE BIG BUTTON */}
+                  <motion.div variants={itemVariants} className="mb-8 relative z-10">
+                    <button
+                      onClick={() => handleNavClick('admin')}
+                      className="
+                        w-full flex items-center justify-between px-5 py-4 rounded-2xl
+                        bg-white shadow-[0_4px_14px_rgba(0,0,0,0.25)] 
+                        text-[#CE1126] transform transition-all duration-200 
+                        hover:scale-[1.03] active:scale-95
+                      "
+                    >
+                      <div className="text-left">
+                        <p className="text-[10px] font-extrabold uppercase tracking-widest opacity-70 text-slate-500">Member Access</p>
+                        <p className="text-xl font-black tracking-tight leading-none mt-1">Login to My Page</p>
+                      </div>
+                      <div className="w-10 h-10 rounded-full bg-[#CE1126]/10 flex items-center justify-center">
+                        <LogIn className="w-6 h-6" strokeWidth={3} />
+                      </div>
+                    </button>
                   </motion.div>
 
                   {/* Menu List */}
@@ -246,7 +240,18 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                       );
                     })}
                     
-                    {/* (Sign Out button removed from bottom to avoid duplication) */}
+                    {/* Separator */}
+                    <div className="h-px w-full bg-white/20 my-3" />
+
+                    {/* Sign Out Button */}
+                    <motion.button 
+                      variants={itemVariants}
+                      className="flex items-center space-x-3 px-4 py-3 rounded-xl w-full text-left bg-black/20 hover:bg-black/30 text-white border border-white/10 transition-colors"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      <LogOut className="w-4 h-4 opacity-70" />
+                      <span className="text-xs tracking-wide font-bold uppercase">Sign Out</span>
+                    </motion.button>
                   </div>
 
                 </div>

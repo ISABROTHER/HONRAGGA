@@ -408,4 +408,4 @@ export function Appointments() {
       </section>
     </div>
   );
-}
+} 

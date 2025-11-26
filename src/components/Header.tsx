@@ -57,29 +57,25 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
   // Animation Variants
   const menuVariants = {
     closed: {
-      scale: 0,
+      scale: 0.8,
       opacity: 0,
-      borderBottomLeftRadius: "100%",
-      borderTopLeftRadius: "100%",
-      borderBottomRightRadius: "100%",
+      y: -20,
       transition: { type: "spring", stiffness: 400, damping: 40 }
     },
     open: {
       scale: 1,
       opacity: 1,
-      borderBottomLeftRadius: "30px",
-      borderTopLeftRadius: "30px",
-      borderBottomRightRadius: "30px",
+      y: 0,
       transition: { 
         type: "spring", stiffness: 300, damping: 30,
-        staggerChildren: 0.03, 
-        delayChildren: 0.05 
+        staggerChildren: 0.04, 
+        delayChildren: 0.1 
       }
     }
   };
 
   const itemVariants = {
-    closed: { opacity: 0, x: 20 },
+    closed: { opacity: 0, x: 10 },
     open: { opacity: 1, x: 0 }
   };
 
@@ -152,10 +148,10 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className={`
-                  w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg border-2 border-white/20
+                  w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg border-2
                   ${mobileMenuOpen 
-                    ? 'bg-white text-[#CE1126] rotate-90 shadow-inner' 
-                    : 'bg-[#CE1126] text-white hover:bg-[#900000]'
+                    ? 'bg-white border-[#CE1126] text-[#CE1126] rotate-90' 
+                    : 'bg-[#CE1126] border-white text-white'
                   }
                 `}
                 aria-label="Toggle menu"
@@ -169,7 +165,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
             </div>
           </div>
 
-          {/* === CUSTOM DROPPING MOBILE MENU (SOLID RED) === */}
+          {/* === CUSTOM DROPPING MOBILE MENU === */}
           <AnimatePresence>
             {mobileMenuOpen && (
               <motion.div 
@@ -181,42 +177,34 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                 style={{
                   top: '12px', 
                   right: '12px',
-                  borderRadius: '30px 30px 30px 30px', 
-                  borderTopRightRadius: '50px' 
+                  // Smooth geometry matching the toggle button
+                  borderRadius: '30px',
+                  borderTopRightRadius: '60px'
                 }}
               >
-                {/* THE BACKGROUND SHAPE (Solid Rich Red, No Frost, No Stripes) */}
+                {/* THE CONTAINER: Solid NDC Red with depth shadow */}
                 <div className="
-                  relative 
-                  bg-[#CE1126]
-                  text-white p-5 pt-20 pb-6
-                  shadow-2xl shadow-black/50
+                  relative bg-[#CE1126]
+                  p-5 pt-24 pb-6
+                  shadow-2xl shadow-black/40
                   h-full w-full
                   overflow-hidden
-                  border border-white/10
+                  border-2 border-white/10
                 ">
                   
-                  {/* Simple gradient for subtle depth (no stripes) */}
-                  <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/30 pointer-events-none"></div>
-                  
-                  {/* User Initials / Circle */}
-                  <motion.div 
-                    initial={{ scale: 0, rotate: -90 }}
-                    animate={{ scale: 1, rotate: 0 }}
-                    transition={{ delay: 0.2 }}
-                    className="absolute top-4 right-16 w-10 h-10 rounded-full bg-white/20 border border-white/30 flex items-center justify-center shadow-md"
-                  >
-                    <span className="text-white font-black text-xs tracking-widest">NDC</span>
+                  {/* User Profile Section */}
+                  <motion.div variants={itemVariants} className="mb-6 pl-1 relative z-10 flex items-center justify-between">
+                    <div>
+                      <h3 className="text-[10px] font-bold text-red-100 uppercase tracking-wider mb-0.5 opacity-90">Logged in as</h3>
+                      <p className="text-xl font-black text-white tracking-tight">@Ragga</p>
+                    </div>
+                    <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-xs font-bold text-white border border-white/20">
+                      JD
+                    </div>
                   </motion.div>
 
-                  {/* Welcome Text */}
-                  <motion.div variants={itemVariants} className="mb-4 pl-1 relative z-10">
-                    <h3 className="text-[10px] font-bold text-red-100 uppercase tracking-wider mb-0.5 opacity-90">Current User</h3>
-                    <p className="text-xl font-black text-white tracking-tight drop-shadow-sm">@Ragga</p>
-                  </motion.div>
-
-                  {/* Menu List (Compact) */}
-                  <div className="flex flex-col space-y-1.5 relative z-10">
+                  {/* Menu List */}
+                  <div className="flex flex-col space-y-2 relative z-10">
                     {mobileNavItems.map((item) => {
                       const Icon = item.icon;
                       const isActive = currentPage === item.id;
@@ -226,36 +214,31 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                           key={item.id}
                           variants={itemVariants}
                           onClick={() => handleNavClick(item.id)}
+                          // THE FIX: White cards for buttons to ensure visibility against red
                           className={`
-                            flex items-center space-x-3 px-4 py-2.5 rounded-xl w-full text-left transition-all duration-200 group relative overflow-hidden
+                            flex items-center space-x-3 px-4 py-3 rounded-xl w-full text-left transition-all duration-200 shadow-sm
                             ${isActive 
-                              ? 'bg-white text-[#CE1126] shadow-lg font-bold scale-[1.02]' 
-                              : 'bg-black/20 hover:bg-black/30 text-white border border-white/5'
+                              ? 'bg-white text-[#CE1126] font-bold scale-[1.02] ring-2 ring-offset-2 ring-offset-[#CE1126] ring-white' 
+                              : 'bg-white/90 text-slate-800 hover:bg-white hover:scale-[1.01]'
                             }
                           `}
                         >
-                          <div className={`
-                            p-1.5 rounded-full relative z-10
-                            ${isActive ? 'bg-[#CE1126]/10 text-[#CE1126]' : 'bg-white/10 text-white group-hover:scale-110 transition-transform'}
-                          `}>
-                            <Icon className="w-4 h-4" />
-                          </div>
-                          <span className="text-sm tracking-wide font-medium relative z-10">{item.label}</span>
+                          <Icon className={`w-4 h-4 ${isActive ? 'text-[#CE1126]' : 'text-slate-500'}`} />
+                          <span className="text-sm tracking-wide font-medium">{item.label}</span>
                         </motion.button>
                       );
                     })}
                     
-                    <div className="h-px w-full bg-white/20 my-2" />
+                    {/* Separator */}
+                    <div className="h-px w-full bg-white/20 my-3" />
 
-                    {/* Close/Logout Action */}
+                    {/* Sign Out */}
                     <motion.button 
                       variants={itemVariants}
-                      className="flex items-center space-x-3 px-4 py-2.5 rounded-xl w-full text-left bg-black/40 hover:bg-black/50 text-red-50 border border-white/10 transition-colors"
+                      className="flex items-center space-x-3 px-4 py-3 rounded-xl w-full text-left bg-black/20 hover:bg-black/30 text-white border border-white/10 transition-colors"
                       onClick={() => setMobileMenuOpen(false)}
                     >
-                      <div className="p-1.5 bg-white/10 rounded-full">
-                        <LogOut className="w-4 h-4" />
-                      </div>
+                      <LogOut className="w-4 h-4 opacity-70" />
                       <span className="text-xs tracking-wide font-bold uppercase">Sign Out</span>
                     </motion.button>
                   </div>
@@ -272,7 +255,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="fixed inset-0 bg-black/40 z-[-1] md:hidden"
+                className="fixed inset-0 bg-black/50 backdrop-blur-[2px] z-[-1] md:hidden"
                 style={{ top: `${headerHeight}px` }}
                 onClick={() => setMobileMenuOpen(false)}
               />

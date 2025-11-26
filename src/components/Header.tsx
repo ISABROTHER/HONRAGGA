@@ -51,6 +51,11 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
   ];
 
   const handleNavClick = (pageId: string) => {
+    // STRICTLY DISABLE NAVIGATION FOR ADMIN / MY PAGE
+    if (pageId === 'admin') {
+      return; 
+    }
+    
     onNavigate(pageId);
     setMobileMenuOpen(false);
   };
@@ -137,7 +142,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                     currentPage === item.id
                       ? 'bg-blue-900 text-white shadow-lg shadow-blue-500/50'
                       : 'text-gray-700 hover:bg-gray-100 hover:text-blue-700'
-                  } ${item.id === 'admin' ? 'border-2 border-red-100 hover:border-red-200 text-red-700 hover:text-red-800 hover:bg-red-50' : ''}`} 
+                  } ${item.id === 'admin' ? 'border-2 border-red-100 hover:border-red-200 text-red-700 hover:text-red-800 cursor-default' : ''}`} 
                   style={{
                     padding: `${desktopNavPaddingY}px ${desktopNavPaddingX}px`,
                     fontSize: `${desktopNavFontSize}px`,
@@ -212,7 +217,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                     <LogOut className="w-5 h-5 ml-0.5" />
                   </motion.button>
 
-                  {/* === HERO: MY PAGE LOGIN BUTTON (Fully Interactive) === */}
+                  {/* === HERO: MY PAGE LOGIN BUTTON (Non-functional as requested) === */}
                   <motion.div variants={itemVariants} className="mb-8 relative z-10">
                     <h3 className="text-xs font-bold text-white/80 uppercase tracking-widest mb-2 ml-1">Membership Area</h3>
                     <button
@@ -220,7 +225,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                       className="
                         w-full bg-white text-[#CE1126] rounded-2xl p-5 shadow-lg
                         flex items-center justify-between group transform transition-all duration-200
-                        hover:scale-[1.02] hover:shadow-xl active:scale-95 cursor-pointer
+                        hover:scale-[1.01] active:scale-95 cursor-default
                       "
                     >
                       <div className="text-left">
@@ -228,7 +233,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                           <LayoutDashboard className="w-5 h-5 text-[#CE1126]" />
                           <span className="font-black text-lg tracking-tight">MY PAGE</span>
                         </div>
-                        <span className="text-xs font-semibold text-gray-500 group-hover:text-[#CE1126]/80">Access Dashboard</span>
+                        <span className="text-xs font-semibold text-gray-500 group-hover:text-[#CE1126]/80">Login Disabled</span>
                       </div>
                       <div className="w-10 h-10 rounded-full bg-[#CE1126]/10 flex items-center justify-center group-hover:bg-[#CE1126] group-hover:text-white transition-colors">
                          <LogIn className="w-5 h-5" />

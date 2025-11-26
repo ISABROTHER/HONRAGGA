@@ -369,17 +369,18 @@ export function Issues() {
               onSubmit={onSubmitIssue}
               className="relative rounded-3xl bg-white/80 backdrop-blur-xl border border-white/40 shadow-2xl p-5 md:p-8 space-y-6"
             >
-              <div className="grid md:grid-cols-2 gap-6">
+              {/* MAIN STACK – always vertical, no grid layout */}
+              <div className="flex flex-col gap-6">
                 
                 {/* LOCATION SECTION */}
-                <div className="md:col-span-2 rounded-2xl border border-blue-100 bg-blue-50/70 p-4 md:p-5 space-y-4">
-                  <div className="flex items-center justify-between gap-3">
+                <div className="rounded-2xl border border-blue-100 bg-blue-50/70 p-4 md:p-5 space-y-4">
+                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
                     <div className="flex items-center gap-2">
                       <h3 className="text-lg font-bold text-slate-900">
                         Location Details
                       </h3>
                     </div>
-                    <div className="flex items-center gap-3">
+                    <div className="flex flex-wrap items-center gap-3">
                       <span className="text-[11px] text-blue-700 font-semibold">
                         Communities in system: {TOTAL_COMMUNITIES}
                       </span>
@@ -433,7 +434,7 @@ export function Issues() {
                     <label className="block text-sm font-medium text-gray-800 mb-1">
                       Specific Landmark (Optional)
                     </label>
-                    <div className="flex gap-2">
+                    <div className="flex flex-col sm:flex-row gap-2">
                       <input
                         value={locationDetail}
                         onChange={(e) => setLocationDetail(e.target.value)}
@@ -443,11 +444,11 @@ export function Issues() {
                       <button
                         type="button"
                         onClick={getGPS}
-                        className="px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 hover:bg-white text-gray-900 flex items-center gap-2 transition-colors font-medium"
+                        className="px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 hover:bg-white text-gray-900 flex items-center justify-center gap-2 transition-colors font-medium"
                         title="Use live location"
                       >
                         {locGetting ? <Loader2 className="w-4 h-4 animate-spin" /> : <LocateFixed className="w-4 h-4" />}
-                        <span className="text-sm hidden sm:inline">Live location</span>
+                        <span className="text-sm">Live location</span>
                       </button>
                     </div>
                     <p className="mt-1 text-[11px] text-slate-600">
@@ -463,12 +464,12 @@ export function Issues() {
                 </div>
 
                 {/* ISSUE DETAILS SECTION */}
-                <div className="md:col-span-2 rounded-2xl border border-amber-100 bg-amber-50/70 p-4 md:p-5">
-                  <div className="flex items-center justify-between gap-3">
+                <div className="rounded-2xl border border-amber-100 bg-amber-50/70 p-4 md:p-5">
+                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
                     <h3 className="text-lg font-bold text-slate-900">
                       Issue Details
                     </h3>
-                    <span className="inline-flex items-center gap-1 rounded-full bg-white/70 px-3 py-1 text-[11px] font-semibold text-amber-700 border border-amber-100">
+                    <span className="inline-flex items-center gap-1 self-start md:self-auto rounded-full bg-white/70 px-3 py-1 text-[11px] font-semibold text-amber-700 border border-amber-100">
                       <span className={`inline-block w-2 h-2 rounded-full ${isIssueSectionOpen ? 'bg-amber-500' : 'bg-slate-400'}`} />
                       Step 2 of 3
                     </span>
@@ -589,12 +590,12 @@ export function Issues() {
                 </div>
 
                 {/* CONTACT INFO */}
-                <div className="md:col-span-2 rounded-2xl border border-emerald-100 bg-emerald-50/70 p-4 md:p-5">
-                  <div className="flex items-center justify-between gap-3">
+                <div className="rounded-2xl border border-emerald-100 bg-emerald-50/70 p-4 md:p-5">
+                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
                     <h3 className="text-lg font-bold text-slate-900">
                       Your Details (Optional)
                     </h3>
-                    <span className="inline-flex items-center gap-1 rounded-full bg-white/70 px-3 py-1 text-[11px] font-semibold text-emerald-700 border border-emerald-100">
+                    <span className="inline-flex items-center gap-1 self-start md:self-auto rounded-full bg-white/70 px-3 py-1 text-[11px] font-semibold text-emerald-700 border border-emerald-100">
                       <span className={`inline-block w-2 h-2 rounded-full ${isContactSectionOpen ? 'bg-emerald-500' : 'bg-slate-400'}`} />
                       Step 3 of 3
                     </span>

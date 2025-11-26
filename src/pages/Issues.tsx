@@ -184,7 +184,7 @@ export function Issues() {
   const [submitting, setSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [successOpen, setSuccessOpen] = useState(false);
-  const [trackingCode, setTrackingCode] = useState<string>('');
+  const [trackingCode, setTrackingCode] = useState<string>(''); 
 
   // Custom "issue not listed" state
   const [useCustomSubcat, setUseCustomSubcat] = useState(false);

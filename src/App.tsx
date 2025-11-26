@@ -11,6 +11,8 @@ import { Events } from './pages/Events';
 import { Issues } from './pages/Issues';
 import { Volunteer } from './pages/Volunteer';
 import { Admin } from './pages/Admin';
+import { OngoingProjects } from './pages/OngoingProjects'; // New Import
+import { Appointments } from './pages/Appointments'; // New Import
 
 const policyDetailsContent: Record<string, { title: string; content: React.ReactNode }> = {
   education: {
@@ -121,6 +123,10 @@ function App() {
         return <Volunteer />;
       case 'admin':
         return <Admin />;
+      case 'ongoing-projects': // New route
+        return <OngoingProjects />;
+      case 'appointments': // New route
+        return <Appointments />;
       default:
         return <Home onNavigate={handleNavigate} />;
     }

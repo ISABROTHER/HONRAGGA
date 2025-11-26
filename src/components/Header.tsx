@@ -35,13 +35,12 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
     { id: 'events', label: 'Events' },
     { id: 'news', label: 'News' },
     { id: 'volunteer', label: 'Get Involved' },
-    { id: 'admin', label: 'My Page' }, // Added here
+    { id: 'admin', label: 'My Page' }, // Added to desktop for consistency
   ];
 
   // Mobile Menu Items
   const mobileNavItems = [
     { id: 'home', label: 'Home', icon: Home },
-    { id: 'admin', label: 'My Page', icon: LayoutDashboard }, // Added as priority item
     { id: 'about', label: 'About Profile', icon: User },
     { id: 'policies', label: 'Policies', icon: BookOpen },
     { id: 'events', label: 'Events', icon: Calendar },
@@ -194,14 +193,30 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                   border-2 border-white/10
                 ">
                   
-                  {/* User Profile Section */}
-                  <motion.div variants={itemVariants} className="mb-6 pl-1 relative z-10 flex items-center justify-between">
-                    <div>
-                      <h3 className="text-[10px] font-bold text-red-100 uppercase tracking-wider mb-0.5 opacity-90">Logged in as</h3>
-                      <p className="text-xl font-black text-white tracking-tight">@Ragga</p>
-                    </div>
-                    <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-xs font-bold text-white border border-white/20">
-                      JD
+                  {/* LOGOUT BUTTON (Replaces previous Circle) */}
+                  <motion.button 
+                    initial={{ scale: 0, rotate: -90 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    transition={{ delay: 0.2 }}
+                    className="absolute top-6 right-20 w-10 h-10 rounded-full bg-white/20 border border-white/30 flex items-center justify-center shadow-md hover:bg-white/30 active:scale-95 transition-all"
+                    onClick={() => setMobileMenuOpen(false)} // Logout action
+                    aria-label="Sign Out"
+                  >
+                    <LogOut className="w-5 h-5 text-white" />
+                  </motion.button>
+
+                  {/* MY PAGE LINK (Replaces @Ragga) */}
+                  <motion.div 
+                    variants={itemVariants} 
+                    className="mb-6 pl-1 relative z-10 cursor-pointer group"
+                    onClick={() => handleNavClick('admin')}
+                  >
+                    <h3 className="text-[10px] font-bold text-red-100 uppercase tracking-wider mb-0.5 opacity-90 group-hover:text-white transition-colors">
+                      Go to Dashboard
+                    </h3>
+                    <div className="flex items-center gap-2">
+                      <p className="text-2xl font-black text-white tracking-tight drop-shadow-sm">My Page</p>
+                      <LayoutDashboard className="w-5 h-5 text-white/80 group-hover:text-white group-hover:scale-110 transition-all" />
                     </div>
                   </motion.div>
 
@@ -216,7 +231,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                           key={item.id}
                           variants={itemVariants}
                           onClick={() => handleNavClick(item.id)}
-                          // THE FIX: White cards for buttons to ensure visibility against red
+                          // High-Contrast White Cards
                           className={`
                             flex items-center space-x-3 px-4 py-3 rounded-xl w-full text-left transition-all duration-200 shadow-sm
                             ${isActive 
@@ -231,18 +246,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                       );
                     })}
                     
-                    {/* Separator */}
-                    <div className="h-px w-full bg-white/20 my-3" />
-
-                    {/* Sign Out */}
-                    <motion.button 
-                      variants={itemVariants}
-                      className="flex items-center space-x-3 px-4 py-3 rounded-xl w-full text-left bg-black/20 hover:bg-black/30 text-white border border-white/10 transition-colors"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      <LogOut className="w-4 h-4 opacity-70" />
-                      <span className="text-xs tracking-wide font-bold uppercase">Sign Out</span>
-                    </motion.button>
+                    {/* (Sign Out button removed from bottom to avoid duplication) */}
                   </div>
 
                 </div>

@@ -123,7 +123,8 @@ export function Issues() {
   const [cat, setCat] = useState<CategoryKey>('roads-infrastructure');
   const [subcat, setSubcat] = useState<string>(CATEGORIES['roads-infrastructure'].subs[0]);
   const [description, setDescription] = useState('');
-  const [priority, setPriority] = useState<Priority>('Normal');
+  // Priority is fixed to "Normal" (hidden from user)
+  const priority: Priority = 'Normal';
   
   // Location State
   const [selectedZone, setSelectedZone] = useState<string>('');
@@ -149,6 +150,10 @@ export function Issues() {
   const [successOpen, setSuccessOpen] = useState(false);
   const [trackingCode, setTrackingCode] = useState<string>('');
 
+  // Custom "issue not listed" state
+  const [useCustomSubcat, setUseCustomSubcat] = useState(false);
+  const [customSubcat, setCustomSubcat] = useState('');
+
   // Click outside listener for community dropdown
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -164,15 +169,25 @@ export function Issues() {
   useEffect(() => {
     const first = CATEGORIES[cat].subs[0];
     setSubcat(first);
+    setUseCustomSubcat(false);
+    setCustomSubcat('');
   }, [cat]);
 
   // --- Helper to get active location data based on selection ---
-  const activeLocationData = LOCATIONS.find(loc => loc.zone === selectedZone);
+  const activeLocationData = LOCATIONS.find((loc: any) => loc.zone === selectedZone);
   
   // Filter communities based on search
   const filteredCommunities = activeLocationData
-    ? activeLocationData.communities.filter(c => c.toLowerCase().includes(communitySearch.toLowerCase()))
+    ? activeLocationData.communities.filter((c: string) =>
+        c.toLowerCase().includes(communitySearch.toLowerCase())
+      )
     : [];
+
+  // Total communities for display
+  const totalCommunities = LOCATIONS.reduce(
+    (sum: number, loc: any) => sum + (loc.communities?.length || 0),
+    0
+  );
 
   // Completion Checks
   const isLocationComplete = selectedZone !== '' && selectedCommunity !== '';
@@ -227,7 +242,6 @@ export function Issues() {
     setCat('roads-infrastructure');
     setSubcat(CATEGORIES['roads-infrastructure'].subs[0]);
     setDescription('');
-    setPriority('Normal');
     setSelectedZone('');
     setSelectedCommunity('');
     setCommunitySearch('');
@@ -237,6 +251,9 @@ export function Issues() {
     setPhone('');
     setPhotoFile(null);
     setPhotoPreview(null);
+    setUseCustomSubcat(false);
+    setCustomSubcat('');
+    setErrorMsg(null);
   };
 
   const onSubmitIssue = async (e: React.FormEvent) => {
@@ -253,6 +270,9 @@ export function Issues() {
       return;
     }
 
+    const finalSubcategory =
+      useCustomSubcat && customSubcat.trim() ? customSubcat.trim() : subcat;
+
     setSubmitting(true);
     try {
       let photo_url: string | null = null;
@@ -268,7 +288,7 @@ export function Issues() {
 
       const insertPayload = {
         category: CATEGORIES[cat].label,
-        subcategory: subcat,
+        subcategory: finalSubcategory,
         description: description.trim(),
         location: locCombined.trim(),
         priority,
@@ -304,7 +324,7 @@ export function Issues() {
         <div className="max-w-4xl mx-auto">
           
           {/* Consistent Heading Design */}
-          <div className="flex flex-col items-center mb-12 text-center">
+          <div className="flex flex-col items-center mb-10 text-center">
             <div className="inline-flex items-center gap-2 rounded-full bg-green-50 px-3 py-1 border border-green-100 mb-4">
               <MessageSquareWarning className="w-3.5 h-3.5 text-green-700" />
               <span className="text-[10px] sm:text-xs font-semibold tracking-[0.22em] uppercase text-green-700">
@@ -331,8 +351,73 @@ export function Issues() {
             </div>
             
             <p className="mt-6 text-slate-600 max-w-2xl mx-auto text-base md:text-lg font-normal leading-relaxed">
-              Help improve the community — share problems like broken streetlights, potholes, or school issues directly with the MP's office.
+              Help improve the community — share problems like broken streetlights, potholes, or school issues so your MP and Assemblyman can act on them.
             </p>
+          </div>
+
+          {/* NEW: MP + ASSEMBLYMAN INFO STRIP */}
+          <div className="grid md:grid-cols-2 gap-4 mb-8">
+            {/* MP CARD */}
+            <div className="rounded-2xl border border-slate-200 bg-white shadow-sm p-4 sm:p-5 flex gap-3 sm:gap-4">
+              <div className="flex-shrink-0">
+                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-[#002B5B] via-slate-700 to-[#FF6B00] flex items-center justify-center text-white font-bold text-lg shadow-md">
+                  MP
+                </div>
+              </div>
+              <div className="flex-1">
+                <p className="text-[11px] font-semibold tracking-[0.18em] uppercase text-slate-500 mb-1">
+                  Member of Parliament
+                </p>
+                <p className="text-sm sm:text-base font-bold text-slate-900">
+                  Hon. Dr. Kwamena Minta Nyarku
+                </p>
+                <p className="text-xs text-slate-500 mb-2">MP, Cape Coast North Constituency</p>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  The MP’s office receives all reports and works with Assemblymen, departments and agencies to ensure community issues are addressed and delivered.
+                </p>
+              </div>
+            </div>
+
+            {/* ASSEMBLYMAN CARD (DYNAMIC) */}
+            <div className="rounded-2xl border border-blue-100 bg-blue-50/70 shadow-sm p-4 sm:p-5 flex gap-3 sm:gap-4">
+              <div className="flex-shrink-0">
+                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-blue-700/90 flex items-center justify-center text-white font-bold text-lg shadow-md">
+                  <User className="w-6 h-6" />
+                </div>
+              </div>
+              <div className="flex-1">
+                <p className="text-[11px] font-semibold tracking-[0.18em] uppercase text-blue-700 mb-1">
+                  Your Assemblyman
+                </p>
+
+                {activeLocationData ? (
+                  <>
+                    <p className="text-sm sm:text-base font-bold text-blue-900">
+                      {activeLocationData.assemblyman}
+                    </p>
+                    <p className="text-xs text-blue-800 mb-1.5">
+                      Electoral Area: {activeLocationData.zone}
+                    </p>
+                    <div className="flex items-center gap-1.5 text-xs text-blue-800 mb-2">
+                      <Phone className="w-3.5 h-3.5" />
+                      <span>{activeLocationData.phone}</span>
+                    </div>
+                    <p className="text-[11px] text-blue-900/80 leading-relaxed">
+                      Local issues in this area can be handled directly by your Assemblyman, or through the MP’s office where follow-up and delivery are needed.
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-sm font-semibold text-blue-900 mb-1">
+                      Select your Area to view details
+                    </p>
+                    <p className="text-[11px] text-blue-900/80 leading-relaxed">
+                      Once you choose your Area below, we will show the Assemblyman responsible for that zone, together with their contact.
+                    </p>
+                  </>
+                )}
+              </div>
+            </div>
           </div>
 
           <form onSubmit={onSubmitIssue} className="space-y-6">
@@ -347,17 +432,29 @@ export function Issues() {
               transition={{ duration: 0.4 }}
             >
               <div className="p-6 md:p-8">
-                <div className="flex items-center justify-between mb-6">
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-6">
                   <h3 className="text-xl font-bold text-blue-900 flex items-center gap-2">
                     <MapPin className="w-5 h-5" /> Location Details
                   </h3>
-                  {isLocationComplete && <CheckCircle className="w-6 h-6 text-blue-600" />}
+                  <div className="flex items-center gap-3 text-[11px] text-blue-800">
+                    <span className="font-semibold">
+                      Communities in system: {totalCommunities}
+                    </span>
+                    {isLocationComplete && (
+                      <span className="inline-flex items-center gap-1 rounded-full bg-white/70 px-3 py-1 border border-blue-200 text-[11px] font-semibold text-blue-800">
+                        <CheckCircle className="w-3.5 h-3.5" />
+                        Location set
+                      </span>
+                    )}
+                  </div>
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-6">
                   {/* Area (Zone) Selector */}
                   <div>
-                    <label className="block text-sm font-medium text-blue-800 mb-1">Electoral Area / Zone *</label>
+                    <label className="block text-sm font-medium text-blue-800 mb-1">
+                      Area (Electoral Area / Zone) *
+                    </label>
                     <div className="relative">
                       <select
                         value={selectedZone}
@@ -369,7 +466,7 @@ export function Issues() {
                         className="w-full appearance-none px-4 py-3.5 rounded-xl border border-blue-200 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
                       >
                         <option value="">Select Area...</option>
-                        {LOCATIONS.map((loc) => (
+                        {LOCATIONS.map((loc: any) => (
                           <option key={loc.zone} value={loc.zone}>{loc.zone}</option>
                         ))}
                       </select>
@@ -417,7 +514,7 @@ export function Issues() {
                             className="absolute top-full left-0 right-0 mt-2 max-h-60 overflow-y-auto bg-white rounded-xl border border-blue-100 shadow-xl z-20"
                           >
                             {filteredCommunities.length > 0 ? (
-                              filteredCommunities.map((comm) => (
+                              filteredCommunities.map((comm: string) => (
                                 <button
                                   key={comm}
                                   type="button"
@@ -442,26 +539,9 @@ export function Issues() {
                   </div>
                 </div>
 
-                {/* Assemblyman Info Display */}
-                {activeLocationData && (
-                  <div className="mt-4 p-4 bg-blue-100/50 rounded-xl border border-blue-200 flex items-center gap-4">
-                    <div className="p-2 bg-blue-200 rounded-full text-blue-700">
-                      <User className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <p className="text-xs font-bold text-blue-800 uppercase">Assemblyman</p>
-                      <p className="text-sm font-semibold text-blue-900">{activeLocationData.assemblyman}</p>
-                      <div className="flex items-center gap-1 mt-0.5 text-xs text-blue-700">
-                        <Phone className="w-3 h-3" />
-                        <span>{activeLocationData.phone}</span>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
                 <div className="mt-6">
                   <label className="block text-sm font-medium text-blue-800 mb-1">Specific Landmark (Optional)</label>
-                  <div className="flex gap-3">
+                  <div className="flex flex-col sm:flex-row gap-3">
                     <input
                       value={locationDetail}
                       onChange={(e) => setLocationDetail(e.target.value)}
@@ -471,13 +551,16 @@ export function Issues() {
                     <button
                       type="button"
                       onClick={getGPS}
-                      className="px-5 py-3.5 rounded-xl border border-blue-200 bg-white hover:bg-blue-50 text-blue-900 flex items-center gap-2 transition-colors font-semibold shadow-sm"
+                      className="px-5 py-3.5 rounded-xl border border-blue-200 bg-white hover:bg-blue-50 text-blue-900 flex items-center justify-center gap-2 transition-colors font-semibold shadow-sm"
                       title="Use GPS"
                     >
                       {locGetting ? <Loader2 className="w-4 h-4 animate-spin" /> : <LocateFixed className="w-4 h-4" />}
-                      <span className="hidden sm:inline">GPS</span>
+                      <span className="sm:inline text-sm">Live location</span>
                     </button>
                   </div>
+                  <p className="mt-1 text-[11px] text-blue-900/80">
+                    Use live location only if you are standing at the exact place where the issue is.
+                  </p>
                   {coords.lat && coords.lng && (
                     <div className="text-xs text-blue-600 mt-2 flex items-center gap-1.5 font-medium bg-blue-100/50 px-3 py-1.5 rounded-lg w-fit">
                       <MapPin className="w-3 h-3" />
@@ -505,7 +588,9 @@ export function Issues() {
                       <h3 className="text-xl font-bold text-amber-900 flex items-center gap-2">
                         <AlertCircle className="w-5 h-5" /> Issue Details
                       </h3>
-                      {isIssueComplete && <CheckCircle className="w-6 h-6 text-amber-600" />}
+                      {isIssueComplete && (
+                        <CheckCircle className="w-6 h-6 text-amber-600" />
+                      )}
                     </div>
 
                     <div className="grid md:grid-cols-2 gap-6 mb-6">
@@ -526,21 +611,38 @@ export function Issues() {
                         </div>
                       </div>
 
-                      {/* Sub-category */}
+                      {/* Sub-category with "Issue not listed" */}
                       <div>
                         <label className="block text-sm font-medium text-amber-800 mb-1">Sub-category</label>
                         <div className="relative">
                           <select
-                            value={subcat}
-                            onChange={(e) => setSubcat(e.target.value)}
+                            value={useCustomSubcat ? '__custom' : subcat}
+                            onChange={(e) => {
+                              if (e.target.value === '__custom') {
+                                setUseCustomSubcat(true);
+                                setCustomSubcat('');
+                              } else {
+                                setUseCustomSubcat(false);
+                                setSubcat(e.target.value);
+                              }
+                            }}
                             className="w-full appearance-none px-4 py-3.5 rounded-xl border border-amber-200 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-amber-500 shadow-sm"
                           >
                             {CATEGORIES[cat].subs.map((s) => (
                               <option key={s} value={s}>{s}</option>
                             ))}
+                            <option value="__custom">Issue not listed – type manually</option>
                           </select>
                           <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                         </div>
+                        {useCustomSubcat && (
+                          <input
+                            value={customSubcat}
+                            onChange={(e) => setCustomSubcat(e.target.value)}
+                            placeholder="Type the issue in your own words"
+                            className="mt-2 w-full px-4 py-2.5 rounded-xl border border-amber-200 bg-white text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 shadow-sm"
+                          />
+                        )}
                       </div>
                     </div>
 
@@ -556,24 +658,8 @@ export function Issues() {
                       />
                     </div>
 
-                    {/* Priority & Photo */}
+                    {/* Photo */}
                     <div className="grid md:grid-cols-2 gap-6">
-                      <div>
-                        <label className="block text-sm font-medium text-amber-800 mb-1">Priority</label>
-                        <div className="relative">
-                          <select
-                            value={priority}
-                            onChange={(e) => setPriority(e.target.value as Priority)}
-                            className="w-full appearance-none px-4 py-3.5 rounded-xl border border-amber-200 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-amber-500 shadow-sm"
-                          >
-                            {(['Normal', 'Urgent', 'Life-threatening'] as Priority[]).map((p) => (
-                              <option key={p} value={p}>{p}</option>
-                            ))}
-                          </select>
-                          <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
-                        </div>
-                      </div>
-
                       <div>
                         <label className="block text-sm font-medium text-amber-800 mb-1">Photo Evidence</label>
                         <label className="flex items-center justify-center gap-2 px-4 py-3.5 rounded-xl border border-amber-200 bg-white hover:bg-amber-50 cursor-pointer transition-colors text-sm font-medium text-amber-900 shadow-sm">
@@ -679,7 +765,7 @@ export function Issues() {
                           </>
                         )}
                       </button>
-                      <p className="text-xs text-green-700 font-medium">
+                      <p className="text-xs text-green-700 font-medium text-center">
                         Your details remain private. You'll receive a tracking code upon submission.
                       </p>
                     </div>
@@ -738,4 +824,4 @@ export function Issues() {
       )}
     </div> 
   );
-} 
+}

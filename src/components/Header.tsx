@@ -169,7 +169,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
             </div>
           </div>
 
-          {/* === CUSTOM DROPPING MOBILE MENU (RED GRADIENT) === */}
+          {/* === CUSTOM DROPPING MOBILE MENU (RED STRIPES) === */}
           <AnimatePresence>
             {mobileMenuOpen && (
               <motion.div 
@@ -185,19 +185,28 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                   borderTopRightRadius: '50px' 
                 }}
               >
-                {/* THE BACKGROUND SHAPE (Red Gradient + Texture) */}
+                {/* THE BACKGROUND SHAPE (Solid Red with Stripes) */}
                 <div className="
-                  relative bg-gradient-to-b from-[#CE1126] via-[#900000] to-black
+                  relative bg-[#CE1126]
                   text-white p-5 pt-20 pb-6
                   shadow-2xl shadow-black/60
                   h-full w-full
                   overflow-hidden
                   border border-white/10
-                ">
+                "
+                style={{
+                  backgroundImage: `repeating-linear-gradient(
+                    -45deg,
+                    #CE1126,
+                    #CE1126 10px,
+                    #9e0d1d 10px,
+                    #9e0d1d 20px
+                  )`
+                }}
+                >
                   
-                  {/* Decorative texture overlay */}
-                  <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-15 pointer-events-none mix-blend-overlay"></div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none"></div>
+                  {/* Decorative overlay for depth */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent pointer-events-none"></div>
 
                   {/* User Initials / Circle */}
                   <motion.div 
@@ -209,7 +218,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                     <span className="text-white font-black text-xs tracking-widest">NDC</span>
                   </motion.div>
 
-                  {/* Welcome Text */}
+                  {/* Welcome Text (Smaller) */}
                   <motion.div variants={itemVariants} className="mb-4 pl-1 relative z-10">
                     <h3 className="text-[10px] font-bold text-red-200 uppercase tracking-wider mb-0.5">Current User</h3>
                     <p className="text-xl font-black text-white tracking-tight drop-shadow-md">@Ragga</p>

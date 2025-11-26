@@ -8,19 +8,56 @@ import {
   AlertCircle,
   LocateFixed,
   Loader2,
-  Image as ImageIcon,
   ArrowRight,
   MessageSquareWarning,
   Search,
   ChevronDown,
   Check,
-  ChevronUp,
   User,
-  Phone
+  Phone,
+  Sparkles,
+  Wand2
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { motion, AnimatePresence } from 'framer-motion';
 import { LOCATIONS } from '../data/locations'; // Import the centralized data
+
+// ✅ Gemini API key from environment (set VITE_GEMINI_API_KEY in your .env)
+const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY as string | undefined;
+
+// Helper: call Gemini text model
+async function callGemini(prompt: string): Promise<string | null> {
+  if (!GEMINI_API_KEY) {
+    console.warn('VITE_GEMINI_API_KEY is not set');
+    return null;
+  }
+
+  try {
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+        }),
+      }
+    );
+
+    if (!res.ok) {
+      console.error('Gemini API error:', await res.text());
+      return null;
+    }
+
+    const data = await res.json();
+    const text =
+      data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() ?? null;
+    return text && text.length > 0 ? text : null;
+  } catch (err) {
+    console.error('Gemini call failed:', err);
+    return null;
+  }
+}
 
 type Priority = 'Normal' | 'Urgent' | 'Life-threatening';
 
@@ -154,6 +191,11 @@ export function Issues() {
   const [useCustomSubcat, setUseCustomSubcat] = useState(false);
   const [customSubcat, setCustomSubcat] = useState('');
 
+  // 🔮 AI-related state
+  const [aiImproving, setAiImproving] = useState(false);
+  const [aiSuggestingCat, setAiSuggestingCat] = useState(false);
+  const [aiNotice, setAiNotice] = useState<string | null>(null);
+
   // Click outside listener for community dropdown
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -254,6 +296,7 @@ export function Issues() {
     setUseCustomSubcat(false);
     setCustomSubcat('');
     setErrorMsg(null);
+    setAiNotice(null);
   };
 
   const onSubmitIssue = async (e: React.FormEvent) => {
@@ -318,6 +361,131 @@ export function Issues() {
     }
   };
 
+  // 🔮 AI: improve description text
+  const handleImproveDescription = async () => {
+    setAiNotice(null);
+    if (!description.trim()) {
+      setAiNotice('Type a short description first, then AI can help you improve it.');
+      return;
+    }
+    if (!GEMINI_API_KEY) {
+      setAiNotice('AI is not available right now. Please contact the admin to connect the AI key.');
+      return;
+    }
+
+    setAiImproving(true);
+    try {
+      const prompt = `
+You are helping a citizen in Ghana report a community problem to their MP and Assemblyman.
+Rewrite the text below so it is:
+- clear and specific
+- polite and respectful
+- short (2–4 sentences)
+- suitable for an official report
+
+Keep ALL important details about what is wrong, where, and how it affects people.
+Return ONLY the improved text, no extra commentary.
+
+Original:
+${description}
+      `.trim();
+
+      const improved = await callGemini(prompt);
+      if (improved) {
+        setDescription(improved);
+        setAiNotice('Description improved with AI. Please review before submitting.');
+      } else {
+        setAiNotice('AI could not improve this description at the moment. Please try again later.');
+      }
+    } finally {
+      setAiImproving(false);
+    }
+  };
+
+  // 🔮 AI: suggest category + subcategory from description
+  const handleSuggestCategory = async () => {
+    setAiNotice(null);
+    if (!description.trim()) {
+      setAiNotice('Add a short description first, then AI can suggest the best category.');
+      return;
+    }
+    if (!GEMINI_API_KEY) {
+      setAiNotice('AI is not available right now. Please contact the admin to connect the AI key.');
+      return;
+    }
+
+    setAiSuggestingCat(true);
+    try {
+      // Build a compact description of allowed options for the model
+      const categorySpec = Object.entries(CATEGORIES)
+        .map(([key, value]) => {
+          const subs = value.subs.join(' | ');
+          return `${key}: ${value.label} -> [${subs}]`;
+        })
+        .join('\n');
+
+      const prompt = `
+You classify citizen issues into a fixed set of categories and sub-categories for a Ghanaian constituency.
+
+Allowed categories and sub-categories:
+
+${categorySpec}
+
+Given the issue description below, choose:
+- ONE "categoryKey" from the keys above (e.g. "roads-infrastructure")
+- ONE exact "subcategory" string from the allowed subcategories for that category.
+
+Respond ONLY with a JSON object in this exact format:
+{"categoryKey":"roads-infrastructure","subcategory":"Streetlight not working"}
+
+Issue description:
+${description}
+      `.trim();
+
+      const result = await callGemini(prompt);
+      if (!result) {
+        setAiNotice('AI could not suggest a category at the moment. Please choose manually.');
+        return;
+      }
+
+      // Try to parse JSON from the response
+      let parsed: { categoryKey?: string; subcategory?: string } | null = null;
+      try {
+        const jsonMatch = result.match(/\{[\s\S]*\}/);
+        const jsonString = jsonMatch ? jsonMatch[0] : result;
+        parsed = JSON.parse(jsonString);
+      } catch (err) {
+        console.error('Failed to parse AI JSON:', err, result);
+      }
+
+      if (
+        parsed &&
+        parsed.categoryKey &&
+        parsed.subcategory &&
+        (parsed.categoryKey as CategoryKey) in CATEGORIES
+      ) {
+        const key = parsed.categoryKey as CategoryKey;
+        const sub = parsed.subcategory;
+
+        // Only accept subcategory if it exists in our list
+        if (CATEGORIES[key].subs.includes(sub)) {
+          setCat(key);
+          setUseCustomSubcat(false);
+          setSubcat(sub);
+          setAiNotice('AI suggested the most likely category and sub-category based on your description.');
+        } else {
+          // If subcategory doesn't match exactly, still set category but leave user to pick sub
+          setCat(key);
+          setAiNotice('AI suggested a category. Please choose the closest sub-category manually.');
+        }
+      } else {
+        setAiNotice('AI could not confidently match this issue. Please select a category yourself.');
+      }
+    } finally {
+      setAiSuggestingCat(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 pt-28 pb-12">
       <section className="px-4 sm:px-6 lg:px-8">
@@ -355,7 +523,7 @@ export function Issues() {
             </p>
           </div>
 
-          {/* NEW: MP + ASSEMBLYMAN INFO STRIP */}
+          {/* MP + ASSEMBLYMAN INFO STRIP */}
           <div className="grid md:grid-cols-2 gap-4 mb-8">
             {/* MP CARD */}
             <div className="rounded-2xl border border-slate-200 bg-white shadow-sm p-4 sm:p-5 flex gap-3 sm:gap-4">
@@ -596,7 +764,20 @@ export function Issues() {
                     <div className="grid md:grid-cols-2 gap-6 mb-6">
                       {/* Category */}
                       <div>
-                        <label className="block text-sm font-medium text-amber-800 mb-1">Category</label>
+                        <div className="flex items-center justify-between mb-1">
+                          <label className="block text-sm font-medium text-amber-800">
+                            Category
+                          </label>
+                          <button
+                            type="button"
+                            onClick={handleSuggestCategory}
+                            disabled={aiSuggestingCat}
+                            className="inline-flex items-center gap-1 rounded-full px-3 py-1 text-[11px] font-semibold border border-amber-200 text-amber-800 bg-amber-50 hover:bg-white disabled:opacity-60"
+                          >
+                            <Wand2 className="w-3 h-3" />
+                            {aiSuggestingCat ? 'AI thinking...' : 'Ask AI to suggest'}
+                          </button>
+                        </div>
                         <div className="relative">
                           <select
                             value={cat}
@@ -646,9 +827,22 @@ export function Issues() {
                       </div>
                     </div>
 
-                    {/* Description */}
+                    {/* Description + AI improve */}
                     <div className="mb-6">
-                      <label className="block text-sm font-medium text-amber-800 mb-1">Description *</label>
+                      <div className="flex items-center justify-between mb-1">
+                        <label className="block text-sm font-medium text-amber-800">
+                          Description *
+                        </label>
+                        <button
+                          type="button"
+                          onClick={handleImproveDescription}
+                          disabled={aiImproving}
+                          className="inline-flex items-center gap-1 rounded-full px-3 py-1 text-[11px] font-semibold border border-amber-200 text-amber-800 bg-amber-50 hover:bg-white disabled:opacity-60"
+                        >
+                          <Sparkles className="w-3 h-3" />
+                          {aiImproving ? 'Improving...' : 'Improve with AI'}
+                        </button>
+                      </div>
                       <textarea
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
@@ -656,6 +850,11 @@ export function Issues() {
                         placeholder="Describe the issue in detail..."
                         className="w-full px-4 py-3.5 rounded-xl border border-amber-200 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-amber-500 shadow-sm"
                       />
+                      {aiNotice && (
+                        <p className="mt-2 text-[11px] text-amber-800">
+                          {aiNotice}
+                        </p>
+                      )}
                     </div>
 
                     {/* Photo */}

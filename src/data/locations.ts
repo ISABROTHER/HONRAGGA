@@ -263,4 +263,4 @@ export const LOCATIONS: LocationData[] = [
       "Nyinasin edges"
     ]
   }
-];
+]; 

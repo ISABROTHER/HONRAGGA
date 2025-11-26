@@ -5,11 +5,10 @@ import { Footer } from './components/Footer';
 import { Home } from './pages/Home';
 import { About } from './pages/About';
 import { Policies } from './pages/Policies';
-import { PolicyDetail } from './pages/PolicyDetail'; // Import the new component
+import { PolicyDetail } from './pages/PolicyDetail';
 import { Events } from './pages/Events';
 import { News } from './pages/News';
 import { Volunteer } from './pages/Volunteer';
-import { Admin } from './pages/Admin';
 
 // --- Data for Policy Details ---
 // (Ideally, this would be in a separate file, e.g., src/data/policyDetails.ts)
@@ -123,7 +122,6 @@ function App() {
       case 'about':
         return <About />;
       case 'policies':
-        // Pass the handleNavigate function to Policies for theme selection
         return <Policies onSelectTheme={(theme) => handleNavigate('policies', theme)} />;
       case 'events':
         return <Events />;
@@ -131,8 +129,6 @@ function App() {
         return <News />;
       case 'volunteer':
         return <Volunteer />;
-      case 'admin':
-        return <Admin />;
       default:
         return <Home onNavigate={handleNavigate} />;
     }

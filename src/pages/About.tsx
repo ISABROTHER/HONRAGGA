@@ -73,20 +73,21 @@ const assemblyMembers: AssemblyMember[] = [
     area: "Abakam – Ola University Electoral Area",
     name: "Assembly Member (Update Name)",
     phone: "0XX XXX XXXX",
-    photoUrl: "https://via.placeholder.com/300x300.png?text=Assembly+Member"
+    photoUrl: "https://via.placeholder.com/600x800.png?text=Assembly+Member"
   },
   {
     area: "Efutu – Kakomdo – Mempeasem Electoral Area",
     name: "Assembly Member (Update Name)",
     phone: "0XX XXX XXXX",
-    photoUrl: "https://via.placeholder.com/300x300.png?text=Assembly+Member"
+    photoUrl: "https://via.placeholder.com/600x800.png?text=Assembly+Member"
   },
   {
     area: "Abura – Adisadel – Pedu – Nkafoa Electoral Area",
     name: "Assembly Member (Update Name)",
     phone: "0XX XXX XXXX",
-    photoUrl: "https://via.placeholder.com/300x300.png?text=Assembly+Member"
+    photoUrl: "https://via.placeholder.com/600x800.png?text=Assembly+Member"
   },
+  // add more when you have them
 ];
 
 export function About() {
@@ -223,47 +224,42 @@ export function About() {
           </div>
         </AnimatedSection>
 
-        {/* NEW SECTION: Assembly Members grid */}
+        {/* UPDATED SECTION: Assembly Members grid in portrait style */}
         <AnimatedSection delay={100}>
           <h3 className="text-2xl font-semibold text-blue-900 mb-4">
             Assembly Members in Cape Coast North
           </h3>
           <p className="text-sm text-gray-700 mb-4">
-            Below are the main electoral areas in the constituency. Each card shows the 
-            Assembly Member responsible for that area. Update the names, photos and contact 
-            numbers as new information is available.
+            Each electoral area has an Assembly Member who represents residents at the local level. 
+            These portraits help you put a face to the name. You can contact them directly, or raise 
+            your concern through the MP&apos;s office using the issues page.
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
             {assemblyMembers.map((member) => (
               <div
                 key={member.area}
-                className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden flex flex-col"
+                className="flex flex-col items-center text-center"
               >
-                <div className="h-32 w-full bg-gray-100 overflow-hidden">
+                <div className="w-full aspect-[3/4] bg-amber-50 overflow-hidden">
                   <img
                     src={member.photoUrl}
                     alt={member.name}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover object-center"
                   />
                 </div>
-                <div className="p-4 space-y-2 flex-1 flex flex-col">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+                <div className="mt-3 space-y-1">
+                  <p className="text-[11px] font-semibold tracking-[0.16em] text-gray-500 uppercase">
                     Assembly Member
                   </p>
-                  <p className="text-sm font-bold text-gray-900">
+                  <p className="text-xs font-black text-gray-900 leading-snug uppercase">
                     {member.name}
                   </p>
-                  <p className="text-xs text-gray-600 flex items-start gap-1">
-                    <MapPin className="w-3 h-3 mt-0.5 flex-shrink-0 text-blue-700" />
-                    <span>{member.area}</span>
+                  <p className="text-[11px] text-gray-700 leading-snug">
+                    {member.area}
                   </p>
-                  <p className="text-xs text-gray-700 flex items-center gap-1">
-                    <Phone className="w-3 h-3 text-green-700" />
+                  <p className="text-[11px] text-gray-600 flex items-center justify-center gap-1">
+                    <Phone className="w-3 h-3" />
                     <span>{member.phone}</span>
-                  </p>
-                  <p className="text-[11px] text-gray-500 mt-1">
-                    Issues in this area can be addressed with your Assembly Member 
-                    or delivered through the MP&apos;s office for follow-up.
                   </p>
                 </div>
               </div>
@@ -335,7 +331,7 @@ export function About() {
              </div>
         </AnimatedSection>
 
-        {/* Section 4: Parliamentary Role & Election Results */}
+        {/* Section 4: Service in Parliament */}
         <AnimatedSection delay={300}>
             <h2 className="text-3xl font-bold text-green-800 mb-6 border-b-2 border-amber-500 pb-2 inline-block">Service in Parliament</h2>
             <div className="space-y-6">

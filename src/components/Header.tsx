@@ -1,6 +1,6 @@
 // src/components/Header.tsx
 import { useState } from 'react';
-import { Menu, X, Home, User, BookOpen, Calendar, Newspaper, HandHeart, LogOut } from 'lucide-react';
+import { Menu, X, Home, User, BookOpen, Calendar, Newspaper, HandHeart, LogOut, Settings, HelpCircle, Share2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface HeaderProps {
@@ -37,7 +37,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
     { id: 'volunteer', label: 'Get Involved' },
   ];
 
-  // Mobile Menu Items
+  // Mobile Menu Items (More items added to show compactness)
   const mobileNavItems = [
     { id: 'home', label: 'Home', icon: Home },
     { id: 'about', label: 'About Profile', icon: User },
@@ -45,6 +45,9 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
     { id: 'events', label: 'Events', icon: Calendar },
     { id: 'news', label: 'News & Media', icon: Newspaper },
     { id: 'volunteer', label: 'Get Involved', icon: HandHeart },
+    // Extra items can be added here easily now
+    { id: 'settings', label: 'Settings', icon: Settings },
+    { id: 'share', label: 'Share App', icon: Share2 },
   ];
 
   const handleNavClick = (pageId: string) => {
@@ -52,7 +55,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
     setMobileMenuOpen(false);
   };
 
-  // Animation Variants for "Top 1%" Feel
+  // Animation Variants
   const menuVariants = {
     closed: {
       scale: 0,
@@ -65,13 +68,13 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
     open: {
       scale: 1,
       opacity: 1,
-      borderBottomLeftRadius: "40px",
-      borderTopLeftRadius: "40px",
-      borderBottomRightRadius: "40px",
+      borderBottomLeftRadius: "30px",
+      borderTopLeftRadius: "30px",
+      borderBottomRightRadius: "30px",
       transition: { 
         type: "spring", stiffness: 300, damping: 30,
-        staggerChildren: 0.05, 
-        delayChildren: 0.1 
+        staggerChildren: 0.03, 
+        delayChildren: 0.05 
       }
     }
   };
@@ -145,29 +148,29 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
               ))}
             </div>
 
-            {/* === MOBILE MENU TOGGLE (CUSTOM CIRCLE) === */}
+            {/* === MOBILE MENU TOGGLE === */}
             <div className="md:hidden relative z-50">
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className={`
-                  w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg border-4 border-white/20 backdrop-blur-sm
+                  w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg border-2 border-white/30 backdrop-blur-md
                   ${mobileMenuOpen 
                     ? 'bg-white text-[#006B3F] rotate-90' 
-                    : 'bg-gradient-to-br from-[#006B3F] to-[#CE1126] text-white'
+                    : 'bg-[#006B3F] text-white'
                   }
                 `}
                 aria-label="Toggle menu"
               >
                 {mobileMenuOpen ? (
-                  <X className="w-7 h-7" strokeWidth={3} />
+                  <X className="w-6 h-6" strokeWidth={3} />
                 ) : (
-                  <Menu className="w-7 h-7" strokeWidth={3} />
+                  <Menu className="w-6 h-6" strokeWidth={3} />
                 )}
               </button>
             </div>
           </div>
 
-          {/* === CUSTOM DROPPING MOBILE MENU (NDC STYLE) === */}
+          {/* === CUSTOM DROPPING MOBILE MENU === */}
           <AnimatePresence>
             {mobileMenuOpen && (
               <motion.div 
@@ -175,46 +178,47 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                 animate="open"
                 exit="closed"
                 variants={menuVariants}
-                className="md:hidden absolute top-0 right-0 w-[320px] origin-top-right"
+                className="md:hidden absolute top-0 right-0 w-[260px] origin-top-right"
                 style={{
-                  top: '10px', 
-                  right: '10px',
-                  // The "L-shape" cutout for the toggle button
-                  borderRadius: '40px 40px 40px 40px', 
-                  borderTopRightRadius: '60px' 
+                  top: '12px', 
+                  right: '12px',
+                  // Smaller border radius for a tighter look
+                  borderRadius: '30px 30px 30px 30px', 
+                  borderTopRightRadius: '50px' 
                 }}
               >
-                {/* THE BACKGROUND SHAPE (Gradient: Green -> Red -> Black) */}
+                {/* THE BACKGROUND SHAPE (Rich Green Gradient + Texture) */}
                 <div className="
-                  relative bg-gradient-to-b from-[#006B3F] via-[#CE1126] to-black
-                  text-white p-6 pt-24 pb-8
-                  shadow-2xl shadow-black/50
+                  relative bg-gradient-to-b from-[#006B3F] via-[#00502F] to-black
+                  text-white p-5 pt-20 pb-6
+                  shadow-2xl shadow-black/60
                   h-full w-full
                   overflow-hidden
                   border border-white/10
                 ">
                   
-                  {/* Decorative texture overlay */}
-                  <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 pointer-events-none mix-blend-overlay"></div>
+                  {/* Decorative texture overlay (The "Overlay Design") */}
+                  <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-15 pointer-events-none mix-blend-overlay"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none"></div>
 
-                  {/* User Initials / Circle (Visual decoration) */}
+                  {/* User Initials / Circle */}
                   <motion.div 
-                    initial={{ scale: 0, rotate: -180 }}
+                    initial={{ scale: 0, rotate: -90 }}
                     animate={{ scale: 1, rotate: 0 }}
-                    transition={{ delay: 0.2, type: 'spring' }}
-                    className="absolute top-6 right-20 w-14 h-14 rounded-full bg-white/10 backdrop-blur-md border border-white/30 flex items-center justify-center shadow-inner"
+                    transition={{ delay: 0.2 }}
+                    className="absolute top-4 right-16 w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shadow-inner"
                   >
-                    <span className="text-white font-black text-sm tracking-widest drop-shadow-md">NDC</span>
+                    <span className="text-white font-black text-xs tracking-widest">NDC</span>
                   </motion.div>
 
-                  {/* Welcome Text */}
-                  <motion.div variants={itemVariants} className="mb-8 pl-2 relative z-10">
-                    <h3 className="text-sm font-bold text-green-100 uppercase tracking-wider mb-0.5">Welcome Back</h3>
-                    <p className="text-3xl font-black text-white tracking-tight drop-shadow-lg">Ragga</p>
+                  {/* Welcome Text (Smaller) */}
+                  <motion.div variants={itemVariants} className="mb-4 pl-1 relative z-10">
+                    <h3 className="text-[10px] font-bold text-green-200 uppercase tracking-wider mb-0.5">Current User</h3>
+                    <p className="text-xl font-black text-white tracking-tight drop-shadow-md">@Ragga</p>
                   </motion.div>
 
-                  {/* Menu List */}
-                  <div className="flex flex-col space-y-2 relative z-10">
+                  {/* Menu List (Compact) */}
+                  <div className="flex flex-col space-y-1.5 relative z-10">
                     {mobileNavItems.map((item) => {
                       const Icon = item.icon;
                       const isActive = currentPage === item.id;
@@ -225,36 +229,36 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                           variants={itemVariants}
                           onClick={() => handleNavClick(item.id)}
                           className={`
-                            flex items-center space-x-4 px-5 py-4 rounded-2xl w-full text-left transition-all duration-200 group
+                            flex items-center space-x-3 px-4 py-2.5 rounded-xl w-full text-left transition-all duration-200 group
                             ${isActive 
-                              ? 'bg-white text-[#006B3F] shadow-[0_4px_14px_rgba(0,0,0,0.2)] font-bold scale-[1.02]' 
-                              : 'bg-white/5 hover:bg-white/15 text-white backdrop-blur-sm border border-white/5'
+                              ? 'bg-white text-[#006B3F] shadow-md font-bold scale-[1.02]' 
+                              : 'bg-white/5 hover:bg-white/10 text-white backdrop-blur-sm border border-white/5'
                             }
                           `}
                         >
                           <div className={`
-                            p-2 rounded-full 
-                            ${isActive ? 'bg-[#006B3F]/10 text-[#CE1126]' : 'bg-white/10 text-white group-hover:scale-110 transition-transform'}
+                            p-1.5 rounded-full 
+                            ${isActive ? 'bg-[#006B3F]/10 text-[#CE1126]' : 'bg-white/5 text-white group-hover:scale-110 transition-transform'}
                           `}>
-                            <Icon className="w-5 h-5" />
+                            <Icon className="w-4 h-4" />
                           </div>
-                          <span className="text-base tracking-wide font-medium">{item.label}</span>
+                          <span className="text-sm tracking-wide font-medium">{item.label}</span>
                         </motion.button>
                       );
                     })}
                     
                     <div className="h-px w-full bg-white/10 my-2" />
 
-                    {/* Close Action */}
+                    {/* Close/Logout Action */}
                     <motion.button 
                       variants={itemVariants}
-                      className="flex items-center space-x-4 px-5 py-3 rounded-2xl w-full text-left bg-black/30 hover:bg-black/50 text-red-200 border border-white/5 transition-colors mt-2"
+                      className="flex items-center space-x-3 px-4 py-2.5 rounded-xl w-full text-left bg-black/30 hover:bg-black/50 text-red-200 border border-white/5 transition-colors"
                       onClick={() => setMobileMenuOpen(false)}
                     >
-                      <div className="p-2 bg-white/5 rounded-full">
+                      <div className="p-1.5 bg-white/5 rounded-full">
                         <LogOut className="w-4 h-4" />
                       </div>
-                      <span className="text-sm tracking-wide font-medium">Close Menu</span>
+                      <span className="text-xs tracking-wide font-bold uppercase">Sign Out</span>
                     </motion.button>
                   </div>
 
@@ -270,7 +274,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="fixed inset-0 bg-black/40 backdrop-blur-[3px] z-[-1] md:hidden"
+                className="fixed inset-0 bg-black/50 backdrop-blur-[2px] z-[-1] md:hidden"
                 style={{ top: `${headerHeight}px` }}
                 onClick={() => setMobileMenuOpen(false)}
               />

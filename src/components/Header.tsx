@@ -1,6 +1,6 @@
 // src/components/Header.tsx
 import { useState } from 'react';
-import { Menu, X, Home, User, BookOpen, Calendar, Newspaper, HandHeart, LogOut, Settings, Share2, LayoutDashboard, LogIn, ChevronRight } from 'lucide-react';
+import { Menu, X, Home, User, BookOpen, Calendar, Newspaper, HandHeart, LogOut, LayoutDashboard, LogIn, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface HeaderProps {
@@ -38,7 +38,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
     { id: 'admin', label: 'My Page' }, 
   ];
 
-  // Mobile Menu Items
+  // Mobile Menu Items (Settings & Share Removed)
   const mobileNavItems = [
     { id: 'home', label: 'Home', icon: Home },
     { id: 'about', label: 'About Profile', icon: User },
@@ -46,21 +46,16 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
     { id: 'events', label: 'Events', icon: Calendar },
     { id: 'news', label: 'News & Media', icon: Newspaper },
     { id: 'volunteer', label: 'Get Involved', icon: HandHeart },
-    { id: 'settings', label: 'Settings', icon: Settings },
-    { id: 'share', label: 'Share App', icon: Share2 },
   ];
 
   const handleNavClick = (pageId: string) => {
-    // 1. ALWAYS CLOSE MENU FIRST (Best Practice for responsiveness)
-    setMobileMenuOpen(false);
-
-    // 2. THEN CHECK NAVIGATION LOGIC
     // STRICTLY DISABLE NAVIGATION FOR ADMIN / MY PAGE
     if (pageId === 'admin') {
       return; 
     }
     
     onNavigate(pageId);
+    setMobileMenuOpen(false);
   };
 
   // Premium Animation Variants
@@ -209,37 +204,25 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                     <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zm0 9l2.5-1.25L12 8.5l-2.5 1.25L12 11zm0 2.5l-5-2.5-5 2.5L12 22l10-8.5-5-2.5-5 2.5z"/></svg>
                   </div>
 
-                  {/* LOGOUT BUTTON (Top Right) */}
-                  <motion.button 
-                    initial={{ scale: 0, rotate: -90 }}
-                    animate={{ scale: 1, rotate: 0 }}
-                    className="absolute top-6 right-20 w-12 h-12 rounded-full bg-black/20 text-white/90 border border-white/10 flex items-center justify-center hover:bg-black/40 active:scale-95 transition-all"
-                    onClick={() => setMobileMenuOpen(false)}
-                    title="Sign Out"
-                  >
-                    <LogOut className="w-5 h-5 ml-0.5" />
-                  </motion.button>
-
-                  {/* === HERO: MY PAGE LOGIN BUTTON (Non-functional but closes menu) === */}
-                  <motion.div variants={itemVariants} className="mb-8 relative z-10">
-                    <h3 className="text-xs font-bold text-white/80 uppercase tracking-widest mb-2 ml-1">Membership Area</h3>
+                  {/* === HERO: MY PAGE LOGIN BUTTON (Compact) === */}
+                  <motion.div variants={itemVariants} className="mb-6 relative z-10">
+                    <h3 className="text-xs font-bold text-white/80 uppercase tracking-widest mb-2 ml-1">Login to Your Dashboard</h3>
                     <button
                       onClick={() => handleNavClick('admin')}
                       className="
-                        w-full bg-white text-[#CE1126] rounded-2xl p-5 shadow-lg
+                        w-full bg-white text-[#CE1126] rounded-2xl p-3 shadow-lg
                         flex items-center justify-between group transform transition-all duration-200
                         hover:scale-[1.01] active:scale-95 cursor-default
                       "
                     >
-                      <div className="text-left">
-                        <div className="flex items-center gap-2 mb-1">
+                      <div className="text-left pl-1">
+                        <div className="flex items-center gap-2">
                           <LayoutDashboard className="w-5 h-5 text-[#CE1126]" />
                           <span className="font-black text-lg tracking-tight">MY PAGE</span>
                         </div>
-                        <span className="text-xs font-semibold text-gray-500 group-hover:text-[#CE1126]/80">Login Disabled</span>
                       </div>
-                      <div className="w-10 h-10 rounded-full bg-[#CE1126]/10 flex items-center justify-center group-hover:bg-[#CE1126] group-hover:text-white transition-colors">
-                         <LogIn className="w-5 h-5" />
+                      <div className="w-8 h-8 rounded-full bg-[#CE1126]/10 flex items-center justify-center group-hover:bg-[#CE1126] group-hover:text-white transition-colors">
+                         <LogIn className="w-4 h-4" strokeWidth={3} />
                       </div>
                     </button>
                   </motion.div>
@@ -273,6 +256,16 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                         </motion.button>
                       );
                     })}
+
+                    {/* Sign Out Button (Bottom of list) */}
+                    <motion.button 
+                      variants={itemVariants}
+                      className="flex items-center space-x-3 px-5 py-3.5 rounded-xl w-full text-left bg-black/20 hover:bg-black/30 text-white border border-white/10 transition-colors"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      <LogOut className="w-5 h-5 opacity-70" />
+                      <span className="text-xs tracking-wide font-bold uppercase">Sign Out</span>
+                    </motion.button>
                   </div>
 
                 </div>

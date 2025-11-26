@@ -39,8 +39,7 @@ const priorities: Priority[] = [
     accentBg: "bg-blue-100",
     accentText: "text-blue-700",
     accentBorder: "border-blue-200",
-    image:
-      "https://images.pexels.com/photos/3059748/pexels-photo-3059748.jpeg?auto=compress&cs=tinysrgb&w=800"
+    image: "https://i.imgur.com/Ozjnrli.jpeg"
   },
   {
     id: "health",
@@ -52,8 +51,7 @@ const priorities: Priority[] = [
     accentBg: "bg-green-100",
     accentText: "text-green-700",
     accentBorder: "border-green-200",
-    image:
-      "https://images.pexels.com/photos/6129680/pexels-photo-6129680.jpeg?auto=compress&cs=tinysrgb&w=800"
+    image: "https://i.imgur.com/XmWnKbH.jpeg"
   },
   {
     id: "employment",
@@ -65,8 +63,7 @@ const priorities: Priority[] = [
     accentBg: "bg-amber-100",
     accentText: "text-amber-700",
     accentBorder: "border-amber-200",
-    image:
-      "https://images.pexels.com/photos/3943722/pexels-photo-3943722.jpeg?auto=compress&cs=tinysrgb&w=800"
+    image: "https://i.imgur.com/saQoFLV.png"
   },
   {
     id: "infrastructure",
@@ -78,8 +75,7 @@ const priorities: Priority[] = [
     accentBg: "bg-slate-100",
     accentText: "text-slate-800",
     accentBorder: "border-slate-300",
-    image:
-      "https://images.pexels.com/photos/6000061/pexels-photo-6000061.jpeg?auto=compress&cs=tinysrgb&w=800"
+    image: "https://i.imgur.com/AZqDymE.jpeg"
   },
   {
     id: "agriculture",
@@ -91,8 +87,7 @@ const priorities: Priority[] = [
     accentBg: "bg-emerald-100",
     accentText: "text-emerald-700",
     accentBorder: "border-emerald-200",
-    image:
-      "https://images.pexels.com/photos/3189873/pexels-photo-3189873.jpeg?auto=compress&cs=tinysrgb&w=800"
+    image: "https://i.imgur.com/TZ4jIJA.jpeg"
   }
 ];
 

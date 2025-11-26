@@ -1,6 +1,6 @@
 // src/components/Header.tsx
 import { useState } from 'react';
-import { Menu, X, Home, User, BookOpen, Calendar, Newspaper, HandHeart, LogOut, Settings, Shield } from 'lucide-react';
+import { Menu, X, Home, User, BookOpen, Calendar, Newspaper, HandHeart, LogOut } from 'lucide-react';
 import { Button } from './Button';
 
 interface HeaderProps {
@@ -12,13 +12,20 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // === NUMERIC CONTROLS ===
-  const headerHeightBase = 90;
-  const headerScale = 1.1;
+  const headerHeightBase = 90; 
+  const headerScale = 1.1; 
   const headerHeight = headerHeightBase * headerScale;
 
-  const logoScale = 1.2;
-  const logoTopOffset = 8;
-  const logoLeftAdjust = 15;
+  const logoScale = 1.2; 
+  const logoTopOffset = 8; 
+  const logoBottomOffset = 2; 
+  const logoVerticalAdjust = -1; 
+  const logoLeftAdjust = 15; 
+
+  const desktopNavGap = 16; 
+  const desktopNavPaddingY = 8; 
+  const desktopNavPaddingX = 16; 
+  const desktopNavFontSize = 16; 
 
   // Desktop Navigation Items
   const navItems = [
@@ -49,7 +56,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
     <div className="relative w-full">
       {/* === FIXED HEADER === */}
       <header
-        className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-sm transition-shadow"
+        className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-xl transition-shadow"
         style={{
           height: `${headerHeight}px`,
         }}
@@ -63,8 +70,9 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
               className="flex items-center space-x-3 group transition-transform hover:scale-[1.01] focus:outline-none"
               style={{
                 position: 'relative',
-                top: `${logoTopOffset}px`,
+                top: `${logoTopOffset + logoVerticalAdjust}px`,
                 left: `${logoLeftAdjust}px`,
+                bottom: `${logoBottomOffset}px`,
               }}
             >
               <div className="flex items-center">
@@ -83,16 +91,25 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
             </button>
 
             {/* === DESKTOP NAVIGATION === */}
-            <div className="hidden md:flex items-center space-x-2">
+            <div
+              className="hidden md:flex items-center"
+              style={{
+                gap: `${desktopNavGap}px`,
+              }}
+            >
               {navItems.map((item) => (
                 <button
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}
-                  className={`px-4 py-2 rounded-full font-semibold transition-all duration-300 ${
+                  className={`rounded-full font-semibold transition-all duration-300 ${
                     currentPage === item.id
-                      ? 'bg-blue-900 text-white shadow-lg shadow-blue-500/30'
+                      ? 'bg-blue-900 text-white shadow-lg shadow-blue-500/50'
                       : 'text-gray-700 hover:bg-gray-100 hover:text-blue-700'
                   }`}
+                  style={{
+                    padding: `${desktopNavPaddingY}px ${desktopNavPaddingX}px`,
+                    fontSize: `${desktopNavFontSize}px`,
+                  }}
                 >
                   {item.label}
                 </button>
@@ -104,56 +121,52 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className={`
-                  w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 shadow-md
+                  w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 shadow-md border-2
                   ${mobileMenuOpen 
-                    ? 'bg-white text-purple-600 rotate-90' 
-                    : 'bg-gradient-to-br from-purple-600 to-pink-500 text-white'
+                    ? 'bg-white text-green-700 border-green-700 rotate-90' 
+                    : 'bg-white text-green-700 border-green-700 hover:bg-green-50'
                   }
                 `}
                 aria-label="Toggle menu"
               >
                 {mobileMenuOpen ? (
-                  <X className="w-6 h-6" strokeWidth={2.5} />
+                  <X className="w-6 h-6" strokeWidth={3} />
                 ) : (
-                  <Menu className="w-6 h-6" strokeWidth={2.5} />
+                  <Menu className="w-6 h-6" strokeWidth={3} />
                 )}
               </button>
             </div>
           </div>
 
-          {/* === CUSTOM DROPPING MOBILE MENU === */}
-          {/* This mimics the "L-shape" / Droplet design from the image.
-             It is absolutely positioned relative to the nav container.
-          */}
+          {/* === CUSTOM DROPPING MOBILE MENU (NDC STYLE) === */}
           <div 
             className={`
-              md:hidden absolute top-0 right-0 w-[280px] 
+              md:hidden absolute top-0 right-0 w-[300px] 
               transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] origin-top-right
               ${mobileMenuOpen ? 'scale-100 opacity-100' : 'scale-0 opacity-0 pointer-events-none'}
             `}
             style={{
-              // The shape is created by the container's background and rounded corners
-              // We position it to start exactly where the toggle button is
-              top: '10px', 
-              right: '10px',
+              top: '12px', 
+              right: '12px',
             }}
           >
-            {/* THE BACKGROUND SHAPE:
-              - A gradient container
-              - Rounded heavily on bottom-left, bottom-right, top-left
-              - Top-right is less rounded to merge with the toggle area visually
-            */}
+            {/* THE BACKGROUND SHAPE (Gradient: Green -> Red -> Black) */}
             <div className="
-              relative bg-gradient-to-b from-pink-500 via-purple-600 to-indigo-800
+              relative bg-gradient-to-b from-[#006B3F] via-[#CE1126] to-black
               text-white p-6 pt-20 pb-8
-              shadow-2xl
-              rounded-[2.5rem] rounded-tr-[3.5rem]
+              shadow-2xl shadow-black/40
+              rounded-[2.5rem] rounded-tr-[4rem] border-2 border-white/10
             ">
               
-              {/* User Initials / Circle (Visual decoration matching the design) */}
-              <div className="absolute top-4 right-4 w-12 h-12 rounded-full bg-white/20 flex items-center justify-center pointer-events-none">
-                {/* This sits behind the actual toggle button visually */}
-                <span className="text-white font-bold text-sm">JD</span>
+              {/* User Initials / Circle (Visual decoration) */}
+              <div className="absolute top-5 right-5 w-14 h-14 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center pointer-events-none">
+                <span className="text-white font-black text-sm tracking-widest">NDC</span>
+              </div>
+
+              {/* Welcome Text */}
+              <div className="mb-6 pl-2">
+                <h3 className="text-lg font-bold text-white mb-0.5">Welcome</h3>
+                <p className="text-2xl font-black text-white tracking-tight opacity-90">@Ragga</p>
               </div>
 
               {/* Menu List */}
@@ -167,26 +180,26 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                       key={item.id}
                       onClick={() => handleNavClick(item.id)}
                       className={`
-                        flex items-center space-x-4 px-5 py-3.5 rounded-full w-full text-left transition-all
+                        flex items-center space-x-4 px-5 py-3.5 rounded-2xl w-full text-left transition-all duration-200
                         ${isActive 
-                          ? 'bg-white text-purple-700 shadow-lg font-bold' 
-                          : 'bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm'
+                          ? 'bg-white text-[#006B3F] shadow-lg font-bold scale-[1.02]' 
+                          : 'bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/5'
                         }
                       `}
                     >
-                      <Icon className="w-5 h-5" />
-                      <span className="text-sm tracking-wide">{item.label}</span>
+                      <Icon className={`w-5 h-5 ${isActive ? 'text-[#CE1126]' : 'text-white'}`} />
+                      <span className="text-sm tracking-wide font-medium">{item.label}</span>
                     </button>
                   );
                 })}
                 
-                {/* Decorative "Sign Out" style button (fake action for demo) */}
+                {/* Close Action */}
                 <button 
-                  className="flex items-center space-x-4 px-5 py-3.5 rounded-full w-full text-left bg-white/5 hover:bg-white/10 text-pink-100 mt-4 border border-white/10"
+                  className="flex items-center space-x-4 px-5 py-3.5 rounded-2xl w-full text-left bg-black/20 hover:bg-black/40 text-red-200 mt-4 border border-white/5 transition-colors"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   <LogOut className="w-5 h-5" />
-                  <span className="text-sm tracking-wide">Close Menu</span>
+                  <span className="text-sm tracking-wide font-medium">Close Menu</span>
                 </button>
               </div>
 
@@ -196,7 +209,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
           {/* Overlay for clicking outside */}
           {mobileMenuOpen && (
             <div 
-              className="fixed inset-0 bg-black/20 backdrop-blur-sm z-[-1] md:hidden"
+              className="fixed inset-0 bg-black/30 backdrop-blur-[2px] z-[-1] md:hidden"
               style={{ top: `${headerHeight}px` }}
               onClick={() => setMobileMenuOpen(false)}
             />

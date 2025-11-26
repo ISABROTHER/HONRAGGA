@@ -22,8 +22,7 @@ import { supabase } from '../lib/supabase';
 import { motion, AnimatePresence } from 'framer-motion';
 import { LOCATIONS } from '../data/locations'; // Import the centralized data
 
-// ✅ Gemini API key from environment (set VITE_GEMINI_API_KEY in your .env)
-const GEMINI_API_KEY = AIzaSyBgiowYqvBZSh7S0_FGvxtiahtK5MWNPJ0 import.meta.env.VITE_GEMINI_API_KEY as string | undefined;
+const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY as string | undefined;
 
 // Helper: call Gemini text model
 async function callGemini(prompt: string): Promise<string | null> {

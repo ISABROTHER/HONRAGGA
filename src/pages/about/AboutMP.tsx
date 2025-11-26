@@ -86,4 +86,4 @@ export function AboutMP({ onNavigate }: AboutMPProps) {
         </AnimatedSection>
     </>
   );
-}
+} 

@@ -1,5 +1,5 @@
 // src/pages/Issues.tsx
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
   MapPin,
   Upload,
@@ -10,9 +10,17 @@ import {
   Loader2,
   Image as ImageIcon,
   ArrowRight,
-  MessageSquareWarning
+  MessageSquareWarning,
+  Search,
+  ChevronDown,
+  Check,
+  ChevronUp,
+  User,
+  Phone
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import { motion, AnimatePresence } from 'framer-motion';
+import { LOCATIONS } from '../data/locations'; // Import the centralized data
 
 type Priority = 'Normal' | 'Urgent' | 'Life-threatening';
 
@@ -110,58 +118,22 @@ const CATEGORIES: Record<
   },
 };
 
-const LOCATIONS = {
-  "Abakam- Ola University": [
-    "Kwaprow", "Kwesipra", "Kokwaado", "Amamoma",
-    "Apewosika", "Akotokyir", "Duakor", "Abakam",
-    "Ahenboboe", "University Old Site", "University New Site",
-    "Ola Medina", "Ola Low Cost", "North Ola",
-    "Black Star (MOH) & Augusto Bungalows SSNIT Flats"
-  ],
-  "Efutu-Kakomdo-Mempeasem": [
-    "Efutu", "Efutu Ekutuadze", "Efutu Seguase",
-    "Efutu Mampong", "Koforidua", "Ewusikrom",
-    "Efutu Kokwaado", "Ansapetu", "Nkokosa",
-    "Fadur", "Ankaful", "Camp", "Nanabakrom", "Taedo",
-    "Esuekyir", "Anto Esuekyir", "Esuekyir Estates",
-    "Esuekyir Community 1", "Amoyaw", "Nyinasin",
-    "Kakomdo", "Amisano", "Ebubonko", "C- Poly",
-    "Dehia", "Kramotawia", "Mpeasem", "Brabedze",
-    "Kayefi", "Senewin", "Dankwaakrom",
-    "Nyeku", "Besakrom", "Akweikrom", "Akaikrom",
-    "Kyirakomfo", "Wenyi Ato", "Yayaakwano", "Brimso",
-    "Akwakrom", "Pomanye", "Kumease", "Nyame Bekyere",
-    "Zongo", "Asenadze", "Kurowfofordo", "Ekoo", "Dunkor"
-  ],
-  "Abura-Adisadel-Pedu-Nkafoa": [
-    "1st Ridge", "2nd Ridge", "3rd Ridge", "4th Ridge", "Nkafoa",
-    "Nkafoa Nkamadze", "Nkafoa Beseadze", "Abura",
-    "Etsifi", "Abota yie", "Adeebikrom", "The Boy", "Tankokrom",
-    "Roman Hill", "Ba Awar", "Nkwantado", "Assim",
-    "Aba Anwonakrom", "Eyifua", "Eyifua Estates", "Abura Estate",
-    "Mintsiminim (Nurses Flats)", "Pedu", "Adaaso", "Pedu Junction",
-    "Ngnabado", "Abakaadze", "Buwano", "Police Flats/Hqrs", "Ntwemakrom",
-    "Adisadel Village", "Zongo (Adisadel)", "Adisadel College", "Staff Quarters",
-    "Estates", "Tsibu Darko", "West Adisadel", "Tankoferdo"
-  ]
-};
-
-// Total communities counter
-const TOTAL_COMMUNITIES = Object.values(LOCATIONS).reduce(
-  (acc, arr) => acc + arr.length,
-  0
-);
-
 export function Issues() {
+  // ---------- ISSUE REPORTING STATE ----------
   const [cat, setCat] = useState<CategoryKey>('roads-infrastructure');
   const [subcat, setSubcat] = useState<string>(CATEGORIES['roads-infrastructure'].subs[0]);
   const [description, setDescription] = useState('');
-  // Priority removed from UI – default normal for backend
-  const priority: Priority = 'Normal';
+  const [priority, setPriority] = useState<Priority>('Normal');
   
+  // Location State
   const [selectedZone, setSelectedZone] = useState<string>('');
   const [selectedCommunity, setSelectedCommunity] = useState<string>('');
-  const [locationDetail, setLocationDetail] = useState('');
+  const [locationDetail, setLocationDetail] = useState(''); 
+  
+  // Community Search State
+  const [communitySearch, setCommunitySearch] = useState('');
+  const [isCommunityDropdownOpen, setIsCommunityDropdownOpen] = useState(false);
+  const communityDropdownRef = useRef<HTMLDivElement>(null);
   
   const [coords, setCoords] = useState<{ lat: number | null; lng: number | null }>({ lat: null, lng: null });
   const [locGetting, setLocGetting] = useState(false);
@@ -177,16 +149,34 @@ export function Issues() {
   const [successOpen, setSuccessOpen] = useState(false);
   const [trackingCode, setTrackingCode] = useState<string>('');
 
-  // Custom issue when not listed
-  const [useCustomSubcat, setUseCustomSubcat] = useState(false);
-  const [customSubcat, setCustomSubcat] = useState('');
+  // Click outside listener for community dropdown
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (communityDropdownRef.current && !communityDropdownRef.current.contains(event.target as Node)) {
+        setIsCommunityDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
+  // Auto set subcat list when category changes
   useEffect(() => {
     const first = CATEGORIES[cat].subs[0];
     setSubcat(first);
-    setUseCustomSubcat(false);
-    setCustomSubcat('');
   }, [cat]);
+
+  // --- Helper to get active location data based on selection ---
+  const activeLocationData = LOCATIONS.find(loc => loc.zone === selectedZone);
+  
+  // Filter communities based on search
+  const filteredCommunities = activeLocationData
+    ? activeLocationData.communities.filter(c => c.toLowerCase().includes(communitySearch.toLowerCase()))
+    : [];
+
+  // Completion Checks
+  const isLocationComplete = selectedZone !== '' && selectedCommunity !== '';
+  const isIssueComplete = description.trim().length > 0;
 
   const getGPS = () => {
     if (!navigator.geolocation) {
@@ -198,10 +188,6 @@ export function Issues() {
       (pos) => {
         setCoords({ lat: pos.coords.latitude, lng: pos.coords.longitude });
         setLocGetting(false);
-
-        // 🔧 ARCHITECTURE HOOK:
-        // In future, use coords here to auto-select Area + Community
-        // by calling a Supabase RPC that maps GPS → nearest town.
       },
       () => {
         setErrorMsg('Unable to get location. Please enter it manually.');
@@ -241,16 +227,16 @@ export function Issues() {
     setCat('roads-infrastructure');
     setSubcat(CATEGORIES['roads-infrastructure'].subs[0]);
     setDescription('');
+    setPriority('Normal');
     setSelectedZone('');
     setSelectedCommunity('');
+    setCommunitySearch('');
     setLocationDetail('');
     setCoords({ lat: null, lng: null });
     setName('');
     setPhone('');
     setPhotoFile(null);
     setPhotoPreview(null);
-    setUseCustomSubcat(false);
-    setCustomSubcat('');
   };
 
   const onSubmitIssue = async (e: React.FormEvent) => {
@@ -267,11 +253,6 @@ export function Issues() {
       return;
     }
 
-    const finalSubcategory =
-      useCustomSubcat && customSubcat.trim()
-        ? customSubcat.trim()
-        : subcat;
-
     setSubmitting(true);
     try {
       let photo_url: string | null = null;
@@ -279,6 +260,7 @@ export function Issues() {
         photo_url = await uploadPhoto();
       }
 
+      // Compose a location string
       const fullLocation = `${selectedZone} > ${selectedCommunity}${locationDetail ? ` (${locationDetail})` : ''}`;
       const locCombined = coords.lat && coords.lng
           ? `${fullLocation} • ${coords.lat.toFixed(5)}, ${coords.lng.toFixed(5)}`
@@ -286,7 +268,7 @@ export function Issues() {
 
       const insertPayload = {
         category: CATEGORIES[cat].label,
-        subcategory: finalSubcategory,
+        subcategory: subcat,
         description: description.trim(),
         location: locCombined.trim(),
         priority,
@@ -316,20 +298,10 @@ export function Issues() {
     }
   };
 
-  // ---- Progressive section logic ----
-  const isLocationComplete = !!selectedZone && !!selectedCommunity;
-  const isIssueSectionOpen = isLocationComplete;
-  const isIssueComplete = isIssueSectionOpen && !!description.trim();
-  const isContactSectionOpen = isIssueComplete;
-
-  const communitiesForZone = selectedZone
-    ? LOCATIONS[selectedZone as keyof typeof LOCATIONS]
-    : [];
-
   return (
     <div className="min-h-screen bg-gray-50 pt-28 pb-12">
       <section className="px-4 sm:px-6 lg:px-8">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           
           {/* Consistent Heading Design */}
           <div className="flex flex-col items-center mb-12 text-center">
@@ -363,351 +335,407 @@ export function Issues() {
             </p>
           </div>
 
-          <div className="relative rounded-3xl p-[1px] bg-gradient-to-br from-[#FF6B00]/40 via-amber-300/30 to-[#002B5B]/40 shadow-[0_8px_40px_rgba(0,0,0,0.08)]">
-            <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-white/10 to-white/5 blur-xl" />
-            <form
-              onSubmit={onSubmitIssue}
-              className="relative rounded-3xl bg-white/80 backdrop-blur-xl border border-white/40 shadow-2xl p-5 md:p-8 space-y-6"
+          <form onSubmit={onSubmitIssue} className="space-y-6">
+            
+            {/* ------------------------------------------ */}
+            {/* SECTION 1: LOCATION DETAILS (BLUE SHADE) */}
+            {/* ------------------------------------------ */}
+            <motion.div 
+              className="rounded-3xl overflow-hidden border border-blue-100 bg-blue-50/50 shadow-sm"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
             >
-              {/* MAIN STACK – always vertical, no grid layout */}
-              <div className="flex flex-col gap-6">
-                
-                {/* LOCATION SECTION */}
-                <div className="rounded-2xl border border-blue-100 bg-blue-50/70 p-4 md:p-5 space-y-4">
-                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-                    <div className="flex items-center gap-2">
-                      <h3 className="text-lg font-bold text-slate-900">
-                        Location Details
-                      </h3>
-                    </div>
-                    <div className="flex flex-wrap items-center gap-3">
-                      <span className="text-[11px] text-blue-700 font-semibold">
-                        Communities in system: {TOTAL_COMMUNITIES}
-                      </span>
-                      <span className="inline-flex items-center gap-1 rounded-full bg-white/70 px-3 py-1 text-[11px] font-semibold text-blue-700 border border-blue-100">
-                        <span className="inline-block w-2 h-2 rounded-full bg-blue-500" />
-                        Step 1 of 3
-                      </span>
-                    </div>
-                  </div>
-                   
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-800 mb-1">
-                        Area *
-                      </label>
+              <div className="p-6 md:p-8">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-xl font-bold text-blue-900 flex items-center gap-2">
+                    <MapPin className="w-5 h-5" /> Location Details
+                  </h3>
+                  {isLocationComplete && <CheckCircle className="w-6 h-6 text-blue-600" />}
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-6">
+                  {/* Area (Zone) Selector */}
+                  <div>
+                    <label className="block text-sm font-medium text-blue-800 mb-1">Electoral Area / Zone *</label>
+                    <div className="relative">
                       <select
                         value={selectedZone}
                         onChange={(e) => {
                           setSelectedZone(e.target.value);
                           setSelectedCommunity('');
+                          setCommunitySearch('');
                         }}
-                        className="w-full px-3 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#FF6B00]"
+                        className="w-full appearance-none px-4 py-3.5 rounded-xl border border-blue-200 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
                       >
                         <option value="">Select Area...</option>
-                        {Object.keys(LOCATIONS).map((zone) => (
-                          <option key={zone} value={zone}>{zone}</option>
+                        {LOCATIONS.map((loc) => (
+                          <option key={loc.zone} value={loc.zone}>{loc.zone}</option>
                         ))}
                       </select>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-800 mb-1">
-                        Community *
-                      </label>
-                      <select
-                        value={selectedCommunity}
-                        onChange={(e) => setSelectedCommunity(e.target.value)}
-                        disabled={!selectedZone}
-                        className="w-full px-3 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#FF6B00] disabled:bg-gray-100 disabled:text-gray-400"
-                      >
-                        <option value="">Select Community...</option>
-                        {selectedZone &&
-                          communitiesForZone.map((comm) => (
-                            <option key={comm} value={comm}>{comm}</option>
-                          ))}
-                      </select>
+                      <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                     </div>
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-800 mb-1">
-                      Specific Landmark (Optional)
-                    </label>
-                    <div className="flex flex-col sm:flex-row gap-2">
-                      <input
-                        value={locationDetail}
-                        onChange={(e) => setLocationDetail(e.target.value)}
-                        placeholder="e.g., Near the Methodist Church"
-                        className="flex-1 px-3 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#FF6B00]"
-                      />
-                      <button
-                        type="button"
-                        onClick={getGPS}
-                        className="px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 hover:bg-white text-gray-900 flex items-center justify-center gap-2 transition-colors font-medium"
-                        title="Use live location"
-                      >
-                        {locGetting ? <Loader2 className="w-4 h-4 animate-spin" /> : <LocateFixed className="w-4 h-4" />}
-                        <span className="text-sm">Live location</span>
-                      </button>
-                    </div>
-                    <p className="mt-1 text-[11px] text-slate-600">
-                      Use live location only if you are standing at the exact place where the issue is.
-                    </p>
-                    {coords.lat && coords.lng && (
-                      <div className="text-xs text-green-600 mt-1 flex items-center gap-1 font-medium">
-                        <MapPin className="w-3 h-3" />
-                        <span>GPS Captured: {coords.lat.toFixed(5)}, {coords.lng.toFixed(5)}</span>
+                  {/* Searchable Community Selector */}
+                  <div ref={communityDropdownRef} className="relative">
+                    <label className="block text-sm font-medium text-blue-800 mb-1">Community *</label>
+                    
+                    <div 
+                      className={`relative w-full rounded-xl border bg-white text-gray-900 focus-within:ring-2 focus-within:ring-blue-500 shadow-sm ${!selectedZone ? 'bg-gray-50 border-gray-200 cursor-not-allowed' : 'border-blue-200 cursor-text'}`}
+                      onClick={() => selectedZone && setIsCommunityDropdownOpen(true)}
+                    >
+                      <div className="flex items-center px-4 py-3.5">
+                        <Search className="w-4 h-4 text-gray-400 mr-2" />
+                        <input
+                          type="text"
+                          value={communitySearch}
+                          onChange={(e) => {
+                            setCommunitySearch(e.target.value);
+                            setIsCommunityDropdownOpen(true);
+                            if (selectedCommunity && e.target.value !== selectedCommunity) {
+                              setSelectedCommunity(''); // Clear selection if user types
+                            }
+                          }}
+                          onFocus={() => selectedZone && setIsCommunityDropdownOpen(true)}
+                          disabled={!selectedZone}
+                          placeholder={selectedZone ? "Search or select community..." : "Select an Area first"}
+                          className="flex-1 bg-transparent outline-none placeholder:text-gray-400"
+                        />
+                        {selectedCommunity && (
+                          <Check className="w-4 h-4 text-blue-600 ml-2" />
+                        )}
                       </div>
-                    )}
+
+                      {/* Dropdown List */}
+                      <AnimatePresence>
+                        {isCommunityDropdownOpen && selectedZone && (
+                          <motion.div
+                            initial={{ opacity: 0, y: 5 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 5 }}
+                            className="absolute top-full left-0 right-0 mt-2 max-h-60 overflow-y-auto bg-white rounded-xl border border-blue-100 shadow-xl z-20"
+                          >
+                            {filteredCommunities.length > 0 ? (
+                              filteredCommunities.map((comm) => (
+                                <button
+                                  key={comm}
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setSelectedCommunity(comm);
+                                    setCommunitySearch(comm);
+                                    setIsCommunityDropdownOpen(false);
+                                  }}
+                                  className={`w-full text-left px-4 py-3 hover:bg-blue-50 transition-colors text-sm ${selectedCommunity === comm ? 'bg-blue-50 text-blue-700 font-medium' : 'text-gray-700'}`}
+                                >
+                                  {comm}
+                                </button>
+                              ))
+                            ) : (
+                              <div className="p-4 text-center text-sm text-gray-500">No communities found</div>
+                            )}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
                   </div>
                 </div>
 
-                {/* ISSUE DETAILS SECTION */}
-                <div className="rounded-2xl border border-amber-100 bg-amber-50/70 p-4 md:p-5">
-                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-                    <h3 className="text-lg font-bold text-slate-900">
-                      Issue Details
-                    </h3>
-                    <span className="inline-flex items-center gap-1 self-start md:self-auto rounded-full bg-white/70 px-3 py-1 text-[11px] font-semibold text-amber-700 border border-amber-100">
-                      <span className={`inline-block w-2 h-2 rounded-full ${isIssueSectionOpen ? 'bg-amber-500' : 'bg-slate-400'}`} />
-                      Step 2 of 3
-                    </span>
+                {/* Assemblyman Info Display */}
+                {activeLocationData && (
+                  <div className="mt-4 p-4 bg-blue-100/50 rounded-xl border border-blue-200 flex items-center gap-4">
+                    <div className="p-2 bg-blue-200 rounded-full text-blue-700">
+                      <User className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold text-blue-800 uppercase">Assemblyman</p>
+                      <p className="text-sm font-semibold text-blue-900">{activeLocationData.assemblyman}</p>
+                      <div className="flex items-center gap-1 mt-0.5 text-xs text-blue-700">
+                        <Phone className="w-3 h-3" />
+                        <span>{activeLocationData.phone}</span>
+                      </div>
+                    </div>
                   </div>
+                )}
 
-                  {!isIssueSectionOpen && (
-                    <p className="mt-2 text-xs text-slate-600">
-                      Fill in your <span className="font-semibold">Area</span> and <span className="font-semibold">Community</span> first to continue.
-                    </p>
+                <div className="mt-6">
+                  <label className="block text-sm font-medium text-blue-800 mb-1">Specific Landmark (Optional)</label>
+                  <div className="flex gap-3">
+                    <input
+                      value={locationDetail}
+                      onChange={(e) => setLocationDetail(e.target.value)}
+                      placeholder="e.g., Near the Methodist Church"
+                      className="flex-1 px-4 py-3.5 rounded-xl border border-blue-200 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
+                    />
+                    <button
+                      type="button"
+                      onClick={getGPS}
+                      className="px-5 py-3.5 rounded-xl border border-blue-200 bg-white hover:bg-blue-50 text-blue-900 flex items-center gap-2 transition-colors font-semibold shadow-sm"
+                      title="Use GPS"
+                    >
+                      {locGetting ? <Loader2 className="w-4 h-4 animate-spin" /> : <LocateFixed className="w-4 h-4" />}
+                      <span className="hidden sm:inline">GPS</span>
+                    </button>
+                  </div>
+                  {coords.lat && coords.lng && (
+                    <div className="text-xs text-blue-600 mt-2 flex items-center gap-1.5 font-medium bg-blue-100/50 px-3 py-1.5 rounded-lg w-fit">
+                      <MapPin className="w-3 h-3" />
+                      <span>GPS Captured: {coords.lat.toFixed(5)}, {coords.lng.toFixed(5)}</span>
+                    </div>
                   )}
+                </div>
+              </div>
+            </motion.div>
 
-                  {isIssueSectionOpen && (
-                    <div className="mt-4 space-y-4">
-                      <div className="grid md:grid-cols-2 gap-4">
-                        <div>
-                          <label className="block text-sm font-medium text-gray-800 mb-1">Category</label>
+            {/* ------------------------------------------ */}
+            {/* SECTION 2: ISSUE DETAILS (AMBER SHADE) */}
+            {/* ------------------------------------------ */}
+            <AnimatePresence>
+              {isLocationComplete && (
+                <motion.div 
+                  className="rounded-3xl overflow-hidden border border-amber-100 bg-amber-50/50 shadow-sm"
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                >
+                  <div className="p-6 md:p-8">
+                    <div className="flex items-center justify-between mb-6">
+                      <h3 className="text-xl font-bold text-amber-900 flex items-center gap-2">
+                        <AlertCircle className="w-5 h-5" /> Issue Details
+                      </h3>
+                      {isIssueComplete && <CheckCircle className="w-6 h-6 text-amber-600" />}
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-6 mb-6">
+                      {/* Category */}
+                      <div>
+                        <label className="block text-sm font-medium text-amber-800 mb-1">Category</label>
+                        <div className="relative">
                           <select
                             value={cat}
                             onChange={(e) => setCat(e.target.value as CategoryKey)}
-                            className="w-full px-3 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#FF6B00]"
+                            className="w-full appearance-none px-4 py-3.5 rounded-xl border border-amber-200 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-amber-500 shadow-sm"
                           >
                             {Object.entries(CATEGORIES).map(([key, val]) => (
-                              <option key={key} value={key}>
-                                {val.label}
-                              </option>
+                              <option key={key} value={key}>{val.label}</option>
                             ))}
                           </select>
+                          <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                         </div>
+                      </div>
 
-                        <div>
-                          <label className="block text-sm font-medium text-gray-800 mb-1">
-                            Sub-category
-                          </label>
+                      {/* Sub-category */}
+                      <div>
+                        <label className="block text-sm font-medium text-amber-800 mb-1">Sub-category</label>
+                        <div className="relative">
                           <select
-                            value={useCustomSubcat ? '__custom' : subcat}
-                            onChange={(e) => {
-                              if (e.target.value === '__custom') {
-                                setUseCustomSubcat(true);
-                                setCustomSubcat('');
-                              } else {
-                                setUseCustomSubcat(false);
-                                setSubcat(e.target.value);
-                              }
-                            }}
-                            className="w-full px-3 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#FF6B00]"
+                            value={subcat}
+                            onChange={(e) => setSubcat(e.target.value)}
+                            className="w-full appearance-none px-4 py-3.5 rounded-xl border border-amber-200 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-amber-500 shadow-sm"
                           >
                             {CATEGORIES[cat].subs.map((s) => (
-                              <option key={s} value={s}>
-                                {s}
-                              </option>
+                              <option key={s} value={s}>{s}</option>
                             ))}
-                            <option value="__custom">
-                              Issue not listed – type manually
-                            </option>
                           </select>
+                          <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                        </div>
+                      </div>
+                    </div>
 
-                          {useCustomSubcat && (
-                            <input
-                              value={customSubcat}
-                              onChange={(e) => setCustomSubcat(e.target.value)}
-                              placeholder="Type the issue in your own words"
-                              className="mt-2 w-full px-3 py-2 rounded-xl border border-gray-200 bg-white text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#FF6B00]"
-                            />
-                          )}
+                    {/* Description */}
+                    <div className="mb-6">
+                      <label className="block text-sm font-medium text-amber-800 mb-1">Description *</label>
+                      <textarea
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        rows={3}
+                        placeholder="Describe the issue in detail..."
+                        className="w-full px-4 py-3.5 rounded-xl border border-amber-200 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-amber-500 shadow-sm"
+                      />
+                    </div>
+
+                    {/* Priority & Photo */}
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div>
+                        <label className="block text-sm font-medium text-amber-800 mb-1">Priority</label>
+                        <div className="relative">
+                          <select
+                            value={priority}
+                            onChange={(e) => setPriority(e.target.value as Priority)}
+                            className="w-full appearance-none px-4 py-3.5 rounded-xl border border-amber-200 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-amber-500 shadow-sm"
+                          >
+                            {(['Normal', 'Urgent', 'Life-threatening'] as Priority[]).map((p) => (
+                              <option key={p} value={p}>{p}</option>
+                            ))}
+                          </select>
+                          <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                         </div>
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-800 mb-1">
-                          Description *
+                        <label className="block text-sm font-medium text-amber-800 mb-1">Photo Evidence</label>
+                        <label className="flex items-center justify-center gap-2 px-4 py-3.5 rounded-xl border border-amber-200 bg-white hover:bg-amber-50 cursor-pointer transition-colors text-sm font-medium text-amber-900 shadow-sm">
+                          <Upload className="w-4 h-4" />
+                          <span>{photoFile ? 'Change Photo' : 'Upload Photo'}</span>
+                          <input type="file" accept="image/*" className="hidden" onChange={onFileChange} />
                         </label>
-                        <textarea
-                          value={description}
-                          onChange={(e) => setDescription(e.target.value)}
-                          rows={3}
-                          placeholder="Describe the issue in detail..."
-                          className="w-full px-3 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#FF6B00]"
+                      </div>
+                    </div>
+
+                    {photoPreview && (
+                      <div className="relative w-full max-w-xs mt-4">
+                        <img
+                          src={photoPreview}
+                          alt="Preview"
+                          className="h-40 w-full object-cover rounded-2xl border border-amber-200 shadow-md"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setPhotoFile(null);
+                            setPhotoPreview(null);
+                          }}
+                          className="absolute -top-2 -right-2 bg-white rounded-full p-1.5 border border-gray-200 shadow-sm hover:bg-red-50 transition-colors"
+                          aria-label="Remove image"
+                        >
+                          <X className="w-4 h-4 text-red-500" />
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* ------------------------------------------ */}
+            {/* SECTION 3: CONTACT & SUBMIT (GREEN SHADE) */}
+            {/* ------------------------------------------ */}
+            <AnimatePresence>
+              {isLocationComplete && isIssueComplete && (
+                <motion.div 
+                  className="rounded-3xl overflow-hidden border border-green-100 bg-green-50/50 shadow-sm"
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                >
+                  <div className="p-6 md:p-8">
+                    <h3 className="text-xl font-bold text-green-900 flex items-center gap-2 mb-6">
+                      <CheckCircle className="w-5 h-5" /> Your Details (Optional)
+                    </h3>
+
+                    <div className="grid md:grid-cols-2 gap-6 mb-8">
+                      <div>
+                        <label className="block text-sm font-medium text-green-800 mb-1">Name</label>
+                        <input
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          placeholder="Your name"
+                          className="w-full px-4 py-3.5 rounded-xl border border-green-200 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm"
                         />
                       </div>
 
-                      <div className="grid md:grid-cols-2 gap-4">
-                        <div>
-                          <label className="block text-sm font-medium text-gray-800 mb-1">
-                            Photo Evidence
-                          </label>
-                          <div className="flex items-center gap-3">
-                            <label className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 hover:bg-white cursor-pointer transition-colors text-sm font-medium text-gray-700">
-                              <Upload className="w-4 h-4" />
-                              <span>Choose File</span>
-                              <input type="file" accept="image/*" className="hidden" onChange={onFileChange} />
-                            </label>
-                          </div>
-                        </div>
+                      <div>
+                        <label className="block text-sm font-medium text-green-800 mb-1">Phone</label>
+                        <input
+                          value={phone}
+                          onChange={(e) => setPhone(e.target.value)}
+                          placeholder="e.g., 024XXXXXXX"
+                          className="w-full px-4 py-3.5 rounded-xl border border-green-200 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm"
+                        />
                       </div>
-
-                      {photoPreview && (
-                        <div className="relative w-full max-w-xs">
-                          <img
-                            src={photoPreview}
-                            alt="Preview"
-                            className="h-32 w-full object-cover rounded-xl border border-gray-200"
-                          />
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setPhotoFile(null);
-                              setPhotoPreview(null);
-                            }}
-                            className="absolute -top-2 -right-2 bg-white rounded-full p-1.5 border border-gray-200 shadow-sm hover:bg-red-50 transition-colors"
-                            aria-label="Remove image"
-                          >
-                            <X className="w-4 h-4 text-red-500" />
-                          </button>
-                        </div>
-                      )}
                     </div>
-                  )}
-                </div>
 
-                {/* CONTACT INFO */}
-                <div className="rounded-2xl border border-emerald-100 bg-emerald-50/70 p-4 md:p-5">
-                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-                    <h3 className="text-lg font-bold text-slate-900">
-                      Your Details (Optional)
-                    </h3>
-                    <span className="inline-flex items-center gap-1 self-start md:self-auto rounded-full bg-white/70 px-3 py-1 text-[11px] font-semibold text-emerald-700 border border-emerald-100">
-                      <span className={`inline-block w-2 h-2 rounded-full ${isContactSectionOpen ? 'bg-emerald-500' : 'bg-slate-400'}`} />
-                      Step 3 of 3
-                    </span>
+                    {errorMsg && (
+                      <div className="flex items-start gap-2 p-4 rounded-2xl bg-red-50 text-red-800 border border-red-100 mb-6">
+                        <AlertCircle className="w-5 h-5 mt-0.5 flex-shrink-0" />
+                        <p className="text-sm font-medium">{errorMsg}</p>
+                      </div>
+                    )}
+
+                    <div className="flex flex-col items-center gap-4">
+                      <button
+                        type="submit"
+                        disabled={submitting}
+                        className="
+                          relative w-full md:w-auto px-10 py-4 rounded-2xl 
+                          bg-gradient-to-r from-green-600 to-green-700 hover:from-green-500 hover:to-green-600
+                          text-white font-bold text-lg shadow-xl hover:shadow-2xl hover:-translate-y-0.5 
+                          transition-all duration-300 
+                          disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:translate-y-0
+                          flex items-center justify-center gap-3
+                        "
+                      >
+                        {submitting ? (
+                          <>
+                            <Loader2 className="w-6 h-6 animate-spin" />
+                            Submitting...
+                          </>
+                        ) : (
+                          <>
+                            Submit Report <ArrowRight className="w-6 h-6" />
+                          </>
+                        )}
+                      </button>
+                      <p className="text-xs text-green-700 font-medium">
+                        Your details remain private. You'll receive a tracking code upon submission.
+                      </p>
+                    </div>
                   </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
-                  {!isContactSectionOpen && (
-                    <p className="mt-2 text-xs text-slate-600">
-                      Once you add a short <span className="font-semibold">description of the issue</span>, this section will open.
-                    </p>
-                  )}
-
-                  {isContactSectionOpen && (
-                    <div className="mt-4 space-y-4">
-                      <div className="grid md:grid-cols-2 gap-4">
-                        <div>
-                          <label className="block text-sm font-medium text-gray-800 mb-1">Name</label>
-                          <input
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            placeholder="Your name"
-                            className="w-full px-3 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#FF6B00]"
-                          />
-                        </div>
-
-                        <div>
-                          <label className="block text-sm font-medium text-gray-800 mb-1">Phone</label>
-                          <input
-                            value={phone}
-                            onChange={(e) => setPhone(e.target.value)}
-                            placeholder="e.g., 024XXXXXXX"
-                            className="w-full px-3 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#FF6B00]"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {errorMsg ? (
-                <div className="flex items-start gap-2 p-3 rounded-xl bg-red-50 text-red-800 border border-red-100">
-                  <AlertCircle className="w-4 h-4 mt-0.5" />
-                  <p className="text-sm">{errorMsg}</p>
-                </div>
-              ) : null}
-
-              <div className="relative pt-4">
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  className="relative w-full md:w-auto px-8 py-4 rounded-xl bg-[#FF6B00] hover:bg-[#E66000] text-white font-bold shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 disabled:opacity-60 disabled:hover:translate-y-0 disabled:shadow-none text-lg flex items-center justify-center gap-2"
-                >
-                  {submitting ? (
-                    <>
-                      <Loader2 className="w-5 h-5 animate-spin" />
-                      Submitting Issue...
-                    </>
-                  ) : (
-                    <>
-                      Submit Report <ArrowRight className="w-5 h-5" />
-                    </>
-                  )}
-                </button>
-                <p className="text-xs text-gray-500 mt-3">
-                  Your details remain private. You'll receive a tracking code upon submission.
-                </p>
-              </div>
-            </form>
-          </div>
+          </form>
         </div>
       </section>
 
+      {/* SUCCESS MODAL */}
       {successOpen && (
-        <div className="fixed inset-0 z-50">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setSuccessOpen(false)} />
-          <div className="absolute inset-0 flex items-center justify-center p-4">
-            <div className="relative max-w-md w-full rounded-3xl border border-white/20 bg-[#002B5B] shadow-[0_20px_60px_rgba(0,0,0,0.4)] overflow-hidden">
-              <div className="h-1.5 bg-gradient-to-r from-[#FF6B00] via-amber-300 to-[#FF6B00]" />
-              <div className="p-8 text-white text-center">
-                <div className="mx-auto w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mb-4">
-                    <CheckCircle className="w-8 h-8 text-green-400" />
-                </div>
-                <h3 className="text-2xl font-extrabold mb-2">Issue Submitted!</h3>
-                <p className="text-blue-100 text-sm mb-6">
-                  Thank you for reporting. Your tracking code is:
-                </p>
-                
-                <div className="bg-white/10 rounded-xl p-4 mb-6 border border-white/10 backdrop-blur-sm">
-                    <div className="text-3xl font-black tracking-wider text-[#FF6B00] font-mono">{trackingCode}</div>
-                    <p className="text-xs text-blue-200 mt-2">
-                    Save this code to check status later.
-                    </p>
-                </div>
-
-                <button
-                  onClick={() => setSuccessOpen(false)}
-                  className="w-full px-5 py-3 rounded-xl bg-white text-[#002B5B] font-bold hover:bg-gray-100 transition shadow-lg"
-                >
-                  Done
-                </button>
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            className="relative max-w-md w-full rounded-[2rem] border border-white/20 bg-[#002B5B] shadow-[0_20px_60px_rgba(0,0,0,0.4)] overflow-hidden z-10"
+          >
+            <div className="h-2 bg-gradient-to-r from-[#FF6B00] via-amber-300 to-[#FF6B00]" />
+            <div className="p-10 text-white text-center">
+              <div className="mx-auto w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mb-6 shadow-inner">
+                  <CheckCircle className="w-10 h-10 text-green-400" />
               </div>
+              <h3 className="text-3xl font-extrabold mb-3 tracking-tight">Issue Submitted!</h3>
+              <p className="text-blue-100 text-base mb-8">
+                Thank you for reporting. Your tracking code is:
+              </p>
+              
+              <div className="bg-white/10 rounded-2xl p-5 mb-8 border border-white/10 backdrop-blur-md">
+                  <div className="text-4xl font-black tracking-widest text-[#FF6B00] font-mono">{trackingCode}</div>
+                  <p className="text-xs text-blue-200 mt-3 font-medium uppercase tracking-wide">
+                  Save this code
+                  </p>
+              </div>
+
               <button
-                onClick={() =>  setSuccessOpen(false)}
-                className="absolute top-4 right-4 text-blue-200 hover:text-white p-1"
-                aria-label="Close"
+                onClick={() => setSuccessOpen(false)}
+                className="w-full px-6 py-4 rounded-xl bg-white text-[#002B5B] font-bold hover:bg-gray-50 transition shadow-lg text-lg"
               >
-                <X className="w-6 h-6" />
+                Done
               </button>
             </div>
-          </div>
+            <button
+              onClick={() =>  setSuccessOpen(false)}
+              className="absolute top-5 right-5 text-blue-300 hover:text-white p-2 transition-colors"
+              aria-label="Close"
+            >
+              <X className="w-6 h-6" />
+            </button>
+          </motion.div>
         </div>
-      )} 
+      )}
     </div>
   );
 }

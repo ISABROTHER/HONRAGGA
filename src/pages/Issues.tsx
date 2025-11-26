@@ -146,16 +146,22 @@ const LOCATIONS = {
   ]
 };
 
+// Total communities counter
+const TOTAL_COMMUNITIES = Object.values(LOCATIONS).reduce(
+  (acc, arr) => acc + arr.length,
+  0
+);
+
 export function Issues() {
   const [cat, setCat] = useState<CategoryKey>('roads-infrastructure');
   const [subcat, setSubcat] = useState<string>(CATEGORIES['roads-infrastructure'].subs[0]);
   const [description, setDescription] = useState('');
-  const [priority, setPriority] = useState<Priority>('Normal');
+  // Priority removed from UI – default normal for backend
+  const priority: Priority = 'Normal';
   
   const [selectedZone, setSelectedZone] = useState<string>('');
   const [selectedCommunity, setSelectedCommunity] = useState<string>('');
   const [locationDetail, setLocationDetail] = useState('');
-  const [communitySearch, setCommunitySearch] = useState<string>('');
   
   const [coords, setCoords] = useState<{ lat: number | null; lng: number | null }>({ lat: null, lng: null });
   const [locGetting, setLocGetting] = useState(false);
@@ -171,9 +177,15 @@ export function Issues() {
   const [successOpen, setSuccessOpen] = useState(false);
   const [trackingCode, setTrackingCode] = useState<string>('');
 
+  // Custom issue when not listed
+  const [useCustomSubcat, setUseCustomSubcat] = useState(false);
+  const [customSubcat, setCustomSubcat] = useState('');
+
   useEffect(() => {
     const first = CATEGORIES[cat].subs[0];
     setSubcat(first);
+    setUseCustomSubcat(false);
+    setCustomSubcat('');
   }, [cat]);
 
   const getGPS = () => {
@@ -186,6 +198,10 @@ export function Issues() {
       (pos) => {
         setCoords({ lat: pos.coords.latitude, lng: pos.coords.longitude });
         setLocGetting(false);
+
+        // 🔧 ARCHITECTURE HOOK:
+        // In future, use coords here to auto-select Area + Community
+        // by calling a Supabase RPC that maps GPS → nearest town.
       },
       () => {
         setErrorMsg('Unable to get location. Please enter it manually.');
@@ -225,16 +241,16 @@ export function Issues() {
     setCat('roads-infrastructure');
     setSubcat(CATEGORIES['roads-infrastructure'].subs[0]);
     setDescription('');
-    setPriority('Normal');
     setSelectedZone('');
     setSelectedCommunity('');
     setLocationDetail('');
-    setCommunitySearch('');
     setCoords({ lat: null, lng: null });
     setName('');
     setPhone('');
     setPhotoFile(null);
     setPhotoPreview(null);
+    setUseCustomSubcat(false);
+    setCustomSubcat('');
   };
 
   const onSubmitIssue = async (e: React.FormEvent) => {
@@ -251,6 +267,11 @@ export function Issues() {
       return;
     }
 
+    const finalSubcategory =
+      useCustomSubcat && customSubcat.trim()
+        ? customSubcat.trim()
+        : subcat;
+
     setSubmitting(true);
     try {
       let photo_url: string | null = null;
@@ -265,7 +286,7 @@ export function Issues() {
 
       const insertPayload = {
         category: CATEGORIES[cat].label,
-        subcategory: subcat,
+        subcategory: finalSubcategory,
         description: description.trim(),
         location: locCombined.trim(),
         priority,
@@ -304,12 +325,6 @@ export function Issues() {
   const communitiesForZone = selectedZone
     ? LOCATIONS[selectedZone as keyof typeof LOCATIONS]
     : [];
-
-  const filteredCommunities = communitySearch.trim()
-    ? communitiesForZone.filter((c) =>
-        c.toLowerCase().includes(communitySearch.trim().toLowerCase())
-      )
-    : communitiesForZone;
 
   return (
     <div className="min-h-screen bg-gray-50 pt-28 pb-12">
@@ -359,13 +374,20 @@ export function Issues() {
                 {/* LOCATION SECTION */}
                 <div className="md:col-span-2 rounded-2xl border border-blue-100 bg-blue-50/70 p-4 md:p-5 space-y-4">
                   <div className="flex items-center justify-between gap-3">
-                    <h3 className="text-lg font-bold text-slate-900">
-                      Location Details
-                    </h3>
-                    <span className="inline-flex items-center gap-1 rounded-full bg-white/70 px-3 py-1 text-[11px] font-semibold text-blue-700 border border-blue-100">
-                      <span className="inline-block w-2 h-2 rounded-full bg-blue-500" />
-                      Step 1 of 3
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-lg font-bold text-slate-900">
+                        Location Details
+                      </h3>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className="text-[11px] text-blue-700 font-semibold">
+                        Communities in system: {TOTAL_COMMUNITIES}
+                      </span>
+                      <span className="inline-flex items-center gap-1 rounded-full bg-white/70 px-3 py-1 text-[11px] font-semibold text-blue-700 border border-blue-100">
+                        <span className="inline-block w-2 h-2 rounded-full bg-blue-500" />
+                        Step 1 of 3
+                      </span>
+                    </div>
                   </div>
                    
                   <div className="grid md:grid-cols-2 gap-4">
@@ -378,7 +400,6 @@ export function Issues() {
                         onChange={(e) => {
                           setSelectedZone(e.target.value);
                           setSelectedCommunity('');
-                          setCommunitySearch('');
                         }}
                         className="w-full px-3 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#FF6B00]"
                       >
@@ -393,16 +414,6 @@ export function Issues() {
                       <label className="block text-sm font-medium text-gray-800 mb-1">
                         Community *
                       </label>
-
-                      {selectedZone && (
-                        <input
-                          value={communitySearch}
-                          onChange={(e) => setCommunitySearch(e.target.value)}
-                          placeholder="Search community name..."
-                          className="mb-2 w-full px-3 py-2 rounded-lg border border-gray-200 bg-white text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#FF6B00]"
-                        />
-                      )}
-
                       <select
                         value={selectedCommunity}
                         onChange={(e) => setSelectedCommunity(e.target.value)}
@@ -411,7 +422,7 @@ export function Issues() {
                       >
                         <option value="">Select Community...</option>
                         {selectedZone &&
-                          filteredCommunities.map((comm) => (
+                          communitiesForZone.map((comm) => (
                             <option key={comm} value={comm}>{comm}</option>
                           ))}
                       </select>
@@ -433,12 +444,15 @@ export function Issues() {
                         type="button"
                         onClick={getGPS}
                         className="px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 hover:bg-white text-gray-900 flex items-center gap-2 transition-colors font-medium"
-                        title="Use GPS"
+                        title="Use live location"
                       >
                         {locGetting ? <Loader2 className="w-4 h-4 animate-spin" /> : <LocateFixed className="w-4 h-4" />}
-                        <span className="text-sm hidden sm:inline">GPS</span>
+                        <span className="text-sm hidden sm:inline">Live location</span>
                       </button>
                     </div>
+                    <p className="mt-1 text-[11px] text-slate-600">
+                      Use live location only if you are standing at the exact place where the issue is.
+                    </p>
                     {coords.lat && coords.lng && (
                       <div className="text-xs text-green-600 mt-1 flex items-center gap-1 font-medium">
                         <MapPin className="w-3 h-3" />
@@ -485,10 +499,20 @@ export function Issues() {
                         </div>
 
                         <div>
-                          <label className="block text-sm font-medium text-gray-800 mb-1">Sub-category</label>
+                          <label className="block text-sm font-medium text-gray-800 mb-1">
+                            Sub-category
+                          </label>
                           <select
-                            value={subcat}
-                            onChange={(e) => setSubcat(e.target.value)}
+                            value={useCustomSubcat ? '__custom' : subcat}
+                            onChange={(e) => {
+                              if (e.target.value === '__custom') {
+                                setUseCustomSubcat(true);
+                                setCustomSubcat('');
+                              } else {
+                                setUseCustomSubcat(false);
+                                setSubcat(e.target.value);
+                              }
+                            }}
                             className="w-full px-3 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#FF6B00]"
                           >
                             {CATEGORIES[cat].subs.map((s) => (
@@ -496,7 +520,19 @@ export function Issues() {
                                 {s}
                               </option>
                             ))}
+                            <option value="__custom">
+                              Issue not listed – type manually
+                            </option>
                           </select>
+
+                          {useCustomSubcat && (
+                            <input
+                              value={customSubcat}
+                              onChange={(e) => setCustomSubcat(e.target.value)}
+                              placeholder="Type the issue in your own words"
+                              className="mt-2 w-full px-3 py-2 rounded-xl border border-gray-200 bg-white text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#FF6B00]"
+                            />
+                          )}
                         </div>
                       </div>
 
@@ -515,22 +551,9 @@ export function Issues() {
 
                       <div className="grid md:grid-cols-2 gap-4">
                         <div>
-                          <label className="block text-sm font-medium text-gray-800 mb-1">Priority</label>
-                          <select
-                            value={priority}
-                            onChange={(e) => setPriority(e.target.value as Priority)}
-                            className="w-full px-3 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#FF6B00]"
-                          >
-                            {(['Normal', 'Urgent', 'Life-threatening'] as Priority[]).map((p) => (
-                              <option key={p} value={p}>
-                                {p}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-
-                        <div>
-                          <label className="block text-sm font-medium text-gray-800 mb-1">Photo Evidence</label>
+                          <label className="block text-sm font-medium text-gray-800 mb-1">
+                            Photo Evidence
+                          </label>
                           <div className="flex items-center gap-3">
                             <label className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 hover:bg-white cursor-pointer transition-colors text-sm font-medium text-gray-700">
                               <Upload className="w-4 h-4" />

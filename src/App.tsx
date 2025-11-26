@@ -1,3 +1,4 @@
+// src/App.tsx
 import { useState } from 'react';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { Header } from './components/Header';
@@ -7,11 +8,10 @@ import { About } from './pages/About';
 import { Policies } from './pages/Policies';
 import { PolicyDetail } from './pages/PolicyDetail';
 import { Events } from './pages/Events';
-import { News } from './pages/News';
+import { Issues } from './pages/Issues'; // Changed import
 import { Volunteer } from './pages/Volunteer';
+import { Admin } from './pages/Admin';
 
-// --- Data for Policy Details ---
-// (Ideally, this would be in a separate file, e.g., src/data/policyDetails.ts)
 const policyDetailsContent: Record<string, { title: string; content: React.ReactNode }> = {
   education: {
     title: "Education: A Foundation for the Future",
@@ -78,26 +78,19 @@ const policyDetailsContent: Record<string, { title: string; content: React.React
         </>
       )
   }
-  // Add other themes (Health, Entrepreneurship, Community, Planning) here...
 };
-// --- End Data ---
-
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
-  // New state to track the selected policy theme
   const [selectedPolicyTheme, setSelectedPolicyTheme] = useState<string | null>(null);
 
-  // Function to navigate between main pages and policy details
   const handleNavigate = (page: string, theme: string | null = null) => {
     setCurrentPage(page);
     setSelectedPolicyTheme(theme);
-    window.scrollTo(0, 0); // Scroll to top on navigation
+    window.scrollTo(0, 0);
   };
 
-
   const renderPage = () => {
-    // Check if we are on the policies page and a theme is selected
     if (currentPage === 'policies' && selectedPolicyTheme) {
       const detailContent = policyDetailsContent[selectedPolicyTheme];
       if (detailContent) {
@@ -105,17 +98,14 @@ function App() {
           <PolicyDetail
             title={detailContent.title}
             content={detailContent.content}
-            // Pass a function to go back to the main policies page
             onBack={() => handleNavigate('policies', null)}
           />
         );
       } else {
-        // Fallback if theme content not found (optional)
          return <Policies onSelectTheme={(theme) => handleNavigate('policies', theme)} />;
       }
     }
 
-    // Original page rendering logic
     switch (currentPage) {
       case 'home':
         return <Home onNavigate={handleNavigate} />;
@@ -126,9 +116,12 @@ function App() {
       case 'events':
         return <Events />;
       case 'news':
-        return <News />;
+      case 'issues': // Handle new route key
+        return <Issues />; // Use new component
       case 'volunteer':
         return <Volunteer />;
+      case 'admin':
+        return <Admin />;
       default:
         return <Home onNavigate={handleNavigate} />;
     }
@@ -137,7 +130,6 @@ function App() {
   return (
     <ThemeProvider>
       <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors">
-        {/* Pass handleNavigate to Header */}
         <Header currentPage={currentPage} onNavigate={handleNavigate} />
         <main>{renderPage()}</main>
         <Footer />

@@ -36,7 +36,7 @@ const quickLinks: QuickLink[] = [
     icon: MessageSquareWarning,
     bgClass: "from-emerald-50 to-teal-50/50 border-emerald-100",
     iconColor: "text-emerald-600",
-    route: "news"
+    route: "issues" // Updated from 'news'
   },
   {
     title: "Policies",
@@ -106,7 +106,7 @@ export function QuickAccessGrid({ onNavigate }: QuickAccessGridProps) {
             <h2
               id="constituency-hub-heading"
               className="
-                text-xl sm:text-2xl md:text-5xl 
+                text-3xl sm:text-4xl md:text-5xl 
                 font-extrabold tracking-tight text-center
                 bg-gradient-to-r from-slate-900 via-green-700 to-slate-900
                 bg-clip-text text-transparent

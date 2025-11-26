@@ -1,13 +1,6 @@
-I will update the `Header` component to include the **"Login to My Page"** button in the mobile menu as a prominent feature, and I will add "My Page" to the desktop navigation.
-
-However, per your instruction, **clicking these links will not navigate anywhere** (the dashboard is disabled for now). I will apply the **Solid Red** design with **High-Contrast White Buttons** that we established previously.
-
-### `src/components/Header.tsx`
-
-```tsx
 // src/components/Header.tsx
 import { useState } from 'react';
-import { Menu, X, Home, User, BookOpen, Calendar, Newspaper, HandHeart, LogOut, Settings, Share2, LogIn } from 'lucide-react';
+import { Menu, X, Home, User, BookOpen, Calendar, Newspaper, HandHeart, LogOut, Settings, Share2, LayoutDashboard, LogIn, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface HeaderProps {
@@ -42,7 +35,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
     { id: 'events', label: 'Events' },
     { id: 'news', label: 'News' },
     { id: 'volunteer', label: 'Get Involved' },
-    { id: 'admin', label: 'My Page' }, // Added My Page
+    { id: 'admin', label: 'My Page' }, 
   ];
 
   // Mobile Menu Items
@@ -58,36 +51,36 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
   ];
 
   const handleNavClick = (pageId: string) => {
-    // DASHBOARD DISABLED: Do not navigate if 'admin' is clicked
-    if (pageId === 'admin') {
-      return; 
-    }
     onNavigate(pageId);
     setMobileMenuOpen(false);
   };
 
-  // Animation Variants
+  // Premium Animation Variants
   const menuVariants = {
     closed: {
-      scale: 0.8,
+      scale: 0.9,
       opacity: 0,
-      y: -20,
-      transition: { type: "spring", stiffness: 400, damping: 40 }
+      borderBottomLeftRadius: "100%",
+      borderTopLeftRadius: "100%",
+      borderBottomRightRadius: "100%",
+      transition: { type: "spring", stiffness: 300, damping: 35 }
     },
     open: {
       scale: 1,
       opacity: 1,
-      y: 0,
+      borderBottomLeftRadius: "40px",
+      borderTopLeftRadius: "40px",
+      borderBottomRightRadius: "40px",
       transition: { 
-        type: "spring", stiffness: 300, damping: 30,
-        staggerChildren: 0.04, 
+        type: "spring", stiffness: 200, damping: 25,
+        staggerChildren: 0.05, 
         delayChildren: 0.1 
       }
     }
   };
 
   const itemVariants = {
-    closed: { opacity: 0, x: 10 },
+    closed: { opacity: 0, x: -20 },
     open: { opacity: 1, x: 0 }
   };
 
@@ -144,7 +137,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                     currentPage === item.id
                       ? 'bg-blue-900 text-white shadow-lg shadow-blue-500/50'
                       : 'text-gray-700 hover:bg-gray-100 hover:text-blue-700'
-                  } ${item.id === 'admin' ? 'border-2 border-red-100 hover:border-red-200 text-red-700 hover:text-red-800' : ''}`} // Highlight My Page slightly on desktop
+                  } ${item.id === 'admin' ? 'border-2 border-red-100 hover:border-red-200 text-red-700 hover:text-red-800 hover:bg-red-50' : ''}`} 
                   style={{
                     padding: `${desktopNavPaddingY}px ${desktopNavPaddingX}px`,
                     fontSize: `${desktopNavFontSize}px`,
@@ -160,18 +153,18 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className={`
-                  w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg border-2
+                  w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 shadow-xl border-4 border-white
                   ${mobileMenuOpen 
-                    ? 'bg-white border-[#CE1126] text-[#CE1126] rotate-90' 
-                    : 'bg-[#CE1126] border-white text-white'
+                    ? 'bg-[#CE1126] text-white rotate-90' 
+                    : 'bg-[#CE1126] text-white hover:scale-105 active:scale-95'
                   }
                 `}
                 aria-label="Toggle menu"
               >
                 {mobileMenuOpen ? (
-                  <X className="w-6 h-6" strokeWidth={3} />
+                  <X className="w-7 h-7" strokeWidth={3} />
                 ) : (
-                  <Menu className="w-6 h-6" strokeWidth={3} />
+                  <Menu className="w-7 h-7" strokeWidth={3} />
                 )}
               </button>
             </div>
@@ -185,59 +178,68 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                 animate="open"
                 exit="closed"
                 variants={menuVariants}
-                className="md:hidden absolute top-0 right-0 w-[280px] origin-top-right"
+                className="md:hidden absolute top-0 right-0 w-[300px] origin-top-right"
                 style={{
-                  top: '12px', 
-                  right: '12px',
-                  borderRadius: '30px',
-                  borderTopRightRadius: '60px'
+                  top: '10px', 
+                  right: '10px',
+                  borderRadius: '40px', 
+                  borderTopRightRadius: '70px' 
                 }}
               >
-                {/* THE CONTAINER: Solid NDC Red with depth shadow (No stripes, No frost) */}
+                {/* THE CONTAINER: Solid NDC Red with Subtle Watermark */}
                 <div className="
                   relative bg-[#CE1126]
-                  p-5 pt-24 pb-6
-                  shadow-2xl shadow-black/40
+                  pt-24 pb-8 px-6
+                  shadow-2xl shadow-red-900/50
                   h-full w-full
                   overflow-hidden
-                  border-2 border-white/10
+                  border-4 border-white/20
                 ">
                   
+                  {/* Large Watermark (NDC Logo Style) */}
+                  <div className="absolute -top-10 -left-20 w-64 h-64 text-white/5 pointer-events-none rotate-12">
+                    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zm0 9l2.5-1.25L12 8.5l-2.5 1.25L12 11zm0 2.5l-5-2.5-5 2.5L12 22l10-8.5-5-2.5-5 2.5z"/></svg>
+                  </div>
+
                   {/* LOGOUT BUTTON (Top Right) */}
                   <motion.button 
                     initial={{ scale: 0, rotate: -90 }}
                     animate={{ scale: 1, rotate: 0 }}
-                    transition={{ delay: 0.2 }}
-                    className="absolute top-6 right-20 w-10 h-10 rounded-full bg-white/20 border border-white/30 flex items-center justify-center shadow-md hover:bg-white/30 active:scale-95 transition-all"
+                    className="absolute top-6 right-20 w-12 h-12 rounded-full bg-black/20 text-white/90 border border-white/10 flex items-center justify-center hover:bg-black/40 active:scale-95 transition-all"
                     onClick={() => setMobileMenuOpen(false)}
-                    aria-label="Sign Out"
+                    title="Sign Out"
                   >
-                    <LogOut className="w-5 h-5 text-white" />
+                    <LogOut className="w-5 h-5 ml-0.5" />
                   </motion.button>
 
-                  {/* === HERO BUTTON: LOGIN TO MY PAGE === */}
+                  {/* === HERO: MY PAGE LOGIN BUTTON (Fully Interactive) === */}
                   <motion.div variants={itemVariants} className="mb-8 relative z-10">
+                    <h3 className="text-xs font-bold text-white/80 uppercase tracking-widest mb-2 ml-1">Membership Area</h3>
                     <button
                       onClick={() => handleNavClick('admin')}
                       className="
-                        w-full flex items-center justify-between px-5 py-4 rounded-2xl
-                        bg-white shadow-[0_4px_14px_rgba(0,0,0,0.25)] 
-                        text-[#CE1126] transform transition-all duration-200 
-                        hover:scale-[1.03] active:scale-95
+                        w-full bg-white text-[#CE1126] rounded-2xl p-5 shadow-lg
+                        flex items-center justify-between group transform transition-all duration-200
+                        hover:scale-[1.02] hover:shadow-xl active:scale-95 cursor-pointer
                       "
                     >
                       <div className="text-left">
-                        <p className="text-[10px] font-extrabold uppercase tracking-widest opacity-70 text-slate-500">Member Access</p>
-                        <p className="text-xl font-black tracking-tight leading-none mt-1">Login to My Page</p>
+                        <div className="flex items-center gap-2 mb-1">
+                          <LayoutDashboard className="w-5 h-5 text-[#CE1126]" />
+                          <span className="font-black text-lg tracking-tight">MY PAGE</span>
+                        </div>
+                        <span className="text-xs font-semibold text-gray-500 group-hover:text-[#CE1126]/80">Access Dashboard</span>
                       </div>
-                      <div className="w-10 h-10 rounded-full bg-[#CE1126]/10 flex items-center justify-center">
-                        <LogIn className="w-6 h-6" strokeWidth={3} />
+                      <div className="w-10 h-10 rounded-full bg-[#CE1126]/10 flex items-center justify-center group-hover:bg-[#CE1126] group-hover:text-white transition-colors">
+                         <LogIn className="w-5 h-5" />
                       </div>
                     </button>
                   </motion.div>
 
-                  {/* Menu List */}
-                  <div className="flex flex-col space-y-2 relative z-10">
+                  {/* === NAVIGATION LIST === */}
+                  <div className="flex flex-col space-y-3 relative z-10">
+                    <h3 className="text-xs font-bold text-white/80 uppercase tracking-widest ml-1">Menu</h3>
+                    
                     {mobileNavItems.map((item) => {
                       const Icon = item.icon;
                       const isActive = currentPage === item.id;
@@ -247,33 +249,22 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                           key={item.id}
                           variants={itemVariants}
                           onClick={() => handleNavClick(item.id)}
-                          // High-Contrast White Cards for visibility on Red
                           className={`
-                            flex items-center space-x-3 px-4 py-3 rounded-xl w-full text-left transition-all duration-200 shadow-sm
+                            flex items-center justify-between px-5 py-3.5 rounded-xl w-full text-left transition-all duration-200 shadow-sm
                             ${isActive 
-                              ? 'bg-white text-[#CE1126] font-bold scale-[1.02] ring-2 ring-offset-2 ring-offset-[#CE1126] ring-white' 
-                              : 'bg-white/90 text-slate-800 hover:bg-white hover:scale-[1.01]'
+                              ? 'bg-white text-[#CE1126] font-extrabold translate-x-2' 
+                              : 'bg-white/90 text-slate-800 font-semibold hover:bg-white hover:translate-x-1'
                             }
                           `}
                         >
-                          <Icon className={`w-4 h-4 ${isActive ? 'text-[#CE1126]' : 'text-slate-500'}`} />
-                          <span className="text-sm tracking-wide font-medium">{item.label}</span>
+                          <div className="flex items-center gap-3">
+                            <Icon className={`w-5 h-5 ${isActive ? 'text-[#CE1126]' : 'text-slate-400'}`} />
+                            <span className="text-sm">{item.label}</span>
+                          </div>
+                          {isActive && <ChevronRight className="w-4 h-4" />}
                         </motion.button>
                       );
                     })}
-                    
-                    {/* Separator */}
-                    <div className="h-px w-full bg-white/20 my-3" />
-
-                    {/* Sign Out (Bottom) */}
-                    <motion.button 
-                      variants={itemVariants}
-                      className="flex items-center space-x-3 px-4 py-3 rounded-xl w-full text-left bg-black/20 hover:bg-black/30 text-white border border-white/10 transition-colors"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      <LogOut className="w-4 h-4 opacity-70" />
-                      <span className="text-xs tracking-wide font-bold uppercase">Sign Out</span>
-                    </motion.button>
                   </div>
 
                 </div>
@@ -288,7 +279,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="fixed inset-0 bg-black/50 backdrop-blur-[2px] z-[-1] md:hidden"
+                className="fixed inset-0 bg-black/60 backdrop-blur-[2px] z-[-1] md:hidden"
                 style={{ top: `${headerHeight}px` }}
                 onClick={() => setMobileMenuOpen(false)}
               />
@@ -341,4 +332,3 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
     </div>
   );
 }
-```

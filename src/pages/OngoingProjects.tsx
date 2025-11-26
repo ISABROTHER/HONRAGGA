@@ -1,5 +1,5 @@
 // src/pages/OngoingProjects.tsx
-import { HardHat, MapPin, Calendar, ArrowRight } from 'lucide-react';
+import { HardHat, MapPin, Calendar } from 'lucide-react';
 
 const projects = [
   {

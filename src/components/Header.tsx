@@ -1,7 +1,7 @@
 // src/components/Header.tsx
 import { useState } from 'react';
 import { Menu, X, Home, User, BookOpen, Calendar, Newspaper, HandHeart, LogOut } from 'lucide-react';
-import { Button } from './Button';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface HeaderProps {
   currentPage: string;
@@ -37,7 +37,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
     { id: 'volunteer', label: 'Get Involved' },
   ];
 
-  // Mobile Menu Items with Icons for the new design
+  // Mobile Menu Items
   const mobileNavItems = [
     { id: 'home', label: 'Home', icon: Home },
     { id: 'about', label: 'About Profile', icon: User },
@@ -50,6 +50,35 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
   const handleNavClick = (pageId: string) => {
     onNavigate(pageId);
     setMobileMenuOpen(false);
+  };
+
+  // Animation Variants for "Top 1%" Feel
+  const menuVariants = {
+    closed: {
+      scale: 0,
+      opacity: 0,
+      borderBottomLeftRadius: "100%",
+      borderTopLeftRadius: "100%",
+      borderBottomRightRadius: "100%",
+      transition: { type: "spring", stiffness: 400, damping: 40 }
+    },
+    open: {
+      scale: 1,
+      opacity: 1,
+      borderBottomLeftRadius: "40px",
+      borderTopLeftRadius: "40px",
+      borderBottomRightRadius: "40px",
+      transition: { 
+        type: "spring", stiffness: 300, damping: 30,
+        staggerChildren: 0.05, 
+        delayChildren: 0.1 
+      }
+    }
+  };
+
+  const itemVariants = {
+    closed: { opacity: 0, x: 20 },
+    open: { opacity: 1, x: 0 }
   };
 
   return (
@@ -121,99 +150,132 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className={`
-                  w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 shadow-md border-2
+                  w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg border-4 border-white/20 backdrop-blur-sm
                   ${mobileMenuOpen 
-                    ? 'bg-white text-green-700 border-green-700 rotate-90' 
-                    : 'bg-white text-green-700 border-green-700 hover:bg-green-50'
+                    ? 'bg-white text-[#006B3F] rotate-90' 
+                    : 'bg-gradient-to-br from-[#006B3F] to-[#CE1126] text-white'
                   }
                 `}
                 aria-label="Toggle menu"
               >
                 {mobileMenuOpen ? (
-                  <X className="w-6 h-6" strokeWidth={3} />
+                  <X className="w-7 h-7" strokeWidth={3} />
                 ) : (
-                  <Menu className="w-6 h-6" strokeWidth={3} />
+                  <Menu className="w-7 h-7" strokeWidth={3} />
                 )}
               </button>
             </div>
           </div>
 
           {/* === CUSTOM DROPPING MOBILE MENU (NDC STYLE) === */}
-          <div 
-            className={`
-              md:hidden absolute top-0 right-0 w-[300px] 
-              transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] origin-top-right
-              ${mobileMenuOpen ? 'scale-100 opacity-100' : 'scale-0 opacity-0 pointer-events-none'}
-            `}
-            style={{
-              top: '12px', 
-              right: '12px',
-            }}
-          >
-            {/* THE BACKGROUND SHAPE (Gradient: Green -> Red -> Black) */}
-            <div className="
-              relative bg-gradient-to-b from-[#006B3F] via-[#CE1126] to-black
-              text-white p-6 pt-20 pb-8
-              shadow-2xl shadow-black/40
-              rounded-[2.5rem] rounded-tr-[4rem] border-2 border-white/10
-            ">
-              
-              {/* User Initials / Circle (Visual decoration) */}
-              <div className="absolute top-5 right-5 w-14 h-14 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center pointer-events-none">
-                <span className="text-white font-black text-sm tracking-widest">NDC</span>
-              </div>
-
-              {/* Welcome Text */}
-              <div className="mb-6 pl-2">
-                <h3 className="text-lg font-bold text-white mb-0.5">Welcome</h3>
-                <p className="text-2xl font-black text-white tracking-tight opacity-90">@Ragga</p>
-              </div>
-
-              {/* Menu List */}
-              <div className="flex flex-col space-y-3">
-                {mobileNavItems.map((item) => {
-                  const Icon = item.icon;
-                  const isActive = currentPage === item.id;
+          <AnimatePresence>
+            {mobileMenuOpen && (
+              <motion.div 
+                initial="closed"
+                animate="open"
+                exit="closed"
+                variants={menuVariants}
+                className="md:hidden absolute top-0 right-0 w-[320px] origin-top-right"
+                style={{
+                  top: '10px', 
+                  right: '10px',
+                  // The "L-shape" cutout for the toggle button
+                  borderRadius: '40px 40px 40px 40px', 
+                  borderTopRightRadius: '60px' 
+                }}
+              >
+                {/* THE BACKGROUND SHAPE (Gradient: Green -> Red -> Black) */}
+                <div className="
+                  relative bg-gradient-to-b from-[#006B3F] via-[#CE1126] to-black
+                  text-white p-6 pt-24 pb-8
+                  shadow-2xl shadow-black/50
+                  h-full w-full
+                  overflow-hidden
+                  border border-white/10
+                ">
                   
-                  return (
-                    <button
-                      key={item.id}
-                      onClick={() => handleNavClick(item.id)}
-                      className={`
-                        flex items-center space-x-4 px-5 py-3.5 rounded-2xl w-full text-left transition-all duration-200
-                        ${isActive 
-                          ? 'bg-white text-[#006B3F] shadow-lg font-bold scale-[1.02]' 
-                          : 'bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/5'
-                        }
-                      `}
-                    >
-                      <Icon className={`w-5 h-5 ${isActive ? 'text-[#CE1126]' : 'text-white'}`} />
-                      <span className="text-sm tracking-wide font-medium">{item.label}</span>
-                    </button>
-                  );
-                })}
-                
-                {/* Close Action */}
-                <button 
-                  className="flex items-center space-x-4 px-5 py-3.5 rounded-2xl w-full text-left bg-black/20 hover:bg-black/40 text-red-200 mt-4 border border-white/5 transition-colors"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  <LogOut className="w-5 h-5" />
-                  <span className="text-sm tracking-wide font-medium">Close Menu</span>
-                </button>
-              </div>
+                  {/* Decorative texture overlay */}
+                  <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 pointer-events-none mix-blend-overlay"></div>
 
-            </div>
-          </div>
+                  {/* User Initials / Circle (Visual decoration) */}
+                  <motion.div 
+                    initial={{ scale: 0, rotate: -180 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    transition={{ delay: 0.2, type: 'spring' }}
+                    className="absolute top-6 right-20 w-14 h-14 rounded-full bg-white/10 backdrop-blur-md border border-white/30 flex items-center justify-center shadow-inner"
+                  >
+                    <span className="text-white font-black text-sm tracking-widest drop-shadow-md">NDC</span>
+                  </motion.div>
+
+                  {/* Welcome Text */}
+                  <motion.div variants={itemVariants} className="mb-8 pl-2 relative z-10">
+                    <h3 className="text-sm font-bold text-green-100 uppercase tracking-wider mb-0.5">Welcome Back</h3>
+                    <p className="text-3xl font-black text-white tracking-tight drop-shadow-lg">Ragga</p>
+                  </motion.div>
+
+                  {/* Menu List */}
+                  <div className="flex flex-col space-y-2 relative z-10">
+                    {mobileNavItems.map((item) => {
+                      const Icon = item.icon;
+                      const isActive = currentPage === item.id;
+                      
+                      return (
+                        <motion.button
+                          key={item.id}
+                          variants={itemVariants}
+                          onClick={() => handleNavClick(item.id)}
+                          className={`
+                            flex items-center space-x-4 px-5 py-4 rounded-2xl w-full text-left transition-all duration-200 group
+                            ${isActive 
+                              ? 'bg-white text-[#006B3F] shadow-[0_4px_14px_rgba(0,0,0,0.2)] font-bold scale-[1.02]' 
+                              : 'bg-white/5 hover:bg-white/15 text-white backdrop-blur-sm border border-white/5'
+                            }
+                          `}
+                        >
+                          <div className={`
+                            p-2 rounded-full 
+                            ${isActive ? 'bg-[#006B3F]/10 text-[#CE1126]' : 'bg-white/10 text-white group-hover:scale-110 transition-transform'}
+                          `}>
+                            <Icon className="w-5 h-5" />
+                          </div>
+                          <span className="text-base tracking-wide font-medium">{item.label}</span>
+                        </motion.button>
+                      );
+                    })}
+                    
+                    <div className="h-px w-full bg-white/10 my-2" />
+
+                    {/* Close Action */}
+                    <motion.button 
+                      variants={itemVariants}
+                      className="flex items-center space-x-4 px-5 py-3 rounded-2xl w-full text-left bg-black/30 hover:bg-black/50 text-red-200 border border-white/5 transition-colors mt-2"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      <div className="p-2 bg-white/5 rounded-full">
+                        <LogOut className="w-4 h-4" />
+                      </div>
+                      <span className="text-sm tracking-wide font-medium">Close Menu</span>
+                    </motion.button>
+                  </div>
+
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* Overlay for clicking outside */}
-          {mobileMenuOpen && (
-            <div 
-              className="fixed inset-0 bg-black/30 backdrop-blur-[2px] z-[-1] md:hidden"
-              style={{ top: `${headerHeight}px` }}
-              onClick={() => setMobileMenuOpen(false)}
-            />
-          )}
+          <AnimatePresence>
+            {mobileMenuOpen && (
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 bg-black/40 backdrop-blur-[3px] z-[-1] md:hidden"
+                style={{ top: `${headerHeight}px` }}
+                onClick={() => setMobileMenuOpen(false)}
+              />
+            )}
+          </AnimatePresence>
 
         </nav>
       </header>

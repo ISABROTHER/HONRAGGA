@@ -1,5 +1,23 @@
 import { useEffect, useRef } from 'react';
-import { School, Briefcase, Award, Landmark, CheckSquare, Users, Star, Eye, BarChart3, GraduationCap, MapPin, User, Smile, Briefcase as DesignationIcon, Megaphone, Flag } from 'lucide-react';
+import { 
+  School, 
+  Briefcase, 
+  Award, 
+  Landmark, 
+  CheckSquare, 
+  Users, 
+  Star, 
+  Eye, 
+  BarChart3, 
+  GraduationCap, 
+  MapPin, 
+  User, 
+  Smile, 
+  Briefcase as DesignationIcon, 
+  Megaphone, 
+  Flag,
+  Phone 
+} from 'lucide-react';
 
 // Helper component for animated sections
 const AnimatedSection = ({ children, delay = 0 }: { children: React.ReactNode, delay?: number }) => {
@@ -41,6 +59,35 @@ const ProfileItem = ({ icon: Icon, label, value }: { icon: React.ElementType, la
     </div>
 );
 
+// Simple type for Assembly Members
+type AssemblyMember = {
+  area: string;
+  name: string;
+  phone: string;
+  photoUrl: string;
+};
+
+// Placeholder data – replace with real Assemblymen details when ready
+const assemblyMembers: AssemblyMember[] = [
+  {
+    area: "Abakam – Ola University Electoral Area",
+    name: "Assembly Member (Update Name)",
+    phone: "0XX XXX XXXX",
+    photoUrl: "https://via.placeholder.com/300x300.png?text=Assembly+Member"
+  },
+  {
+    area: "Efutu – Kakomdo – Mempeasem Electoral Area",
+    name: "Assembly Member (Update Name)",
+    phone: "0XX XXX XXXX",
+    photoUrl: "https://via.placeholder.com/300x300.png?text=Assembly+Member"
+  },
+  {
+    area: "Abura – Adisadel – Pedu – Nkafoa Electoral Area",
+    name: "Assembly Member (Update Name)",
+    phone: "0XX XXX XXXX",
+    photoUrl: "https://via.placeholder.com/300x300.png?text=Assembly+Member"
+  },
+];
 
 export function About() {
   const heroImageUrl = "https://i.imgur.com/5H0XBuV.jpeg"; // New hero image
@@ -81,14 +128,12 @@ export function About() {
        { institution: "GOIL PLC (Ghana Oil Company)", position: "Board Member" }
    ];
 
-
   // Helper to format date string (MM-YYYY or YYYY) -> Year
   const getYear = (dateStr: string) => {
       if (!dateStr) return 'N/A';
       const parts = dateStr.split('-');
       return parts.length > 1 ? parts[1] : dateStr; // Assumes YYYY or MM-YYYY
   }
-
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -113,12 +158,121 @@ export function About() {
         </div>
       </section>
 
-
       {/* Main Content Sections */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20 space-y-16">
 
-        {/* Section 1: Profile Grid */}
+        {/* NEW SECTION: MP + Assemblymen overview */}
         <AnimatedSection>
+          <h2 className="text-3xl font-bold text-green-800 mb-6 border-b-2 border-amber-500 pb-2 inline-block">
+            Who Handles Your Issues?
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* MP Card */}
+            <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 flex flex-col gap-3">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
+                  <User className="w-6 h-6 text-green-800" />
+                </div>
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+                    Your Member of Parliament
+                  </p>
+                  <p className="text-sm font-bold text-gray-900">
+                    Hon. Dr. Kwamena Minta Nyarku (Ragga)
+                  </p>
+                  <p className="text-xs text-gray-600">
+                    MP for Cape Coast North
+                  </p>
+                </div>
+              </div>
+              <p className="text-sm text-gray-700 leading-relaxed">
+                All issues submitted on this platform are received by the MP&apos;s office. 
+                Some matters are handled directly by the MP&apos;s team; others are delivered 
+                through Assembly Members, departments and agencies for action.
+              </p>
+              <p className="text-xs text-gray-500">
+                The goal is simple: every genuine concern should find its way to the right desk.
+              </p>
+            </div>
+
+            {/* Assemblymen Role Card */}
+            <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 flex flex-col gap-3">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
+                  <Users className="w-6 h-6 text-blue-700" />
+                </div>
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+                    Your Assembly Members
+                  </p>
+                  <p className="text-sm font-bold text-gray-900">
+                    Local Representatives in Each Electoral Area
+                  </p>
+                </div>
+              </div>
+              <p className="text-sm text-gray-700 leading-relaxed">
+                Assembly Members are the first point of contact for day-to-day community issues 
+                such as drains, streetlights, sanitation, and local projects. They work closely 
+                with the MP&apos;s office so that no community is left behind.
+              </p>
+              <p className="text-xs text-gray-500">
+                Issues can be followed up directly with your Assembly Member, or through 
+                the MP&apos;s office, depending on the nature of the problem.
+              </p>
+            </div>
+          </div>
+        </AnimatedSection>
+
+        {/* NEW SECTION: Assembly Members grid */}
+        <AnimatedSection delay={100}>
+          <h3 className="text-2xl font-semibold text-blue-900 mb-4">
+            Assembly Members in Cape Coast North
+          </h3>
+          <p className="text-sm text-gray-700 mb-4">
+            Below are the main electoral areas in the constituency. Each card shows the 
+            Assembly Member responsible for that area. Update the names, photos and contact 
+            numbers as new information is available.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            {assemblyMembers.map((member) => (
+              <div
+                key={member.area}
+                className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden flex flex-col"
+              >
+                <div className="h-32 w-full bg-gray-100 overflow-hidden">
+                  <img
+                    src={member.photoUrl}
+                    alt={member.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="p-4 space-y-2 flex-1 flex flex-col">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+                    Assembly Member
+                  </p>
+                  <p className="text-sm font-bold text-gray-900">
+                    {member.name}
+                  </p>
+                  <p className="text-xs text-gray-600 flex items-start gap-1">
+                    <MapPin className="w-3 h-3 mt-0.5 flex-shrink-0 text-blue-700" />
+                    <span>{member.area}</span>
+                  </p>
+                  <p className="text-xs text-gray-700 flex items-center gap-1">
+                    <Phone className="w-3 h-3 text-green-700" />
+                    <span>{member.phone}</span>
+                  </p>
+                  <p className="text-[11px] text-gray-500 mt-1">
+                    Issues in this area can be addressed with your Assembly Member 
+                    or delivered through the MP&apos;s office for follow-up.
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </AnimatedSection>
+
+        {/* Section 1: Profile Grid */}
+        <AnimatedSection delay={150}>
           <h2 className="text-3xl font-bold text-green-800 mb-6 border-b-2 border-amber-500 pb-2 inline-block">Profile</h2>
           {/* Reordered items, added Nationality */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
@@ -129,11 +283,10 @@ export function About() {
                 <ProfileItem icon={MapPin} label="Place of Birth" value="Apewosika, Cape Coast" />
                 <ProfileItem icon={Megaphone} label="Slogan" value="Obiara Ka Ho (Everyone is involved)" />
           </div>
-           {/* Paragraph REMOVED */}
         </AnimatedSection>
 
         {/* Section 2: Educational Qualifications Table */}
-        <AnimatedSection delay={100}>
+        <AnimatedSection delay={200}>
             <h3 className="text-2xl font-semibold text-blue-900 mb-4">Educational Qualifications</h3>
              <div className="overflow-x-auto bg-white rounded-lg shadow-md border border-gray-200">
                 <table className="w-full text-sm text-left text-gray-700">
@@ -160,7 +313,7 @@ export function About() {
         </AnimatedSection>
 
         {/* Section 3: Employment History Table */}
-         <AnimatedSection delay={200}>
+         <AnimatedSection delay={250}>
             <h3 className="text-2xl font-semibold text-blue-900 mb-4">Employment History</h3>
              <div className="overflow-x-auto bg-white rounded-lg shadow-md border border-gray-200">
                 <table className="w-full text-sm text-left text-gray-700">
@@ -233,7 +386,7 @@ export function About() {
         </AnimatedSection>
 
         {/* Section 5: Vision */}
-        <AnimatedSection delay={400}> {/* Adjusted delay */}
+        <AnimatedSection delay={350}>
             <h2 className="text-3xl font-bold text-green-800 mb-6 border-b-2 border-amber-500 pb-2 inline-block">My Vision</h2>
             <blockquote className="relative p-6 bg-gradient-to-r from-blue-50 to-white border-l-4 border-amber-500 italic rounded-r-lg shadow-sm">
                 <Eye className="absolute top-4 right-4 w-8 h-8 text-amber-300 opacity-50" />
@@ -250,6 +403,7 @@ export function About() {
         </AnimatedSection>
 
       </div>
+
        {/* CSS for animations */}
       <style>{`
         .animate-section-enter {

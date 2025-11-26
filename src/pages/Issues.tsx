@@ -152,6 +152,11 @@ export function Issues() {
   const [successOpen, setSuccessOpen] = useState(false);
   const [trackingCode, setTrackingCode] = useState<string>('');
 
+  // Community Search State
+  const [communitySearch, setCommunitySearch] = useState('');
+  const [isCommunityDropdownOpen, setIsCommunityDropdownOpen] = useState(false);
+  const communityDropdownRef = useRef<HTMLDivElement>(null);
+
   // Step Progress Logic
   const isStep1Complete = selectedZone !== '' && selectedCommunity !== '';
   const isStep2Complete = description.trim().length > 0;
@@ -159,12 +164,26 @@ export function Issues() {
   // Communities Filter
   const currentZoneData = LOCATIONS.find(l => l.zone === selectedZone);
   const availableCommunities = currentZoneData ? currentZoneData.communities : [];
+  const filteredCommunities = availableCommunities.filter((c: string) =>
+    c.toLowerCase().includes(communitySearch.toLowerCase())
+  );
 
   // Reset subcat when category changes
   useEffect(() => {
     setSubcat(CATEGORIES[cat].subs[0]);
     setManualSubcat('');
   }, [cat]);
+
+  // Click outside listener for community dropdown
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (communityDropdownRef.current && !communityDropdownRef.current.contains(event.target as Node)) {
+        setIsCommunityDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const getGPS = () => {
     setGpsError(null);

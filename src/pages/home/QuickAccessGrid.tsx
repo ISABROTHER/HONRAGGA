@@ -21,13 +21,13 @@ type QuickLink = {
 
 const quickLinks: QuickLink[] = [
   {
-    title: "Projects",
+    title: "Ongoing Projects",
     mobileDesc: "Infrastructure",
     desc: "Track ongoing infrastructure developments and renovations.",
     icon: HardHat,
     bgClass: "from-amber-50 to-orange-50/50 border-orange-100",
     iconColor: "text-amber-600",
-    route: "policies"
+    route: "ongoing-projects"
   },
   {
     title: "Report Issue",
@@ -36,7 +36,7 @@ const quickLinks: QuickLink[] = [
     icon: MessageSquareWarning,
     bgClass: "from-emerald-50 to-teal-50/50 border-emerald-100",
     iconColor: "text-emerald-600",
-    route: "issues" // Updated from 'news'
+    route: "issues"
   },
   {
     title: "Policies",
@@ -54,7 +54,7 @@ const quickLinks: QuickLink[] = [
     icon: Award,
     bgClass: "from-purple-50 to-fuchsia-50/50 border-purple-100",
     iconColor: "text-purple-600",
-    route: "about"
+    route: "policies"
   },
   {
     title: "Support",
@@ -66,13 +66,13 @@ const quickLinks: QuickLink[] = [
     route: "volunteer"
   },
   {
-    title: "About",
-    mobileDesc: "The MP",
-    desc: "Get to know Hon. Dr. Kwamena Minta Nyarku.",
+    title: "Appointment & Applications",
+    mobileDesc: "Book/Apply",
+    desc: "Schedule meetings or submit job and grant applications.",
     icon: UserCircle,
     bgClass: "from-slate-50 to-gray-50/50 border-slate-200",
     iconColor: "text-slate-600",
-    route: "about"
+    route: "appointments"
   }
 ];
 

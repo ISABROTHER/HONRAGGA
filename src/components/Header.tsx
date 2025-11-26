@@ -326,4 +326,4 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
       </div>
     </div>
   );
-}
+} 

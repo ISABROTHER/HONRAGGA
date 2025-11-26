@@ -87,7 +87,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
     <div className="relative w-full">
       {/* === FIXED HEADER === */}
       <header
-        className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-200 shadow-xl transition-shadow"
+        className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-xl transition-shadow"
         style={{
           height: `${headerHeight}px`,
         }}
@@ -152,10 +152,10 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className={`
-                  w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg border-2 border-white/20 backdrop-blur-md
+                  w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg border-2 border-white/20
                   ${mobileMenuOpen 
-                    ? 'bg-white/90 text-[#CE1126] rotate-90 shadow-inner' 
-                    : 'bg-[#CE1126]/90 text-white hover:bg-[#CE1126]'
+                    ? 'bg-white text-[#CE1126] rotate-90 shadow-inner' 
+                    : 'bg-[#CE1126] text-white hover:bg-[#900000]'
                   }
                 `}
                 aria-label="Toggle menu"
@@ -169,7 +169,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
             </div>
           </div>
 
-          {/* === CUSTOM DROPPING MOBILE MENU (RED FROSTED GLASS) === */}
+          {/* === CUSTOM DROPPING MOBILE MENU (SOLID RED) === */}
           <AnimatePresence>
             {mobileMenuOpen && (
               <motion.div 
@@ -185,34 +185,33 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                   borderTopRightRadius: '50px' 
                 }}
               >
-                {/* THE BACKGROUND SHAPE (Red Glass) */}
+                {/* THE BACKGROUND SHAPE (Solid Rich Red, No Frost, No Stripes) */}
                 <div className="
                   relative 
-                  bg-gradient-to-b from-[#CE1126]/85 via-[#900000]/85 to-black/85
-                  backdrop-blur-xl
+                  bg-[#CE1126]
                   text-white p-5 pt-20 pb-6
-                  shadow-[0_8px_32px_0_rgba(0,0,0,0.37)]
+                  shadow-2xl shadow-black/50
                   h-full w-full
                   overflow-hidden
-                  border border-white/20
+                  border border-white/10
                 ">
                   
-                  {/* Glass reflections/noise */}
-                  <div className="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent pointer-events-none"></div>
+                  {/* Simple gradient for subtle depth (no stripes) */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/30 pointer-events-none"></div>
                   
                   {/* User Initials / Circle */}
                   <motion.div 
                     initial={{ scale: 0, rotate: -90 }}
                     animate={{ scale: 1, rotate: 0 }}
                     transition={{ delay: 0.2 }}
-                    className="absolute top-4 right-16 w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/30 flex items-center justify-center shadow-lg"
+                    className="absolute top-4 right-16 w-10 h-10 rounded-full bg-white/20 border border-white/30 flex items-center justify-center shadow-md"
                   >
                     <span className="text-white font-black text-xs tracking-widest">NDC</span>
                   </motion.div>
 
                   {/* Welcome Text */}
                   <motion.div variants={itemVariants} className="mb-4 pl-1 relative z-10">
-                    <h3 className="text-[10px] font-bold text-red-100 uppercase tracking-wider mb-0.5 opacity-80">Current User</h3>
+                    <h3 className="text-[10px] font-bold text-red-100 uppercase tracking-wider mb-0.5 opacity-90">Current User</h3>
                     <p className="text-xl font-black text-white tracking-tight drop-shadow-sm">@Ragga</p>
                   </motion.div>
 
@@ -230,14 +229,11 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                           className={`
                             flex items-center space-x-3 px-4 py-2.5 rounded-xl w-full text-left transition-all duration-200 group relative overflow-hidden
                             ${isActive 
-                              ? 'bg-white/95 text-[#CE1126] shadow-lg font-bold scale-[1.02]' 
-                              : 'bg-white/10 hover:bg-white/20 text-white border border-white/10'
+                              ? 'bg-white text-[#CE1126] shadow-lg font-bold scale-[1.02]' 
+                              : 'bg-black/20 hover:bg-black/30 text-white border border-white/5'
                             }
                           `}
                         >
-                          {/* Active Indicator Glow */}
-                          {isActive && <div className="absolute inset-0 bg-red-100/20 pointer-events-none" />}
-
                           <div className={`
                             p-1.5 rounded-full relative z-10
                             ${isActive ? 'bg-[#CE1126]/10 text-[#CE1126]' : 'bg-white/10 text-white group-hover:scale-110 transition-transform'}
@@ -254,7 +250,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                     {/* Close/Logout Action */}
                     <motion.button 
                       variants={itemVariants}
-                      className="flex items-center space-x-3 px-4 py-2.5 rounded-xl w-full text-left bg-black/40 hover:bg-black/60 text-red-100 border border-white/10 transition-colors"
+                      className="flex items-center space-x-3 px-4 py-2.5 rounded-xl w-full text-left bg-black/40 hover:bg-black/50 text-red-50 border border-white/10 transition-colors"
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       <div className="p-1.5 bg-white/10 rounded-full">
@@ -276,7 +272,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="fixed inset-0 bg-black/40 backdrop-blur-[4px] z-[-1] md:hidden"
+                className="fixed inset-0 bg-black/40 z-[-1] md:hidden"
                 style={{ top: `${headerHeight}px` }}
                 onClick={() => setMobileMenuOpen(false)}
               />

@@ -8,7 +8,7 @@ import { About } from './pages/About';
 import { Policies } from './pages/Policies';
 import { PolicyDetail } from './pages/PolicyDetail';
 import { Events } from './pages/Events';
-import { Issues } from './pages/Issues'; // Changed import
+import { Issues } from './pages/Issues';
 import { Volunteer } from './pages/Volunteer';
 import { Admin } from './pages/Admin';
 
@@ -115,9 +115,8 @@ function App() {
         return <Policies onSelectTheme={(theme) => handleNavigate('policies', theme)} />;
       case 'events':
         return <Events />;
-      case 'news':
-      case 'issues': // Handle new route key
-        return <Issues />; // Use new component
+      case 'issues':
+        return <Issues />;
       case 'volunteer':
         return <Volunteer />;
       case 'admin':

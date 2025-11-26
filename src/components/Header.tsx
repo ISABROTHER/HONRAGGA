@@ -1,6 +1,6 @@
 // src/components/Header.tsx
 import { useState } from 'react';
-import { Menu, X, Home, User, BookOpen, Calendar, Newspaper, HandHeart, LayoutDashboard, LogIn, ChevronRight } from 'lucide-react';
+import { Menu, X, Home, User, BookOpen, Calendar, MessageSquareWarning, HandHeart, LayoutDashboard, LogIn, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface HeaderProps {
@@ -33,7 +33,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
     { id: 'about', label: 'About' },
     { id: 'policies', label: 'Policies' },
     { id: 'events', label: 'Events' },
-    { id: 'news', label: 'News' },
+    { id: 'issues', label: 'Report Issue' }, // Renamed from News
     { id: 'volunteer', label: 'Get Involved' },
     { id: 'admin', label: 'My Page' }, 
   ];
@@ -44,7 +44,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
     { id: 'about', label: 'About Profile', icon: User },
     { id: 'policies', label: 'Policies', icon: BookOpen },
     { id: 'events', label: 'Events', icon: Calendar },
-    { id: 'news', label: 'News & Media', icon: Newspaper },
+    { id: 'issues', label: 'Report Issue', icon: MessageSquareWarning }, // Renamed from News
     { id: 'volunteer', label: 'Get Involved', icon: HandHeart },
   ];
 

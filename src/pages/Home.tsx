@@ -1,6 +1,7 @@
+// src/pages/Home.tsx
 import { HeroSection } from "./home/HeroSection";
 import { QuickAccessGrid } from "./home/QuickAccessGrid";
-import { StatsStrip } from "./home/StatsStrip";
+import { LatestUpdatesSection } from "./home/LatestUpdatesSection";
 import { PrioritiesSection } from "./home/PrioritiesSection";
 import { NewsletterSection } from "./home/NewsletterSection";
 import { BottomCTASection } from "./home/BottomCTASection";
@@ -14,7 +15,10 @@ export function Home({ onNavigate }: HomeProps) {
     <div className="min-h-screen bg-white font-sans text-slate-900">
       <HeroSection />
       <QuickAccessGrid onNavigate={onNavigate} />
-      <StatsStrip />
+      
+      {/* Replaced StatsStrip with LatestUpdatesSection */}
+      <LatestUpdatesSection />
+      
       <PrioritiesSection onNavigate={onNavigate} />
       <NewsletterSection />
       <BottomCTASection onNavigate={onNavigate} />

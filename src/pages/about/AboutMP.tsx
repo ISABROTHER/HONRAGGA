@@ -63,22 +63,22 @@ export function AboutMP({ onNavigate }: AboutMPProps) {
 
               {/* ACTION BUTTONS */}
               <div className="pt-4 flex flex-col sm:flex-row gap-3">
-                {/* Button 1: Scroll to Assemblymen */}
-                <button
-                  onClick={handleScrollToAssemblymen}
-                  className="flex-1 flex items-center justify-center gap-2 px-5 py-3 bg-white border-2 border-blue-900 text-blue-900 text-sm font-bold rounded-xl hover:bg-blue-50 transition-all active:scale-95"
-                >
-                  Know Your Assemblymen
-                  <ArrowDown className="w-4 h-4" />
-                </button>
-
-                {/* Button 2: Open Full Profile Page */}
+                {/* Button 1: Open Full Profile Page (Left) */}
                 <button
                   onClick={() => onNavigate('about-full-profile')}
                   className="flex-1 flex items-center justify-center gap-2 px-5 py-3 bg-blue-900 text-white text-sm font-bold rounded-xl shadow-md hover:bg-blue-800 transition-all active:scale-95"
                 >
                   READ FULL PROFILE
                   <ChevronRight className="w-4 h-4" />
+                </button>
+
+                {/* Button 2: Scroll to Assemblymen (Right) */}
+                <button
+                  onClick={handleScrollToAssemblymen}
+                  className="flex-1 flex items-center justify-center gap-2 px-5 py-3 bg-white border-2 border-blue-900 text-blue-900 text-sm font-bold rounded-xl hover:bg-blue-50 transition-all active:scale-95"
+                >
+                  Know Your Assemblymen
+                  <ArrowDown className="w-4 h-4" />
                 </button>
               </div>
             </div>

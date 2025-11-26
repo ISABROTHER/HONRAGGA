@@ -1,6 +1,6 @@
 // src/components/Header.tsx
 import { useState } from 'react';
-import { Menu, X, Home, User, BookOpen, Calendar, Newspaper, HandHeart, LogOut, Settings, Share2 } from 'lucide-react';
+import { Menu, X, Home, User, BookOpen, Calendar, Newspaper, HandHeart, LogOut, Settings, Share2, LayoutDashboard } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface HeaderProps {
@@ -35,11 +35,13 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
     { id: 'events', label: 'Events' },
     { id: 'news', label: 'News' },
     { id: 'volunteer', label: 'Get Involved' },
+    { id: 'admin', label: 'My Page' }, // Added here
   ];
 
   // Mobile Menu Items
   const mobileNavItems = [
     { id: 'home', label: 'Home', icon: Home },
+    { id: 'admin', label: 'My Page', icon: LayoutDashboard }, // Added as priority item
     { id: 'about', label: 'About Profile', icon: User },
     { id: 'policies', label: 'Policies', icon: BookOpen },
     { id: 'events', label: 'Events', icon: Calendar },

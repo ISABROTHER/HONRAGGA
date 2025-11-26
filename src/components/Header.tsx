@@ -51,13 +51,16 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
   ];
 
   const handleNavClick = (pageId: string) => {
+    // 1. ALWAYS CLOSE MENU FIRST (Best Practice for responsiveness)
+    setMobileMenuOpen(false);
+
+    // 2. THEN CHECK NAVIGATION LOGIC
     // STRICTLY DISABLE NAVIGATION FOR ADMIN / MY PAGE
     if (pageId === 'admin') {
       return; 
     }
     
     onNavigate(pageId);
-    setMobileMenuOpen(false);
   };
 
   // Premium Animation Variants
@@ -217,7 +220,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                     <LogOut className="w-5 h-5 ml-0.5" />
                   </motion.button>
 
-                  {/* === HERO: MY PAGE LOGIN BUTTON (Non-functional as requested) === */}
+                  {/* === HERO: MY PAGE LOGIN BUTTON (Non-functional but closes menu) === */}
                   <motion.div variants={itemVariants} className="mb-8 relative z-10">
                     <h3 className="text-xs font-bold text-white/80 uppercase tracking-widest mb-2 ml-1">Membership Area</h3>
                     <button

@@ -1,6 +1,6 @@
 // src/pages/home/LatestUpdatesSection.tsx
 import React, { useRef } from 'react';
-import { ChevronLeft, ChevronRight, Calendar } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Calendar, ArrowRight } from 'lucide-react';
 
 const UPDATES = [
   {
@@ -46,6 +46,7 @@ export function LatestUpdatesSection() {
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
       const { current } = scrollRef;
+      // Scroll amount roughly equal to card width + gap
       const scrollAmount = 300; 
       if (direction === 'left') {
         current.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
@@ -61,12 +62,23 @@ export function LatestUpdatesSection() {
         
         {/* Header Section */}
         <div className="mb-8 md:mb-12">
-          <h4 className="text-green-700 font-extrabold text-xs md:text-sm uppercase tracking-widest mb-3">
-            PRESS RELEASES
-          </h4>
-          <h2 className="text-3xl md:text-5xl font-black text-slate-900 mb-4 md:mb-6 tracking-tight leading-tight">
-            Latest Updates
-          </h2>
+          <div className="flex items-center justify-between">
+            <div>
+              <h4 className="text-green-800 font-extrabold text-xs md:text-sm uppercase tracking-widest mb-3">
+                PRESS RELEASES
+              </h4>
+              <h2 className="text-3xl md:text-5xl font-black text-slate-900 mb-4 md:mb-6 tracking-tight leading-tight">
+                Latest Updates
+              </h2>
+            </div>
+            
+            {/* Visual "Slide" Indicator for Mobile */}
+            <div className="md:hidden flex items-center gap-1 text-slate-400 text-xs font-bold animate-pulse">
+              <span>Slide</span>
+              <ArrowRight className="w-4 h-4" />
+            </div>
+          </div>
+          
           <p className="text-slate-600 text-sm md:text-lg max-w-3xl leading-relaxed">
             Stay informed with news, press releases, and stories that highlight the 
             President's work, public addresses, and key decisions.
@@ -76,22 +88,22 @@ export function LatestUpdatesSection() {
         {/* Content Carousel Container */}
         <div className="relative group/carousel">
           
-          {/* Desktop Scroll Left Button */}
+          {/* Scroll Left Button - Visible on Mobile now */}
           <button 
             onClick={() => scroll('left')}
-            className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 -ml-5 z-30 bg-white shadow-xl border border-slate-100 p-3 rounded-full text-slate-700 hover:text-green-600 hover:scale-110 transition-all opacity-0 group-hover/carousel:opacity-100"
+            className="absolute left-0 top-[40%] -translate-y-1/2 -ml-3 md:-ml-6 z-30 bg-white/90 backdrop-blur-sm shadow-xl border border-slate-100 p-2 md:p-3 rounded-full text-slate-700 hover:text-green-700 hover:scale-110 transition-all flex items-center justify-center"
             aria-label="Scroll left"
           >
-            <ChevronLeft className="w-6 h-6" />
+            <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
           </button>
 
-          {/* Desktop Scroll Right Button */}
+          {/* Scroll Right Button - Visible on Mobile now */}
           <button 
             onClick={() => scroll('right')}
-            className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 -mr-5 z-30 bg-white shadow-xl border border-slate-100 p-3 rounded-full text-slate-700 hover:text-green-600 hover:scale-110 transition-all opacity-0 group-hover/carousel:opacity-100"
+            className="absolute right-0 top-[40%] -translate-y-1/2 -mr-3 md:-mr-6 z-30 bg-white/90 backdrop-blur-sm shadow-xl border border-slate-100 p-2 md:p-3 rounded-full text-slate-700 hover:text-green-700 hover:scale-110 transition-all flex items-center justify-center"
             aria-label="Scroll right"
           >
-            <ChevronRight className="w-6 h-6" />
+            <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
           </button>
 
           {/* Scrollable Track */}
@@ -103,38 +115,40 @@ export function LatestUpdatesSection() {
             {UPDATES.map((item) => (
               <article 
                 key={item.id} 
-                // FIXED: Reduced width to 280px on mobile to fit comfortably
-                className="w-[280px] sm:w-[340px] md:w-[380px] flex-shrink-0 snap-start flex flex-col h-auto group cursor-pointer shadow-sm hover:shadow-xl transition-shadow duration-300 rounded-lg overflow-hidden bg-white border border-slate-100"
+                // Mobile Width: 280px fixed width to ensure it fits without overflowing screen edges
+                className="w-[280px] sm:w-[340px] md:w-[380px] flex-shrink-0 snap-start flex flex-col h-auto group cursor-pointer shadow-md hover:shadow-2xl transition-all duration-300 rounded-xl overflow-hidden bg-white"
               >
                 {/* Image Container */}
                 <div className="h-48 md:h-60 w-full overflow-hidden relative">
                   <img 
                     src={item.image} 
                     alt={item.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
-                  {/* Category Tag */}
-                  <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-black/60 to-transparent" />
-                  <div className="absolute bottom-3 left-3 px-2.5 py-1 rounded bg-green-600/90 text-white text-[10px] font-bold uppercase tracking-wide">
+                  {/* Category Tag - Adjusted Colors */}
+                  <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-amber-400 text-[#004528] text-[10px] font-extrabold uppercase tracking-wide shadow-sm">
                     {item.category}
                   </div>
                 </div>
                 
-                {/* Content Container */}
-                <div className="bg-[#16A34A] p-5 md:p-6 flex-1 flex flex-col justify-between transition-colors group-hover:bg-[#15803d]">
+                {/* Content Container - Updated to Website Dark Green (#004528) */}
+                <div className="bg-[#004528] p-5 md:p-6 flex-1 flex flex-col justify-between relative overflow-hidden">
+                  {/* Subtle background pattern overlay */}
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-16 translate-x-16 blur-2xl pointer-events-none"></div>
+
                   <div>
-                    <div className="flex items-center gap-2 text-white/80 text-xs font-bold uppercase tracking-wide mb-2">
-                      <Calendar className="w-3 h-3" />
+                    <div className="flex items-center gap-2 text-amber-400/90 text-xs font-bold uppercase tracking-wide mb-3">
+                      <Calendar className="w-3.5 h-3.5" />
                       <time>{item.date}</time>
                     </div>
-                    <h3 className="text-white text-base md:text-xl font-bold leading-snug mb-3 line-clamp-3">
+                    <h3 className="text-white text-base md:text-xl font-bold leading-snug mb-4 line-clamp-3 group-hover:text-amber-50 transition-colors">
                       {item.title}
                     </h3>
                   </div>
                   
                   {/* Arrow Hint */}
-                  <div className="mt-4 flex items-center text-white/90 text-xs font-bold uppercase tracking-wider group-hover:translate-x-1 transition-transform">
-                    Read Article <ChevronRight className="w-4 h-4 ml-1" />
+                  <div className="mt-auto pt-4 border-t border-white/10 flex items-center text-white/80 text-xs font-bold uppercase tracking-wider group-hover:text-amber-400 transition-colors">
+                    Read Story <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
                   </div>
                 </div>
               </article>

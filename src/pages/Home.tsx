@@ -16,8 +16,7 @@ export function Home({ onNavigate }: HomeProps) {
       <HeroSection />
       <QuickAccessGrid onNavigate={onNavigate} />
       
-      {/* Replaced StatsStrip with LatestUpdatesSection */}
-      <LatestUpdatesSection />
+      <LatestUpdatesSection onNavigate={onNavigate} />
       
       <PrioritiesSection onNavigate={onNavigate} />
       <NewsletterSection />

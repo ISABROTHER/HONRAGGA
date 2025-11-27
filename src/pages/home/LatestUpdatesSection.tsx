@@ -40,13 +40,16 @@ const UPDATES = [
   }
 ];
 
-export function LatestUpdatesSection() {
+interface LatestUpdatesSectionProps {
+  onNavigate: (page: string) => void;
+}
+
+export function LatestUpdatesSection({ onNavigate }: LatestUpdatesSectionProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
       const { current } = scrollRef;
-      // Scroll amount roughly equal to card width + gap
       const scrollAmount = 300; 
       if (direction === 'left') {
         current.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
@@ -88,7 +91,7 @@ export function LatestUpdatesSection() {
         {/* Content Carousel Container */}
         <div className="relative group/carousel">
           
-          {/* Scroll Left Button - Visible on Mobile now */}
+          {/* Scroll Left Button */}
           <button 
             onClick={() => scroll('left')}
             className="absolute left-0 top-[40%] -translate-y-1/2 -ml-3 md:-ml-6 z-30 bg-white/90 backdrop-blur-sm shadow-xl border border-slate-100 p-2 md:p-3 rounded-full text-slate-700 hover:text-green-700 hover:scale-110 transition-all flex items-center justify-center"
@@ -97,7 +100,7 @@ export function LatestUpdatesSection() {
             <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
           </button>
 
-          {/* Scroll Right Button - Visible on Mobile now */}
+          {/* Scroll Right Button */}
           <button 
             onClick={() => scroll('right')}
             className="absolute right-0 top-[40%] -translate-y-1/2 -mr-3 md:-mr-6 z-30 bg-white/90 backdrop-blur-sm shadow-xl border border-slate-100 p-2 md:p-3 rounded-full text-slate-700 hover:text-green-700 hover:scale-110 transition-all flex items-center justify-center"
@@ -115,7 +118,7 @@ export function LatestUpdatesSection() {
             {UPDATES.map((item) => (
               <article 
                 key={item.id} 
-                // Mobile Width: 280px fixed width to ensure it fits without overflowing screen edges
+                onClick={() => onNavigate('events')} // Navigates to Events page as placeholder
                 className="w-[280px] sm:w-[340px] md:w-[380px] flex-shrink-0 snap-start flex flex-col h-auto group cursor-pointer shadow-md hover:shadow-2xl transition-all duration-300 rounded-xl overflow-hidden bg-white"
               >
                 {/* Image Container */}
@@ -125,13 +128,13 @@ export function LatestUpdatesSection() {
                     alt={item.title}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
-                  {/* Category Tag - Adjusted Colors */}
+                  {/* Category Tag */}
                   <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-amber-400 text-[#004528] text-[10px] font-extrabold uppercase tracking-wide shadow-sm">
                     {item.category}
                   </div>
                 </div>
                 
-                {/* Content Container - Updated to Website Dark Green (#004528) */}
+                {/* Content Container - Website Dark Green */}
                 <div className="bg-[#004528] p-5 md:p-6 flex-1 flex flex-col justify-between relative overflow-hidden">
                   {/* Subtle background pattern overlay */}
                   <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-16 translate-x-16 blur-2xl pointer-events-none"></div>
@@ -146,9 +149,12 @@ export function LatestUpdatesSection() {
                     </h3>
                   </div>
                   
-                  {/* Arrow Hint */}
-                  <div className="mt-auto pt-4 border-t border-white/10 flex items-center text-white/80 text-xs font-bold uppercase tracking-wider group-hover:text-amber-400 transition-colors">
-                    Read Story <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
+                  {/* Action Button - Amber Color */}
+                  <div className="mt-auto pt-4 border-t border-white/10">
+                    <button className="w-full py-2.5 bg-amber-500 hover:bg-amber-400 text-[#004528] text-xs font-extrabold uppercase tracking-widest rounded-lg flex items-center justify-center gap-2 transition-colors shadow-lg">
+                      Read Story
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </button>
                   </div>
                 </div>
               </article>

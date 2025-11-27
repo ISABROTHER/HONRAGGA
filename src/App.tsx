@@ -129,4 +129,45 @@ function App() {
           />
         );
       } else {
-         return <Policies onSelectTheme={(theme) => handleNavigate('policies', theme)}
+         return <Policies onSelectTheme={(theme) => handleNavigate('policies', theme)} />;
+      }
+    }
+
+    switch (currentPage) {
+      case 'home':
+        return <Home onNavigate={handleNavigate} />;
+      case 'about':
+        return <About />;
+      case 'policies':
+        return <Policies onSelectTheme={(theme) => handleNavigate('policies', theme)} />;
+      case 'events':
+        return <Events />;
+      case 'issues':
+        return <Issues />;
+      case 'polls': // NEW ROUTE
+        return <Polls />;
+      case 'volunteer':
+        return <Volunteer />;
+      case 'admin':
+        return <Admin />;
+      case 'ongoing-projects':
+        return <OngoingProjects />;
+      case 'appointments':
+        return <Appointments />;
+      default:
+        return <Home onNavigate={handleNavigate} />;
+    }
+  };
+
+  return (
+    <ThemeProvider>
+      <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors">
+        <Header currentPage={currentPage} onNavigate={handleNavigate} />
+        <main>{renderPage()}</main>
+        <Footer />
+      </div>
+    </ThemeProvider>
+  );
+}
+
+export default App;

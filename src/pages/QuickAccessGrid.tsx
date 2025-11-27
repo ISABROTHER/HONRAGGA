@@ -4,9 +4,9 @@ import {
   MessageSquareWarning,
   HardHat,
   ScrollText,
-  Award,
   HandHeart,
-  UserCircle
+  UserCircle,
+  Vote // Imported Vote Icon
 } from "lucide-react";
 
 type QuickLink = {
@@ -21,13 +21,13 @@ type QuickLink = {
 
 const quickLinks: QuickLink[] = [
   {
-    title: "Ongoing Projects", // Changed from "Projects"
+    title: "Ongoing Projects",
     mobileDesc: "Infrastructure",
     desc: "Track ongoing infrastructure developments and renovations.",
     icon: HardHat,
     bgClass: "from-amber-50 to-orange-50/50 border-orange-100",
     iconColor: "text-amber-600",
-    route: "ongoing-projects" // Changed from "policies"
+    route: "ongoing-projects"
   },
   {
     title: "Report Issue",
@@ -48,13 +48,13 @@ const quickLinks: QuickLink[] = [
     route: "policies"
   },
   {
-    title: "Achievements",
-    mobileDesc: "Track record",
-    desc: "A record of promises kept: scholarships and bills passed.",
-    icon: Award,
+    title: "Polls & Tracker", // Changed Title
+    mobileDesc: "Have your say", // Changed Desc
+    desc: "Vote on local issues and track government assurances.", // Changed Desc
+    icon: Vote, // Changed Icon
     bgClass: "from-purple-50 to-fuchsia-50/50 border-purple-100",
     iconColor: "text-purple-600",
-    route: "policies" // Changed from "about" (as requested "root to achievement... Policies")
+    route: "polls" // Changed Route
   },
   {
     title: "Support",
@@ -66,13 +66,13 @@ const quickLinks: QuickLink[] = [
     route: "volunteer"
   },
   {
-    title: "Appointment & Applications", // Changed from "About"
-    mobileDesc: "Book/Apply", // Updated description
-    desc: "Schedule meetings or submit job and grant applications.", // Updated desc
+    title: "Appointment & Applications",
+    mobileDesc: "Book/Apply",
+    desc: "Schedule meetings or submit job and grant applications.",
     icon: UserCircle,
     bgClass: "from-slate-50 to-gray-50/50 border-slate-200",
     iconColor: "text-slate-600",
-    route: "appointments" // Changed from "about"
+    route: "appointments"
   }
 ];
 
@@ -88,12 +88,8 @@ export function QuickAccessGrid({ onNavigate }: QuickAccessGridProps) {
     >
       <div className="max-w-[95%] 2xl:max-w-[1600px] mx-auto px-3 sm:px-6 lg:px-8">
 
-        {/* ================================
-            PREMIUM CENTERED HEADING BLOCK
-        ================================= */}
+        {/* Header */}
         <div className="text-center mb-8 md:mb-14">
-
-          {/* Eyebrow */}
           <p className="inline-flex items-center gap-2 rounded-full bg-green-50 px-4 py-1.5 border border-green-100">
             <span className="h-2 w-2 rounded-full bg-green-500 motion-safe:animate-pulse" />
             <span className="text-xs md:text-sm font-bold tracking-[0.2em] uppercase text-green-700">
@@ -101,7 +97,6 @@ export function QuickAccessGrid({ onNavigate }: QuickAccessGridProps) {
             </span>
           </p>
 
-          {/* Main heading */}
           <div className="mt-4 flex flex-col items-center justify-center group">
             <h2
               id="constituency-hub-heading"
@@ -130,9 +125,7 @@ export function QuickAccessGrid({ onNavigate }: QuickAccessGridProps) {
           </p>
         </div>
 
-        {/* ================================
-            QUICK ACCESS GRID
-        ================================= */}
+        {/* Grid */}
         <div className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-8 lg:gap-10">
           {quickLinks.map((link, idx) => (
             <button

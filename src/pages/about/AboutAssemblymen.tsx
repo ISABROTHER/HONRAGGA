@@ -92,10 +92,12 @@ export function AboutAssemblymen() {
                 className="flex flex-col items-center text-center group bg-white border border-gray-100 rounded-xl p-3 hover:shadow-lg transition-all duration-300"
               >
                 <div className="w-full aspect-[3/4] bg-gradient-to-br from-amber-50 to-orange-50 overflow-hidden rounded-lg mb-3 relative">
-                  {/* Placeholder for photo - using random color/initials if no photo url in data */}
-                  <div className="absolute inset-0 flex items-center justify-center text-amber-300/50 font-black text-6xl">
-                     {member.assemblyman.charAt(0)}
-                  </div>
+                  {/* Updated to display photoUrl (Ghana Flag) */}
+                  <img 
+                    src={member.photoUrl} 
+                    alt={member.assemblyman}
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
                   <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/50 to-transparent h-1/3"></div>
                 </div>
                 

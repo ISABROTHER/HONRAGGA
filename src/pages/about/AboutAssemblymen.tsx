@@ -163,24 +163,28 @@ export function AboutAssemblymen() {
                 </div>
               </div>
 
-              {/* Text + contact */}
-              <div className="flex-1 flex flex-col p-3.5 md:p-4">
-                <p className="text-[11px] text-slate-500 font-semibold uppercase tracking-[0.16em] mb-1">
-                  Assembly Member
-                </p>
-
-                <p className="text-sm md:text-[15px] font-extrabold text-slate-900 leading-snug line-clamp-3 min-h-[2.7rem]">
+              {/* Text + contact – NEW STYLE */}
+              <div className="flex-1 flex flex-col items-center px-3.5 md:px-4 pb-3.5 md:pb-4 pt-3">
+                {/* Name */}
+                <p className="text-sm md:text-[15px] font-extrabold text-slate-900 text-center leading-snug line-clamp-3">
                   {member.assemblyman}
                 </p>
 
-                <div className="mt-3 pt-3 border-t border-slate-100">
+                {/* Position + zone in one clean line */}
+                <p className="mt-1 text-[11px] md:text-xs text-slate-500 font-medium text-center uppercase tracking-[0.14em]">
+                  Assembly Member • {member.zone}
+                </p>
+
+                {/* Phone button */}
+                <div className="mt-3 w-full">
                   <a
                     href={`tel:${member.phone}`}
                     className="
                       w-full inline-flex items-center justify-center gap-2 
                       text-xs md:text-sm font-semibold
                       text-emerald-800 bg-emerald-50 hover:bg-emerald-100
-                      rounded-full py-2 px-3
+                      rounded-full py-2.5 px-3
+                      border border-emerald-200 hover:border-emerald-400
                       transition-all duration-200
                       group-hover:shadow-sm
                     "

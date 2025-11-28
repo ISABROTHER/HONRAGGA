@@ -27,4 +27,4 @@ export function Home({ onNavigate }: HomeProps) {
       <BottomCTASection onNavigate={onNavigate} />
     </div>
   );
-}
+} 

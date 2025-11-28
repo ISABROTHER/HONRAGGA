@@ -1,129 +1,202 @@
 // src/pages/about/AboutAssemblymen.tsx
-import React from 'react';
-import { Users, Phone } from 'lucide-react';
-import { AnimatedSection } from '../../components/AnimatedSection';
-import { LOCATIONS } from '../../data/locations';
+import React from "react";
+import { Users, Phone, Info, MapPin } from "lucide-react";
+import { AnimatedSection } from "../../components/AnimatedSection";
+import { LOCATIONS } from "../../data/locations";
 
 export function AboutAssemblymen() {
   const mpPortraitUrl = "https://i.imgur.com/5H0XBuV.jpeg";
 
   return (
     <>
-       {/* SECTION: Who handles your issues */}
-        <AnimatedSection delay={50}>
-          <h2 className="text-2xl md:text-3xl font-bold text-green-800 mb-6 border-b-2 border-amber-500 pb-2 inline-block">
-            Who Handles Your Issues?
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* MP Card */}
-            <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 flex flex-col gap-3">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full overflow-hidden border border-green-100 bg-gray-100">
-                  <img
-                    src={mpPortraitUrl}
-                    alt="Hon. Dr. Kwamena Minta Nyarku"
-                    className="w-full h-full object-cover object-center"
-                  />
-                </div>
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
-                    Your Member of Parliament
-                  </p>
-                  <p className="text-sm font-bold text-gray-900">
-                    Hon. Dr. Kwamena Minta Nyarku (Ragga)
-                  </p>
-                  <p className="text-xs text-gray-600">
-                    MP for Cape Coast North
-                  </p>
-                </div>
-              </div>
-              <p className="text-sm text-gray-700 leading-relaxed">
-                All issues submitted on this platform are received by the MP&apos;s office. 
-                Some matters are handled directly by the MP&apos;s team; others are delivered 
-                through Assembly Members, departments and agencies for action.
-              </p>
-              <p className="text-xs text-gray-500">
-                The goal is simple: every genuine concern should find its way to the right desk.
-              </p>
-            </div>
-
-            {/* Assemblymen Role Card */}
-            <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 flex flex-col gap-3">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
-                  <Users className="w-6 h-6 text-blue-700" />
-                </div>
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
-                    Your Assembly Members
-                  </p>
-                  <p className="text-sm font-bold text-gray-900">
-                    Local Representatives in Each Electoral Area
-                  </p>
-                </div>
-              </div>
-              <p className="text-sm text-gray-700 leading-relaxed">
-                Assembly Members are the first point of contact for day-to-day community issues 
-                such as drains, streetlights, sanitation, and local projects. They work closely 
-                with the MP&apos;s office so that no community is left behind.
-              </p>
-              <p className="text-xs text-gray-500">
-                Issues can be followed up directly with your Assembly Member, or through 
-                the MP&apos;s office, depending on the nature of the problem.
-              </p>
-            </div>
-          </div>
-        </AnimatedSection>
-
-        {/* Assembly Members grid */}
-        <AnimatedSection delay={120}>
-          <h3 className="text-2xl font-semibold text-blue-900 mb-4">
-            Assembly Members in Cape Coast North
-          </h3>
-          <p className="text-sm text-gray-700 mb-6">
-            Each electoral area has an Assembly Member who represents residents at the local level. 
-            These profiles help you identify your representative. You can contact them directly, or raise 
-            your concern through the MP&apos;s office using the issues page.
+      {/* SECTION: Who handles your issues */}
+      <AnimatedSection delay={50}>
+        <div className="mb-8 md:mb-10">
+          {/* Eyebrow + heading */}
+          <p className="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-4 py-1.5 border border-emerald-100">
+            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="text-[11px] sm:text-xs font-semibold tracking-[0.22em] uppercase text-emerald-700">
+              Representation &amp; Contact
+            </span>
           </p>
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-            {LOCATIONS.map((member) => (
-              <div
-                key={member.zone}
-                className="flex flex-col items-center text-center group bg-white border border-gray-100 rounded-xl p-3 hover:shadow-lg transition-all duration-300"
-              >
-                <div className="w-full aspect-[3/4] bg-gradient-to-br from-amber-50 to-orange-50 overflow-hidden rounded-lg mb-3 relative">
-                  {/* Updated to display photoUrl (Ghana Flag) */}
-                  <img 
-                    src={member.photoUrl} 
-                    alt={member.assemblyman}
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/50 to-transparent h-1/3"></div>
-                </div>
-                
-                <div className="space-y-1 w-full">
-                  {/* INCREASED SIZE AND BOLDNESS FOR ZONE */}
-                  <p className="text-xs font-extrabold tracking-widest text-amber-600 uppercase mb-1">
+          <h2
+            className="
+              mt-3 text-2xl md:text-3xl lg:text-4xl 
+              font-extrabold tracking-tight text-slate-900
+            "
+          >
+            <span className="bg-gradient-to-r from-slate-900 via-emerald-700 to-slate-900 bg-clip-text text-transparent">
+              Who Handles Your Issues?
+            </span>
+          </h2>
+          <p className="mt-3 text-sm md:text-base text-slate-600 max-w-2xl">
+            Know exactly who speaks for you, and how to reach them—whether it is
+            the MP&apos;s office or your local Assembly Member.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+          {/* MP Card */}
+          <div className="bg-white rounded-2xl border border-emerald-50 shadow-[0_18px_45px_rgba(15,23,42,0.06)] p-5 md:p-6 flex flex-col gap-4">
+            <div className="flex items-center gap-4">
+              <div className="relative w-14 h-14 md:w-16 md:h-16 rounded-full overflow-hidden border-2 border-emerald-500/70 shadow-sm bg-gray-100">
+                <img
+                  src={mpPortraitUrl}
+                  alt="Hon. Dr. Kwamena Minta Nyarku"
+                  className="w-full h-full object-cover object-center"
+                />
+                <span className="absolute -bottom-1 -right-1 inline-flex items-center justify-center rounded-full bg-emerald-600 text-[9px] font-semibold text-white px-2 py-0.5 shadow">
+                  MP
+                </span>
+              </div>
+              <div className="flex-1">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">
+                  Member of Parliament
+                </p>
+                <p className="text-sm md:text-base font-bold text-slate-900">
+                  Hon. Dr. Kwamena Minta Nyarku (Ragga)
+                </p>
+                <p className="text-xs md:text-sm text-slate-600">
+                  MP for Cape Coast North
+                </p>
+              </div>
+            </div>
+
+            <p className="text-sm md:text-[15px] text-slate-700 leading-relaxed">
+              All issues submitted on this platform are received by the MP&apos;s
+              office. Some matters are handled directly by the MP&apos;s team;
+              others are routed through Assembly Members, departments and
+              agencies for action.
+            </p>
+
+            <div className="flex items-start gap-2 text-xs md:text-sm text-slate-500 bg-slate-50 border border-slate-100 rounded-xl px-3 py-2">
+              <Info className="w-4 h-4 text-emerald-600 mt-0.5" />
+              <p>
+                The goal is simple: every genuine concern should find its way to
+                the right desk, and receive a clear response.
+              </p>
+            </div>
+          </div>
+
+          {/* Assemblymen Role Card */}
+          <div className="bg-white rounded-2xl border border-blue-50 shadow-[0_18px_45px_rgba(15,23,42,0.06)] p-5 md:p-6 flex flex-col gap-4">
+            <div className="flex items-center gap-4">
+              <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-blue-50 flex items-center justify-center border border-blue-100">
+                <Users className="w-7 h-7 text-blue-700" />
+              </div>
+              <div className="flex-1">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">
+                  Assembly Members
+                </p>
+                <p className="text-sm md:text-base font-bold text-slate-900">
+                  Local Representatives in Each Electoral Area
+                </p>
+              </div>
+            </div>
+
+            <p className="text-sm md:text-[15px] text-slate-700 leading-relaxed">
+              Assembly Members are the first point of contact for day-to-day
+              community issues such as drains, streetlights, sanitation and
+              local projects. They work closely with the MP&apos;s office so
+              that no community is left behind.
+            </p>
+
+            <div className="flex items-start gap-2 text-xs md:text-sm text-slate-500 bg-blue-50/60 border border-blue-100 rounded-xl px-3 py-2">
+              <MapPin className="w-4 h-4 text-blue-700 mt-0.5" />
+              <p>
+                You can speak directly to your Assembly Member, or raise your
+                concern through the MP&apos;s office. Both channels are linked
+                and coordinated.
+              </p>
+            </div>
+          </div>
+        </div>
+      </AnimatedSection>
+
+      {/* Assembly Members grid */}
+      <AnimatedSection delay={120}>
+        <div className="mt-10 md:mt-14 mb-6 md:mb-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
+          <div>
+            <h3 className="text-xl md:text-2xl font-extrabold text-slate-900">
+              Assembly Members in Cape Coast North
+            </h3>
+            <p className="mt-2 text-sm md:text-[15px] text-slate-600 max-w-2xl">
+              Each electoral area has an Assembly Member who represents residents
+              at the local level. Tap on a contact below to call your
+              representative directly, or use the Issues page to reach the
+              MP&apos;s office.
+            </p>
+          </div>
+          <div className="inline-flex items-center gap-2 rounded-full bg-slate-50 px-4 py-2 border border-slate-200">
+            <Phone className="w-4 h-4 text-emerald-600" />
+            <p className="text-xs md:text-sm font-semibold text-slate-700">
+              On mobile, tap the number to call your Assembly Member.
+            </p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 md:gap-6">
+          {LOCATIONS.map((member) => (
+            <div
+              key={member.zone}
+              className="
+                flex flex-col bg-white border border-slate-100 rounded-2xl overflow-hidden
+                shadow-[0_10px_30px_rgba(15,23,42,0.04)]
+                hover:shadow-[0_16px_40px_rgba(15,23,42,0.08)]
+                transition-all duration-300 group
+              "
+            >
+              {/* Photo area */}
+              <div className="relative w-full aspect-[4/5] bg-gradient-to-br from-amber-50 to-orange-50 overflow-hidden">
+                <img
+                  src={member.photoUrl}
+                  alt={member.assemblyman}
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
+                {/* Zone pill */}
+                <div className="absolute top-3 left-3 inline-flex items-center rounded-full bg-white/95 px-3 py-1 shadow-sm">
+                  <span className="h-1.5 w-1.5 rounded-full bg-amber-500 mr-2" />
+                  <span className="text-[10px] font-semibold tracking-[0.16em] uppercase text-slate-800">
                     {member.zone}
-                  </p>
-                  
-                  {/* INCREASED SIZE AND BOLDNESS FOR NAME */}
-                  <p className="text-sm sm:text-base font-black text-slate-900 leading-tight uppercase line-clamp-3 min-h-[3rem] flex items-center justify-center">
-                    {member.assemblyman}
-                  </p>
-                  
-                  <div className="pt-3 border-t border-gray-100 w-full mt-2">
-                    {/* INCREASED SIZE AND BOLDNESS FOR PHONE */}
-                    <p className="text-sm text-slate-800 flex items-center justify-center gap-2 font-bold bg-gray-50 py-2 rounded-full">
-                      <Phone className="w-4 h-4 text-green-600" />
-                      <span>{member.phone}</span>
-                    </p>
-                  </div>
+                  </span>
                 </div>
               </div>
-            ))}
-          </div>
-        </AnimatedSection>
+
+              {/* Text + contact */}
+              <div className="flex-1 flex flex-col p-3.5 md:p-4">
+                <p className="text-[11px] text-slate-500 font-semibold uppercase tracking-[0.16em] mb-1">
+                  Assembly Member
+                </p>
+
+                <p className="text-sm md:text-[15px] font-extrabold text-slate-900 leading-snug line-clamp-3 min-h-[2.7rem]">
+                  {member.assemblyman}
+                </p>
+
+                <div className="mt-3 pt-3 border-t border-slate-100">
+                  <a
+                    href={`tel:${member.phone}`}
+                    className="
+                      w-full inline-flex items-center justify-center gap-2 
+                      text-xs md:text-sm font-semibold
+                      text-emerald-800 bg-emerald-50 hover:bg-emerald-100
+                      rounded-full py-2 px-3
+                      transition-all duration-200
+                      group-hover:shadow-sm
+                    "
+                  >
+                    <Phone className="w-4 h-4" />
+                    <span>{member.phone}</span>
+                  </a>
+                  <p className="mt-1 text-[10px] text-slate-500 text-center">
+                    Tap to call your Assembly Member.
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </AnimatedSection>
     </>
   );
 }

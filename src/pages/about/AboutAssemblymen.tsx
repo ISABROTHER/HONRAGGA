@@ -102,15 +102,20 @@ export function AboutAssemblymen() {
                 </div>
                 
                 <div className="space-y-1 w-full">
-                  <p className="text-[10px] font-bold tracking-widest text-amber-600 uppercase">
+                  {/* INCREASED SIZE AND BOLDNESS FOR ZONE */}
+                  <p className="text-xs font-extrabold tracking-widest text-amber-600 uppercase mb-1">
                     {member.zone}
                   </p>
-                  <p className="text-xs font-black text-gray-900 leading-snug uppercase line-clamp-2 h-8 flex items-center justify-center">
+                  
+                  {/* INCREASED SIZE AND BOLDNESS FOR NAME */}
+                  <p className="text-sm sm:text-base font-black text-slate-900 leading-tight uppercase line-clamp-3 min-h-[3rem] flex items-center justify-center">
                     {member.assemblyman}
                   </p>
-                  <div className="pt-2 border-t border-gray-100 w-full mt-2">
-                    <p className="text-[11px] text-gray-600 flex items-center justify-center gap-1.5 font-medium bg-gray-50 py-1.5 rounded-full">
-                      <Phone className="w-3 h-3 text-green-600" />
+                  
+                  <div className="pt-3 border-t border-gray-100 w-full mt-2">
+                    {/* INCREASED SIZE AND BOLDNESS FOR PHONE */}
+                    <p className="text-sm text-slate-800 flex items-center justify-center gap-2 font-bold bg-gray-50 py-2 rounded-full">
+                      <Phone className="w-4 h-4 text-green-600" />
                       <span>{member.phone}</span>
                     </p>
                   </div>

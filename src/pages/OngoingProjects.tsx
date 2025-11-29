@@ -4,43 +4,13 @@ import { HardHat, MapPin, Calendar } from 'lucide-react';
 const projects = [
   {
     id: 1,
-    title: "Kwaprow Community Market Complex",
-    status: "In Progress",
-    progress: 65,
-    location: "Kwaprow",
+    title: "Pedu Park Construction",
+    status: "Ongoing",
+    progress: 45,
+    location: "Pedu",
     date: "Expected Completion: Dec 2025",
     image: "https://images.pexels.com/photos/159358/construction-site-build-construction-work-159358.jpeg?auto=compress&cs=tinysrgb&w=800",
-    description: "Construction of a modern 200-stall market complex to boost local trade and economy."
-  },
-  {
-    id: 2,
-    title: "Adisadel Road Rehabilitation",
-    status: "In Progress",
-    progress: 40,
-    location: "Adisadel Village",
-    date: "Expected Completion: Aug 2025",
-    image: "https://images.pexels.com/photos/196646/pexels-photo-196646.jpeg?auto=compress&cs=tinysrgb&w=800",
-    description: "Resurfacing and drainage improvement of the main Adisadel access roads."
-  },
-  {
-    id: 3,
-    title: "Amamoma ICT Center",
-    status: "Near Completion",
-    progress: 90,
-    location: "Amamoma",
-    date: "Expected Completion: May 2025",
-    image: "https://images.pexels.com/photos/1181263/pexels-photo-1181263.jpeg?auto=compress&cs=tinysrgb&w=800",
-    description: "A state-of-the-art digital library and ICT center for students and youth."
-  },
-  {
-    id: 4,
-    title: "Ola Sanitation Project",
-    status: "Ongoing",
-    progress: 75,
-    location: "Ola",
-    date: "Continuous",
-    image: "https://images.pexels.com/photos/12326770/pexels-photo-12326770.jpeg?auto=compress&cs=tinysrgb&w=800",
-    description: "Installation of new waste management systems and public education on sanitation."
+    description: "Major redevelopment of the Pedu Community Park into a modern astro-turf facility with lighting and spectator stands."
   }
 ];
 
@@ -67,9 +37,9 @@ export function OngoingProjects() {
           </div>
 
           {/* Projects Grid */}
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 gap-8 justify-center">
             {projects.map((project) => (
-              <div key={project.id} className="bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-lg hover:shadow-xl transition-shadow duration-300 group">
+              <div key={project.id} className="bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-lg hover:shadow-xl transition-shadow duration-300 group max-w-xl mx-auto w-full">
                 
                 <div className="relative h-64 overflow-hidden">
                   <img 

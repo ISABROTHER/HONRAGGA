@@ -445,7 +445,7 @@ export function Issues() {
                   </div>
                 </div>
 
-                {/* ASSEMBLYMAN PROFILE CARD (New Thick Design) */}
+                {/* ASSEMBLYMAN PROFILE CARD (Thick Design - Portrait Image) */}
                 <AnimatePresence>
                   {currentZoneData && (
                     <motion.div 
@@ -454,15 +454,14 @@ export function Issues() {
                       exit={{ opacity: 0, y: 10 }}
                       className="bg-white rounded-2xl border border-blue-200 shadow-md overflow-hidden mt-6"
                     >
-                      <div className="flex flex-col sm:flex-row">
-                        {/* Image Section */}
-                        <div className="w-full sm:w-40 h-40 sm:h-auto bg-blue-50 flex-shrink-0 relative">
+                      <div className="flex flex-row">
+                        {/* Image Section - PORTRAIT MODE */}
+                        <div className="w-32 sm:w-40 aspect-[3/4] bg-blue-50 flex-shrink-0 relative">
                           <img 
                             src={currentZoneData.photoUrl} 
                             alt={currentZoneData.assemblyman} 
                             className="w-full h-full object-cover"
                           />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent sm:hidden" />
                         </div>
                         
                         {/* Details Section */}

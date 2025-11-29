@@ -85,14 +85,14 @@ export function AboutAssemblymen() {
             These profiles help you identify your representative. You can contact them directly, or raise 
             your concern through the MP&apos;s office using the issues page.
           </p>
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 auto-rows-fr">
             {LOCATIONS.map((member) => (
               <div
                 key={member.zone}
-                className="flex flex-col items-center text-center group bg-white border border-gray-100 rounded-xl p-3 hover:shadow-lg transition-all duration-300"
+                className="flex flex-col h-full group bg-white border border-gray-100 rounded-xl p-3 hover:shadow-lg transition-all duration-300"
               >
-                <div className="w-full aspect-[3/4] bg-gradient-to-br from-amber-50 to-orange-50 overflow-hidden rounded-lg mb-3 relative">
-                  {/* Updated to display photoUrl (Ghana Flag) */}
+                {/* Image Container - CHANGED TO PORTRAIT (aspect-[2/3]) */}
+                <div className="w-full aspect-[2/3] bg-gradient-to-br from-amber-50 to-orange-50 overflow-hidden rounded-lg mb-3 relative flex-shrink-0">
                   <img 
                     src={member.photoUrl} 
                     alt={member.assemblyman}
@@ -101,19 +101,20 @@ export function AboutAssemblymen() {
                   <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/50 to-transparent h-1/3"></div>
                 </div>
                 
-                <div className="space-y-1 w-full">
-                  {/* INCREASED SIZE AND BOLDNESS FOR ZONE */}
-                  <p className="text-xs font-extrabold tracking-widest text-amber-600 uppercase mb-1">
-                    {member.zone}
-                  </p>
+                {/* Content Container */}
+                <div className="flex flex-col flex-1 w-full">
+                  {/* Top content (Zone & Name) */}
+                  <div className="flex-1 flex flex-col items-center text-center">
+                    <p className="text-xs font-extrabold tracking-widest text-amber-600 uppercase mb-1">
+                      {member.zone}
+                    </p>
+                    <p className="text-sm sm:text-base font-black text-slate-900 leading-tight uppercase line-clamp-3">
+                      {member.assemblyman}
+                    </p>
+                  </div>
                   
-                  {/* INCREASED SIZE AND BOLDNESS FOR NAME */}
-                  <p className="text-sm sm:text-base font-black text-slate-900 leading-tight uppercase line-clamp-3 min-h-[3rem] flex items-center justify-center">
-                    {member.assemblyman}
-                  </p>
-                  
-                  <div className="pt-3 border-t border-gray-100 w-full mt-2">
-                    {/* INCREASED SIZE AND BOLDNESS FOR PHONE */}
+                  {/* Bottom content (Phone) - Pinned to bottom */}
+                  <div className="mt-3 pt-3 border-t border-gray-100 w-full">
                     <p className="text-sm text-slate-800 flex items-center justify-center gap-2 font-bold bg-gray-50 py-2 rounded-full">
                       <Phone className="w-4 h-4 text-green-600" />
                       <span>{member.phone}</span>

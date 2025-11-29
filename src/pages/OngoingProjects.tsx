@@ -1,128 +1,130 @@
-// src/pages/OngoingProjects.tsx
-import { HardHat, MapPin, Calendar } from 'lucide-react';
+// src/pages/about/AboutAssemblymen.tsx
+import React from 'react';
+import { Users, Phone } from 'lucide-react';
+import { AnimatedSection } from '../../components/AnimatedSection';
+import { LOCATIONS } from '../../data/locations';
 
-const projects = [
-  {
-    id: 1,
-    title: "Kwaprow Community Market Complex",
-    status: "In Progress",
-    progress: 65,
-    location: "Kwaprow",
-    date: "Expected Completion: Dec 2025",
-    image: "https://images.pexels.com/photos/159358/construction-site-build-construction-work-159358.jpeg?auto=compress&cs=tinysrgb&w=800",
-    description: "Construction of a modern 200-stall market complex to boost local trade and economy."
-  },
-  {
-    id: 2,
-    title: "Adisadel Road Rehabilitation",
-    status: "In Progress",
-    progress: 40,
-    location: "Adisadel Village",
-    date: "Expected Completion: Aug 2025",
-    image: "https://images.pexels.com/photos/196646/pexels-photo-196646.jpeg?auto=compress&cs=tinysrgb&w=800",
-    description: "Resurfacing and drainage improvement of the main Adisadel access roads."
-  },
-  {
-    id: 3,
-    title: "Amamoma ICT Center",
-    status: "Near Completion",
-    progress: 90,
-    location: "Amamoma",
-    date: "Expected Completion: May 2025",
-    image: "https://images.pexels.com/photos/1181263/pexels-photo-1181263.jpeg?auto=compress&cs=tinysrgb&w=800",
-    description: "A state-of-the-art digital library and ICT center for students and youth."
-  },
-  {
-    id: 4,
-    title: "Ola Sanitation Project",
-    status: "Ongoing",
-    progress: 75,
-    location: "Ola",
-    date: "Continuous",
-    image: "https://images.pexels.com/photos/12326770/pexels-photo-12326770.jpeg?auto=compress&cs=tinysrgb&w=800",
-    description: "Installation of new waste management systems and public education on sanitation."
-  }
-];
+export function AboutAssemblymen() {
+  const mpPortraitUrl = "https://i.imgur.com/5H0XBuV.jpeg";
 
-export function OngoingProjects() {
   return (
-    <div className="min-h-screen bg-slate-50 pt-24 pb-12">
-      <section className="px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          
-          {/* Header */}
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 rounded-full bg-amber-50 px-3 py-1 border border-amber-100 mb-4">
-              <HardHat className="w-3.5 h-3.5 text-amber-600" />
-              <span className="text-[10px] sm:text-xs font-semibold tracking-[0.22em] uppercase text-amber-600">
-                Development Tracker
-              </span>
-            </div>
-            <h1 className="text-3xl md:text-5xl font-extrabold text-slate-900 mb-4">
-              Ongoing Projects
-            </h1>
-            <p className="text-slate-600 max-w-2xl mx-auto text-lg">
-              Tracking the progress of infrastructure and development initiatives across Cape Coast North.
-            </p>
-          </div>
-
-          {/* Projects Grid */}
-          <div className="grid md:grid-cols-2 gap-8">
-            {projects.map((project) => (
-              <div key={project.id} className="bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-lg hover:shadow-xl transition-shadow duration-300 group">
-                
-                <div className="relative h-64 overflow-hidden">
-                  <img 
-                    src={project.image} 
-                    alt={project.title} 
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+    <>
+       {/* SECTION: Who handles your issues */}
+        <AnimatedSection delay={50}>
+          <h2 className="text-2xl md:text-3xl font-bold text-green-800 mb-6 border-b-2 border-amber-500 pb-2 inline-block">
+            Who Handles Your Issues?
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* MP Card */}
+            <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 flex flex-col gap-3">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-full overflow-hidden border border-green-100 bg-gray-100">
+                  <img
+                    src={mpPortraitUrl}
+                    alt="Hon. Dr. Kwamena Minta Nyarku"
+                    className="w-full h-full object-cover object-center"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                  <div className="absolute bottom-4 left-4">
-                    <span className="bg-white/95 text-slate-900 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">
-                      {project.status}
-                    </span>
-                  </div>
                 </div>
-
-                <div className="p-6 md:p-8">
-                  <h3 className="text-2xl font-bold text-slate-900 mb-2 group-hover:text-blue-700 transition-colors">
-                    {project.title}
-                  </h3>
-                  
-                  <div className="flex flex-wrap gap-4 text-sm text-slate-500 mb-4">
-                    <div className="flex items-center gap-1">
-                      <MapPin className="w-4 h-4" /> {project.location}
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Calendar className="w-4 h-4" /> {project.date}
-                    </div>
-                  </div>
-
-                  <p className="text-slate-600 mb-6 leading-relaxed">
-                    {project.description}
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+                    Your Member of Parliament
                   </p>
+                  <p className="text-sm font-bold text-gray-900">
+                    Hon. Dr. Kwamena Minta Nyarku (Ragga)
+                  </p>
+                  <p className="text-xs text-gray-600">
+                    MP for Cape Coast North
+                  </p>
+                </div>
+              </div>
+              <p className="text-sm text-gray-700 leading-relaxed">
+                All issues submitted on this platform are received by the MP&apos;s office. 
+                Some matters are handled directly by the MP&apos;s team; others are delivered 
+                through Assembly Members, departments and agencies for action.
+              </p>
+              <p className="text-xs text-gray-500">
+                The goal is simple: every genuine concern should find its way to the right desk.
+              </p>
+            </div>
 
-                  {/* Progress Bar */}
-                  <div className="mb-2">
-                    <div className="flex justify-between text-xs font-bold mb-1">
-                      <span className="text-slate-500">Progress</span>
-                      <span className="text-blue-700">{project.progress}%</span>
-                    </div>
-                    <div className="w-full bg-slate-100 rounded-full h-2.5">
-                      <div 
-                        className="bg-blue-600 h-2.5 rounded-full transition-all duration-1000" 
-                        style={{ width: `${project.progress}%` }}
-                      ></div>
-                    </div>
+            {/* Assemblymen Role Card */}
+            <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 flex flex-col gap-3">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
+                  <Users className="w-6 h-6 text-blue-700" />
+                </div>
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+                    Your Assembly Members
+                  </p>
+                  <p className="text-sm font-bold text-gray-900">
+                    Local Representatives in Each Electoral Area
+                  </p>
+                </div>
+              </div>
+              <p className="text-sm text-gray-700 leading-relaxed">
+                Assembly Members are the first point of contact for day-to-day community issues 
+                such as drains, streetlights, sanitation, and local projects. They work closely 
+                with the MP&apos;s office so that no community is left behind.
+              </p>
+              <p className="text-xs text-gray-500">
+                Issues can be followed up directly with your Assembly Member, or through 
+                the MP&apos;s office, depending on the nature of the problem.
+              </p>
+            </div>
+          </div>
+        </AnimatedSection>
+
+        {/* Assembly Members grid */}
+        <AnimatedSection delay={120}>
+          <h3 className="text-2xl font-semibold text-blue-900 mb-4">
+            Assembly Members in Cape Coast North
+          </h3>
+          <p className="text-sm text-gray-700 mb-6">
+            Each electoral area has an Assembly Member who represents residents at the local level. 
+            These profiles help you identify your representative. You can contact them directly, or raise 
+            your concern through the MP&apos;s office using the issues page.
+          </p>
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 auto-rows-fr">
+            {LOCATIONS.map((member) => (
+              <div
+                key={member.zone}
+                className="flex flex-col h-full group bg-white border border-gray-100 rounded-xl p-3 hover:shadow-lg transition-all duration-300"
+              >
+                {/* Image Container */}
+                <div className="w-full aspect-[3/4] bg-gradient-to-br from-amber-50 to-orange-50 overflow-hidden rounded-lg mb-3 relative flex-shrink-0">
+                  <img 
+                    src={member.photoUrl} 
+                    alt={member.assemblyman}
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/50 to-transparent h-1/3"></div>
+                </div>
+                
+                {/* Content Container - Grows to fill space */}
+                <div className="flex flex-col flex-1 w-full">
+                  {/* Top content (Zone & Name) */}
+                  <div className="flex-1 flex flex-col items-center text-center">
+                    <p className="text-xs font-extrabold tracking-widest text-amber-600 uppercase mb-1">
+                      {member.zone}
+                    </p>
+                    <p className="text-sm sm:text-base font-black text-slate-900 leading-tight uppercase line-clamp-3">
+                      {member.assemblyman}
+                    </p>
+                  </div>
+                  
+                  {/* Bottom content (Phone) - Pinned to bottom */}
+                  <div className="mt-3 pt-3 border-t border-gray-100 w-full">
+                    <p className="text-sm text-slate-800 flex items-center justify-center gap-2 font-bold bg-gray-50 py-2 rounded-full">
+                      <Phone className="w-4 h-4 text-green-600" />
+                      <span>{member.phone}</span>
+                    </p>
                   </div>
                 </div>
               </div>
             ))}
           </div>
-
-        </div>
-      </section>
-    </div>
+        </AnimatedSection>
+    </>
   );
 }

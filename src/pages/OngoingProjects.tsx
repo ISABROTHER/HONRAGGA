@@ -1,5 +1,5 @@
 // src/pages/OngoingProjects.tsx
-import { HardHat, MapPin, Calendar, Activity } from 'lucide-react';
+import { HardHat, MapPin, Calendar } from 'lucide-react';
 
 const projects = [
   {
@@ -8,7 +8,7 @@ const projects = [
     status: "Ongoing",
     progress: 45,
     location: "Pedu",
-    date: "Dec 2025", // Removed "Expected Completion:" prefix
+    date: "Dec 2025",
     image: "https://images.pexels.com/photos/159358/construction-site-build-construction-work-159358.jpeg?auto=compress&cs=tinysrgb&w=800",
     description: "Major redevelopment of the Pedu Community Park into a modern astro-turf facility with lighting and spectator stands."
   }
@@ -41,6 +41,7 @@ export function OngoingProjects() {
             {projects.map((project) => (
               <div key={project.id} className="bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-lg hover:shadow-xl transition-shadow duration-300 group max-w-xl mx-auto w-full relative">
                 
+                {/* Image Section */}
                 <div className="relative h-64 overflow-hidden">
                   <img 
                     src={project.image} 
@@ -55,22 +56,16 @@ export function OngoingProjects() {
                       {project.status}
                     </span>
                   </div>
-
-                  {/* NEW: Circular Progress Badge (Top Right) */}
-                  <div className="absolute top-4 right-4 flex items-center justify-center w-16 h-16 bg-white/95 backdrop-blur rounded-full shadow-lg border-4 border-blue-500 z-10">
-                    <div className="text-center leading-none">
-                      <span className="block text-xl font-black text-blue-700">{project.progress}%</span>
-                      <span className="text-[9px] font-bold text-slate-500 uppercase">Done</span>
-                    </div>
-                  </div>
                 </div>
 
+                {/* Content Section */}
                 <div className="p-6 md:p-8">
                   <h3 className="text-2xl font-bold text-slate-900 mb-2 group-hover:text-blue-700 transition-colors">
                     {project.title}
                   </h3>
                   
-                  <div className="flex flex-wrap gap-4 text-sm text-slate-500 mb-4">
+                  {/* Meta Details */}
+                  <div className="flex flex-wrap gap-4 text-sm text-slate-500 mb-6">
                     <div className="flex items-center gap-1">
                       <MapPin className="w-4 h-4" /> {project.location}
                     </div>
@@ -79,14 +74,30 @@ export function OngoingProjects() {
                     </div>
                   </div>
 
-                  <p className="text-slate-600 mb-6 leading-relaxed">
+                  {/* Description */}
+                  <p className="text-slate-600 mb-8 leading-relaxed">
                     {project.description}
                   </p>
 
-                  {/* Replaced Linear Bar with Activity Indicator */}
-                  <div className="flex items-center gap-2 text-xs font-bold text-blue-700 bg-blue-50 p-3 rounded-xl">
-                    <Activity className="w-4 h-4" />
-                    <span>Project is actively progressing</span>
+                  {/* New Segmented Progress Visualization */}
+                  <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                    <div className="flex justify-between items-end mb-2">
+                      <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Completion</span>
+                      <span className="text-2xl font-black text-blue-700">{project.progress}%</span>
+                    </div>
+                    {/* 10-Block Segmented Bar */}
+                    <div className="flex gap-1 h-3">
+                      {[...Array(10)].map((_, i) => (
+                        <div
+                          key={i}
+                          className={`flex-1 rounded-sm transition-all duration-500 ${
+                            i < Math.round(project.progress / 10)
+                              ? 'bg-blue-600 shadow-sm'
+                              : 'bg-blue-100/50'
+                          }`}
+                        />
+                      ))}
+                    </div>
                   </div>
 
                 </div>

@@ -9,7 +9,7 @@ const projects = [
     progress: 45,
     location: "Pedu",
     date: "Dec 2025",
-    image: "https://images.pexels.com/photos/159358/construction-site-build-construction-work-159358.jpeg?auto=compress&cs=tinysrgb&w=800",
+    image: "", // Photo removed
     description: "Major redevelopment of the Pedu Community Park into a modern astro-turf facility with lighting and spectator stands."
   }
 ];
@@ -42,13 +42,22 @@ export function OngoingProjects() {
               <div key={project.id} className="bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-lg hover:shadow-xl transition-shadow duration-300 group max-w-xl mx-auto w-full relative">
                 
                 {/* Image Section */}
-                <div className="relative h-64 overflow-hidden">
-                  <img 
-                    src={project.image} 
-                    alt={project.title} 
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                <div className="relative h-64 overflow-hidden bg-slate-100 flex items-center justify-center">
+                  {project.image ? (
+                    <>
+                      <img 
+                        src={project.image} 
+                        alt={project.title} 
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                    </>
+                  ) : (
+                    <div className="flex flex-col items-center text-slate-400">
+                        <HardHat className="w-16 h-16 mb-2 opacity-20" />
+                        <span className="text-xs font-bold uppercase tracking-widest opacity-40">No Image Preview</span>
+                    </div>
+                  )}
                   
                   {/* Status Badge (Bottom Left) */}
                   <div className="absolute bottom-4 left-4">

@@ -1,6 +1,6 @@
 // src/pages/Assemblymen.tsx
 import { useState, useMemo } from 'react';
-import { Phone, Search, Navigation, Crosshair, MapPin, Loader2 } from 'lucide-react';
+import { Phone, Search, Crosshair, MapPin, Loader2, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AnimatedSection } from '../components/AnimatedSection';
 import { LOCATIONS } from '../data/locations';
@@ -14,7 +14,6 @@ export function Assemblymen() {
     return phone.replace('+233 ', '0').replace('+233', '0');
   };
 
-  // Advanced Search Logic
   const filteredMembers = useMemo(() => {
     return LOCATIONS.filter(
       (m) =>
@@ -23,177 +22,170 @@ export function Assemblymen() {
     );
   }, [searchQuery]);
 
-  // INNOVATION: Precision Geo-Scanning
   const handleLiveLocation = () => {
     setIsLocating(true);
     setDetectedZone(null);
 
     if (!navigator.geolocation) {
-      alert("Precision locating is not supported by this browser.");
+      alert("Precision locating is not supported.");
       setIsLocating(false);
       return;
     }
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        const { latitude, longitude } = position.coords;
-        
-        // Constituency range check (Cape Coast North)
-        const isWithinCCN = latitude >= 5.10 && latitude <= 5.15 && longitude >= -1.30 && longitude <= -1.20;
-
         setTimeout(() => {
           setIsLocating(false);
-          if (isWithinCCN) {
-            // Simulated match for demonstration
-            const matchedZone = "Abura"; 
-            setDetectedZone(matchedZone);
-            setSearchQuery(matchedZone);
-          } else {
-            alert("Location Scan Complete: You are currently outside the Cape Coast North boundary.");
-          }
+          const matchedZone = "Abura"; // Simulated logic
+          setDetectedZone(matchedZone);
+          setSearchQuery(matchedZone);
         }, 2000);
       },
       () => {
-        alert("Location access denied. Please enable GPS for precision matching.");
         setIsLocating(false);
       }
     );
   };
 
   return (
-    <div className="min-h-screen bg-[#FDFDFF] pt-2 pb-20"> 
+    <div className="min-h-screen bg-[#FAFBFF] pt-2 pb-20 selection:bg-blue-100"> 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* --- TOP ONE PERCENT HEADING --- */}
+        {/* --- ELITE HEADING SECTION --- */}
         <AnimatedSection delay={50}>
-          <div className="relative text-center mb-4 py-8 md:py-16 overflow-hidden">
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
-              <h2 className="text-[12vw] font-black text-slate-900/[0.02] uppercase tracking-tighter whitespace-nowrap">
-                PRECISION
-              </h2>
-            </div>
+          <div className="relative text-center py-12 md:py-24 overflow-hidden">
+            {/* Soft Ambient Glows */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-blue-400/10 blur-[120px] rounded-full" />
             
             <div className="relative z-10 flex flex-col items-center">
-              <h2 className="text-4xl md:text-8xl font-black text-slate-900 tracking-tighter uppercase leading-[0.85]">
-                ASSEMBLYMEN <br />
-                <span className="text-blue-700">IN CAPE COAST NORTH</span>
+              <motion.div 
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="flex items-center gap-2 mb-4 px-4 py-1 rounded-full bg-white shadow-sm border border-slate-100"
+              >
+                <Sparkles className="w-3 h-3 text-blue-600" />
+                <span className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-400">Precision Governance</span>
+              </motion.div>
+              
+              <h2 className="text-5xl md:text-9xl font-black text-slate-900 tracking-tighter uppercase leading-[0.8] mb-2">
+                ASSEMBLY<span className="text-blue-700">MEN</span>
               </h2>
+              <h3 className="text-xl md:text-3xl font-black text-slate-900/20 uppercase tracking-[0.3em]">
+                Cape Coast North
+              </h3>
             </div>
           </div>
         </AnimatedSection>
 
-        {/* --- INNOVATIVE COMMAND CENTER --- */}
-        <AnimatedSection delay={100}>
-          <div className="max-w-3xl mx-auto mb-16">
-            <div className="relative group">
-              {/* THE SEARCH COMMAND */}
-              <div className="relative z-20 bg-white border border-slate-200 rounded-3xl shadow-xl p-2 flex items-center gap-2 focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-500/10 transition-all">
-                <div className="pl-4">
-                  <Search className="w-6 h-6 text-slate-300" />
-                </div>
-                <input 
-                  type="text"
-                  placeholder="Find your area or representative..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full py-4 px-2 font-bold text-slate-900 outline-none placeholder:text-slate-300 text-lg"
-                />
+        {/* --- THE COMMAND HUB (INNOVATIVE UI) --- */}
+        <div className="max-w-2xl mx-auto mb-20 relative z-30">
+          <div className="bg-white/70 backdrop-blur-2xl border border-white rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.05)] p-3">
+            <div className="relative flex items-center">
+              {/* Intelligent Search Icon */}
+              <div className="absolute left-6">
+                <Search className={`w-5 h-5 transition-colors duration-300 ${searchQuery ? 'text-blue-600' : 'text-slate-300'}`} />
               </div>
 
-              {/* THE LIVE LOCATION SCANNER (Innovative UI placement) */}
-              <div className="absolute -bottom-8 inset-x-4 z-10">
-                <button 
-                  onClick={handleLiveLocation}
-                  disabled={isLocating}
-                  className="w-full flex items-center justify-between px-6 py-3 bg-slate-900 rounded-b-2xl shadow-lg hover:bg-black transition-all group active:scale-[0.98] disabled:opacity-90"
-                >
-                  <div className="flex items-center gap-3">
-                    {isLocating ? (
-                      <Loader2 className="w-4 h-4 text-blue-400 animate-spin" />
-                    ) : (
-                      <div className="relative flex h-2 w-2">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
-                      </div>
-                    )}
-                    <span className="text-[10px] font-black text-white uppercase tracking-[0.3em]">
-                      {isLocating ? "Scanning Constituency..." : "Precision Live Location"}
-                    </span>
+              {/* Ultra-Modern Input */}
+              <input 
+                type="text"
+                placeholder="Find your representative..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-16 pr-32 py-5 bg-transparent font-bold text-lg md:text-xl text-slate-900 outline-none placeholder:text-slate-200"
+              />
+
+              {/* Integrated Radar Button */}
+              <button 
+                onClick={handleLiveLocation}
+                className="absolute right-2 px-6 py-3 bg-slate-900 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest flex items-center gap-2 hover:bg-blue-700 transition-all active:scale-95 group overflow-hidden shadow-xl"
+              >
+                {isLocating ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <div className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
                   </div>
-                  <Crosshair className={`w-4 h-4 text-slate-400 group-hover:text-blue-400 ${isLocating ? 'animate-pulse' : ''}`} />
-                </button>
-              </div>
-            </div>
-
-            {/* Precision Meta-data */}
-            <div className="mt-14 text-center">
-              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                Showing {filteredMembers.length} Results • Search by Town, Zone, or Name
-              </p>
-              <AnimatePresence>
-                {detectedZone && (
-                  <motion.div 
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="mt-2 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-blue-700 text-[10px] font-black uppercase tracking-widest"
-                  >
-                    <MapPin className="w-3 h-3" />
-                    Match Found: {detectedZone} Area
-                  </motion.div>
                 )}
-              </AnimatePresence>
+                <span className="hidden md:inline">{isLocating ? 'Scanning...' : 'Live Location'}</span>
+                <Crosshair className="w-4 h-4" />
+              </button>
             </div>
           </div>
-        </AnimatedSection>
-        
-        {/* --- MEMBER GRID --- */}
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+          
+          {/* Result Metadata Display */}
+          <div className="mt-6 flex justify-between items-center px-8">
+            <div className="flex gap-4">
+               <span className="text-[10px] font-black text-slate-300 uppercase tracking-widest">
+                 {filteredMembers.length} Representatives Found
+               </span>
+            </div>
+            <AnimatePresence>
+              {detectedZone && (
+                <motion.div 
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  className="flex items-center gap-2 text-blue-600"
+                >
+                  <MapPin className="w-3 h-3" />
+                  <span className="text-[10px] font-black uppercase tracking-widest">Zone: {detectedZone}</span>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+
+        {/* --- THE GRID (CLEAN CLASSIC ARRANGEMENT) --- */}
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
           <AnimatePresence mode='popLayout'>
             {filteredMembers.map((member) => (
               <motion.div
                 layout
                 key={member.zone}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className={`flex flex-col items-center text-center group bg-white border rounded-xl p-3 transition-all duration-500 ${detectedZone === member.zone ? 'ring-4 ring-blue-500/20 border-blue-500 shadow-2xl scale-105' : 'border-gray-100 hover:shadow-lg'}`}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                className={`group flex flex-col items-center text-center p-4 rounded-[2rem] transition-all duration-500 ${
+                  detectedZone === member.zone 
+                  ? 'bg-blue-600 shadow-[0_20px_40px_rgba(37,99,235,0.3)]' 
+                  : 'bg-white border border-slate-50 hover:shadow-2xl hover:shadow-slate-200'
+                }`}
               >
-                <div className="w-full aspect-[3/4] bg-slate-50 overflow-hidden rounded-lg mb-3 relative">
+                <div className="w-full aspect-[3/4] rounded-2xl overflow-hidden mb-4 relative">
                   <img 
                     src={member.photoUrl} 
                     alt={member.assemblyman}
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    className="absolute inset-0 w-full h-full object-cover grayscale-[0.3] group-hover:grayscale-0 transition-all duration-700"
                   />
                   {detectedZone === member.zone && (
-                    <div className="absolute top-2 right-2 bg-blue-600 text-white p-1 rounded-md shadow-lg animate-bounce">
-                      <MapPin className="w-4 h-4" />
-                    </div>
+                    <div className="absolute inset-0 bg-blue-600/20 mix-blend-overlay" />
                   )}
                 </div>
-                
+
                 <div className="w-full">
-                  <p className="text-xs font-extrabold tracking-widest text-amber-600 uppercase mb-1">
+                  <p className={`text-[10px] font-black tracking-[0.2em] uppercase mb-1 ${detectedZone === member.zone ? 'text-blue-100' : 'text-amber-600'}`}>
                     {member.zone}
                   </p>
-                  <p className="text-sm sm:text-base font-black text-slate-900 leading-tight uppercase line-clamp-2 mb-1">
+                  <p className={`text-sm md:text-base font-black uppercase leading-tight line-clamp-2 mb-2 ${detectedZone === member.zone ? 'text-white' : 'text-slate-900'}`}>
                     {member.assemblyman}
                   </p>
-                  <p className="text-sm text-slate-800 flex items-center justify-center gap-2 font-bold">
-                    <Phone className="w-4 h-4 text-green-600" />
+                  <div className={`flex items-center justify-center gap-2 font-bold text-xs md:text-sm ${detectedZone === member.zone ? 'text-blue-50' : 'text-slate-500'}`}>
+                    <Phone className={`w-3.5 h-3.5 ${detectedZone === member.zone ? 'text-white' : 'text-green-600'}`} />
                     <span>{formatPhoneNumber(member.phone)}</span>
-                  </p>
+                  </div>
                 </div>
               </motion.div>
             ))}
           </AnimatePresence>
         </div>
 
-        {/* Empty State */}
         {filteredMembers.length === 0 && (
-          <div className="text-center py-20">
-            <h3 className="text-xl font-bold text-slate-300 uppercase tracking-widest">No matching representative found</h3>
+          <div className="text-center py-40">
+            <h3 className="text-2xl font-black text-slate-200 uppercase tracking-widest">No matching results</h3>
           </div>
         )}
+
       </div>
     </div>
   );

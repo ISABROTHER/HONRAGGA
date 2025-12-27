@@ -106,23 +106,21 @@ export function Assemblymen() {
                 </div>
                 
                 <div className="w-full">
-                  {/* 1. TOWN/ZONE (Small space below) */}
+                  {/* 1. TOWN/ZONE (Even distance mb-1) */}
                   <p className="text-xs font-extrabold tracking-widest text-amber-600 uppercase mb-1">
                     {member.zone}
                   </p>
                   
-                  {/* 2. NAME (Space below closed to meet the number) */}
-                  <p className="text-sm sm:text-base font-black text-slate-900 leading-tight uppercase line-clamp-2 min-h-[2.5rem] flex items-center justify-center">
+                  {/* 2. NAME (Removed min-h and flex centering, even distance mb-1) */}
+                  <p className="text-sm sm:text-base font-black text-slate-900 leading-tight uppercase line-clamp-2 mb-1">
                     {member.assemblyman}
                   </p>
                   
-                  {/* 3. NUMBER (Spacing closed up, border removed) */}
-                  <div className="w-full mt-1">
-                    <p className="text-sm text-slate-800 flex items-center justify-center gap-2 font-bold bg-gray-50 py-2 rounded-full">
-                      <Phone className="w-4 h-4 text-green-600" />
-                      <span>{formatPhoneNumber(member.phone)}</span>
-                    </p>
-                  </div>
+                  {/* 3. NUMBER (Feature background and padding removed, sits right under name) */}
+                  <p className="text-sm text-slate-800 flex items-center justify-center gap-2 font-bold">
+                    <Phone className="w-4 h-4 text-green-600" />
+                    <span>{formatPhoneNumber(member.phone)}</span>
+                  </p>
                 </div>
               </div>
             ))}

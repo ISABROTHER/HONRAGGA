@@ -1,225 +1,115 @@
-import { useEffect, useRef } from 'react'; // Import hooks for animation
-import { BookOpen, Heart, Users, Building, Wheat, Handshake, Landmark, ChevronRight } from 'lucide-react';
+// src/pages/Achievements.tsx
+import React from 'react';
+import { 
+  Award, 
+  Target, 
+  TrendingUp, 
+  CheckCircle2, 
+  ArrowRight,
+  ShieldCheck,
+  Zap,
+  Star
+} from 'lucide-react';
+import { motion } from 'framer-motion';
+import { AnimatedSection } from '../components/AnimatedSection';
 
-// Define the structure for each *main* policy theme
-interface PolicyTheme {
-  id: string; // Unique identifier (used for navigation)
-  title: string;
-  shortDescription: string;
-  imageComponent: React.ReactNode; // Holds either a div with color or an img tag
-  initiativeCount: number; // Based on detailed text sections
-}
-
-// Props interface including the navigation function from App.tsx
-interface PoliciesProps {
-  onSelectTheme: (themeId: string) => void;
-}
-
-export function Policies({ onSelectTheme }: PoliciesProps) {
-  // Ref for the grid container to observe its children
-  const gridRef = useRef<HTMLDivElement>(null);
-
-  // Effect for scroll animation (zoom-in effect)
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('animate-card-enter-zoom');
-            entry.target.classList.remove('opacity-0', 'scale-95');
-          }
-        });
-      },
-      {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-      }
-    );
-
-    const gridElement = gridRef.current;
-    if (gridElement) {
-      Array.from(gridElement.children).forEach((card) => {
-        observer.observe(card);
-        card.classList.add('opacity-0', 'scale-95');
-      });
+export function Achievements() {
+  const achievements = [
+    {
+      title: "CETRA2030 Agenda",
+      desc: "Our primary roadmap for economic growth and constituency transformation.",
+      icon: Target,
+      status: "Active Implementation",
+      color: "blue"
+    },
+    {
+      title: "Infrastructure Milestones",
+      desc: "Successfully completed market renovations and town road rehabilitations.",
+      icon: TrendingUp,
+      status: "Verified",
+      color: "emerald"
+    },
+    {
+      title: "Educational Support",
+      desc: "Distributed over 1,000 desks and provided scholarships to STEM students.",
+      icon: Award,
+      status: "Completed",
+      color: "amber"
     }
-
-    return () => {
-      if (gridElement) {
-        Array.from(gridElement.children).forEach((card) => {
-          observer.unobserve(card);
-        });
-      }
-    };
-  }, []);
-
-
-  // Array containing the main policy themes
-  const themes: PolicyTheme[] = [
-    {
-      id: 'education',
-      title: 'Educational Support',
-      shortDescription: 'Supporting quality education, digital literacy, and youth skills training.',
-      imageComponent: (
-        <div className="w-full relative overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
-          <img src="https://i.imgur.com/Ozjnrli.jpeg" alt="Educational Support" className="absolute inset-0 w-full h-full object-cover"/>
-        </div>
-      ),
-      initiativeCount: 3,
-    },
-    {
-      id: 'health',
-      title: 'Health & Sanitation',
-      shortDescription: 'Expanding access to healthcare and clean water for all.',
-      imageComponent: (
-        <div className="w-full relative overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
-           <img src="https://i.imgur.com/XmWnKbH.jpeg" alt="Health & Sanitation" className="absolute inset-0 w-full h-full object-cover object-[center_35%]"/>
-        </div>
-      ),
-      initiativeCount: 2,
-    },
-    {
-      id: 'entrepreneurship',
-      title: 'Employment & Entrepreneurship',
-      shortDescription: 'Creating jobs and empowering local businesses.',
-      imageComponent: (
-        <div className="w-full relative overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
-           <img src="https://i.imgur.com/saQoFLV.png" alt="Employment & Entrepreneurship" className="absolute inset-0 w-full h-full object-cover"/>
-        </div>
-      ),
-      initiativeCount: 2,
-    },
-    {
-      id: 'infrastructure',
-      title: 'Infrastructure Development',
-      shortDescription: 'Improving roads, electrification, and connectivity.',
-      imageComponent: (
-        <div className="w-full relative overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
-          <img src="https://i.imgur.com/AZqDymE.jpeg" alt="Infrastructure Development" className="absolute inset-0 w-full h-full object-cover"/>
-        </div>
-      ),
-      initiativeCount: 3,
-    },
-    {
-      id: 'agriculture',
-      title: 'Agricultural Support',
-      shortDescription: 'Supporting farmers with tools, training, and market access.',
-      imageComponent: (
-         <div className="w-full relative overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
-          <img src="https://i.imgur.com/TZ4jIJA.jpeg" alt="Agricultural Support" className="absolute inset-0 w-full h-full object-cover"/>
-        </div>
-      ),
-       initiativeCount: 1,
-    },
-     {
-      id: 'community',
-      title: 'Social Welfare',
-      shortDescription: 'Empowering women, youth, and vulnerable groups.',
-      imageComponent: (
-        <div className="w-full relative overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
-            <img src="https://i.imgur.com/1M0b8mq.jpeg" alt="Social Welfare" className="absolute inset-0 w-full h-full object-cover object-top"/>
-        </div>
-      ),
-      initiativeCount: 3,
-    },
-     {
-      id: 'planning', // Corresponds to Governance
-      title: 'Civic Engagement',
-      shortDescription: 'Promoting transparency, accountability, and participation.',
-      imageComponent: (
-         <div className="w-full relative overflow-hidden group-hover:scale-105 transition-transform duration-300" style={{ aspectRatio: '820 / 360' }}>
-           <img src="https://i.imgur.com/NSWtjdU.jpeg" alt="Civic Engagement" className="absolute inset-0 w-full h-full object-cover"/>
-         </div>
-      ),
-      initiativeCount: 1,
-    },
   ];
 
-  // Original header image
-  const headerImageUrl = "https://i.imgur.com/2BmP7xu.jpeg";
-  // Overlay image REMOVED
-  // const overlayImageUrl = "https://i.imgur.com/4s5NO8D.png";
-
   return (
-    <div className="min-h-screen bg-gray-100">
-
-      {/* Section Header - Base Image, Gradient, and Text */}
-      <section className="relative w-full overflow-hidden min-h-[250px] sm:min-h-[350px] flex items-end">
-        {/* Base Image */}
-        <img
-          src={headerImageUrl}
-          alt="Our Key Development Priorities Banner"
-          className="absolute inset-0 w-full h-full object-cover object-center"
-        />
-        {/* Dark Gradient Overlay for Text Contrast */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-70"></div>
-
-        {/* Content Text Container */}
-        <div
-            // Removed background image style, set translate-y to 0, adjusted padding
-            className="relative z-10 w-full py-8 sm:py-12 text-white text-center transform translate-y-0" 
-            // style={{ backgroundImage: `url(${overlayImageUrl})` }} // Removed overlay image
-        >
-            {/* Text remains centered */}
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight mb-2 drop-shadow-md">
-                INITIATIVES
-            </h1>
-            <p className="text-lg sm:text-xl md:text-2xl font-semibold text-amber-300 drop-shadow-sm">
-                BY RAGGA
-            </p>
+    <div className="min-h-screen bg-slate-50 pt-32 pb-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Header */}
+        <div className="text-center mb-16">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-slate-200 shadow-sm mb-6"
+          >
+            <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
+            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Track Record of Excellence</span>
+          </motion.div>
+          
+          <h1 className="text-4xl md:text-6xl font-black text-slate-900 tracking-tight mb-6">
+            Our <span className="text-blue-700">Achievements.</span>
+          </h1>
+          <p className="max-w-2xl mx-auto text-slate-500 text-lg font-medium leading-relaxed">
+            A comprehensive record of promises kept, policies implemented, and the tangible impact made across Cape Coast North.
+          </p>
         </div>
-      </section>
 
-      {/* Priorities Grid Section */}
-      <section className="py-16 sm:py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-           <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 md:gap-10">
-            {themes.map((theme, index) => {
-              return (
-                <button
-                  key={theme.id}
-                  onClick={() => onSelectTheme(theme.id)}
-                  className={`group bg-white rounded-xl shadow-md overflow-hidden border border-gray-200 hover:shadow-2xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 transition-all duration-500 ease-out text-left transform hover:border-blue-300`}
-                  style={{ transitionDelay: `${index * 100}ms` }}
-                >
-                  <div className="overflow-hidden">
-                    {theme.imageComponent}
-                  </div>
-                  <div className="p-6 flex flex-col">
-                    <div className="mb-4">
-                        <h2 className="relative inline-block text-xl sm:text-2xl font-bold text-green-800 whitespace-nowrap overflow-hidden text-ellipsis mb-2 pb-1
-                                       after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-amber-600 after:w-0 group-hover:after:w-full after:transition-all after:duration-300 after:ease-out">
-                          {theme.title}
-                        </h2>
-                        <p className="text-gray-600 text-sm sm:text-base leading-relaxed mt-1">
-                          {theme.shortDescription}
-                        </p>
-                    </div>
-                    <div className="mt-auto flex justify-between items-center pt-4">
-                        <p className="text-sm text-gray-700 font-medium">
-                           <span className="font-extrabold text-lg text-amber-600 mr-1">{theme.initiativeCount}</span>
-                            {theme.initiativeCount === 1 ? 'Initiative Listed' : 'Initiatives Listed'}
-                        </p>
-                        <span className="inline-flex items-center text-sm font-semibold text-amber-700 group-hover:underline">
-                          View Details
-                          <ChevronRight className="ml-1 w-4 h-4 transition-transform group-hover:translate-x-1" />
-                        </span>
-                    </div>
-                  </div>
-                </button>
-              );
-            })}
+        {/* Achievement Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+          {achievements.map((item, idx) => (
+            <AnimatedSection key={idx} delay={idx * 100}>
+              <div className="bg-white rounded-[2.5rem] p-8 border border-slate-100 shadow-xl shadow-slate-200/40 h-full flex flex-col">
+                <div className={`w-14 h-14 rounded-2xl bg-${item.color}-50 flex items-center justify-center mb-6`}>
+                  <item.icon className={`w-7 h-7 text-${item.color}-600`} />
+                </div>
+                <h3 className="text-xl font-black text-slate-900 mb-3">{item.title}</h3>
+                <p className="text-slate-500 text-sm font-medium mb-6 flex-grow">{item.desc}</p>
+                <div className="pt-6 border-t border-slate-50 flex items-center justify-between">
+                  <span className={`text-[10px] font-black uppercase tracking-widest text-${item.color}-600 bg-${item.color}-50 px-3 py-1 rounded-full`}>
+                    {item.status}
+                  </span>
+                  <ShieldCheck className="w-5 h-5 text-slate-300" />
+                </div>
+              </div>
+            </AnimatedSection>
+          ))}
+        </div>
+
+        {/* CETRA2030 Specific Section */}
+        <AnimatedSection delay={300}>
+          <div className="bg-slate-900 rounded-[3rem] p-8 md:p-16 text-white relative overflow-hidden shadow-2xl">
+            <div className="absolute top-0 right-0 p-12 opacity-10">
+              <Zap className="w-64 h-64 text-blue-400" />
+            </div>
+            <div className="relative z-10 max-w-3xl">
+              <h2 className="text-3xl md:text-5xl font-black mb-6 leading-tight uppercase tracking-tight">
+                The <span className="text-blue-400">CETRA2030</span> Implementation
+              </h2>
+              <p className="text-slate-300 text-lg mb-8 leading-relaxed font-medium">
+                Our economic blueprint is not just a document; it's a living achievement. We are currently implementing Phase 2 focusing on job hubs and agricultural processing.
+              </p>
+              <div className="grid grid-cols-2 gap-6 mb-10">
+                <div className="bg-white/5 border border-white/10 p-6 rounded-2xl">
+                  <div className="text-3xl font-black text-blue-400 mb-1">85%</div>
+                  <div className="text-[10px] font-bold text-white/50 uppercase tracking-widest">Target Alignment</div>
+                </div>
+                <div className="bg-white/5 border border-white/10 p-6 rounded-2xl">
+                  <div className="text-3xl font-black text-blue-400 mb-1">24/7</div>
+                  <div className="text-[10px] font-bold text-white/50 uppercase tracking-widest">Active Monitoring</div>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-      </section>
+        </AnimatedSection>
 
-      {/* CSS for the zoom animation */}
-      <style>{`
-        .animate-card-enter-zoom {
-          opacity: 1;
-          transform: scale(1);
-        }
-      `}</style>
+      </div>
     </div>
   );
 }

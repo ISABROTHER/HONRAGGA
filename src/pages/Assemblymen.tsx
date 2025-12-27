@@ -16,7 +16,7 @@ export function Assemblymen() {
         
         {/* --- TOP ONE PERCENT HEADING --- */}
         <AnimatedSection delay={50}>
-          <div className="relative text-center mb-16 py-12 md:py-20 overflow-hidden">
+          <div className="relative text-center mb-10 py-8 md:py-14 overflow-hidden">
             {/* Massive Background Text for Depth */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
               <h2 className="text-[12vw] font-black text-slate-900/5 uppercase tracking-tighter whitespace-nowrap">
@@ -26,10 +26,7 @@ export function Assemblymen() {
             
             {/* The Main Visible Heading */}
             <div className="relative flex flex-col items-center">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 mb-6">
-                <Star className="w-3 h-3 text-blue-600 fill-blue-600" />
-                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-700">The 2026 Elite Team</span>
-              </div>
+              {/* Removed "The 2026 Elite Team" badge and closed gap */}
               <h2 className="text-4xl md:text-8xl font-black text-slate-900 tracking-tighter uppercase leading-[0.85]">
                 ASSEMBLYMEN <br />
                 <span className="text-blue-700">IN CAPE COAST NORTH</span>
@@ -41,7 +38,7 @@ export function Assemblymen() {
           </div>
         </AnimatedSection>
         
-        {/* --- ASSEMBLY MEMBERS GRID (REVERTED TO CLASSIC EVEN SPACING) --- */}
+        {/* --- ASSEMBLY MEMBERS GRID (CLASSIC EVEN SPACING) --- */}
         <AnimatedSection delay={150}>
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
             {LOCATIONS.map((member) => (
@@ -60,17 +57,17 @@ export function Assemblymen() {
                 </div>
                 
                 <div className="w-full">
-                  {/* 1. TOWN/ZONE (Even spacing mb-1) */}
+                  {/* 1. TOWN/ZONE */}
                   <p className="text-xs font-extrabold tracking-widest text-amber-600 uppercase mb-1">
                     {member.zone}
                   </p>
                   
-                  {/* 2. NAME (Even spacing mb-1) */}
+                  {/* 2. NAME */}
                   <p className="text-sm sm:text-base font-black text-slate-900 leading-tight uppercase line-clamp-2 mb-1">
                     {member.assemblyman}
                   </p>
                   
-                  {/* 3. NUMBER (Ghana Format, Even spacing) */}
+                  {/* 3. NUMBER (Ghana Format) */}
                   <p className="text-sm text-slate-800 flex items-center justify-center gap-2 font-bold">
                     <Phone className="w-4 h-4 text-green-600" />
                     <span>{formatPhoneNumber(member.phone)}</span>

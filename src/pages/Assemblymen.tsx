@@ -50,7 +50,7 @@ export function Assemblymen() {
                   </div>
                 </div>
                 <p className="text-slate-700 leading-relaxed font-medium mb-4 text-sm md:text-base">
-                  All issues submitted on this platform are received by the MP&apos;s office. Some matters are handled directly; others are delivered through Assembly Members for action.
+                  All issues submitted on this platform are received by the MP's office. Some matters are handled directly; others are delivered through Assembly Members for action.
                 </p>
               </div>
               <div className="bg-green-50 rounded-xl p-4 flex items-center gap-3">
@@ -71,7 +71,7 @@ export function Assemblymen() {
                   </div>
                 </div>
                 <p className="text-slate-300 leading-relaxed font-medium mb-4 text-sm md:text-base">
-                  Assembly Members are the first point of contact for day-to-day community issues such as drains, streetlights, and sanitation. They work closely with the MP&apos;s office.
+                  Assembly Members are the first point of contact for day-to-day community issues such as drains, streetlights, and sanitation. They work closely with the MP's office.
                 </p>
               </div>
               <div className="bg-white/10 rounded-xl p-4 flex items-center gap-3 border border-white/10">
@@ -106,19 +106,19 @@ export function Assemblymen() {
                 </div>
                 
                 <div className="w-full">
-                  {/* 1. TOWN/ZONE (Even distance mb-1) */}
+                  {/* 1. TOWN/ZONE (Even distance of mb-1) */}
                   <p className="text-xs font-extrabold tracking-widest text-amber-600 uppercase mb-1">
                     {member.zone}
                   </p>
                   
-                  {/* 2. NAME (Removed min-h and flex centering, even distance mb-1) */}
+                  {/* 2. NAME (Even distance of mb-1) */}
                   <p className="text-sm sm:text-base font-black text-slate-900 leading-tight uppercase line-clamp-2 mb-1">
                     {member.assemblyman}
                   </p>
                   
-                  {/* 3. NUMBER (Feature background and padding removed, sits right under name) */}
-                  <p className="text-sm text-slate-800 flex items-center justify-center gap-2 font-bold">
-                    <Phone className="w-4 h-4 text-green-600" />
+                  {/* 3. NUMBER (Even distance, no background feature) */}
+                  <p className="text-sm text-slate-800 flex items-center justify-center gap-1.5 font-bold">
+                    <Phone className="w-3.5 h-3.5 text-green-600" />
                     <span>{formatPhoneNumber(member.phone)}</span>
                   </p>
                 </div>

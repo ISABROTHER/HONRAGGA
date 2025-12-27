@@ -7,6 +7,11 @@ import { LOCATIONS } from '../data/locations';
 export function Assemblymen() {
   const mpPortraitUrl = "https://i.imgur.com/5H0XBuV.jpeg";
 
+  // Helper to format phone number from +233 to 0
+  const formatPhoneNumber = (phone: string) => {
+    return phone.replace('+233 ', '0').replace('+233', '0');
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 pt-32 pb-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -79,7 +84,7 @@ export function Assemblymen() {
           </div>
         </AnimatedSection>
 
-        {/* --- ASSEMBLY MEMBERS GRID (REPLICATING ABOUT PAGE STRUCTURE) --- */}
+        {/* --- ASSEMBLY MEMBERS GRID --- */}
         <AnimatedSection delay={120}>
           <div className="mb-10 border-b border-gray-200 pb-4">
             <h3 className="text-2xl font-bold text-blue-900">
@@ -104,21 +109,21 @@ export function Assemblymen() {
                 </div>
                 
                 <div className="space-y-1 w-full">
-                  {/* Original Zone Styling */}
-                  <p className="text-xs font-extrabold tracking-widest text-amber-600 uppercase mb-1">
-                    {member.zone}
-                  </p>
-                  
-                  {/* Original Name Styling */}
+                  {/* ARRANGEMENT: 1. NAME */}
                   <p className="text-sm sm:text-base font-black text-slate-900 leading-tight uppercase line-clamp-3 min-h-[3rem] flex items-center justify-center">
                     {member.assemblyman}
                   </p>
+
+                  {/* ARRANGEMENT: 2. TOWN (ZONE) */}
+                  <p className="text-xs font-extrabold tracking-widest text-amber-600 uppercase mb-2">
+                    {member.zone}
+                  </p>
                   
-                  {/* Original Phone Styling */}
+                  {/* ARRANGEMENT: 3. PHONE NUMBER (FORMATTED AS 0...) */}
                   <div className="pt-3 border-t border-gray-100 w-full mt-2">
                     <p className="text-sm text-slate-800 flex items-center justify-center gap-2 font-bold bg-gray-50 py-2 rounded-full">
                       <Phone className="w-4 h-4 text-green-600" />
-                      <span>{member.phone}</span>
+                      <span>{formatPhoneNumber(member.phone)}</span>
                     </p>
                   </div>
                 </div>

@@ -38,7 +38,6 @@ export function Assemblymen() {
         {/* --- PARTNERSHIP SECTION --- */}
         <AnimatedSection delay={50}>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-20">
-            {/* MP & Office Role */}
             <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-8 flex flex-col justify-between">
               <div>
                 <div className="flex items-center gap-4 mb-6">
@@ -60,7 +59,6 @@ export function Assemblymen() {
               </div>
             </div>
 
-            {/* Assemblymen Role */}
             <div className="bg-slate-900 rounded-xl p-8 text-white flex flex-col justify-between shadow-2xl">
               <div>
                 <div className="flex items-center gap-4 mb-6">
@@ -84,7 +82,7 @@ export function Assemblymen() {
           </div>
         </AnimatedSection>
 
-        {/* --- ASSEMBLY MEMBERS GRID (RESTORED ORIGINAL SPACING/ORDER) --- */}
+        {/* --- ASSEMBLY MEMBERS GRID --- */}
         <AnimatedSection delay={120}>
           <div className="mb-10 border-b border-gray-200 pb-4">
             <h3 className="text-2xl font-bold text-blue-900">
@@ -107,19 +105,19 @@ export function Assemblymen() {
                   <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/50 to-transparent h-1/3"></div>
                 </div>
                 
-                <div className="space-y-1 w-full">
-                  {/* 1. TOWN/ZONE FIRST */}
+                <div className="w-full">
+                  {/* 1. TOWN/ZONE (Small space below) */}
                   <p className="text-xs font-extrabold tracking-widest text-amber-600 uppercase mb-1">
                     {member.zone}
                   </p>
                   
-                  {/* 2. NAME SECOND */}
-                  <p className="text-sm sm:text-base font-black text-slate-900 leading-tight uppercase line-clamp-3 min-h-[3rem] flex items-center justify-center">
+                  {/* 2. NAME (Space below closed to meet the number) */}
+                  <p className="text-sm sm:text-base font-black text-slate-900 leading-tight uppercase line-clamp-2 min-h-[2.5rem] flex items-center justify-center">
                     {member.assemblyman}
                   </p>
                   
-                  {/* 3. NUMBER THIRD WITH UPDATED FORMATTING */}
-                  <div className="pt-3 border-t border-gray-100 w-full mt-2">
+                  {/* 3. NUMBER (Spacing closed up, border removed) */}
+                  <div className="w-full mt-1">
                     <p className="text-sm text-slate-800 flex items-center justify-center gap-2 font-bold bg-gray-50 py-2 rounded-full">
                       <Phone className="w-4 h-4 text-green-600" />
                       <span>{formatPhoneNumber(member.phone)}</span>

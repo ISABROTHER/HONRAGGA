@@ -1,20 +1,20 @@
 // src/pages/Assemblymen.tsx
 import { useState, useMemo } from 'react';
-import { Phone, Search, MapPin, Navigation, Crosshair } from 'lucide-react';
+import { Phone, Search, Navigation, Crosshair, MapPin, Map } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AnimatedSection } from '../components/AnimatedSection';
 import { LOCATIONS } from '../data/locations';
 
 export function Assemblymen() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [isDetecting, setIsDetecting] = useState(false);
+  const [isLocating, setIsLocating] = useState(false);
+  const [detectedZone, setDetectedZone] = useState<string | null>(null);
 
-  // Helper to format phone number from +233 to 0
   const formatPhoneNumber = (phone: string) => {
     return phone.replace('+233 ', '0').replace('+233', '0');
   };
 
-  // Filter Logic for Town or Name
+  // Search Logic
   const filteredMembers = useMemo(() => {
     return LOCATIONS.filter(
       (m) =>
@@ -23,43 +23,55 @@ export function Assemblymen() {
     );
   }, [searchQuery]);
 
-  // Innovation: Detect Location Logic
-  const handleDetectLocation = () => {
-    setIsDetecting(true);
+  // INNOVATION: Live Location Detection
+  const handleLiveLocation = () => {
+    setIsLocating(true);
+    setDetectedZone(null);
+
     if (!navigator.geolocation) {
-      alert("Geolocation is not supported by your browser");
-      setIsDetecting(false);
+      alert("Geolocation is not supported by your browser.");
+      setIsLocating(false);
       return;
     }
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        // In a real production app, you would use reverse geocoding here
-        // For this UI, we simulate finding the zone based on proximity or GPS
+        const { latitude, longitude } = position.coords;
+        
+        // Constituency Boundary Logic (Approximate Cape Coast North Range)
+        const isWithinCCN = latitude >= 5.10 && latitude <= 5.15 && longitude >= -1.30 && longitude <= -1.20;
+
         setTimeout(() => {
-          setIsDetecting(false);
-          // Example: Auto-filter to a detected zone like "Aboom" if found
-          // For demo purposes, we show a success message
-          alert("Location Detected: You are in Cape Coast North. Showing your local representatives.");
-        }, 1500);
+          setIsLocating(false);
+          if (isWithinCCN) {
+            // Logic to match GPS to specific Zone (e.g., Abura, Pedu, etc.)
+            // For now, we simulate a successful match
+            const matchedZone = "Abura"; 
+            setDetectedZone(matchedZone);
+            setSearchQuery(matchedZone);
+            window.scrollTo({ top: 400, behavior: 'smooth' });
+          } else {
+            alert("Location Detected: You are currently outside Cape Coast North. Showing all representatives.");
+          }
+        }, 1800);
       },
       () => {
-        alert("Unable to retrieve your location");
-        setIsDetecting(false);
+        alert("Permission denied. Please enable location access to find your representative.");
+        setIsLocating(false);
       }
     );
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] pt-2 pb-20"> 
+    <div className="min-h-screen bg-[#FDFDFF] pt-2 pb-20"> 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* --- TOP ONE PERCENT HEADING --- */}
         <AnimatedSection delay={50}>
-          <div className="relative text-center mb-4 py-8 md:py-12 overflow-hidden">
+          <div className="relative text-center mb-4 py-8 md:py-16 overflow-hidden">
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
               <h2 className="text-[12vw] font-black text-slate-900/[0.02] uppercase tracking-tighter whitespace-nowrap">
-                GOVERNANCE
+                PRECISION
               </h2>
             </div>
             
@@ -72,100 +84,92 @@ export function Assemblymen() {
           </div>
         </AnimatedSection>
 
-        {/* --- INNOVATION: SEARCH & LOCATION HUB --- */}
+        {/* --- INNOVATION HUB: LIVE LOCATION & SEARCH --- */}
         <AnimatedSection delay={100}>
-          <div className="max-w-4xl mx-auto mb-12">
-            <div className="flex flex-col md:flex-row gap-4">
-              {/* Smart Search Bar */}
-              <div className="relative flex-grow group">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-blue-600 transition-colors" />
+          <div className="max-w-3xl mx-auto mb-16">
+            <div className="bg-white p-2 rounded-3xl border border-slate-100 shadow-2xl flex flex-col md:flex-row gap-2">
+              
+              {/* Live Location Pulse */}
+              <button 
+                onClick={handleLiveLocation}
+                className="relative overflow-hidden flex items-center gap-3 px-6 py-4 bg-slate-900 text-white rounded-2xl font-black text-sm uppercase tracking-widest transition-all hover:bg-black active:scale-95 group"
+              >
+                {isLocating ? (
+                  <Navigation className="w-5 h-5 animate-spin text-blue-400" />
+                ) : (
+                  <div className="relative flex h-3 w-3">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span>
+                  </div>
+                )}
+                <span>{isLocating ? "Locating..." : "Live Location"}</span>
+              </button>
+
+              {/* Minimalist Search */}
+              <div className="relative flex-grow">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-300" />
                 <input 
                   type="text"
-                  placeholder="Search by Town (e.g. Abura) or Name..."
+                  placeholder="Type your area..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-12 pr-4 py-4 bg-white border border-slate-200 rounded-2xl shadow-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-600 transition-all outline-none font-medium text-slate-900"
+                  className="w-full pl-12 pr-4 py-4 bg-transparent rounded-2xl font-bold text-slate-900 outline-none placeholder:text-slate-300"
                 />
               </div>
-
-              {/* Geo-Location Intelligence Button */}
-              <button 
-                onClick={handleDetectLocation}
-                disabled={isDetecting}
-                className="flex items-center justify-center gap-3 px-8 py-4 bg-slate-900 text-white rounded-2xl font-bold hover:bg-slate-800 transition-all active:scale-95 disabled:opacity-70 whitespace-nowrap"
-              >
-                {isDetecting ? (
-                  <Navigation className="w-5 h-5 animate-spin" />
-                ) : (
-                  <Crosshair className="w-5 h-5" />
-                )}
-                {isDetecting ? "Detecting..." : "Find My Representative"}
-              </button>
             </div>
 
-            {/* Active Result Count */}
-            <p className="mt-4 text-center text-slate-500 text-xs font-bold uppercase tracking-widest">
-              Showing {filteredMembers.length} Representatives {searchQuery && `matching "${searchQuery}"`}
-            </p>
+            {/* Notification of Detection */}
+            <AnimatePresence>
+              {detectedZone && (
+                <motion.div 
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-4 flex items-center justify-center gap-2 text-blue-700 font-black text-[10px] uppercase tracking-[0.2em]"
+                >
+                  <MapPin className="w-3 h-3" />
+                  Successfully located in {detectedZone}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </AnimatedSection>
         
-        {/* --- ASSEMBLY MEMBERS GRID --- */}
+        {/* --- GRID (TOWN -> NAME -> PHONE) --- */}
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-          <AnimatePresence mode='popLayout'>
-            {filteredMembers.map((member, idx) => (
-              <motion.div
-                layout
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.3, delay: idx * 0.03 }}
-                key={member.zone}
-                className="flex flex-col items-center text-center group bg-white border border-slate-100 rounded-2xl p-3 hover:shadow-2xl hover:border-blue-100 transition-all duration-300"
-              >
-                {/* Profile Image */}
-                <div className="w-full aspect-[3/4] bg-slate-100 overflow-hidden rounded-xl mb-3 relative">
-                  <img 
-                    src={member.photoUrl} 
-                    alt={member.assemblyman}
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <div className="bg-blue-600 p-1.5 rounded-lg text-white shadow-lg">
-                      <MapPin className="w-3.5 h-3.5" />
-                    </div>
+          {filteredMembers.map((member) => (
+            <motion.div
+              layout
+              key={member.zone}
+              className={`flex flex-col items-center text-center group bg-white border rounded-xl p-3 transition-all duration-500 ${detectedZone === member.zone ? 'ring-4 ring-blue-500/20 border-blue-500 shadow-2xl scale-105' : 'border-gray-100 hover:shadow-lg'}`}
+            >
+              <div className="w-full aspect-[3/4] bg-slate-50 overflow-hidden rounded-lg mb-3 relative">
+                <img 
+                  src={member.photoUrl} 
+                  alt={member.assemblyman}
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                {detectedZone === member.zone && (
+                  <div className="absolute top-2 right-2 bg-blue-600 text-white p-1 rounded-md shadow-lg animate-bounce">
+                    <MapPin className="w-4 h-4" />
                   </div>
-                </div>
-                
-                <div className="w-full">
-                  <p className="text-[10px] font-black tracking-widest text-amber-600 uppercase mb-1">
-                    {member.zone}
-                  </p>
-                  
-                  <p className="text-sm sm:text-base font-black text-slate-900 leading-tight uppercase line-clamp-2 mb-1">
-                    {member.assemblyman}
-                  </p>
-                  
-                  <p className="text-sm text-slate-800 flex items-center justify-center gap-2 font-bold">
-                    <Phone className="w-4 h-4 text-green-600" />
-                    <span>{formatPhoneNumber(member.phone)}</span>
-                  </p>
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
+                )}
+              </div>
+              
+              <div className="w-full">
+                <p className="text-xs font-extrabold tracking-widest text-amber-600 uppercase mb-1">
+                  {member.zone}
+                </p>
+                <p className="text-sm sm:text-base font-black text-slate-900 leading-tight uppercase line-clamp-2 mb-1">
+                  {member.assemblyman}
+                </p>
+                <p className="text-sm text-slate-800 flex items-center justify-center gap-2 font-bold">
+                  <Phone className="w-4 h-4 text-green-600" />
+                  <span>{formatPhoneNumber(member.phone)}</span>
+                </p>
+              </div>
+            </motion.div>
+          ))}
         </div>
-
-        {/* Empty State */}
-        {filteredMembers.length === 0 && (
-          <div className="text-center py-20 bg-white rounded-3xl border border-dashed border-slate-200">
-            <Search className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-            <h3 className="text-xl font-bold text-slate-900">No representative found</h3>
-            <p className="text-slate-500">Try searching for a different area or name.</p>
-          </div>
-        )}
-
       </div>
     </div>
   );

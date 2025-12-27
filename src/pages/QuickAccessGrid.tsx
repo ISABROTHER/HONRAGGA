@@ -32,7 +32,7 @@ const quickLinks: QuickLink[] = [
     route: "issues"
   },
   {
-    title: "Assembly Members",
+    title: "Assembly Members", // Renamed from Policies
     mobileDesc: "Local Reps",
     desc: "Meet the local representatives working with Hon. Ragga.",
     icon: Users,
@@ -77,17 +77,20 @@ export function QuickAccessGrid({ onNavigate }: QuickAccessGridProps) {
   return (
     <section className="relative z-20 -mt-12 md:-mt-20 pt-4 pb-10 md:pb-16 bg-white">
       <div className="max-w-[95%] 2xl:max-w-[1600px] mx-auto px-3 sm:px-6 lg:px-8">
+        
         <div className="text-center mb-8 md:mb-14">
           <p className="inline-flex items-center gap-2 rounded-full bg-green-50 px-4 py-1.5 border border-green-100">
             <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
             <span className="text-xs md:text-sm font-bold tracking-[0.2em] uppercase text-green-700">Constituency Services</span>
           </p>
+
           <div className="mt-4 flex flex-col items-center justify-center group">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-center bg-gradient-to-r from-slate-900 via-green-700 to-slate-900 bg-clip-text text-transparent">
               Information, Services &amp; Support
             </h2>
-            <span className="mt-3 h-1 w-16 rounded-full bg-gradient-to-r from-green-500 to-green-600 transition-all group-hover:w-32" />
+            <span className="mt-3 h-1 w-16 rounded-full bg-gradient-to-r from-green-500 via-emerald-500 to-green-600 group-hover:w-32 transition-all duration-500" />
           </div>
+
           <p className="text-base md:text-lg text-slate-600 mt-5 max-w-3xl mx-auto leading-relaxed">
             All the key information you need about the constituency is organised here for easy access.
           </p>
@@ -98,12 +101,12 @@ export function QuickAccessGrid({ onNavigate }: QuickAccessGridProps) {
             <button
               key={idx}
               onClick={() => onNavigate(link.route)}
-              className={`group relative overflow-hidden rounded-xl md:rounded-3xl border ${link.bgClass} bg-gradient-to-br p-3 md:p-10 flex flex-col items-center text-center hover:shadow-xl hover:-translate-y-2 active:scale-95 transition-all`}
+              className={`group relative overflow-hidden rounded-xl md:rounded-3xl border ${link.bgClass} bg-gradient-to-br p-3 md:p-10 flex flex-col items-center text-center cursor-pointer hover:shadow-xl hover:-translate-y-2 active:scale-95 transition-all`}
             >
               <div className="w-12 h-12 md:w-20 md:h-20 bg-white rounded-xl md:rounded-3xl flex items-center justify-center shadow-sm mb-2 md:mb-6 group-hover:scale-110 transition-transform">
                 <link.icon className={`w-6 h-6 md:w-10 md:h-10 ${link.iconColor}`} />
               </div>
-              <h3 className="text-xs sm:text-sm md:text-2xl font-bold text-slate-900 mb-1 md:mb-3 truncate w-full">{link.title}</h3>
+              <h3 className="text-xs sm:text-sm md:text-2xl font-bold text-slate-900 mb-1 md:mb-3 truncate w-full tracking-tight">{link.title}</h3>
               <p className="block md:hidden text-slate-500 text-[10px] leading-none font-medium">{link.mobileDesc}</p>
               <p className="hidden md:block text-slate-600 text-base leading-relaxed max-w-sm mx-auto">{link.desc}</p>
             </button>

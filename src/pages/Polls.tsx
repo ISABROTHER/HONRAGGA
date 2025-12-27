@@ -1,6 +1,14 @@
 // src/pages/Polls.tsx
 import { useState, useEffect } from 'react';
-import { PieChart, CheckCircle2, AlertCircle, BarChart3, Vote, ListChecks } from 'lucide-react';
+import { 
+  PieChart, 
+  CheckCircle2, 
+  Clock, 
+  AlertCircle, 
+  BarChart3,
+  Vote,
+  ListChecks
+} from 'lucide-react';
 import { motion } from 'framer-motion';
 
 // --- MOCK DATA ---
@@ -35,9 +43,7 @@ const ASSURANCES = [
     status: "On Track",
     progress: 65,
     date: "Dec 2025",
-    notes: "Roofing stage completed. Stalls currently being partitioned.",
-    confidence: 90,
-    verified: true
+    notes: "Roofing stage completed. Stalls currently being partitioned."
   },
   {
     id: 2,
@@ -46,9 +52,7 @@ const ASSURANCES = [
     status: "Completed",
     progress: 100,
     date: "Oct 2024",
-    notes: "Distributed to 15 schools across the constituency.",
-    confidence: 98,
-    verified: true
+    notes: "Distributed to 15 schools across the constituency."
   },
   {
     id: 3,
@@ -57,9 +61,7 @@ const ASSURANCES = [
     status: "Delayed",
     progress: 40,
     date: "Aug 2025",
-    notes: "Delayed due to heavy rains in July. Work has resumed.",
-    confidence: 55,
-    verified: false
+    notes: "Delayed due to heavy rains in July. Work has resumed."
   },
   {
     id: 4,
@@ -68,62 +70,61 @@ const ASSURANCES = [
     status: "On Track",
     progress: 80,
     date: "Jan 2025",
-    notes: "Applications processed. Disbursement scheduled for next term.",
-    confidence: 88,
-    verified: true
+    notes: "Applications processed. Disbursement scheduled for next term."
   }
 ];
 
 export function Polls() {
   const [activeTab, setActiveTab] = useState<'polls' | 'tracker'>('polls');
+  // Local state to simulate voting without DB
   const [polls, setPolls] = useState(INITIAL_POLLS);
   const [votedPolls, setVotedPolls] = useState<string[]>([]);
-  const [issues, setIssues] = useState<{ id: string; message: string }[]>([]);
 
+  // Load voted state from local storage on mount
   useEffect(() => {
     const stored = localStorage.getItem('user_voted_polls');
     if (stored) setVotedPolls(JSON.parse(stored));
   }, []);
 
   const handleVote = (pollId: string, optionId: string) => {
+    // Prevent double voting simulation
     if (votedPolls.includes(pollId)) return;
+
+    // Update mock state
     const newPolls = polls.map(p => {
       if (p.id === pollId) {
         return {
           ...p,
           totalVotes: p.totalVotes + 1,
-          options: p.options.map(o =>
+          options: p.options.map(o => 
             o.id === optionId ? { ...o, votes: o.votes + 1 } : o
           )
         };
       }
       return p;
     });
+
     setPolls(newPolls);
+    
+    // Save to local storage
     const newVoted = [...votedPolls, pollId];
     setVotedPolls(newVoted);
     localStorage.setItem('user_voted_polls', JSON.stringify(newVoted));
   };
 
-  const submitIssue = (message: string) => {
-    const issue = { id: Date.now().toString(), message };
-    setIssues([...issues, issue]);
-    setIssues([...issues, issue]);
+  const getStatusColor = (status: string) => {
+    switch(status) {
+      case 'Completed': return 'bg-green-100 text-green-700 border-green-200';
+      case 'On Track': return 'bg-blue-100 text-blue-700 border-blue-200';
+      case 'Delayed': return 'bg-amber-100 text-amber-700 border-amber-200';
+      default: return 'bg-gray-100 text-gray-700 border-gray-200';
+    }
   };
 
   return (
     <div className="min-h-screen bg-slate-50 pt-28 pb-16">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-
-        {/* AI CHAT WIDGET (Modern Civic Communication Layer) */}
-        <div className="mb-6">
-          <iframe
-            src="https://chat.openai.com/chat"
-            className="w-full h-[420px] rounded-2xl border border-slate-200 shadow-sm"
-            title="Constituency AI Assistant"
-          />
-        </div>
-
+        
         {/* Page Header */}
         <div className="text-center mb-10">
           <div className="inline-flex items-center gap-2 rounded-full bg-purple-50 px-3 py-1 border border-purple-100 mb-4">
@@ -140,44 +141,25 @@ export function Polls() {
           </p>
         </div>
 
-        {/* ISSUE SUBMISSION POOL */}
-        {activeTab === 'polls' && (
-          <div className="bg-white rounded-2xl border border-slate-200 p-6 mb-8 shadow-sm">
-            <h4 className="text-lg font-bold text-slate-900 mb-3">Report a Constituency Issue</h4>
-            <textarea
-              placeholder="Describe the issue (e.g., flooding spot, school needs, health facility concerns, sanitation, etc.)"
-              className="w-full border border-slate-200 rounded-xl p-4 text-sm focus:outline-none"
-              onBlur={(e) => submitIssue(e.target.value)}
-            />
-            <p className="text-xs text-slate-400 mt-2">Submitted issues will feed the AI for priority analysis.</p>
-
-            {issues.length > 0 && (
-              <div className="mt-4 space-y-2">
-                {issues.map(i => (
-                  <div key={i.id} className="text-xs bg-slate-50 border border-slate-100 p-3 rounded-lg text-slate-600">
-                    {i.message}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
-
         {/* Tab Navigation */}
         <div className="flex justify-center mb-10">
           <div className="bg-white p-1.5 rounded-full border border-slate-200 shadow-sm inline-flex">
             <button
               onClick={() => setActiveTab('polls')}
-              className={`flex items-center gap-2 px-6 py-3 rounded-full text-sm font-bold ${
-                activeTab === 'polls' ? 'bg-slate-900 text-white shadow-md' : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
+              className={`flex items-center gap-2 px-6 py-3 rounded-full text-sm font-bold transition-all duration-300 ${
+                activeTab === 'polls' 
+                  ? 'bg-slate-900 text-white shadow-md' 
+                  : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
               }`}
             >
               <Vote className="w-4 h-4" /> Active Polls
             </button>
             <button
               onClick={() => setActiveTab('tracker')}
-              className={`flex items-center gap-2 px-6 py-3 rounded-full text-sm font-bold ${
-                activeTab === 'tracker' ? 'bg-slate-900 text-white shadow-md' : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
+              className={`flex items-center gap-2 px-6 py-3 rounded-full text-sm font-bold transition-all duration-300 ${
+                activeTab === 'tracker' 
+                  ? 'bg-slate-900 text-white shadow-md' 
+                  : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
               }`}
             >
               <ListChecks className="w-4 h-4" /> Assurance Tracker
@@ -185,7 +167,79 @@ export function Polls() {
           </div>
         </div>
 
-        {/* ASSURANCE TRACKER TAB */}
+        {/* --- POLLS TAB --- */}
+        {activeTab === 'polls' && (
+          <div className="grid gap-8 md:grid-cols-2">
+            {polls.map((poll) => {
+              const hasVoted = votedPolls.includes(poll.id);
+
+              return (
+                <motion.div 
+                  key={poll.id}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="bg-white rounded-3xl border border-slate-200 p-6 md:p-8 shadow-sm hover:shadow-md transition-shadow"
+                >
+                  <div className="flex items-start justify-between mb-6">
+                    <h3 className="text-xl font-bold text-slate-900 leading-snug">
+                      {poll.question}
+                    </h3>
+                    <div className="bg-slate-100 text-slate-600 text-xs font-bold px-2 py-1 rounded flex-shrink-0 ml-2">
+                      {poll.totalVotes} votes
+                    </div>
+                  </div>
+
+                  <div className="space-y-3">
+                    {poll.options.map((option) => {
+                      const percent = poll.totalVotes > 0 
+                        ? Math.round((option.votes / poll.totalVotes) * 100) 
+                        : 0;
+                      
+                      return (
+                        <div key={option.id} className="relative">
+                          {hasVoted ? (
+                            // RESULTS VIEW
+                            <div className="relative h-12 w-full bg-slate-50 rounded-xl overflow-hidden border border-slate-100">
+                              <motion.div 
+                                initial={{ width: 0 }}
+                                animate={{ width: `${percent}%` }}
+                                transition={{ duration: 1, ease: "easeOut" }}
+                                className="absolute top-0 left-0 h-full bg-purple-100"
+                              />
+                              <div className="absolute inset-0 flex items-center justify-between px-4">
+                                <span className="font-medium text-slate-700 text-sm z-10">{option.text}</span>
+                                <span className="font-bold text-purple-700 text-sm z-10">{percent}%</span>
+                              </div>
+                            </div>
+                          ) : (
+                            // VOTING VIEW
+                            <button
+                              onClick={() => handleVote(poll.id, option.id)}
+                              className="w-full text-left px-5 py-4 rounded-xl border border-slate-200 hover:border-purple-500 hover:bg-purple-50 transition-all group flex items-center justify-between"
+                            >
+                              <span className="font-medium text-slate-700 group-hover:text-purple-900">{option.text}</span>
+                              <div className="w-5 h-5 rounded-full border-2 border-slate-300 group-hover:border-purple-500 flex items-center justify-center">
+                                <div className="w-2.5 h-2.5 rounded-full bg-purple-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+                              </div>
+                            </button>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                  
+                  {hasVoted && (
+                    <p className="text-center text-xs text-slate-400 mt-4 font-medium flex items-center justify-center gap-1">
+                      <CheckCircle2 className="w-3 h-3" /> You have voted in this poll
+                    </p>
+                  )}
+                </motion.div>
+              );
+            })}
+          </div>
+        )}
+
+        {/* --- TRACKER TAB --- */}
         {activeTab === 'tracker' && (
           <div className="bg-white rounded-[2.5rem] border border-slate-200 shadow-sm overflow-hidden">
             <div className="overflow-x-auto">
@@ -195,27 +249,40 @@ export function Polls() {
                     <th className="p-6 font-bold">Promise / Project</th>
                     <th className="p-6 font-bold hidden md:table-cell">Category</th>
                     <th className="p-6 font-bold text-center">Status</th>
-                    <th className="p-6 font-bold hidden lg:table-cell">Delivery Confidence</th>
+                    <th className="p-6 font-bold hidden lg:table-cell">Progress</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
-                  {ASSURANCES.map(item => (
+                  {ASSURANCES.map((item) => (
                     <tr key={item.id} className="group hover:bg-slate-50/50 transition-colors">
                       <td className="p-6">
                         <div className="font-bold text-slate-900 text-base mb-1">{item.promise}</div>
-                        <p className="text-xs text-slate-500">{item.notes}</p>
+                        <p className="text-xs text-slate-500 line-clamp-1">{item.notes}</p>
+                        <div className="md:hidden mt-2">
+                           <span className="text-[10px] bg-slate-100 px-2 py-0.5 rounded text-slate-600 font-medium">{item.category}</span>
+                        </div>
                       </td>
                       <td className="p-6 hidden md:table-cell">
                         <span className="text-sm font-medium text-slate-600">{item.category}</span>
                       </td>
                       <td className="p-6 text-center">
-                        <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold border">
-                          {item.verified ? <CheckCircle2 className="w-3.5 h-3.5" /> : <AlertCircle className="w-3.5 h-3.5" />}
+                        <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold border ${getStatusColor(item.status)}`}>
+                          {item.status === 'Completed' && <CheckCircle2 className="w-3.5 h-3.5" />}
+                          {item.status === 'On Track' && <BarChart3 className="w-3.5 h-3.5" />}
+                          {item.status === 'Delayed' && <AlertCircle className="w-3.5 h-3.5" />}
                           {item.status}
                         </span>
                       </td>
-                      <td className="p-6 hidden lg:table-cell">
-                        <span className="text-xs font-bold text-slate-700">{item.confidence}% Confidence</span>
+                      <td className="p-6 hidden lg:table-cell w-48">
+                        <div className="flex items-center gap-3">
+                          <div className="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden">
+                            <div 
+                              className={`h-full rounded-full transition-all duration-1000 ${item.progress === 100 ? 'bg-green-500' : 'bg-blue-600'}`} 
+                              style={{ width: `${item.progress}%` }}
+                            />
+                          </div>
+                          <span className="text-xs font-bold text-slate-600 w-8">{item.progress}%</span>
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -228,4 +295,4 @@ export function Polls() {
       </div>
     </div>
   );
-}
+} 

@@ -13,14 +13,14 @@ export function Assemblymen() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 pt-32 pb-20">
+    <div className="min-h-screen bg-slate-50 pt-6 pb-20"> {/* Reduced pt-32 to pt-6 to close the gap with the header */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* --- TOP SECTION: PARTNERSHIP & ROLES (Frontline of community service) --- */}
+        {/* --- TOP SECTION: MY TEAM & OUR SHARED MISSION (MP First-Person Perspective) --- */}
         <AnimatedSection delay={50}>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
             
-            {/* Assemblymen Role - NOW FIRST */}
+            {/* My Assemblymen Role */}
             <div className="bg-slate-900 rounded-xl p-8 text-white flex flex-col justify-between shadow-2xl">
               <div>
                 <div className="flex items-center gap-4 mb-6">
@@ -28,17 +28,17 @@ export function Assemblymen() {
                     <Users className="w-8 h-8 text-blue-400" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-black text-white leading-tight uppercase tracking-tight">Electoral Area Reps</h3>
-                    <p className="text-xs font-bold text-blue-400 tracking-widest uppercase mt-1">The frontline of community service</p>
+                    <h3 className="text-xl font-black text-white leading-tight uppercase tracking-tight">My Electoral Area Reps</h3>
+                    <p className="text-xs font-bold text-blue-400 tracking-widest uppercase mt-1">The frontline of our community service</p>
                   </div>
                 </div>
                 <p className="text-slate-300 leading-relaxed font-medium mb-4 text-sm md:text-base">
-                  Assembly Members are the first point of contact for day-to-day community issues such as drains, streetlights, and sanitation. They work closely with the MP's office.
+                  My Assembly Members are your first point of contact for day-to-day community issues such as drains, streetlights, and sanitation. They work closely with my office to ensure your concerns are brought to my attention and handled with the urgency they deserve.
                 </p>
               </div>
             </div>
 
-            {/* MP & Office Role */}
+            {/* My Commitment as MP */}
             <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-8 flex flex-col justify-between">
               <div>
                 <div className="flex items-center gap-4 mb-6">
@@ -50,17 +50,17 @@ export function Assemblymen() {
                     />
                   </div>
                   <div>
-                    <h3 className="text-xl font-black text-slate-900 leading-tight uppercase">Hon. Dr. Kwamena Minta Nyarku</h3>
-                    <p className="text-xs font-bold text-green-600 tracking-widest uppercase mt-1">Member of Parliament</p>
+                    <h3 className="text-xl font-black text-slate-900 leading-tight uppercase">My Commitment to You</h3>
+                    <p className="text-xs font-bold text-green-600 tracking-widest uppercase mt-1">Hon. Dr. Kwamena Minta Nyarku, MP</p>
                   </div>
                 </div>
                 <p className="text-slate-700 leading-relaxed font-medium mb-4 text-sm md:text-base">
-                  The MP's office provides strategic resources and coordinates large-scale projects. All issues reported are reviewed by the MP's technical team for rapid response.
+                  As your MP, I provide the strategic resources and coordinate the large-scale projects that drive our constituency forward. Every issue you report through this platform is reviewed by my technical team to ensure we deliver a rapid and effective response for our people.
                 </p>
               </div>
               <div className="bg-green-50 rounded-xl p-4 flex items-center gap-3">
                 <ShieldCheck className="text-green-600 w-5 h-5" />
-                <p className="text-[11px] font-black text-green-800 uppercase tracking-wider">Direct accountability for constituency development</p>
+                <p className="text-[11px] font-black text-green-800 uppercase tracking-wider">I am directly accountable for our constituency's development</p>
               </div>
             </div>
 
@@ -81,7 +81,7 @@ export function Assemblymen() {
                 key={member.zone}
                 className="flex flex-col items-center text-center group bg-white border border-gray-100 rounded-xl p-3 hover:shadow-lg transition-all duration-300"
               >
-                {/* Image container using original 3/4 aspect ratio */}
+                {/* Profile Image container */}
                 <div className="w-full aspect-[3/4] bg-gradient-to-br from-amber-50 to-orange-50 overflow-hidden rounded-lg mb-3 relative">
                   <img 
                     src={member.photoUrl} 
@@ -92,17 +92,17 @@ export function Assemblymen() {
                 </div>
                 
                 <div className="w-full">
-                  {/* 1. TOWN/ZONE (Even distance mb-1) */}
+                  {/* Electoral Area Name */}
                   <p className="text-xs font-extrabold tracking-widest text-amber-600 uppercase mb-1">
                     {member.zone}
                   </p>
                   
-                  {/* 2. NAME (Even distance mb-1) */}
+                  {/* Assemblyman Name */}
                   <p className="text-sm sm:text-base font-black text-slate-900 leading-tight uppercase line-clamp-2 mb-1">
                     {member.assemblyman}
                   </p>
                   
-                  {/* 3. NUMBER (Even distance, right under name) */}
+                  {/* Contact Number (Ghana format) */}
                   <p className="text-sm text-slate-800 flex items-center justify-center gap-1.5 font-bold">
                     <Phone className="w-3.5 h-3.5 text-green-600" />
                     <span>{formatPhoneNumber(member.phone)}</span>

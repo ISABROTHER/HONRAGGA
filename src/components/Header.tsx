@@ -1,6 +1,19 @@
 // src/components/Header.tsx
 import { useState } from 'react';
-import { Menu, X, Home, User, BookOpen, Calendar, MessageSquareWarning, HandHeart, LayoutDashboard, LogIn, ChevronRight } from 'lucide-react';
+import { 
+  Menu, 
+  X, 
+  Home, 
+  User, 
+  Users, // Updated for Assemblymen
+  Calendar, 
+  MessageSquareWarning, 
+  HandHeart, 
+  LayoutDashboard, 
+  LogIn, 
+  ChevronRight,
+  Vote // Updated for Polls
+} from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface HeaderProps {
@@ -11,7 +24,7 @@ interface HeaderProps {
 export function Header({ currentPage, onNavigate }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // === NUMERIC CONTROLS ===
+  // === NUMERIC CONTROLS (RESTORED FROM ORIGINAL) ===
   const headerHeightBase = 90; 
   const headerScale = 1.1; 
   const headerHeight = headerHeightBase * headerScale;
@@ -27,32 +40,31 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
   const desktopNavPaddingX = 16; 
   const desktopNavFontSize = 16; 
 
-  // Desktop Navigation Items
+  // === UPDATED NAVIGATION ITEMS (CURRENT BUTTONS) ===
   const navItems = [
     { id: 'home', label: 'Home' },
     { id: 'about', label: 'About' },
-    { id: 'policies', label: 'Policies' },
+    { id: 'assemblymen', label: 'Assemblymen' }, // Corrected ID
     { id: 'events', label: 'Events' },
-    { id: 'issues', label: 'Report Issue' }, // Renamed from News
+    { id: 'polls', label: 'Polls' }, // Added
+    { id: 'issues', label: 'Report Issue' }, 
     { id: 'volunteer', label: 'Get Involved' },
     { id: 'admin', label: 'My Page' }, 
   ];
 
-  // Mobile Menu Items
   const mobileNavItems = [
     { id: 'home', label: 'Home', icon: Home },
     { id: 'about', label: 'About Profile', icon: User },
-    { id: 'policies', label: 'Policies', icon: BookOpen },
+    { id: 'assemblymen', label: 'Assemblymen', icon: Users }, // Corrected icon
     { id: 'events', label: 'Events', icon: Calendar },
-    { id: 'issues', label: 'Report Issue', icon: MessageSquareWarning }, // Renamed from News
+    { id: 'polls', label: 'Polls & Tracker', icon: Vote }, // Added icon
+    { id: 'issues', label: 'Report Issue', icon: MessageSquareWarning },
     { id: 'volunteer', label: 'Get Involved', icon: HandHeart },
   ];
 
   const handleNavClick = (pageId: string) => {
-    // ALWAYS CLOSE MENU FIRST
     setMobileMenuOpen(false);
 
-    // STRICTLY DISABLE NAVIGATION FOR ADMIN / MY PAGE
     if (pageId === 'admin') {
       return; 
     }
@@ -60,7 +72,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
     onNavigate(pageId);
   };
 
-  // Premium Animation Variants
+  // Premium Animation Variants (Restored)
   const menuVariants = {
     closed: {
       scale: 0.9,
@@ -191,7 +203,6 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                   borderTopRightRadius: '70px' 
                 }}
               >
-                {/* THE CONTAINER: Solid NDC Red with Subtle Watermark */}
                 <div className="
                   relative bg-[#CE1126]
                   pt-24 pb-6 px-6
@@ -201,12 +212,12 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                   border-4 border-white/20
                 ">
                   
-                  {/* Large Watermark (NDC Logo Style) */}
+                  {/* Large Watermark */}
                   <div className="absolute -top-10 -left-20 w-64 h-64 text-white/5 pointer-events-none rotate-12">
                     <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zm0 9l2.5-1.25L12 8.5l-2.5 1.25L12 11zm0 2.5l-5-2.5-5 2.5L12 22l10-8.5-5-2.5-5 2.5z"/></svg>
                   </div>
 
-                  {/* === HERO: MY PAGE LOGIN BUTTON (Compact, No Subtext) === */}
+                  {/* HERO: MY PAGE */}
                   <motion.div variants={itemVariants} className="mb-6 relative z-10">
                     <h3 className="text-xs font-bold text-white/80 uppercase tracking-widest mb-2 ml-1">Login to Your Dashboard</h3>
                     <button
@@ -229,7 +240,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                     </button>
                   </motion.div>
 
-                  {/* === NAVIGATION LIST === */}
+                  {/* NAVIGATION LIST */}
                   <div className="flex flex-col space-y-2.5 relative z-10">
                     <h3 className="text-xs font-bold text-white/80 uppercase tracking-widest ml-1">Menu</h3>
                     
@@ -259,13 +270,11 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                       );
                     })}
                   </div>
-
                 </div>
               </motion.div>
             )}
           </AnimatePresence>
 
-          {/* Overlay for clicking outside */}
           <AnimatePresence>
             {mobileMenuOpen && (
               <motion.div 
@@ -278,7 +287,6 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
               />
             )}
           </AnimatePresence>
-
         </nav>
       </header>
 

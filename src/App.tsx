@@ -13,7 +13,7 @@ import { OngoingProjects } from './pages/OngoingProjects';
 import { Appointments } from './pages/Appointments';
 import { ReadStory } from './pages/ReadStory';
 import { Polls } from './pages/Polls';
-import { Assemblymen } from './pages/Assemblymen'; // New Import
+import { Assemblymen } from './pages/Assemblymen'; // Correct Named Import
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
@@ -46,7 +46,7 @@ function App() {
         return <Home onNavigate={handleNavigate} />;
       case 'about':
         return <About />;
-      case 'assemblymen': // Swapped from Policies
+      case 'assemblymen': // New Route
         return <Assemblymen />;
       case 'events':
         return <Events />;

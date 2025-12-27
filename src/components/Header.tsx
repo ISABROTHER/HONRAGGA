@@ -17,7 +17,6 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
 
   const logoScale = 1.2; 
   const logoTopOffset = 8; 
-  const logoBottomOffset = 2; 
   const logoVerticalAdjust = -1; 
   const logoLeftAdjust = 15; 
 
@@ -40,7 +39,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
   const mobileNavItems = [
     { id: 'home', label: 'Home', icon: Home },
     { id: 'about', label: 'About Profile', icon: User },
-    { id: 'assemblymen', label: 'Assemblymen', icon: Users }, // Renamed from Policies
+    { id: 'assemblymen', label: 'Assemblymen', icon: Users }, // Updated Icon
     { id: 'events', label: 'Events', icon: Calendar },
     { id: 'polls', label: 'Polls & Tracker', icon: Vote },
     { id: 'issues', label: 'Report Issue', icon: MessageSquareWarning },
@@ -51,24 +50,6 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
     setMobileMenuOpen(false);
     if (pageId === 'admin') return; 
     onNavigate(pageId);
-  };
-
-  const menuVariants = {
-    closed: {
-      scale: 0.9, opacity: 0,
-      borderBottomLeftRadius: "100%", borderTopLeftRadius: "100%", borderBottomRightRadius: "100%",
-      transition: { type: "spring", stiffness: 300, damping: 35 }
-    },
-    open: {
-      scale: 1, opacity: 1,
-      borderBottomLeftRadius: "40px", borderTopLeftRadius: "40px", borderBottomRightRadius: "40px",
-      transition: { type: "spring", stiffness: 200, damping: 25, staggerChildren: 0.05, delayChildren: 0.1 }
-    }
-  };
-
-  const itemVariants = {
-    closed: { opacity: 0, x: -20 },
-    open: { opacity: 1, x: 0 }
   };
 
   return (
@@ -86,7 +67,6 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                 position: 'relative',
                 top: `${logoTopOffset + logoVerticalAdjust}px`,
                 left: `${logoLeftAdjust}px`,
-                bottom: `${logoBottomOffset}px`,
               }}
             >
               <img
@@ -124,9 +104,9 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
             <div className="md:hidden relative z-50">
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="w-14 h-14 rounded-full bg-[#CE1126] text-white flex items-center justify-center transition-all shadow-xl"
+                className="w-14 h-14 rounded-full flex items-center justify-center bg-[#CE1126] text-white shadow-xl"
               >
-                {mobileMenuOpen ? <X className="w-7 h-7" strokeWidth={3} /> : <Menu className="w-7 h-7" strokeWidth={3} />}
+                {mobileMenuOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
               </button>
             </div>
           </div>
@@ -134,52 +114,36 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
           <AnimatePresence>
             {mobileMenuOpen && (
               <motion.div 
-                initial="closed" animate="open" exit="closed" variants={menuVariants}
-                className="md:hidden absolute top-[10px] right-[10px] w-[300px] origin-top-right"
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                className="md:hidden absolute top-[10px] right-[10px] w-[300px] origin-top-right bg-[#CE1126] pt-24 pb-6 px-6 shadow-2xl rounded-[40px] border-4 border-white/20"
               >
-                <div className="relative bg-[#CE1126] pt-24 pb-6 px-6 shadow-2xl h-full w-full overflow-hidden border-4 border-white/20 rounded-[40px]">
-                  <motion.div variants={itemVariants} className="mb-6 relative z-10">
-                    <button className="w-full bg-white text-[#CE1126] rounded-2xl p-4 shadow-lg flex items-center justify-between cursor-default">
-                      <div className="flex items-center gap-2">
-                        <LayoutDashboard className="w-5 h-5" />
-                        <span className="font-black text-xl">MY PAGE</span>
+                <div className="flex flex-col space-y-2.5 relative z-10">
+                  {mobileNavItems.map((item) => (
+                    <button
+                      key={item.id}
+                      onClick={() => handleNavClick(item.id)}
+                      className={`flex items-center justify-between px-5 py-3.5 rounded-xl w-full text-left transition-all ${
+                        currentPage === item.id ? 'bg-white text-[#CE1126] font-extrabold translate-x-2' : 'bg-white/90 text-slate-800 font-semibold'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <item.icon className={`w-5 h-5 ${currentPage === item.id ? 'text-[#CE1126]' : 'text-slate-400'}`} />
+                        <span className="text-sm">{item.label}</span>
                       </div>
-                      <LogIn className="w-5 h-5" />
+                      {currentPage === item.id && <ChevronRight className="w-4 h-4" />}
                     </button>
-                  </motion.div>
-
-                  <div className="flex flex-col space-y-2.5 relative z-10">
-                    {mobileNavItems.map((item) => {
-                      const Icon = item.icon;
-                      const isActive = currentPage === item.id;
-                      return (
-                        <motion.button
-                          key={item.id}
-                          variants={itemVariants}
-                          onClick={() => handleNavClick(item.id)}
-                          className={`flex items-center justify-between px-5 py-3.5 rounded-xl w-full text-left transition-all ${
-                            isActive ? 'bg-white text-[#CE1126] font-extrabold translate-x-2' : 'bg-white/90 text-slate-800 font-semibold'
-                          }`}
-                        >
-                          <div className="flex items-center gap-3">
-                            <Icon className={`w-5 h-5 ${isActive ? 'text-[#CE1126]' : 'text-slate-400'}`} />
-                            <span className="text-sm">{item.label}</span>
-                          </div>
-                          {isActive && <ChevronRight className="w-4 h-4" />}
-                        </motion.button>
-                      );
-                    })}
-                  </div>
+                  ))}
                 </div>
               </motion.div>
             )}
           </AnimatePresence>
         </nav>
       </header>
-
+      
       <div className="bg-red-600 h-5 overflow-hidden relative flex items-center" style={{ marginTop: `${headerHeight}px` }}>
         <div className="marquee-track absolute top-0 left-0 h-full flex items-center whitespace-nowrap font-bold text-white text-[0.65rem] tracking-widest uppercase">
-          <div style={{ minWidth: '25vw' }} />
           <span>SUPPORT HON. RAGGA’S OPERATION 1000 DESKS FOR STUDENTS 'II' OBIARA KA HO 'II'</span>
         </div>
       </div>

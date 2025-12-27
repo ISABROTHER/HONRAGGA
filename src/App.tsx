@@ -13,7 +13,7 @@ import { OngoingProjects } from './pages/OngoingProjects';
 import { Appointments } from './pages/Appointments';
 import { ReadStory } from './pages/ReadStory';
 import { Polls } from './pages/Polls';
-import { Assemblymen } from './pages/Assemblymen'; // Correct Named Import
+import { Assemblymen } from './pages/Assemblymen'; // IMPORT THE NEW PAGE
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
@@ -21,49 +21,26 @@ function App() {
 
   const handleNavigate = (page: string, param: string | null = null) => {
     setCurrentPage(page);
-    
-    if (page === 'read-story') {
-      setSelectedStoryId(param);
-    } else {
-      setSelectedStoryId(null);
-    }
-
+    if (page === 'read-story') setSelectedStoryId(param);
+    else setSelectedStoryId(null);
     window.scrollTo(0, 0);
   };
 
   const renderPage = () => {
-    if (currentPage === 'read-story') {
-      return (
-        <ReadStory 
-          storyId={selectedStoryId} 
-          onBack={() => handleNavigate('home')} 
-        />
-      );
-    }
+    if (currentPage === 'read-story') return <ReadStory storyId={selectedStoryId} onBack={() => handleNavigate('home')} />;
 
     switch (currentPage) {
-      case 'home':
-        return <Home onNavigate={handleNavigate} />;
-      case 'about':
-        return <About />;
-      case 'assemblymen': // New Route
-        return <Assemblymen />;
-      case 'events':
-        return <Events />;
-      case 'issues':
-        return <Issues />;
-      case 'polls':
-        return <Polls />;
-      case 'volunteer':
-        return <Volunteer />;
-      case 'admin':
-        return <Admin />;
-      case 'ongoing-projects':
-        return <OngoingProjects />;
-      case 'appointments':
-        return <Appointments />;
-      default:
-        return <Home onNavigate={handleNavigate} />;
+      case 'home': return <Home onNavigate={handleNavigate} />;
+      case 'about': return <About />;
+      case 'assemblymen': return <Assemblymen />; // ROUTE FOR ASSEMBLYMEN
+      case 'events': return <Events />;
+      case 'issues': return <Issues />;
+      case 'polls': return <Polls />;
+      case 'volunteer': return <Volunteer />;
+      case 'admin': return <Admin />;
+      case 'ongoing-projects': return <OngoingProjects />;
+      case 'appointments': return <Appointments />;
+      default: return <Home onNavigate={handleNavigate} />;
     }
   };
 

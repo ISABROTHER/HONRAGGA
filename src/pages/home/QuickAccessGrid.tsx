@@ -3,10 +3,11 @@ import React from "react";
 import {
   MessageSquareWarning,
   HardHat,
-  ScrollText,
+  Users, // Updated import
   Award,
   HandHeart,
-  UserCircle
+  UserCircle,
+  Vote // Added for Polls/Achievements
 } from "lucide-react";
 
 type QuickLink = {
@@ -39,22 +40,22 @@ const quickLinks: QuickLink[] = [
     route: "issues"
   },
   {
-    title: "Policies",
-    mobileDesc: "The Agenda",
-    desc: "Explore the CETRA2030 agenda for economic growth.",
-    icon: ScrollText,
+    title: "Assemblymen", // Changed from Policies
+    mobileDesc: "Local Reps",
+    desc: "Meet the local representatives working with Hon. Ragga.",
+    icon: Users, // Changed icon
     bgClass: "from-blue-50 to-indigo-50/50 border-blue-100",
     iconColor: "text-blue-600",
-    route: "policies"
+    route: "assemblymen" // Changed route
   },
   {
-    title: "Achievements",
-    mobileDesc: "Track record",
-    desc: "A record of promises kept: scholarships and bills passed.",
-    icon: Award,
+    title: "Polls & Tracker", // Changed from Achievements
+    mobileDesc: "Your Voice",
+    desc: "Vote on key issues and track campaign promises kept.",
+    icon: Vote, // Changed icon
     bgClass: "from-purple-50 to-fuchsia-50/50 border-purple-100",
     iconColor: "text-purple-600",
-    route: "policies"
+    route: "polls" // Changed route to polls
   },
   {
     title: "Support",

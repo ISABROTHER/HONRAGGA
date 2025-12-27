@@ -16,28 +16,10 @@ export function Assemblymen() {
     <div className="min-h-screen bg-slate-50 pt-32 pb-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* --- PAGE HERO --- */}
-        <div className="text-center mb-16">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-slate-200 shadow-sm mb-6"
-          >
-            <Handshake className="w-4 h-4 text-amber-600" />
-            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Local Governance</span>
-          </motion.div>
-          
-          <h1 className="text-4xl md:text-6xl font-black text-slate-900 tracking-tight mb-6">
-            Assembly <span className="text-blue-700">Members.</span>
-          </h1>
-          <p className="max-w-2xl mx-auto text-slate-500 text-lg font-medium">
-            Your local representatives working hand-in-hand with Hon. Ragga to ensure rapid development in every electoral area of Cape Coast North.
-          </p>
-        </div>
-
         {/* --- PARTNERSHIP SECTION --- */}
         <AnimatedSection delay={50}>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-20">
+            {/* MP & Office Role */}
             <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-8 flex flex-col justify-between">
               <div>
                 <div className="flex items-center gap-4 mb-6">
@@ -59,10 +41,12 @@ export function Assemblymen() {
               </div>
             </div>
 
+            {/* Assemblymen Role */}
             <div className="bg-slate-900 rounded-xl p-8 text-white flex flex-col justify-between shadow-2xl">
               <div>
                 <div className="flex items-center gap-4 mb-6">
                   <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center border border-white/20">
+                    <point-heart className="w-8 h-8 text-blue-400" />
                     <Users className="w-8 h-8 text-blue-400" />
                   </div>
                   <div>
@@ -106,17 +90,17 @@ export function Assemblymen() {
                 </div>
                 
                 <div className="w-full">
-                  {/* 1. TOWN/ZONE (Even distance of mb-1) */}
+                  {/* 1. TOWN/ZONE */}
                   <p className="text-xs font-extrabold tracking-widest text-amber-600 uppercase mb-1">
                     {member.zone}
                   </p>
                   
-                  {/* 2. NAME (Even distance of mb-1) */}
+                  {/* 2. NAME */}
                   <p className="text-sm sm:text-base font-black text-slate-900 leading-tight uppercase line-clamp-2 mb-1">
                     {member.assemblyman}
                   </p>
                   
-                  {/* 3. NUMBER (Even distance, no background feature) */}
+                  {/* 3. NUMBER */}
                   <p className="text-sm text-slate-800 flex items-center justify-center gap-1.5 font-bold">
                     <Phone className="w-3.5 h-3.5 text-green-600" />
                     <span>{formatPhoneNumber(member.phone)}</span>

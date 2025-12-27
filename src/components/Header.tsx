@@ -1,6 +1,6 @@
 // src/components/Header.tsx
 import { useState } from 'react';
-import { Menu, X, Home, User, BookOpen, Calendar, MessageSquareWarning, HandHeart, LayoutDashboard, LogIn, ChevronRight } from 'lucide-react';
+import { Menu, X, Home, User, BookOpen, Calendar, MessageSquareWarning, HandHeart, LayoutDashboard, LogIn, ChevronRight, Vote } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface HeaderProps {
@@ -33,7 +33,8 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
     { id: 'about', label: 'About' },
     { id: 'policies', label: 'Policies' },
     { id: 'events', label: 'Events' },
-    { id: 'issues', label: 'Report Issue' }, // Renamed from News
+    { id: 'polls', label: 'Polls' },
+    { id: 'issues', label: 'Report Issue' }, 
     { id: 'volunteer', label: 'Get Involved' },
     { id: 'admin', label: 'My Page' }, 
   ];
@@ -44,15 +45,14 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
     { id: 'about', label: 'About Profile', icon: User },
     { id: 'policies', label: 'Policies', icon: BookOpen },
     { id: 'events', label: 'Events', icon: Calendar },
-    { id: 'issues', label: 'Report Issue', icon: MessageSquareWarning }, // Renamed from News
+    { id: 'polls', label: 'Polls & Tracker', icon: Vote },
+    { id: 'issues', label: 'Report Issue', icon: MessageSquareWarning },
     { id: 'volunteer', label: 'Get Involved', icon: HandHeart },
   ];
 
   const handleNavClick = (pageId: string) => {
-    // ALWAYS CLOSE MENU FIRST
     setMobileMenuOpen(false);
 
-    // STRICTLY DISABLE NAVIGATION FOR ADMIN / MY PAGE
     if (pageId === 'admin') {
       return; 
     }
@@ -60,7 +60,6 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
     onNavigate(pageId);
   };
 
-  // Premium Animation Variants
   const menuVariants = {
     closed: {
       scale: 0.9,
@@ -91,7 +90,6 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
 
   return (
     <div className="relative w-full">
-      {/* === FIXED HEADER === */}
       <header
         className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-xl transition-shadow"
         style={{
@@ -101,7 +99,6 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full relative">
           <div className="flex justify-between items-center h-full">
             
-            {/* === LOGO === */}
             <button
               onClick={() => handleNavClick('home')}
               className="flex items-center space-x-3 group transition-transform hover:scale-[1.01] focus:outline-none"
@@ -127,7 +124,6 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
               </div>
             </button>
 
-            {/* === DESKTOP NAVIGATION === */}
             <div
               className="hidden md:flex items-center"
               style={{
@@ -153,7 +149,6 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
               ))}
             </div>
 
-            {/* === MOBILE MENU TOGGLE === */}
             <div className="md:hidden relative z-50">
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -175,7 +170,6 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
             </div>
           </div>
 
-          {/* === CUSTOM DROPPING MOBILE MENU === */}
           <AnimatePresence>
             {mobileMenuOpen && (
               <motion.div 
@@ -191,7 +185,6 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                   borderTopRightRadius: '70px' 
                 }}
               >
-                {/* THE CONTAINER: Solid NDC Red with Subtle Watermark */}
                 <div className="
                   relative bg-[#CE1126]
                   pt-24 pb-6 px-6
@@ -201,12 +194,10 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                   border-4 border-white/20
                 ">
                   
-                  {/* Large Watermark (NDC Logo Style) */}
                   <div className="absolute -top-10 -left-20 w-64 h-64 text-white/5 pointer-events-none rotate-12">
                     <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zm0 9l2.5-1.25L12 8.5l-2.5 1.25L12 11zm0 2.5l-5-2.5-5 2.5L12 22l10-8.5-5-2.5-5 2.5z"/></svg>
                   </div>
 
-                  {/* === HERO: MY PAGE LOGIN BUTTON (Compact, No Subtext) === */}
                   <motion.div variants={itemVariants} className="mb-6 relative z-10">
                     <h3 className="text-xs font-bold text-white/80 uppercase tracking-widest mb-2 ml-1">Login to Your Dashboard</h3>
                     <button
@@ -229,7 +220,6 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                     </button>
                   </motion.div>
 
-                  {/* === NAVIGATION LIST === */}
                   <div className="flex flex-col space-y-2.5 relative z-10">
                     <h3 className="text-xs font-bold text-white/80 uppercase tracking-widest ml-1">Menu</h3>
                     
@@ -265,7 +255,6 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
             )}
           </AnimatePresence>
 
-          {/* Overlay for clicking outside */}
           <AnimatePresence>
             {mobileMenuOpen && (
               <motion.div 
@@ -282,7 +271,6 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
         </nav>
       </header>
 
-      {/* === MARQUEE === */}
       <div
         className="bg-red-600 h-5 overflow-hidden relative flex items-center"
         style={{ marginTop: `${headerHeight}px` }}

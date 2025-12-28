@@ -204,7 +204,7 @@ export function Achievements() {
     const policy = policies.find(p => p.id === selectedPolicy)!;
 
     return (
-      <div className="min-h-screen bg-white pt-32 pb-20">
+      <div className="min-h-screen bg-white pt-24 pb-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.button
             initial={{ opacity: 0, x: -20 }}
@@ -256,7 +256,7 @@ export function Achievements() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 pt-32 pb-20">
+    <div className="min-h-screen bg-slate-50 pt-24 pb-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <div className="text-center mb-16">

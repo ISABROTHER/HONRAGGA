@@ -13,7 +13,8 @@ import { OngoingProjects } from './pages/OngoingProjects';
 import { Appointments } from './pages/Appointments';
 import { ReadStory } from './pages/ReadStory';
 import { Polls } from './pages/Polls';
-import { Assemblymen } from './pages/Assemblymen'; // Import the new page
+import { Assemblymen } from './pages/Assemblymen';
+import { Achievements } from './pages/Achievements'; // IMPORT UPDATED HERE
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
@@ -46,7 +47,7 @@ function App() {
         return <Home onNavigate={handleNavigate} />;
       case 'about':
         return <About />;
-      case 'assemblymen': // Swapped from Policies
+      case 'assemblymen':
         return <Assemblymen />;
       case 'events':
         return <Events />;
@@ -54,6 +55,8 @@ function App() {
         return <Issues />;
       case 'polls':
         return <Polls />;
+      case 'achievements': // ROUTE UPDATED HERE
+        return <Achievements />;
       case 'volunteer':
         return <Volunteer />;
       case 'admin':

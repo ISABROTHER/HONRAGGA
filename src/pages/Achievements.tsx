@@ -6,7 +6,6 @@ import {
   Construction,
   Sprout,
   ArrowLeft,
-  Award,
   ChevronRight
 } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -254,7 +253,6 @@ export function Achievements() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <div className="text-center mb-10">
-          {/* Title with Animated Underline */}
           <div className="flex flex-col items-center justify-center group">
             <h1 className="text-4xl md:text-6xl font-black text-slate-900 tracking-tight mb-4">
               Our <span className="text-blue-700">Achievements</span>
@@ -286,10 +284,15 @@ export function Achievements() {
 
                   <div className="p-6">
                     <h3 className="text-2xl font-black text-slate-900 mb-3">{policy.title}</h3>
-                    <p className="text-slate-500 text-sm font-medium mb-6 leading-relaxed">{policy.desc}</p>
-                    <div className="flex items-center gap-2 text-blue-600 font-bold text-sm group-hover:gap-3 transition-all">
-                      <span>View Details</span>
-                      <ChevronRight className="w-4 h-4" />
+                    {/* INITIATIVES ON LEFT, VIEW DETAILS ON RIGHT */}
+                    <div className="flex items-end justify-between gap-4">
+                      <p className="text-slate-500 text-sm font-medium leading-relaxed flex-1">
+                        {policy.desc}
+                      </p>
+                      <div className="flex items-center gap-1 text-blue-600 font-bold text-xs uppercase tracking-wider whitespace-nowrap group-hover:gap-2 transition-all pb-1">
+                        <span>View Details</span>
+                        <ChevronRight className="w-3.5 h-3.5" />
+                      </div>
                     </div>
                   </div>
                 </button>

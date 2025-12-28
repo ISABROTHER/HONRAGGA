@@ -228,12 +228,6 @@ export function Achievements() {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
             <div className="absolute bottom-6 left-6">
-              <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full ${policy.bgColor} border ${policy.borderColor} mb-3`}>
-                <policy.icon className={`w-5 h-5 ${policy.textColor}`} />
-                <span className={`text-xs font-black uppercase tracking-widest ${policy.textColor}`}>
-                  Achievement Area
-                </span>
-              </div>
               <h1 className="text-4xl md:text-5xl font-black text-white leading-tight">
                 {detail.title}
               </h1>

@@ -6,20 +6,14 @@ import { AboutMP } from './about/AboutMP';
 export function About() {
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* 1. THE HERO SECTION */}
-      {/* Ensure AboutHero.tsx is updated to remove the MP titles/NDC text */}
       <AboutHero />
       
-      {/* 2. THE BIOGRAPHY SECTION */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-28">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20 space-y-16">
         <AboutMP />
-        
-        {/* All specific text blocks like "Apewosika", "READ FULL PROFILE", 
-            and "Know Your Assemblymen" have been removed from the 
-            AboutMP and AboutAssemblymen sub-components. */}
+        {/* Assemblymen section removed as requested */}
       </div>
 
-      {/* Global Animations Styles */}
+      {/* Global Animations Styles for this page */}
       <style>{`
         .animate-section-enter {
           opacity: 1;

@@ -17,6 +17,7 @@ const policies = [
   {
     id: 'education' as PolicyKey,
     title: 'Educational Support',
+    count: 4,
     desc: 'Supporting quality education, digital literacy, and youth skills training',
     icon: BookOpen,
     color: 'from-blue-500 to-blue-700',
@@ -28,6 +29,7 @@ const policies = [
   {
     id: 'health' as PolicyKey,
     title: 'Health & Sanitation',
+    count: 2,
     desc: 'Expanding access to healthcare and clean water for all',
     icon: HeartPulse,
     color: 'from-green-500 to-green-700',
@@ -39,6 +41,7 @@ const policies = [
   {
     id: 'employment' as PolicyKey,
     title: 'Employment & Entrepreneurship',
+    count: 3,
     desc: 'Creating jobs and empowering local businesses',
     icon: Briefcase,
     color: 'from-amber-500 to-amber-700',
@@ -50,6 +53,7 @@ const policies = [
   {
     id: 'infrastructure' as PolicyKey,
     title: 'Infrastructure Development',
+    count: 4,
     desc: 'Improving roads, electrification, and connectivity',
     icon: Construction,
     color: 'from-slate-500 to-slate-700',
@@ -61,6 +65,7 @@ const policies = [
   {
     id: 'agriculture' as PolicyKey,
     title: 'Agricultural Support',
+    count: 4,
     desc: 'Supporting farmers with tools, training, and market access',
     icon: Sprout,
     color: 'from-emerald-500 to-emerald-700',
@@ -282,10 +287,15 @@ export function Achievements() {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
                   </div>
 
-                  <div className="p-6">
-                    <h3 className="text-2xl font-black text-slate-900 mb-3">{policy.title}</h3>
-                    {/* INITIATIVES ON LEFT, VIEW DETAILS ON RIGHT */}
-                    <div className="flex items-end justify-between gap-4">
+                  <div className="p-6 flex-1 flex flex-col">
+                    <div className="flex justify-between items-start mb-3">
+                      <h3 className="text-xl font-black text-slate-900 flex-1 leading-tight">{policy.title}</h3>
+                      <div className="bg-blue-50 text-blue-700 text-[10px] font-black px-2 py-1 rounded-lg border border-blue-100 whitespace-nowrap ml-2">
+                        {policy.count} KEY INITIATIVES
+                      </div>
+                    </div>
+                    
+                    <div className="mt-auto flex items-end justify-between gap-4">
                       <p className="text-slate-500 text-sm font-medium leading-relaxed flex-1">
                         {policy.desc}
                       </p>

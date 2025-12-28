@@ -204,7 +204,7 @@ export function Achievements() {
     const policy = policies.find(p => p.id === selectedPolicy)!;
 
     return (
-      <div className="min-h-screen bg-white pt-24 pb-20">
+      <div className="min-h-screen bg-white pt-20 pb-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.button
             initial={{ opacity: 0, x: -20 }}
@@ -256,10 +256,10 @@ export function Achievements() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 pt-24 pb-20">
+    <div className="min-h-screen bg-slate-50 pt-16 pb-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        <div className="text-center mb-16">
+        <div className="text-center mb-10">
           {/* Title with Animated Underline */}
           <div className="flex flex-col items-center justify-center group">
             <h1 className="text-4xl md:text-6xl font-black text-slate-900 tracking-tight mb-4">
@@ -268,7 +268,7 @@ export function Achievements() {
             <span className="h-1.5 w-24 rounded-full bg-gradient-to-r from-green-500 to-green-600 transition-all duration-500 group-hover:w-48" />
           </div>
 
-          <p className="max-w-2xl mx-auto text-slate-600 text-lg font-medium leading-relaxed mt-8">
+          <p className="max-w-2xl mx-auto text-slate-600 text-lg font-medium leading-relaxed mt-6">
             A comprehensive record of verifiable progress made across Cape Coast North Constituency.
           </p>
         </div>

@@ -23,7 +23,7 @@ export function AboutHero() {
           alt="Cape Coast North Leadership"
           className="w-full h-full object-cover object-center"
         />
-      </div> 
+      </div>
     </section>
   );
 }

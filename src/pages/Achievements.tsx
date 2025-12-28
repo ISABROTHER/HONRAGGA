@@ -260,16 +260,6 @@ export function Achievements() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <div className="text-center mb-16">
-          {/* Green Track Record Badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-green-50 border border-green-100 shadow-sm mb-6"
-          >
-            <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
-            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-green-700">Track Record</span>
-          </motion.div>
-
           {/* Title with Animated Underline */}
           <div className="flex flex-col items-center justify-center group">
             <h1 className="text-4xl md:text-6xl font-black text-slate-900 tracking-tight mb-4">

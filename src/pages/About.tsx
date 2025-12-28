@@ -4,72 +4,96 @@ import { motion } from 'framer-motion';
 import { AnimatedSection } from '../components/AnimatedSection';
 
 export function About() {
-  // Updated to a more professional, formal portrait for better alignment with the page's tone
-  const mpPortraitUrl = "https://via.placeholder.com/800x1000/1e3a8a/ffffff?text=Hon.+Dr.+Kwamena+Minta+Nyarku"; // Replace with actual formal portrait URL
+  // Reverted to the original portrait URL as requested
+  const mpPortraitUrl = "https://i.imgur.com/5H0XBuV.jpeg";
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-blue-50 pt-32 pb-20">
+    <div className="min-h-screen bg-gradient-to-br from-white via-blue-50 to-slate-100 pt-32 pb-20 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* --- PROFILE HERO --- */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center mb-32">
+        {/* --- PROFILE HERO (Elevated to top 1% design) --- */}
+        <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center mb-32">
+          {/* Subtle background accent for premium feel */}
+          <div className="absolute inset-0 -z-10">
+            <div className="absolute top-0 left-0 w-96 h-96 bg-blue-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse" />
+            <div className="absolute bottom-0 right-0 w-96 h-96 bg-slate-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse animation-delay-2000" />
+          </div>
+
           <AnimatedSection delay={100}>
-            <div className="relative">
-              <div className="aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl ring-4 ring-blue-100">
+            <div className="relative group">
+              <div className="aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl ring-8 ring-blue-100/50 transition-all duration-1000 group-hover:ring-blue-300/70">
                 <img
                   src={mpPortraitUrl}
                   alt="Hon. Dr. Kwamena Minta Nyarku"
-                  className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
                 />
+                {/* Overlay gradient for depth */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-60" />
               </div>
-              <div className="absolute -bottom-8 -right-8 bg-blue-900 text-white px-8 py-10 rounded-3xl shadow-2xl hidden md:block max-w-xs">
-                <p className="text-4xl font-black mb-2 italic leading-none">"Ragga"</p>
-                <p className="text-blue-200 font-bold uppercase tracking-widest text-sm">People's Representative</p>
-              </div>
+
+              {/* "Ragga" badge – made more dynamic and prominent */}
+              <motion.div
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.8 }}
+                className="absolute -bottom-8 -right-8 bg-blue-900 text-white px-10 py-12 rounded-3xl shadow-2xl hidden md:block"
+              >
+                <p className="text-5xl font-black mb-3 italic leading-none">"Ragga"</p>
+                <p className="text-blue-200 font-bold uppercase tracking-widest text-base">People's Representative</p>
+              </motion.div>
             </div>
           </AnimatedSection>
 
           <AnimatedSection delay={200}>
-            <div className="space-y-8">
-              <div className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-blue-50 border border-blue-200">
-                <User className="w-5 h-5 text-blue-700" />
-                <span className="text-sm font-black uppercase tracking-widest text-blue-800">Official Profile</span>
-              </div>
+            <div className="space-y-10">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                className="inline-flex items-center gap-4 px-6 py-3 rounded-full bg-blue-100/80 backdrop-blur-sm border border-blue-200"
+              >
+                <User className="w-6 h-6 text-blue-800" />
+                <span className="text-base font-black uppercase tracking-widest text-blue-900">Official Profile</span>
+              </motion.div>
 
-              <h1 className="text-5xl md:text-7xl font-black text-slate-900 leading-none">
+              <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-slate-900 leading-none">
                 Hon. Dr. Kwamena<br />
-                <span className="text-blue-700">Minta Nyarku</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-800">Minta Nyarku</span>
               </h1>
 
-              <p className="text-xl text-slate-600 leading-relaxed font-medium max-w-2xl">
-                An accomplished academic, visionary leader, and dedicated public servant. Affectionately known as "Ragga," Dr. Minta Nyarku embodies the hopes of Cape Coast North constituents for tangible, verifiable progress.
+              <p className="text-xl md:text-2xl text-slate-600 leading-relaxed font-medium max-w-2xl">
+                An Academic, a Visionary, and a dedicated servant of the people. Known affectionately as "Ragga," Dr. Minta Nyarku represents the aspiration of every constituent in Cape Coast North for real, verifiable progress.
               </p>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-6">
-                <div className="p-6 bg-white rounded-2xl shadow-md border border-slate-100">
-                  <h4 className="font-black text-slate-900 uppercase text-sm mb-2 tracking-wider">Current Position</h4>
-                  <p className="text-lg font-bold text-blue-700">Member of Parliament</p>
-                  <p className="text-sm text-slate-500">Cape Coast North Constituency</p>
-                </div>
-                <div className="p-6 bg-white rounded-2xl shadow-md border border-slate-100">
-                  <h4 className="font-black text-slate-900 uppercase text-sm mb-2 tracking-wider">Primary Focus</h4>
-                  <p className="text-lg font-bold text-blue-700">Economic Empowerment</p>
-                  <p className="text-sm text-slate-500">Education & Skills Development</p>
-                </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 pt-8">
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  className="p-8 bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-slate-200"
+                >
+                  <h4 className="font-black text-slate-900 uppercase text-sm mb-3 tracking-wider">Position</h4>
+                  <p className="text-2xl font-black text-blue-700">Member of Parliament</p>
+                  <p className="text-base text-slate-500 mt-1">Cape Coast North</p>
+                </motion.div>
+
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  className="p-8 bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-slate-200"
+                >
+                  <h4 className="font-black text-slate-900 uppercase text-sm mb-3 tracking-wider">Focus</h4>
+                  <p className="text-2xl font-black text-blue-700">Economic Empowerment</p>
+                  <p className="text-base text-slate-500 mt-1">Education & Community Development</p>
+                </motion.div>
               </div>
             </div>
           </AnimatedSection>
         </div>
 
-        {/* --- MISSION & VISION --- */}
+        {/* --- MISSION & VISION (kept refined) --- */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-32">
           <AnimatedSection delay={300}>
-            <motion.div
-              whileHover={{ scale: 1.02 }}
-              className="bg-slate-900 rounded-3xl p-12 lg:p-16 text-white relative overflow-hidden shadow-xl"
-            >
-              <div className="absolute top-4 right-4 opacity-10">
-                <Target className="w-40 h-40" />
+            <motion.div whileHover={{ scale: 1.02, y: -8 }} className="bg-slate-900 rounded-3xl p-12 lg:p-16 text-white relative overflow-hidden shadow-2xl">
+              <div className="absolute top-4 right-4 opacity-15">
+                <Target className="w-48 h-48" />
               </div>
               <h2 className="text-4xl font-black mb-8 uppercase tracking-tight relative z-10">Our Mission</h2>
               <p className="text-lg lg:text-xl text-slate-300 leading-relaxed font-medium relative z-10">
@@ -79,12 +103,9 @@ export function About() {
           </AnimatedSection>
 
           <AnimatedSection delay={400}>
-            <motion.div
-              whileHover={{ scale: 1.02 }}
-              className="bg-blue-700 rounded-3xl p-12 lg:p-16 text-white relative overflow-hidden shadow-xl"
-            >
-              <div className="absolute top-4 right-4 opacity-10">
-                <BookOpen className="w-40 h-40" />
+            <motion.div whileHover={{ scale: 1.02, y: -8 }} className="bg-blue-700 rounded-3xl p-12 lg:p-16 text-white relative overflow-hidden shadow-2xl">
+              <div className="absolute top-4 right-4 opacity-15">
+                <BookOpen className="w-48 h-48" />
               </div>
               <h2 className="text-4xl font-black mb-8 uppercase tracking-tight relative z-10">The Vision</h2>
               <p className="text-lg lg:text-xl text-blue-100 leading-relaxed font-medium relative z-10">
@@ -94,11 +115,11 @@ export function About() {
           </AnimatedSection>
         </div>
 
-        {/* --- CORE VALUES --- */}
+        {/* --- CORE VALUES (kept refined) --- */}
         <AnimatedSection delay={500}>
           <div className="text-center mb-20">
-            <h2 className="text-4xl md:text-6xl font-black text-slate-900 uppercase tracking-tighter">Core Principles</h2>
-            <div className="w-32 h-2 bg-blue-700 mx-auto mt-6 rounded-full" />
+            <h2 className="text-5xl md:text-7xl font-black text-slate-900 uppercase tracking-tighter">Core Principles</h2>
+            <div className="w-40 h-2.5 bg-gradient-to-r from-blue-600 to-blue-800 mx-auto mt-8 rounded-full" />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
@@ -111,14 +132,14 @@ export function About() {
               return (
                 <motion.div
                   key={idx}
-                  whileHover={{ y: -8, scale: 1.03 }}
-                  className="bg-white border border-slate-200 p-10 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 text-center"
+                  whileHover={{ y: -12, scale: 1.05 }}
+                  className="bg-white/90 backdrop-blur-sm border border-slate-200 p-12 rounded-3xl shadow-2xl transition-all duration-500 text-center"
                 >
-                  <div className="w-20 h-20 bg-blue-50 rounded-3xl flex items-center justify-center mx-auto mb-8">
-                    <Icon className="w-10 h-10 text-blue-700" />
+                  <div className="w-24 h-24 bg-gradient-to-br from-blue-100 to-blue-200 rounded-3xl flex items-center justify-center mx-auto mb-10">
+                    <Icon className="w-12 h-12 text-blue-800" />
                   </div>
-                  <h3 className="text-2xl font-black text-slate-900 mb-5 uppercase tracking-tight">{value.title}</h3>
-                  <p className="text-slate-600 font-medium leading-relaxed text-lg">{value.desc}</p>
+                  <h3 className="text-3xl font-black text-slate-900 mb-6 uppercase tracking-tight">{value.title}</h3>
+                  <p className="text-slate-600 font-medium leading-relaxed text-xl">{value.desc}</p>
                 </motion.div>
               );
             })}

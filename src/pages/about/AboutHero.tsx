@@ -1,23 +1,29 @@
 // src/pages/about/AboutHero.tsx
+import React from 'react';
+
 export function AboutHero() {
+  const heroDesktopUrl = "https://i.imgur.com/6rWU7qN.png";
+  const heroMobileUrl = "https://i.imgur.com/abKZDVv.png";
+
   return (
-    <div className="relative h-[40vh] md:h-[50vh] flex items-center justify-center overflow-hidden bg-slate-900">
-      {/* Background with subtle overlay */}
-      <div className="absolute inset-0 z-0 opacity-40 grayscale">
-        <img 
-          src="https://i.imgur.com/5H0XBuV.jpeg" 
-          alt="Hero Background" 
-          className="w-full h-full object-cover"
+    <section className="w-full bg-slate-50">
+      {/* Mobile hero: Natural height to prevent cropping */}
+      <div className="block md:hidden w-full">
+        <img
+          src={heroMobileUrl}
+          alt="Cape Coast North Leadership"
+          className="w-full h-auto object-contain"
         />
-        <div className="absolute inset-0 bg-slate-900/60" />
       </div>
 
-      <div className="relative z-10 text-center px-4">
-        {/* Only the Main Heading remains */}
-        <h1 className="text-5xl md:text-8xl font-black text-white tracking-tighter uppercase animate-fade-in">
-          ABOUT <span className="text-blue-500">ME.</span>
-        </h1>
-      </div>
-    </div>
+      {/* Desktop hero: Fixed height banner */}
+      <div className="hidden md:block relative w-full h-[420px] lg:h-[520px]">
+        <img
+          src={heroDesktopUrl}
+          alt="Cape Coast North Leadership"
+          className="w-full h-full object-cover object-center"
+        />
+      </div> 
+    </section>
   );
 }

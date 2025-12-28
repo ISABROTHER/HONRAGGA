@@ -7,12 +7,14 @@ import {
   Sprout,
   ArrowLeft,
   Award,
-  ChevronRight
+  ChevronRight,
+  HeartHandshake,
+  Trophy
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { AnimatedSection } from '../components/AnimatedSection';
 
-type PolicyKey = 'education' | 'health' | 'employment' | 'infrastructure' | 'agriculture';
+type PolicyKey = 'education' | 'health' | 'employment' | 'infrastructure' | 'agriculture' | 'welfare' | 'sports';
 
 const policies = [
   {
@@ -38,17 +40,6 @@ const policies = [
     image: 'https://i.imgur.com/XmWnKbH.jpeg'
   },
   {
-    id: 'employment' as PolicyKey,
-    title: 'Employment & Entrepreneurship',
-    desc: 'Creating jobs and empowering local businesses',
-    icon: Briefcase,
-    color: 'from-amber-500 to-amber-700',
-    bgColor: 'bg-amber-50',
-    textColor: 'text-amber-700',
-    borderColor: 'border-amber-200',
-    image: 'https://i.imgur.com/saQoFLV.png'
-  },
-  {
     id: 'infrastructure' as PolicyKey,
     title: 'Infrastructure Development',
     desc: 'Improving roads, electrification, and connectivity',
@@ -58,6 +49,39 @@ const policies = [
     textColor: 'text-slate-700',
     borderColor: 'border-slate-200',
     image: 'https://i.imgur.com/AZqDymE.jpeg'
+  },
+  {
+    id: 'welfare' as PolicyKey,
+    title: 'Social Welfare',
+    desc: 'Providing a safety net for the vulnerable and supporting community groups',
+    icon: HeartHandshake,
+    color: 'from-rose-500 to-rose-700',
+    bgColor: 'bg-rose-50',
+    textColor: 'text-rose-700',
+    borderColor: 'border-rose-200',
+    image: 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=2070&auto=format&fit=crop'
+  },
+  {
+    id: 'sports' as PolicyKey,
+    title: 'Sports & Youth',
+    desc: 'Empowering youth through sports infrastructure and talent development',
+    icon: Trophy,
+    color: 'from-indigo-500 to-indigo-700',
+    bgColor: 'bg-indigo-50',
+    textColor: 'text-indigo-700',
+    borderColor: 'border-indigo-200',
+    image: 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=2093&auto=format&fit=crop'
+  },
+  {
+    id: 'employment' as PolicyKey,
+    title: 'Employment & Entrepreneurship',
+    desc: 'Creating jobs and empowering local businesses',
+    icon: Briefcase,
+    color: 'from-amber-500 to-amber-700',
+    bgColor: 'bg-amber-50',
+    textColor: 'text-amber-700',
+    borderColor: 'border-amber-200',
+    image: 'https://i.imgur.com/saQoFLV.png'
   },
   {
     id: 'agriculture' as PolicyKey,
@@ -77,25 +101,14 @@ const policyDetails: Record<PolicyKey, { title: string; content: JSX.Element }> 
     title: "Educational Support",
     content: (
       <>
-        <p className="mb-6 text-lg">
-          Dr. Kwamena Minta Nyarku has consistently prioritized education, recognizing its pivotal role in community development and individual empowerment. His initiatives in this sector span from basic to tertiary levels, providing essential resources and support to students and institutions.
-        </p>
-
-        <h3 className="text-2xl font-bold mt-8 mb-4">Basic and Senior High School Support</h3>
-        <p className="mb-4">
-          One of the key educational initiatives is the High School Education Support Program, which aims to provide comprehensive assistance to students in senior high schools. In October 2025, as part of this program, Dr. Nyarku donated 500 LED bulbs to Adisadel College to alleviate persistent lighting challenges in classrooms and dormitories.
-        </p>
-        <p className="mb-4">
-          This effort is integrated into his broader ongoing "Operation Light Up Cape Coast North" initiative, which has also seen the installation of over 2,500 streetlights across the constituency.
-        </p>
-        <p className="mb-6">
-          Further contributions to basic and senior high schools include the donation of 100 dual desks to 10 schools and significant school renovations. Additionally, exercise books have been donated to support students.
-        </p>
-
-        <h3 className="text-2xl font-bold mt-8 mb-4">Tertiary Education Support</h3>
-        <p className="mb-4">
-          Dr. Nyarku has extended his support to tertiary institutions, including the University of Cape Coast (UCC), Cape Coast Technical University, and OLA Training College. These efforts aim to enhance the learning environment and provide necessary resources for higher education.
-        </p>
+        <p className="mb-6 text-lg">Dr. Kwamena Minta Nyarku has consistently prioritized education, recognizing its pivotal role in community development. His initiatives span from basic to tertiary levels.</p>
+        <h3 className="text-2xl font-bold mt-8 mb-4">Core Achievements</h3>
+        <ul className="list-disc pl-6 space-y-2 mb-6">
+          <li>Donation of 500 LED bulbs to Adisadel College.</li>
+          <li>Provision of 100 dual desks to 10 local schools.</li>
+          <li>Financial support for tertiary students through the MP's Common Fund.</li>
+          <li>Renovation of dilapidated classroom blocks in rural areas.</li>
+        </ul>
       </>
     )
   },
@@ -103,45 +116,10 @@ const policyDetails: Record<PolicyKey, { title: string; content: JSX.Element }> 
     title: "Health & Sanitation",
     content: (
       <>
-        <p className="mb-6 text-lg">
-          Recognizing the importance of public health and hygiene, Dr. Nyarku has initiated and supported projects aimed at improving healthcare access and sanitation conditions.
-        </p>
-
-        <h3 className="text-2xl font-bold mt-8 mb-4">Health Facility Support</h3>
-        <p className="mb-6">
-          Support has been provided for health centers in Kwaprow and Dankwakrom, ensuring that constituents have access to essential medical services. These facilities serve as critical touchpoints for primary healthcare delivery in the constituency.
-        </p>
-
-        <h3 className="text-2xl font-bold mt-8 mb-4">Sanitation Projects</h3>
-        <p className="mb-4">
-          Sanitation initiatives include the construction of public toilets and the installation of manholes, addressing critical hygiene needs within the constituency. These projects are part of a comprehensive approach to improve environmental health and reduce the spread of communicable diseases.
-        </p>
-        <p className="mb-4">
-          The focus on sanitation infrastructure reflects a commitment to providing dignified and healthy living conditions for all residents of Cape Coast North.
-        </p>
-      </>
-    )
-  },
-  employment: {
-    title: "Employment & Entrepreneurship",
-    content: (
-      <>
-        <p className="mb-6 text-lg">
-          Dr. Nyarku envisions a thriving local economy and has focused on initiatives that foster entrepreneurship and create job opportunities. His approach emphasizes sustainable economic development that benefits all members of the constituency.
-        </p>
-
-        <h3 className="text-2xl font-bold mt-8 mb-4">Economic Revival & Job Creation</h3>
-        <p className="mb-4">
-          His vision includes factory revival and the establishment of new factories to stimulate job creation. By revitalizing dormant industrial facilities and attracting new investments, the MP aims to create sustainable employment opportunities for youth and adults alike.
-        </p>
-        <p className="mb-6">
-          He has also received award recognition for entrepreneurship, highlighting his commitment to economic growth and his innovative approaches to addressing unemployment and underemployment in the constituency.
-        </p>
-
-        <h3 className="text-2xl font-bold mt-8 mb-4">Skills Development</h3>
-        <p className="mb-4">
-          Beyond job creation, emphasis is placed on equipping constituents with relevant skills for the modern economy. This includes vocational training programs and partnerships with educational institutions to ensure that the workforce is prepared for emerging opportunities.
-        </p>
+        <p className="mb-6 text-lg">Recognizing the importance of public health, Dr. Nyarku has supported projects aimed at improving healthcare access and sanitation.</p>
+        <h3 className="text-2xl font-bold mt-8 mb-4">Impact Areas</h3>
+        <p className="mb-4">Significant support has been provided to health centers in <strong>Kwaprow</strong> and <strong>Dankwakrom</strong>, ensuring they have the supplies needed for primary care.</p>
+        <p className="mb-4">The MP has also overseen the construction of modern public toilet facilities to improve hygiene in densely populated communities.</p>
       </>
     )
   },
@@ -149,22 +127,45 @@ const policyDetails: Record<PolicyKey, { title: string; content: JSX.Element }> 
     title: "Infrastructure Development",
     content: (
       <>
-        <p className="mb-6 text-lg">
-          Infrastructure development has been another cornerstone of Dr. Nyarku's tenure, focusing on improving connectivity, safety, and public amenities within the Cape Coast North Constituency.
-        </p>
-
-        <h3 className="text-2xl font-bold mt-8 mb-4">Roads and Lighting</h3>
-        <p className="mb-4">
-          The "Operation Light Up Cape Coast North" initiative has been a significant success, with over 2,500 streetlights installed across the constituency, enhancing security and visibility. This project has dramatically improved the quality of life for residents, enabling safer movement during evening hours and supporting local economic activities.
-        </p>
-        <p className="mb-6">
-          Beyond lighting, the MP has overseen major road grading projects and secured an allocation for 10km of asphalted roads, contributing to better transportation networks. Improved roads facilitate commerce, reduce travel time, and enhance access to essential services.
-        </p>
-
-        <h3 className="text-2xl font-bold mt-8 mb-4">Community and Public Buildings</h3>
-        <p className="mb-4">
-          Efforts have also been directed towards the construction and improvement of community facilities, such as the Ankaful Community Centre and support for party offices. These spaces serve as important gathering points for community activities, civic engagement, and social cohesion.
-        </p>
+        <p className="mb-6 text-lg">Infrastructure is the backbone of development. Our focus has been on lighting, roads, and community centers.</p>
+        <h3 className="text-2xl font-bold mt-8 mb-4">Operation Light Up Cape Coast North</h3>
+        <p className="mb-4">Over 2,500 streetlights have been installed across the constituency to improve security and boost the night economy.</p>
+        <h3 className="text-2xl font-bold mt-8 mb-4">Roads & Centers</h3>
+        <p className="mb-4">Ongoing road grading in developing areas and the construction of the Ankaful Community Centre are key highlights of this tenure.</p>
+      </>
+    )
+  },
+  welfare: {
+    title: "Social Welfare & Empowerment",
+    content: (
+      <>
+        <p className="mb-6 text-lg">Dr. Nyarku believes in "leaving no one behind." This achievement area focuses on the vulnerable members of our society.</p>
+        <h3 className="text-2xl font-bold mt-8 mb-4">Supporting the Vulnerable</h3>
+        <p className="mb-4">Annual donations of food items, clothing, and cash to widows and the aged during festive seasons (Christmas and Eid).</p>
+        <h3 className="text-2xl font-bold mt-8 mb-4">PWD Support</h3>
+        <p className="mb-4">Provision of wheelchairs and startup capital for Persons with Disabilities (PWDs) to encourage self-reliance and dignity.</p>
+      </>
+    )
+  },
+  sports: {
+    title: "Sports & Youth Development",
+    content: (
+      <>
+        <p className="mb-6 text-lg">Sports is a powerful tool for youth engagement and talent discovery in Cape Coast North.</p>
+        <h3 className="text-2xl font-bold mt-8 mb-4">The Pedu Astro Turf</h3>
+        <p className="mb-4">A flagship project turning the Pedu Park into a world-class facility to foster local talent.</p>
+        <h3 className="text-2xl font-bold mt-8 mb-4">Ragga Cup</h3>
+        <p className="mb-4">Organizing annual football tournaments that bring together teams from all electoral areas, providing jerseys and footballs to participating local clubs.</p>
+      </>
+    )
+  },
+  employment: {
+    title: "Employment & Entrepreneurship",
+    content: (
+      <>
+        <p className="mb-6 text-lg">Dr. Nyarku envisions a thriving local economy through job creation and small business support.</p>
+        <h3 className="text-2xl font-bold mt-8 mb-4">Skills & Jobs</h3>
+        <p className="mb-4">Facilitating vocational training for youth in fashion, hairdressing, and masonry. He has also been a vocal advocate for the revival of local factories to create sustainable jobs.</p>
       </>
     )
   },
@@ -172,25 +173,9 @@ const policyDetails: Record<PolicyKey, { title: string; content: JSX.Element }> 
     title: "Agricultural Support",
     content: (
       <>
-        <p className="mb-6 text-lg">
-          Agriculture remains a vital component of Cape Coast North's economy. Dr. Nyarku has implemented several initiatives to support farmers and enhance agricultural productivity.
-        </p>
-
-        <h3 className="text-2xl font-bold mt-8 mb-4">Farmer Support Programs</h3>
-        <p className="mb-4">
-          Support for farmers includes providing tools, equipment, and training to improve agricultural practices. By introducing modern farming techniques and ensuring access to quality inputs, the MP aims to increase yields and improve farmer incomes.
-        </p>
-        <p className="mb-6">
-          Market access programs have been developed to connect farmers directly with buyers, reducing the role of middlemen and ensuring that farmers receive fair prices for their produce.
-        </p>
-
-        <h3 className="text-2xl font-bold mt-8 mb-4">Sustainable Agriculture</h3>
-        <p className="mb-4">
-          Emphasis is placed on sustainable agricultural practices that protect the environment while ensuring food security. This includes promoting organic farming methods, soil conservation techniques, and water management practices.
-        </p>
-        <p className="mb-4">
-          Youth engagement in agriculture is also a priority, with programs designed to make farming attractive to younger generations through mechanization and value-addition opportunities.
-        </p>
+        <p className="mb-6 text-lg">Supporting our farmers to ensure food security and improved livelihoods.</p>
+        <h3 className="text-2xl font-bold mt-8 mb-4">Inputs & Training</h3>
+        <p className="mb-4">Donation of cutlasses, fertilizers, and knapsack sprayers to farming communities. Providing training on modern sustainable farming techniques.</p>
       </>
     )
   }

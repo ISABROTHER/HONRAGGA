@@ -1,4 +1,3 @@
-// src/App.tsx
 import { useState, useEffect } from 'react';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { Header } from './components/Header';
@@ -20,7 +19,7 @@ function App() {
   const [currentPage, setCurrentPage] = useState('home');
   const [selectedStoryId, setSelectedStoryId] = useState<string | null>(null); 
 
-  // SEO: Update Document Title & Meta Description based on the current page
+  // SEO: Dynamic Page Titles and Descriptions
   useEffect(() => {
     const siteTitle = "Hon. Dr. Kwamena Minta Nyarku (Ragga)";
     const slogan = "Obiara Ka Ho";
@@ -29,20 +28,24 @@ function App() {
 
     switch (currentPage) {
       case 'about':
-        pageTitle = `About | ${siteTitle}`;
-        metaDescription = `Learn about the background, vision, and leadership of Hon. Dr. Kwamena Minta Nyarku in Cape Coast North.`;
+        pageTitle = `About Profile | ${siteTitle}`;
+        metaDescription = `Learn about the background, academic vision, and leadership of Hon. Dr. Kwamena Minta Nyarku in Cape Coast North.`;
         break;
       case 'achievements':
-        pageTitle = `Achievements & Track Record | ${siteTitle}`;
-        metaDescription = `A comprehensive record of progress and verifiable achievements in Cape Coast North by Hon. Ragga.`;
+        pageTitle = `Verifiable Achievements | ${siteTitle}`;
+        metaDescription = `A record of promises kept: infrastructure, education support, and community development in Cape Coast North.`;
         break;
       case 'ongoing-projects':
         pageTitle = `Ongoing Infrastructure Projects | ${siteTitle}`;
-        metaDescription = `Track the latest developments, road grading, and lighting projects across the constituency.`;
+        metaDescription = `Track the current road grading, lighting, and community projects managed by Hon. Ragga's office.`;
         break;
       case 'events':
-        pageTitle = `Upcoming Campaign Events | ${siteTitle}`;
-        metaDescription = `Join Hon. Ragga at upcoming town hall meetings and community engagement events.`;
+        pageTitle = `Campaign Events | ${siteTitle}`;
+        metaDescription = `Stay updated with upcoming town hall meetings and community engagement events in Cape Coast North.`;
+        break;
+      case 'assemblymen':
+        pageTitle = `Local Representatives | ${siteTitle}`;
+        metaDescription = `Meet the local assemblymen working with Hon. Ragga to bring development to your area.`;
         break;
       default:
         pageTitle = `${siteTitle} | MP for Cape Coast North | ${slogan}`;
@@ -51,7 +54,6 @@ function App() {
 
     document.title = pageTitle;
     
-    // Update the meta description tag for search engines
     const metaDescriptionTag = document.querySelector('meta[name="description"]');
     if (metaDescriptionTag) {
       metaDescriptionTag.setAttribute('content', metaDescription);

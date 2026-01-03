@@ -1,6 +1,6 @@
-# Allow all crawlers to access all pages
+# Allow all search engines to crawl the site
 User-agent: *
 Allow: /
 
-# Direct Google to your sitemap
+# Link to your sitemap
 Sitemap: https://kwamenamintanyarku.com/sitemap.xml

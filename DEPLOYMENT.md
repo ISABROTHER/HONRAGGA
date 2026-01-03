@@ -5,8 +5,8 @@
 This application requires the following environment variables to be set in your hosting platform:
 
 ```
-VITE_SUPABASE_URL=your_supabase_url_here
-VITE_SUPABASE_ANON_KEY=your_supabase_anon_key_here
+VITE_SUPABASE_URL=https://bbaikapxcshurehoibvv.supabase.co
+VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJiYWlrYXB4Y3NodXJlaG9pYnZ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc0MzQyMDgsImV4cCI6MjA4MzAxMDIwOH0.SjOUWBc88gYxaqNX1xGFqrTj9_-84J3aUNrzKf3C-Zk
 ```
 
 ## Hosting Platform Setup

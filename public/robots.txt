@@ -1,6 +1,6 @@
-# https://www.robotstxt.org/robotstxt.html
+# Allow all crawlers to access all pages
 User-agent: *
 Allow: /
 
-# Sitemaps
+# Direct Google to your sitemap
 Sitemap: https://kwamenamintanyarku.com/sitemap.xml

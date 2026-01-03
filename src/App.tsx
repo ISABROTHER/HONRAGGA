@@ -14,7 +14,7 @@ import { Appointments } from './pages/Appointments';
 import { ReadStory } from './pages/ReadStory';
 import { Polls } from './pages/Polls';
 import { Assemblymen } from './pages/Assemblymen';
-import { Achievements } from './pages/Achievements'; // IMPORT UPDATED HERE
+import { Achievements } from './pages/Achievements';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
@@ -55,7 +55,8 @@ function App() {
         return <Issues />;
       case 'polls':
         return <Polls />;
-      case 'achievements': // ROUTE UPDATED HERE
+      case 'policies': // Alias added so "View Details" buttons work
+      case 'achievements': 
         return <Achievements />;
       case 'volunteer':
         return <Volunteer />;

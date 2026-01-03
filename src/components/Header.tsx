@@ -6,14 +6,16 @@ import {
   Home, 
   User, 
   Users, 
-  HardHat, // Icon for Projects
+  HardHat, 
+  Award, // Added for Achievements
   Calendar, 
   MessageSquareWarning, 
   HandHeart, 
   LayoutDashboard, 
   LogIn, 
   ChevronRight,
-  Vote 
+  Vote,
+  UserCircle // Added for Appointments
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -36,17 +38,18 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
   const logoVerticalAdjust = -1; 
   const logoLeftAdjust = 15; 
 
-  const desktopNavGap = 16; 
+  const desktopNavGap = 14; // Slightly reduced to fit new items
   const desktopNavPaddingY = 8; 
-  const desktopNavPaddingX = 16; 
-  const desktopNavFontSize = 16; 
+  const desktopNavPaddingX = 14; 
+  const desktopNavFontSize = 15; 
 
-  // === CLEAN NAVIGATION ITEMS ===
+  // === NAVIGATION ITEMS ===
   const navItems = [
     { id: 'home', label: 'Home' },
     { id: 'about', label: 'About' },
+    { id: 'achievements', label: 'Achievements' }, // Added to Header
     { id: 'assemblymen', label: 'Assemblymen' },
-    { id: 'ongoing-projects', label: 'Projects' }, // Added to Header
+    { id: 'ongoing-projects', label: 'Projects' },
     { id: 'events', label: 'Events' },
     { id: 'polls', label: 'Polls' },
     { id: 'admin', label: 'My Page' }, 
@@ -55,11 +58,13 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
   const mobileNavItems = [
     { id: 'home', label: 'Home', icon: Home },
     { id: 'about', label: 'About Profile', icon: User },
+    { id: 'achievements', label: 'Achievements', icon: Award }, // Added to Mobile
     { id: 'assemblymen', label: 'Assemblymen', icon: Users },
     { id: 'ongoing-projects', label: 'Projects', icon: HardHat },
     { id: 'events', label: 'Events', icon: Calendar },
     { id: 'polls', label: 'Polls & Tracker', icon: Vote },
     { id: 'issues', label: 'Report Issue', icon: MessageSquareWarning },
+    { id: 'appointments', label: 'Book Appointment', icon: UserCircle }, // Added to Mobile
     { id: 'volunteer', label: 'Get Involved', icon: HandHeart },
   ];
 
@@ -164,7 +169,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                 initial="closed" animate="open" exit="closed" variants={menuVariants}
                 className="md:hidden absolute top-[10px] right-[10px] w-[300px] origin-top-right"
               >
-                <div className="relative bg-[#CE1126] pt-24 pb-6 px-6 shadow-2xl h-full w-full overflow-hidden border-4 border-white/20 rounded-[40px]">
+                <div className="relative bg-[#CE1126] pt-24 pb-6 px-6 shadow-2xl h-full w-full overflow-hidden border-4 border-white/20 rounded-[40px] max-h-[85vh] overflow-y-auto">
                   <motion.div variants={itemVariants} className="mb-6 relative z-10">
                     <button className="w-full bg-white text-[#CE1126] rounded-2xl p-4 flex items-center justify-between cursor-default">
                       <div className="flex items-center gap-2">
@@ -175,7 +180,7 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                     </button>
                   </motion.div>
 
-                  <div className="flex flex-col space-y-2.5 relative z-10">
+                  <div className="flex flex-col space-y-2.5 relative z-10 pb-4">
                     {mobileNavItems.map((item) => {
                       const Icon = item.icon;
                       const isActive = currentPage === item.id;

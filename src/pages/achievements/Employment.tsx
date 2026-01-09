@@ -1,27 +1,43 @@
+import { motion } from 'framer-motion';
+
+const initiatives = [
+  {
+    title: "Factory Revival Roadmap",
+    desc: "Strategic planning and investment attraction to bring life back to dormant industrial sites.",
+    image: "https://i.imgur.com/saQoFLV.png"
+  },
+  {
+    title: "Vocational Skills Training",
+    desc: "Empowering youth with technical skills for the modern job market through hands-on workshops.",
+    image: "https://i.imgur.com/saQoFLV.png"
+  },
+  {
+    title: "Entrepreneurial Grants",
+    desc: "Financial and mentorship support for local small businesses and startup founders.",
+    image: "https://i.imgur.com/saQoFLV.png"
+  }
+];
+
 export function Employment() {
   return (
-    <div className="space-y-8">
-      <p className="text-lg text-slate-700 leading-relaxed">
-        Creating sustainable jobs and empowering local entrepreneurs to build a thriving local economy.
-      </p>
-
-      <div>
-        <h3 className="text-2xl font-bold text-slate-900 mb-4">Key Initiatives</h3>
-        <ul className="space-y-4">
-          <li className="flex gap-3">
-            <span className="h-2 w-2 rounded-full bg-amber-600 mt-2.5 shrink-0" />
-            <span className="text-slate-700"><strong>Industrial Revival:</strong> Vision and roadmap for the revival of dormant local factories.</span>
-          </li>
-          <li className="flex gap-3">
-            <span className="h-2 w-2 rounded-full bg-amber-600 mt-2.5 shrink-0" />
-            <span className="text-slate-700"><strong>Skills Training:</strong> Vocational and technical skills training programs for the youth.</span>
-          </li>
-          <li className="flex gap-3">
-            <span className="h-2 w-2 rounded-full bg-amber-600 mt-2.5 shrink-0" />
-            <span className="text-slate-700"><strong>Business Support:</strong> Mentorship and support programs for local small business owners.</span>
-          </li>
-        </ul>
-      </div>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+      {initiatives.map((item, idx) => (
+        <motion.div 
+          key={idx}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: idx * 0.1 }}
+          className="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-md transition-shadow"
+        >
+          <div className="h-48 overflow-hidden">
+            <img src={item.image} alt={item.title} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+          </div>
+          <div className="p-5">
+            <h4 className="text-xl font-bold text-slate-900 mb-2">{item.title}</h4>
+            <p className="text-slate-600 text-sm leading-relaxed">{item.desc}</p>
+          </div>
+        </motion.div>
+      ))}
     </div>
   );
 }

@@ -288,18 +288,21 @@ export function Achievements() {
                   </div>
 
                   <div className="p-6 flex-1 flex flex-col">
-                    <div className="flex justify-between items-start mb-3">
-                      <h3 className="text-xl font-black text-slate-900 flex-1 leading-tight">{policy.title}</h3>
-                      <div className="bg-blue-50 text-blue-700 text-[10px] font-black px-2 py-1 rounded-lg border border-blue-100 whitespace-nowrap ml-2">
-                        {policy.count} KEY INITIATIVES
-                      </div>
+                    <div className="mb-3">
+                      <h3 className="text-xl font-black text-slate-900 leading-tight">
+                        {policy.title}
+                      </h3>
                     </div>
                     
-                    <div className="mt-auto flex items-end justify-between gap-4">
-                      <p className="text-slate-500 text-sm font-medium leading-relaxed flex-1">
-                        {policy.desc}
-                      </p>
-                      <div className="flex items-center gap-1 text-blue-600 font-bold text-xs uppercase tracking-wider whitespace-nowrap group-hover:gap-2 transition-all pb-1">
+                    <p className="text-slate-500 text-sm font-medium leading-relaxed mb-6">
+                      {policy.desc}
+                    </p>
+                    
+                    <div className="mt-auto pt-4 border-t border-slate-50 flex items-center justify-between gap-4">
+                      <div className="bg-blue-50 text-blue-700 text-[10px] font-black px-2 py-1 rounded-lg border border-blue-100 whitespace-nowrap">
+                        {policy.count} KEY INITIATIVES
+                      </div>
+                      <div className="flex items-center gap-1 text-blue-600 font-bold text-xs uppercase tracking-wider whitespace-nowrap group-hover:gap-2 transition-all">
                         <span>View Details</span>
                         <ChevronRight className="w-3.5 h-3.5" />
                       </div>

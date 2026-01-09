@@ -1,27 +1,43 @@
+import { motion } from 'framer-motion';
+
+const initiatives = [
+  {
+    title: "Operation Light Up",
+    desc: "Installation of over 2,500 streetlights to enhance night-time security and local commerce.",
+    image: "https://i.imgur.com/AZqDymE.jpeg"
+  },
+  {
+    title: "Constituency Road Grading",
+    desc: "Regular maintenance and grading of key feeder roads to facilitate easy transportation.",
+    image: "https://i.imgur.com/AZqDymE.jpeg"
+  },
+  {
+    title: "Ankaful Community Centre",
+    desc: "The construction and upgrade of a central gathering space for social and civic events.",
+    image: "https://i.imgur.com/AZqDymE.jpeg"
+  }
+];
+
 export function Infrastructure() {
   return (
-    <div className="space-y-8">
-      <p className="text-lg text-slate-700 leading-relaxed">
-        Transforming the constituency through modern lighting, better roads, and community spaces.
-      </p>
-
-      <div>
-        <h3 className="text-2xl font-bold text-slate-900 mb-4">Key Initiatives</h3>
-        <ul className="space-y-4">
-          <li className="flex gap-3">
-            <span className="h-2 w-2 rounded-full bg-slate-600 mt-2.5 shrink-0" />
-            <span className="text-slate-700"><strong>Operation Light Up:</strong> Installation of over 2,500 streetlights across the constituency for safety and security.</span>
-          </li>
-          <li className="flex gap-3">
-            <span className="h-2 w-2 rounded-full bg-slate-600 mt-2.5 shrink-0" />
-            <span className="text-slate-700"><strong>Road Improvement:</strong> Major road grading projects and securing 10km of asphalted roads.</span>
-          </li>
-          <li className="flex gap-3">
-            <span className="h-2 w-2 rounded-full bg-slate-600 mt-2.5 shrink-0" />
-            <span className="text-slate-700"><strong>Community Center:</strong> Construction and refurbishment of the Ankaful Community Centre.</span>
-          </li>
-        </ul>
-      </div>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+      {initiatives.map((item, idx) => (
+        <motion.div 
+          key={idx}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: idx * 0.1 }}
+          className="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-md transition-shadow"
+        >
+          <div className="h-48 overflow-hidden">
+            <img src={item.image} alt={item.title} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+          </div>
+          <div className="p-5">
+            <h4 className="text-xl font-bold text-slate-900 mb-2">{item.title}</h4>
+            <p className="text-slate-600 text-sm leading-relaxed">{item.desc}</p>
+          </div>
+        </motion.div>
+      ))}
     </div>
   );
 }

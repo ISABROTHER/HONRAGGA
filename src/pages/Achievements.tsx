@@ -3,7 +3,7 @@ import { ArrowLeft, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { AnimatedSection } from '../components/AnimatedSection';
 
-// Import our new split content files
+// Individual Content Imports
 import { Education } from './achievements/Education';
 import { Health } from './achievements/Health';
 import { Employment } from './achievements/Employment';
@@ -13,11 +13,11 @@ import { Agriculture } from './achievements/Agriculture';
 type PolicyKey = 'education' | 'health' | 'employment' | 'infrastructure' | 'agriculture';
 
 const policies = [
-  { id: 'education' as PolicyKey, title: 'Educational Support', count: 4, desc: 'Supporting quality education and skills training', image: 'https://i.imgur.com/Ozjnrli.jpeg', component: <Education /> },
-  { id: 'health' as PolicyKey, title: 'Health & Sanitation', count: 2, desc: 'Expanding healthcare and clean water access', image: 'https://i.imgur.com/XmWnKbH.jpeg', component: <Health /> },
-  { id: 'employment' as PolicyKey, title: 'Employment & Entrepreneurship', count: 3, desc: 'Creating jobs and empowering businesses', image: 'https://i.imgur.com/saQoFLV.png', component: <Employment /> },
-  { id: 'infrastructure' as PolicyKey, title: 'Infrastructure Development', count: 4, desc: 'Improving roads and electrification', image: 'https://i.imgur.com/AZqDymE.jpeg', component: <Infrastructure /> },
-  { id: 'agriculture' as PolicyKey, title: 'Agricultural Support', count: 4, desc: 'Supporting farmers with tools and training', image: 'https://i.imgur.com/TZ4jIJA.jpeg', component: <Agriculture /> }
+  { id: 'education' as PolicyKey, title: 'Educational Support', count: 5, desc: 'Quality education, bulbs for schools, and youth training.', image: 'https://i.imgur.com/Ozjnrli.jpeg', component: <Education /> },
+  { id: 'health' as PolicyKey, title: 'Health & Sanitation', count: 3, desc: 'Hospital support and public toilet construction.', image: 'https://i.imgur.com/XmWnKbH.jpeg', component: <Health /> },
+  { id: 'employment' as PolicyKey, title: 'Employment & Entrepreneurship', count: 3, desc: 'Factory revival and small business support.', image: 'https://i.imgur.com/saQoFLV.png', component: <Employment /> },
+  { id: 'infrastructure' as PolicyKey, title: 'Infrastructure Development', count: 3, desc: 'Streetlights, roads, and community centers.', image: 'https://i.imgur.com/AZqDymE.jpeg', component: <Infrastructure /> },
+  { id: 'agriculture' as PolicyKey, title: 'Agricultural Support', count: 3, desc: 'Tools for farmers and better market access.', image: 'https://i.imgur.com/TZ4jIJA.jpeg', component: <Agriculture /> }
 ];
 
 export function Achievements() {
@@ -46,8 +46,8 @@ export function Achievements() {
             </div>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="prose prose-lg max-w-none">
-            <div className="text-slate-700 leading-relaxed">{selectedPolicy.component}</div>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="max-w-none">
+            {selectedPolicy.component}
           </motion.div>
         </div>
       </div>

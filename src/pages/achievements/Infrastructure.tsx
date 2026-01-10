@@ -3,22 +3,22 @@ import { motion } from 'framer-motion';
 const initiatives = [
   {
     title: "Operation Light Up",
-    info: "Installation of over 2,500 streetlights constituency-wide to enhance night-time security and commerce.",
+    info: "Installation of over 2,500 streetlights across the constituency to enhance security and night commerce.",
     image: "https://i.imgur.com/AZqDymE.jpeg"
   },
   {
-    title: "Road Grading",
-    info: "Extensive road maintenance and grading projects to improve transportation networks.",
+    title: "Road Maintenance",
+    info: "Extensive road grading projects and secured allocation for 10km of asphalted roads in key areas.",
     image: "https://i.imgur.com/AZqDymE.jpeg"
   },
   {
     title: "Community Center",
-    info: "Construction and refurbishment of the Ankaful Community Centre for civic events.",
+    info: "Full refurbishment and construction of the Ankaful Community Centre for public gatherings.",
     image: "https://i.imgur.com/AZqDymE.jpeg"
   },
   {
-    title: "Rural Electrification",
-    info: "Expanding the power grid to underserved areas across the constituency.",
+    title: "Rural Power Grid",
+    info: "Expansion of electricity infrastructure to underserved rural communities within the constituency.",
     image: "https://i.imgur.com/AZqDymE.jpeg"
   }
 ];

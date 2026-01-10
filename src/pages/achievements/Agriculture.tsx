@@ -2,23 +2,23 @@ import { motion } from 'framer-motion';
 
 const initiatives = [
   {
-    title: "Farmer Support",
-    info: "Direct distribution of modern tools, seeds, and fertilizers to local farming cooperatives.",
+    title: "Farmer Logistics",
+    info: "Direct distribution of modern farming tools, improved seeds, and fertilizers to local cooperatives.",
     image: "https://i.imgur.com/TZ4jIJA.jpeg"
   },
   {
-    title: "Market Access",
-    info: "Creating direct links between rural farmers and wholesalers to ensure fair market pricing.",
+    title: "Market Connectivity",
+    info: "Creating direct supply chains between rural farmers and wholesalers to ensure fair pricing.",
     image: "https://i.imgur.com/TZ4jIJA.jpeg"
   },
   {
-    title: "Youth in Agribusiness",
-    info: "Training programs designed to attract younger generations to mechanization and value-addition.",
+    title: "Agribusiness Training",
+    info: "Specialized programs focused on mechanization and modern value-addition for youth in farming.",
     image: "https://i.imgur.com/TZ4jIJA.jpeg"
   },
   {
-    title: "Training Workshops",
-    info: "Ongoing educational workshops on sustainable farming and modern agricultural technology.",
+    title: "Resilient Farming",
+    info: "Ongoing workshops on climate-resilient farming and soil conservation for local smallholders.",
     image: "https://i.imgur.com/TZ4jIJA.jpeg"
   }
 ];

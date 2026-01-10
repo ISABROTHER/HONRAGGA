@@ -3,7 +3,7 @@ import { ArrowLeft, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AnimatedSection } from '../components/AnimatedSection';
 
-// Import our split content files
+// Import split content files
 import { Education } from './achievements/Education';
 import { Health } from './achievements/Health';
 import { Employment } from './achievements/Employment';
@@ -31,14 +31,9 @@ export function Achievements() {
           {!selectedPolicy ? (
             <motion.div key="grid" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
               <div className="text-center mb-16">
-                <div className="flex flex-col items-center justify-center group">
-                  <h1 className="text-4xl md:text-6xl font-black text-slate-900 tracking-tight mb-4">
-                    Our <span className="text-blue-700">Achievements</span>
-                  </h1>
-                  <span className="h-1.5 w-24 rounded-full bg-gradient-to-r from-green-500 to-green-600 transition-all duration-500 group-hover:w-48" />
-                </div>
-                <p className="max-w-2xl mx-auto text-slate-600 text-lg font-medium leading-relaxed mt-6">
-                  A comprehensive record of verifiable progress made across Cape Coast North Constituency.
+                <h1 className="text-4xl md:text-6xl font-black text-slate-900 mb-4">Our Achievements</h1>
+                <p className="max-w-2xl mx-auto text-slate-600 text-lg font-medium">
+                  A comprehensive record of verifiable progress in Cape Coast North.
                 </p>
               </div>
 
@@ -47,23 +42,15 @@ export function Achievements() {
                   <AnimatedSection key={policy.id} delay={idx * 100}>
                     <button
                       onClick={() => setSelectedId(policy.id)}
-                      className="w-full bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-xl shadow-slate-200/40 h-full flex flex-col text-left group hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
+                      className="w-full bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-xl h-full flex flex-col text-left group hover:-translate-y-1 transition-all"
                     >
-                      <div className="relative h-48 overflow-hidden">
-                        <img src={policy.image} alt={policy.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-                      </div>
-                      <div className="p-6 flex-1 flex flex-col">
-                        <h3 className="text-xl font-black text-slate-900 leading-tight mb-3">{policy.title}</h3>
-                        <p className="text-slate-500 text-sm font-medium leading-relaxed mb-6">{policy.desc}</p>
-                        <div className="mt-auto pt-4 border-t border-slate-50 flex items-center justify-between gap-4">
-                          <div className="bg-blue-50 text-blue-700 text-[10px] font-black px-2 py-1 rounded-lg border border-blue-100 whitespace-nowrap">
-                            {policy.count} KEY PROJECTS
-                          </div>
-                          <div className="flex items-center gap-1 text-blue-600 font-bold text-xs uppercase group-hover:gap-2 transition-all">
-                            <span>View Details</span>
-                            <ChevronRight className="w-3.5 h-3.5" />
-                          </div>
+                      <img src={policy.image} alt={policy.title} className="h-48 w-full object-cover" />
+                      <div className="p-6 flex-1">
+                        <h3 className="text-xl font-black mb-2">{policy.title}</h3>
+                        <p className="text-slate-500 text-sm mb-4">{policy.desc}</p>
+                        <div className="flex justify-between items-center text-blue-600 font-bold text-xs uppercase">
+                          <span>{policy.count} Projects</span>
+                          <ChevronRight className="w-4 h-4" />
                         </div>
                       </div>
                     </button>
@@ -72,30 +59,23 @@ export function Achievements() {
               </div>
             </motion.div>
           ) : (
-            <motion.div key="detail" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
-              <button
-                onClick={() => setSelectedId(null)}
-                className="flex items-center gap-2 text-slate-600 hover:text-slate-900 mb-8 font-semibold transition-colors group"
-              >
-                <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-                Back to Achievements
+            <motion.div key="detail" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
+              <button onClick={() => setSelectedId(null)} className="flex items-center gap-2 text-slate-600 mb-8 font-bold">
+                <ArrowLeft className="w-5 h-5" /> Back
               </button>
 
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="relative h-64 md:h-80 rounded-3xl overflow-hidden mb-8 shadow-xl">
+              <div className="relative h-64 md:h-80 rounded-3xl overflow-hidden mb-12">
                 <img src={selectedPolicy.image} alt={selectedPolicy.title} className="w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-                <div className="absolute bottom-6 left-6">
-                  <h1 className="text-4xl md:text-5xl font-black text-white leading-tight">{selectedPolicy.title}</h1>
+                <div className="absolute inset-0 bg-black/40 flex items-end p-8">
+                  <h1 className="text-4xl md:text-5xl font-black text-white">{selectedPolicy.title}</h1>
                 </div>
-              </motion.div>
-
-              <div className="prose prose-lg max-w-none text-slate-700 leading-relaxed bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
-                {selectedPolicy.component}
               </div>
+
+              {selectedPolicy.component}
             </motion.div>
           )}
         </AnimatePresence>
       </div>
     </div>
   );
-} 
+}

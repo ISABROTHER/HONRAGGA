@@ -32,8 +32,8 @@ export function Achievements() {
             <motion.div key="grid" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
               <div className="text-center mb-16">
                 <h1 className="text-4xl md:text-6xl font-black text-slate-900 mb-4">Our Achievements</h1>
-                <p className="max-w-2xl mx-auto text-slate-600 text-lg font-medium">
-                  A comprehensive record of verifiable progress in Cape Coast North.
+                <p className="max-w-2xl mx-auto text-slate-600 text-lg font-medium leading-relaxed mt-6">
+                  A comprehensive record of verifiable progress made across Cape Coast North Constituency.
                 </p>
               </div>
 
@@ -42,14 +42,14 @@ export function Achievements() {
                   <AnimatedSection key={policy.id} delay={idx * 100}>
                     <button
                       onClick={() => setSelectedId(policy.id)}
-                      className="w-full bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-xl h-full flex flex-col text-left group hover:-translate-y-1 transition-all"
+                      className="w-full bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-xl h-full flex flex-col text-left group hover:-translate-y-1 transition-all duration-300"
                     >
-                      <img src={policy.image} alt={policy.title} className="h-48 w-full object-cover" />
-                      <div className="p-6 flex-1">
-                        <h3 className="text-xl font-black mb-2">{policy.title}</h3>
-                        <p className="text-slate-500 text-sm mb-4">{policy.desc}</p>
-                        <div className="flex justify-between items-center text-blue-600 font-bold text-xs uppercase">
-                          <span>{policy.count} Projects</span>
+                      <img src={policy.image} alt={policy.title} className="h-48 w-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                      <div className="p-6 flex-1 flex flex-col">
+                        <h3 className="text-xl font-black text-slate-900 mb-2">{policy.title}</h3>
+                        <p className="text-slate-500 text-sm mb-6 flex-1">{policy.desc}</p>
+                        <div className="mt-auto pt-4 border-t border-slate-50 flex items-center justify-between text-blue-600 font-bold text-xs uppercase">
+                          <span>{policy.count} KEY PROJECTS</span>
                           <ChevronRight className="w-4 h-4" />
                         </div>
                       </div>
@@ -59,14 +59,18 @@ export function Achievements() {
               </div>
             </motion.div>
           ) : (
-            <motion.div key="detail" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
-              <button onClick={() => setSelectedId(null)} className="flex items-center gap-2 text-slate-600 mb-8 font-bold">
-                <ArrowLeft className="w-5 h-5" /> Back
+            <motion.div key="detail" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
+              <button 
+                onClick={() => setSelectedId(null)} 
+                className="flex items-center gap-2 text-slate-600 hover:text-blue-700 mb-8 font-bold transition-colors group"
+              >
+                <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" /> 
+                Back to Achievements
               </button>
 
-              <div className="relative h-64 md:h-80 rounded-3xl overflow-hidden mb-12">
+              <div className="relative h-64 md:h-80 rounded-3xl overflow-hidden mb-12 shadow-2xl">
                 <img src={selectedPolicy.image} alt={selectedPolicy.title} className="w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-black/40 flex items-end p-8">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex items-end p-8">
                   <h1 className="text-4xl md:text-5xl font-black text-white">{selectedPolicy.title}</h1>
                 </div>
               </div>

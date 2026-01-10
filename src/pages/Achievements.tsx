@@ -14,7 +14,7 @@ type PolicyKey = 'education' | 'health' | 'employment' | 'infrastructure' | 'agr
 
 const categories = [
   { id: 'education' as PolicyKey, title: 'Educational Support', count: 4, desc: 'Quality education, school resources, and youth training.', image: 'https://i.imgur.com/Ozjnrli.jpeg', component: <Education /> },
-  { id: 'health' as PolicyKey, title: 'Health & Sanitation', count: 3, desc: 'Health facilities and public hygiene projects.', image: 'https://i.imgur.com/XmWnKbH.jpeg', component: <Health /> },
+  { id: 'health' as PolicyKey, title: 'Health & Sanitation', count: 2, desc: 'Health facilities and public hygiene projects.', image: 'https://i.imgur.com/XmWnKbH.jpeg', component: <Health /> },
   { id: 'employment' as PolicyKey, title: 'Job Creation', count: 3, desc: 'Reviving local industry and supporting small businesses.', image: 'https://i.imgur.com/saQoFLV.png', component: <Employment /> },
   { id: 'infrastructure' as PolicyKey, title: 'Infrastructure', count: 4, desc: 'Improving roads, lighting, and community connectivity.', image: 'https://i.imgur.com/AZqDymE.jpeg', component: <Infrastructure /> },
   { id: 'agriculture' as PolicyKey, title: 'Agri-Development', count: 4, desc: 'Supporting farmers with tools, training, and market access.', image: 'https://i.imgur.com/TZ4jIJA.jpeg', component: <Agriculture /> }
@@ -72,10 +72,10 @@ export function Achievements() {
             <motion.div key="detail" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
               <button 
                 onClick={() => setSelectedId(null)} 
-                className="flex items-center gap-2 text-slate-600 hover:text-blue-700 mb-8 font-black transition-colors group"
+                className="flex items-center gap-2 text-slate-600 hover:text-blue-700 mb-8 transition-colors group"
               >
                 <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" /> 
-                <span className="font-black">Back to Overview</span>
+                <span className="font-black uppercase text-xs tracking-widest">Back to Overview</span>
               </button>
 
               <div className="relative h-48 md:h-64 rounded-[2rem] overflow-hidden mb-12 shadow-xl">

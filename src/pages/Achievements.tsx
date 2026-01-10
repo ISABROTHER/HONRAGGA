@@ -3,7 +3,7 @@ import { ArrowLeft, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AnimatedSection } from '../components/AnimatedSection';
 
-// Import the sub-components
+// Sub-component imports from the achievements folder
 import { Education } from './achievements/Education';
 import { Health } from './achievements/Health';
 import { Employment } from './achievements/Employment';
@@ -31,11 +31,11 @@ export function Achievements() {
           {!selectedPolicy ? (
             <motion.div key="grid" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
               <div className="text-center mb-16">
-                <h1 className="text-4xl md:text-6xl font-black text-slate-900 tracking-tight mb-4">
+                <h1 className="text-4xl md:text-6xl font-black text-slate-900 tracking-tight mb-4 leading-none">
                   Our <span className="text-blue-700">Achievements</span>
                 </h1>
                 <p className="max-w-2xl mx-auto text-slate-600 text-lg font-medium leading-relaxed mt-6">
-                  A comprehensive record of verifiable progress made across Cape Coast North Constituency.
+                  A comprehensive record of verifiable progress made across the constituency.
                 </p>
               </div>
 
@@ -54,12 +54,12 @@ export function Achievements() {
                         <h3 className="text-xl font-black text-slate-900 leading-tight mb-2">{policy.title}</h3>
                         <p className="text-slate-500 text-sm font-medium leading-relaxed mb-6">{policy.desc}</p>
                         <div className="mt-auto pt-4 border-t border-slate-50 flex items-center justify-between gap-4">
-                          <div className="bg-blue-50 text-blue-700 text-[10px] font-black px-2 py-1 rounded-lg border border-blue-100 uppercase">
+                          <div className="bg-blue-50 text-blue-700 text-[10px] font-black px-2 py-1 rounded-lg border border-blue-100 uppercase tracking-widest">
                             {policy.count} Key Projects
                           </div>
                           <div className="flex items-center gap-1 text-blue-600 font-bold text-xs uppercase group-hover:gap-2 transition-all">
-                            <span>View Details</span>
-                            <ChevronRight className="w-3.5 h-3.5" />
+                            <span>Details</span>
+                            <ChevronRight className="w-4 h-4" />
                           </div>
                         </div>
                       </div>
@@ -78,11 +78,10 @@ export function Achievements() {
                 Back to Overview
               </button>
 
-              {/* Distinct Hero Section */}
-              <div className="relative h-64 md:h-80 rounded-[2.5rem] overflow-hidden mb-12 shadow-2xl">
+              <div className="relative h-48 md:h-64 rounded-[2rem] overflow-hidden mb-12 shadow-xl">
                 <img src={selectedPolicy.image} alt={selectedPolicy.title} className="w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-end p-8 md:p-12">
-                  <h1 className="text-4xl md:text-5xl font-black text-white">{selectedPolicy.title}</h1>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-end p-8 md:p-10">
+                  <h1 className="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight">{selectedPolicy.title}</h1>
                 </div>
               </div>
 

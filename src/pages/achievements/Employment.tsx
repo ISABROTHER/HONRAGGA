@@ -1,20 +1,11 @@
-export function Employment() {
+export function Health() {
   return (
     <>
-      <p className="mb-6 text-lg">
-        The MP focuses on fostering entrepreneurship and creating job opportunities.
-      </p>
-      <h3 className="text-2xl font-bold mt-8 mb-4">Economic Revival & Job Creation</h3>
-      <p className="mb-4">
-        His vision includes factory revival and establishing new factories to stimulate sustainable employment for youth.
-      </p>
-      <p className="mb-6">
-        He has also received recognition for entrepreneurship and innovative approaches to unemployment.
-      </p>
-      <h3 className="text-2xl font-bold mt-8 mb-4">Skills Development</h3>
-      <p className="mb-4">
-        Emphasis is placed on vocational training and partnerships to prepare the workforce for modern opportunities.
-      </p>
+      <p className="mb-6 text-lg font-medium">Prioritizing healthcare access and sanitation for a healthier Cape Coast North.</p>
+      <h3 className="text-2xl font-bold mt-8 mb-4">Medical Facility Support</h3>
+      <p className="mb-4">Provision of critical medical resources and infrastructure support to health centers in Kwaprow and Dankwakrom.</p>
+      <h3 className="text-2xl font-bold mt-8 mb-4">Sanitation Infrastructure</h3>
+      <p>Construction of public toilets and installation of manholes to improve community hygiene and reduce health risks.</p>
     </>
   );
 }

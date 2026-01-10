@@ -3,17 +3,17 @@ import { motion } from 'framer-motion';
 const initiatives = [
   {
     title: "Factory Revival",
-    info: "Strategic planning and support for local industry revival to stimulate economic growth and employment.",
+    info: "Strategic roadmap development and advocacy for reviving dormant factories to create sustainable local jobs.",
     image: "https://i.imgur.com/saQoFLV.png"
   },
   {
     title: "Skills Training",
-    info: "Implementation of technical workshops to equip constituents with modern job-market skills.",
+    info: "Implementation of technical workshops to equip youth with modern skills for the current job market.",
     image: "https://i.imgur.com/saQoFLV.png"
   },
   {
-    title: "Entrepreneurship Support",
-    info: "Financial mentorship and support programs for local small business owners and startup founders.",
+    title: "Startup Support",
+    info: "Providing financial mentorship and resources for local small business owners and young entrepreneurs.",
     image: "https://i.imgur.com/saQoFLV.png"
   }
 ];

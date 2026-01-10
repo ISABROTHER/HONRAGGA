@@ -2,52 +2,49 @@ import { motion } from 'framer-motion';
 
 const initiatives = [
   {
-    title: "High School Support Program",
-    info: "Strategic assistance providing materials, mentorship, and exam preparation for students across the constituency.",
+    title: "High School Support",
+    info: "Strategic assistance program providing academic materials and mentorship to senior high students across the constituency.",
     image: "https://i.imgur.com/Ozjnrli.jpeg"
   },
   {
-    title: "Adisadel College Lighting",
-    info: "Donation of 500 LED bulbs to secure a safe and effective night-time learning environment for students.",
+    title: "College Lighting",
+    info: "Donation of 500 LED bulbs to Adisadel College to solve persistent lighting challenges in classrooms and dormitories.",
     image: "https://i.imgur.com/Ozjnrli.jpeg"
   },
   {
-    title: "Basic School Furniture",
-    info: "Delivery of 100 high-quality dual desks to ten basic schools with critical furniture deficits.",
+    title: "Dual Desks Provision",
+    info: "Delivery of 100 high-quality dual desks to ten basic schools with critical furniture deficits to improve learning.",
     image: "https://i.imgur.com/Ozjnrli.jpeg"
   },
   {
-    title: "Classroom Infrastructure",
-    info: "Comprehensive structural renovations for dilapidated school buildings to restore student safety and pride.",
+    title: "Building Renovations",
+    info: "Full-scale structural restoration of dilapidated school blocks, ensuring a safe and dignified environment.",
     image: "https://i.imgur.com/Ozjnrli.jpeg"
   }
 ];
 
 export function Education() {
   return (
-    <div className="grid grid-cols-1 gap-10">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {initiatives.map((item, idx) => (
         <motion.div 
           key={idx}
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: idx * 0.1 }}
-          className="bg-white border border-slate-100 rounded-[2.5rem] overflow-hidden shadow-lg flex flex-col md:flex-row hover:border-blue-200 transition-colors"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: idx * 0.05 }}
+          className="bg-white border border-slate-100 rounded-2xl overflow-hidden shadow-md flex flex-col hover:shadow-lg transition-shadow"
         >
           {/* 1. Picture */}
-          <div className="md:w-80 h-64 md:h-auto overflow-hidden shrink-0">
+          <div className="h-40 overflow-hidden shrink-0">
             <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
           </div>
-
-          <div className="p-10 flex flex-col justify-center">
+          <div className="p-5 flex flex-col flex-1">
             {/* 2. Title */}
-            <h3 className="text-3xl font-black text-slate-900 mb-4 tracking-tight uppercase">
+            <h3 className="text-lg font-black text-slate-900 mb-2 leading-tight uppercase tracking-tight">
               {item.title}
             </h3>
-            
             {/* 3. Information */}
-            <p className="text-slate-600 leading-relaxed font-medium text-lg">
+            <p className="text-slate-600 text-sm leading-relaxed font-medium">
               {item.info}
             </p>
           </div>

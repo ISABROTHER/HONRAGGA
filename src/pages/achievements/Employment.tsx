@@ -1,11 +1,17 @@
 export function Employment() {
   return (
     <>
-      <p className="mb-6 text-lg font-medium">Empowering the local economy through job creation and small business support.</p>
-      <h3 className="text-2xl font-bold mt-8 mb-4">Industrial & Factory Revival</h3>
-      <p className="mb-4">Strategic planning and roadmaps for reviving dormant local factories to create sustainable employment for youth.</p>
-      <h3 className="text-2xl font-bold mt-8 mb-4">Entrepreneurship Grants</h3>
-      <p>Recognition for excellence in supporting local entrepreneurs with skills training and financial resources.</p>
+      <p className="mb-6 text-lg font-medium italic text-amber-700">Creating sustainable jobs and empowering local entrepreneurs.</p>
+      
+      <h3 className="text-2xl font-bold mt-8 mb-4">Industrial Revival</h3>
+      <p className="mb-4">Development of a roadmap for the revival of dormant local factories and the establishment of new cottage industries to provide stable employment for the youth.</p>
+      
+      <h3 className="text-2xl font-bold mt-8 mb-4">Skills & Entrepreneurship</h3>
+      <ul className="space-y-3">
+        <li>• Vocational training programs for artisans and young school leavers.</li>
+        <li>• Financial mentorship and small business grants for local startups.</li>
+        <li>• Advocacy for the hiring of locals in major projects within the constituency.</li>
+      </ul>
     </>
   );
 }
